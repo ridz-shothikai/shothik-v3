@@ -1,0 +1,80 @@
+{
+  // Editor basics
+  "editor.fontSize": 16,
+  "editor.wordWrap": "on",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit",
+    "source.fixAll": "explicit"
+  },
+  "editor.inlineSuggest.suppressSuggestions": true,
+
+  // Default formatter (Prettier)
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // Language-specific settings
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // ESLint with Flat Config support
+  "eslint.useFlatConfig": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+
+  // Prettier settings
+  "prettier.requireConfig": false,
+  "prettier.useEditorConfig": false,
+
+  // Terminal settings
+  "terminal.integrated.tabs.defaultIcon": "terminal",
+  "terminal.integrated.env.linux": {},
+
+  // Git
+  "git.enableSmartCommit": true,
+  "git.autofetch": true,
+
+  // Tailwind CSS support
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.classAttributes": [
+    "class:list",
+    "class",
+    "className",
+    "activeClass",
+    "activeClassName"
+  ],
+
+  // JS import update behavior
+  "javascript.updateImportsOnFileMove.enabled": "never"
+}
