@@ -162,7 +162,7 @@ export class ObjectToFormDataConverter {
     if (value.length === 0) {
       this.formData.append(
         this.options.arrayNotation ? `${fieldName}[]` : fieldName,
-        ""
+        "",
       );
       return;
     }
@@ -202,7 +202,7 @@ export class ObjectToFormDataConverter {
 
   private handlePlainObject(
     fieldName: string,
-    value: Record<string, any>
+    value: Record<string, any>,
   ): void {
     Object.entries(value).forEach(([nestedKey, nestedValue]) => {
       this.appendValue(nestedKey, nestedValue, fieldName);
@@ -299,7 +299,7 @@ export class FormDataConverterFactory {
    * Create ObjectToFormData converter with default options
    */
   public static createObjectToFormData(
-    options?: FormDataConverterOptions
+    options?: FormDataConverterOptions,
   ): ObjectToFormDataConverter {
     return new ObjectToFormDataConverter(options);
   }
@@ -316,7 +316,7 @@ export class FormDataConverterFactory {
    */
   public static quickConvert(
     obj: FormDataObject,
-    options?: FormDataConverterOptions
+    options?: FormDataConverterOptions,
   ): FormData {
     const converter = new ObjectToFormDataConverter(options);
     return converter.convert(obj);

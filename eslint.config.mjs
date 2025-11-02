@@ -1,65 +1,98 @@
-import eslintNextPlugin from "@next/eslint-plugin-next";
-import { defineConfig } from "eslint/config";
+import { FlatCompat } from "@eslint/eslintrc";
+import js from "@eslint/js";
+import prettierConfig from "eslint-config-prettier";
 import globals from "globals";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 
-export default defineConfig([
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+});
+
+export default [
+  // Next.js specific configuration
+  ...compat.config({
+    extends: ["next/core-web-vitals"],
+  }),
+
+  // Apply to JavaScript and JSX files
   {
-    plugins: {
-      next: eslintNextPlugin,
-    },
-    settings: {
-      // Next.js root directory
-      next: {
-        rootDir: ".",
+    files: [
+      "**/*.js",
+      "**/*.jsx",
+      "**/*.mjs",
+      "**/*.cjs",
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.mts",
+      "**/*.cts",
+    ],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: "module",
+      globals: {
+        React: "writable",
+        JSX: "writable",
+        ...globals.browser,
+        ...globals.node,
+        ...globals.es2021,
       },
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      // parserOptions: {
+      //   project: "./tsconfig.json",
+      //   tsconfigRootDir: __dirname,
+      //   ecmaFeatures: { jsx: true },
+      // },
     },
-    files: ["**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      /* Global Rules */
+      all: "off",
+
+      // /* Base Rules */
+      // "no-undef": "error",
+      // "no-unused-vars": "off",
+      // "no-console": "warn",
+
+      // /* TypeScript Rules */
+      // "@typescript-eslint/no-unused-vars": "off",
+      // "@typescript-eslint/no-explicit-any": "off",
+      // "@typescript-eslint/consistent-type-imports": "warn",
+
+      // /* Next.js Rules */
+      // "@next/next/no-img-element": "off",
+
+      // /* React.js Rules */
+      "react/no-unescaped-entities": "off",
+    },
+  },
+
+  // Files and directories to ignore during linting
+  {
     ignores: [
-      "node_modules",
-      ".next/",
-      "out/",
-      "public/",
-      "dist",
-      "build",
+      "node_modules/**",
+      ".next/**",
+      "out/**",
+      "public/**",
+      "dist/**",
+      "build/**",
       "**/*.config.js",
       "**/*.config.mjs",
       "**/*.config.cjs",
+      "**/*.config.ts",
+      "**/*.config.tsx",
+      "**/*.config.mts",
+      "**/*.config.cts",
     ],
-    extends: [
-      "plugin:next/recommended",
-      "plugin:next/core-web-vitals",
-      "plugin:next/typescript",
-      "prettier",
-    ],
-    rules: {
-      /* Base JS Rules */
-      "no-undef": "error",
-      "no-unused-vars": "off",
-      "no-console": "warn",
-
-      /* TypeScript Rules */
-      "@typescript-eslint/no-unused-vars": "off",
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/consistent-type-imports": "warn",
-
-      /* Next.js Rules */
-      "@next/next/no-img-element": "off",
-    },
-    /*
-    parserOptions: {
-      ecmaVersion: 2022,
-      sourceType: "module",
-      project: "./tsconfig.json",
-      tsconfigRootDir: __dirname,
-      ecmaFeatures: { jsx: true },
-    },
-    */
-    globals: {
-      React: "writable",
-      JSX: "writable",
-      ...globals.browser,
-      ...globals.node,
-      ...globals.es2021,
-    },
   },
-]);
+
+  // Prettier configuration
+  prettierConfig,
+];
