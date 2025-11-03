@@ -40,7 +40,7 @@ export async function generateMetadata() {
 
 const Paraphrase = () => {
   return (
-    <div className="flex max-w-full flex-col gap-10 md:gap-12">
+    <div className="flex max-w-full flex-col gap-10 px-4 md:gap-12">
       <ParaphraseContend />
       <ToolsSepecigFaq
         tag="All you need to know about Paraphrase feature"

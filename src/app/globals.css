@@ -93,6 +93,49 @@
 @layer base {
   @import "../assets/styles/base/variables.css";
   @import "../assets/styles/base/typography.css";
+
+  /* Themed scrollbars (Firefox + WebKit) */
+  :root {
+    --sb-track: var(--background);
+    --sb-thumb: var(--muted);
+  }
+
+  :root.dark {
+    --sb-track: var(--background);
+    --sb-thumb: var(--muted);
+  }
+
+  html,
+  body {
+    scrollbar-color: var(--sb-thumb) var(--sb-track);
+    scrollbar-width: thin;
+  }
+
+  * {
+    scrollbar-color: var(--sb-thumb) var(--sb-track);
+    scrollbar-width: thin;
+  }
+
+  *::-webkit-scrollbar {
+    width: 0.25rem;
+    height: 0.25rem;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: var(--sb-track);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    opacity: 0.25;
+    border: 1px solid var(--sb-track);
+    border-radius: 9999px;
+    background-color: var(--sb-thumb);
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    opacity: 0.75;
+    background-color: var(--sb-thumb);
+  }
 }
 
 /* Component Styles */

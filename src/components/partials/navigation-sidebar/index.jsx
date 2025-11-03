@@ -16,13 +16,12 @@ import { cn } from "@/lib/utils";
 import { Dot } from "lucide-react";
 import Image from "next/image";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import NavigantionIcons from "./NavigationIcons";
 import NavItem from "./NavItem";
 import UserInfo from "./UserInfo";
 
 export default function NavigationSidebar() {
-  const dispatch = useDispatch();
   const { accessToken, user } = useSelector((state) => state.auth);
   const { sidebar } = useSelector((state) => state.settings);
   const isCompact = sidebar === "compact";
@@ -64,7 +63,7 @@ export default function NavigationSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              <div className="flex flex-col py-2">
+              <div className="flex flex-col py-4">
                 {NAV_ITEMS?.map((group) => {
                   if (group?.roles && !group?.roles?.includes(user?.role)) {
                     return null;
