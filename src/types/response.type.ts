@@ -1,3 +1,4 @@
+// general response
 export type Response<T = unknown> = {
   success?: boolean;
   message?: string;
@@ -12,6 +13,7 @@ export type Response<T = unknown> = {
   };
 };
 
+// error response
 export type ErrorSource = {
   path: string;
   message: string;

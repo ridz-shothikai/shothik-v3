@@ -67,10 +67,7 @@ export const useClassIntersectionObserver = ({
       mutationObserver = new MutationObserver((mutations) => {
         let shouldObserve = false;
         for (const mutation of mutations) {
-          if (
-            mutation.type === "childList" &&
-            mutation.addedNodes.length > 0
-          ) {
+          if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
             shouldObserve = true;
             break;
           }
