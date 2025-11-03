@@ -2,6 +2,7 @@
 import LoadingScreen from "@/components/common/LoadingScreen";
 import Footer from "@/components/partials/footer";
 import Header from "@/components/partials/header";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import {
   useGetUserLimitQuery,
   useGetUserQuery,
@@ -31,9 +32,11 @@ export default function SecondaryLayout({ children }) {
       options={{ showSpinner: false }}
       shallowRouting
     >
-      <Header />
-      <main>{children}</main>
-      <Footer />
+      <SidebarProvider>
+        <Header />
+        <main>{children}</main>
+        <Footer />
+      </SidebarProvider>
     </ProgressProvider>
   );
 }
