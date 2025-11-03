@@ -53,22 +53,23 @@ const featuresMenuContent = {
   writing: {
     title: "Writing",
     items: [
-      { label: "Paraphraser", icon: Edit, href: "/features#paraphraser" },
-      { label: "AI Detector", icon: Brain, href: "/features#ai-detector" },
-      { label: "Humanizer", icon: Sparkles, href: "/features#humanizer" },
-      { label: "Grammar Checker", icon: CheckCheck, href: "/features#grammar" },
-      { label: "Translator", icon: Languages, href: "/features#translator" },
+      { label: "Paraphraser", icon: Edit, href: "/paraphraser" },
+      { label: "AI Detector", icon: Brain, href: "/ai-detector" },
+      { label: "Humanizer", icon: Sparkles, href: "/humanize-gpt" },
+      { label: "Grammar Checker", icon: CheckCheck, href: "/grammar-checker" },
+      { label: "Summarizer", icon: CheckCheck, href: "/summarize" },
+      { label: "Translator", icon: Languages, href: "/translator" },
     ],
   },
   agents: {
     title: "Agents",
     items: [
-      { label: "AI Slides", icon: Presentation, href: "/features#ai-slides" },
-      { label: "Deep Research", icon: Beaker, href: "/features#research" },
+      { label: "AI Slides", icon: Presentation, href: "#ai-slides" },
+      { label: "Deep Research", icon: Beaker, href: "#research" },
       {
         label: "Data Analysis",
         icon: BarChart3,
-        href: "/features#data-analysis",
+        href: "#data-analysis",
       },
     ],
   },
@@ -78,44 +79,44 @@ const featuresMenuContent = {
       {
         label: "Product / Service Analysis",
         icon: FileText,
-        href: "/features#product-analysis",
+        href: "#product-analysis",
       },
       {
         label: "AI Strategy Generation",
         icon: Lightbulb,
-        href: "/features#ai-strategy",
+        href: "#ai-strategy",
       },
-      { label: "AI Ad Sets", icon: Images, href: "/features#ai-ad-sets" },
+      { label: "AI Ad Sets", icon: Images, href: "#ai-ad-sets" },
       {
         label: "AI Ad Creatives",
         icon: Palette,
-        href: "/features#ai-ad-creatives",
+        href: "#ai-ad-creatives",
       },
       {
         label: "AI Ad Copies & Ads",
         icon: FileText,
-        href: "/features#ai-ad-copies",
+        href: "#ai-ad-copies",
       },
       {
         label: "AI-Powered Editing (Meta Vibe Canvas)",
         icon: Brush,
-        href: "/features#vibe-canvas",
+        href: "#vibe-canvas",
       },
-      { label: "AI Media Canvas", icon: Image, href: "/features#media-canvas" },
+      { label: "AI Media Canvas", icon: Image, href: "#media-canvas" },
       {
         label: "Ad Launch & Campaign Execution",
         icon: Rocket,
-        href: "/features#ad-launch",
+        href: "#ad-launch",
       },
       {
         label: "Mindmap & Reports",
         icon: GitBranch,
-        href: "/features#mindmap-reports",
+        href: "#mindmap-reports",
       },
       {
         label: "AI Optimization",
         icon: TrendingUp,
-        href: "/features#ai-optimization",
+        href: "#ai-optimization",
       },
     ],
   },
@@ -325,8 +326,8 @@ export default function Header({ className, layout }) {
                   onMouseLeave={() => setFeaturesOpen(false)}
                   data-testid="features-dropdown"
                 >
-                  <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-                    {featuresSections.map((section) => (
+                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                    {featuresSections?.map((section) => (
                       <MenuColumn
                         key={section.title}
                         title={section.title}

@@ -618,7 +618,10 @@ export default function AgentLandingPage() {
 
       {/* Onboarding Dialog */}
       <Dialog open={showOnboarding} onOpenChange={setShowOnboarding}>
-        <DialogContent className="max-h-[80vh] max-w-2xl overflow-auto">
+        <DialogContent
+          showCloseButton={false}
+          className="max-h-[80vh] max-w-2xl overflow-auto"
+        >
           <DialogHeader>
             <div className="flex items-center justify-between">
               <DialogTitle className="text-primary text-2xl font-semibold">
