@@ -319,7 +319,7 @@ const ModeNavigation = ({
     <>
       <div className="flex items-center justify-between gap-2 pr-2">
         {/* Modes */}
-        <div className="relative z-[50] flex items-center gap-1 overflow-x-auto overflow-y-hidden whitespace-nowrap [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-2 md:gap-3 [&::-webkit-scrollbar]:hidden">
+        <div className="relative flex items-center gap-1 overflow-x-auto overflow-y-hidden whitespace-nowrap [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-2 md:gap-3 [&::-webkit-scrollbar]:hidden">
           <Tabs
             value={tabsValue}
             onValueChange={(v) => {
@@ -421,7 +421,7 @@ const ModeNavigation = ({
         </div>
 
         {/* Synonyms slider */}
-        <div className="relative z-[1600] flex w-[150px] items-center gap-2">
+        <div className="relative flex w-[150px] items-center gap-2">
           <div className="flex-1">
             <Slider
               value={[
