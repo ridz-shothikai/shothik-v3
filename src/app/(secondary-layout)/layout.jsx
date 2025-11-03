@@ -33,9 +33,17 @@ export default function SecondaryLayout({ children }) {
       shallowRouting
     >
       <SidebarProvider>
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <div className="flex h-screen w-full flex-col">
+          <div className="flex min-h-screen flex-1 flex-col">
+            <div className="bg-card relative z-50 h-12 border-b backdrop-blur-lg lg:h-16">
+              <Header className={"container"} layout={"secondary"} />
+            </div>
+            <div className="flex max-w-full flex-1 flex-col overflow-y-auto">
+              <div className="">{children}</div>
+              <Footer />
+            </div>
+          </div>
+        </div>
       </SidebarProvider>
     </ProgressProvider>
   );

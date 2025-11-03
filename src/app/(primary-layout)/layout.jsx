@@ -87,7 +87,7 @@ export default function PrimaryLayout({ children }) {
             <NavigationSidebar />
             <div className="flex min-h-screen flex-1 flex-col">
               <div>
-                <Header />
+                <Header layout="primary" />
                 <VerifyEmailAlert />
               </div>
               <div className="flex max-w-full flex-1 flex-col overflow-y-auto">

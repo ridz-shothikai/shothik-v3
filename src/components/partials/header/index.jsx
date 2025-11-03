@@ -121,7 +121,7 @@ const featuresMenuContent = {
   },
 };
 
-export default function Header() {
+export default function Header({ className, layout }) {
   const { accessToken, user } = useSelector((state) => state.auth);
   const { theme, sidebar } = useSelector((state) => state.settings);
 
@@ -142,138 +142,270 @@ export default function Header() {
     featuresMenuContent.vibeMetaAutomation,
   ];
 
-  return (
-    <header
-      className={cn(
-        "bg-card relative z-50 h-12 border-b backdrop-blur-lg lg:h-16",
-      )}
-    >
-      <button
-        className="bg-card absolute z-10 hidden size-8 items-center justify-center rounded-full border border-dashed lg:-bottom-4 lg:-left-4 lg:flex"
-        onClick={() => dispatch(toggleSidebar())}
+  if (layout === "primary") {
+    return (
+      <header
+        className={cn(
+          "bg-card relative z-50 h-12 border-b backdrop-blur-lg lg:h-16",
+          className,
+        )}
       >
-        <ChevronRight className="size-4" />
-      </button>
-      <div className="flex h-full items-center justify-between gap-6 px-4">
-        {/* Logo + Desktop Nav */}
-        <div className="flex items-center gap-2">
+        <button
+          className="bg-card absolute z-10 hidden size-8 items-center justify-center rounded-full border border-dashed lg:-bottom-4 lg:-left-4 lg:flex"
+          onClick={() => dispatch(toggleSidebar())}
+        >
+          <ChevronRight className="size-4" />
+        </button>
+        <div className="flex h-full items-center justify-between gap-6 px-4">
+          {/* Logo + Desktop Nav */}
           <div className="flex items-center gap-2">
-            <SidebarTrigger size="icon" className="lg:hidden">
-              <Menu className="h-5 w-5" />
-            </SidebarTrigger>
-            <Logo
-              className={cn("", {
-                "lg:hidden": !isCompact,
-                "lg:inline-block": isCompact,
-              })}
-            />
-          </div>
+            <div className="flex items-center gap-2">
+              <SidebarTrigger size="icon" className="lg:hidden">
+                <Menu className="h-5 w-5" />
+              </SidebarTrigger>
+              <Logo
+                className={cn("", {
+                  "lg:hidden": !isCompact,
+                  "lg:inline-block": isCompact,
+                })}
+              />
+            </div>
 
-          <div className="hidden items-center gap-1 lg:flex">
-            {/* Features Popover */}
-            <Popover open={featuresOpen} onOpenChange={setFeaturesOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className={cn(
-                    "gap-1 px-2 text-sm font-semibold transition-colors",
-                    featuresOpen
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-primary hover:bg-muted/50",
-                  )}
-                  onMouseEnter={() => setFeaturesOpen(true)}
-                  data-testid="nav-features"
+            <div className="hidden items-center gap-1 lg:flex">
+              {/* Features Popover */}
+              <Popover open={featuresOpen} onOpenChange={setFeaturesOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className={cn(
+                      "gap-1 px-2 text-sm font-semibold transition-colors",
+                      featuresOpen
+                        ? "text-primary"
+                        : "text-muted-foreground hover:text-primary hover:bg-muted/50",
+                    )}
+                    onMouseEnter={() => setFeaturesOpen(true)}
+                    data-testid="nav-features"
+                  >
+                    Features
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent
+                  align="start"
+                  className="border-border bg-card w-[720px] max-w-[800px] border p-8 shadow-lg backdrop-blur-lg"
+                  onMouseLeave={() => setFeaturesOpen(false)}
+                  data-testid="features-dropdown"
                 >
-                  Features
-                  <ChevronDown className="h-4 w-4" />
+                  <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                    {featuresSections.map((section) => (
+                      <MenuColumn
+                        key={section.title}
+                        title={section.title}
+                        items={section.items}
+                        onItemClick={() => setFeaturesOpen(false)}
+                      />
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+
+              {/* Other Links */}
+              {navLinks.map((link) => (
+                <Button
+                  key={link.label}
+                  variant="ghost"
+                  asChild
+                  className="text-muted-foreground hover:text-primary hover:bg-muted/50 px-2 text-sm font-semibold transition-colors"
+                  data-testid={`nav-${link.label.toLowerCase()}`}
+                >
+                  <a href={link.href}>{link.label}</a>
                 </Button>
-              </PopoverTrigger>
-              <PopoverContent
-                align="start"
-                className="border-border bg-card w-[720px] max-w-[800px] border p-8 shadow-lg backdrop-blur-lg"
-                onMouseLeave={() => setFeaturesOpen(false)}
-                data-testid="features-dropdown"
-              >
-                <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-                  {featuresSections.map((section) => (
-                    <MenuColumn
-                      key={section.title}
-                      title={section.title}
-                      items={section.items}
-                      onItemClick={() => setFeaturesOpen(false)}
-                    />
-                  ))}
-                </div>
-              </PopoverContent>
-            </Popover>
-
-            {/* Other Links */}
-            {navLinks.map((link) => (
-              <Button
-                key={link.label}
-                variant="ghost"
-                asChild
-                className="text-muted-foreground hover:text-primary hover:bg-muted/50 px-2 text-sm font-semibold transition-colors"
-                data-testid={`nav-${link.label.toLowerCase()}`}
-              >
-                <a href={link.href}>{link.label}</a>
-              </Button>
-            ))}
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="flex items-center gap-3">
-          <div className="hidden items-center gap-3 lg:flex">
-            <ThemeToggle />
-            <div className="flex items-center gap-2 md:gap-3">
-              {isLoading ? (
-                <div className="flex items-center gap-1">
-                  <span className="bg-primary h-2 w-2 animate-bounce rounded-full [animation-delay:-0.3s]" />
-                  <span className="bg-primary h-2 w-2 animate-bounce rounded-full [animation-delay:-0.15s]" />
-                  <span className="bg-primary h-2 w-2 animate-bounce rounded-full" />
-                </div>
-              ) : (
-                user?.package !== "unlimited" && (
-                  <Link href={"/pricing?redirect=" + pathname}>
-                    <Button
-                      data-umami-event="Nav: Upgrade To Premium"
-                      className={cn("h-9 px-1 text-xs md:text-sm")}
-                    >
-                      <Gem className="h-5 w-5" />
-                      {user?.email ? "Upgrade" : "Upgrade Plan"}
-                    </Button>
-                  </Link>
-                )
-              )}
-
-              {!isLoading && (
-                <AccountPopover accessToken={accessToken} user={user} />
-              )}
+              ))}
             </div>
           </div>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-foreground lg:hidden"
-            onClick={() => setMobileMenuOpen(true)}
-            data-testid="button-mobile-menu"
-          >
-            <Menu className="h-5 w-5" />
-          </Button>
-        </div>
-      </div>
+          {/* Actions */}
+          <div className="flex items-center gap-3">
+            <div className="hidden items-center gap-3 lg:flex">
+              <ThemeToggle />
+              <div className="flex items-center gap-2 md:gap-3">
+                {isLoading ? (
+                  <div className="flex items-center gap-1">
+                    <span className="bg-primary h-2 w-2 animate-bounce rounded-full [animation-delay:-0.3s]" />
+                    <span className="bg-primary h-2 w-2 animate-bounce rounded-full [animation-delay:-0.15s]" />
+                    <span className="bg-primary h-2 w-2 animate-bounce rounded-full" />
+                  </div>
+                ) : (
+                  user?.package !== "unlimited" && (
+                    <Link href={"/pricing?redirect=" + pathname}>
+                      <Button
+                        data-umami-event="Nav: Upgrade To Premium"
+                        className={cn("h-9 px-1 text-xs md:text-sm")}
+                      >
+                        <Gem className="h-5 w-5" />
+                        {user?.email ? "Upgrade" : "Upgrade Plan"}
+                      </Button>
+                    </Link>
+                  )
+                )}
 
-      {/* Mobile Menu */}
-      <MobileMenu
-        open={mobileMenuOpen}
-        onClose={() => setMobileMenuOpen(false)}
-        featuresSections={featuresSections}
-        navLinks={navLinks}
-        theme={theme}
-        setTheme={dispatch(updateTheme)}
-      />
-    </header>
-  );
+                {!isLoading && (
+                  <AccountPopover accessToken={accessToken} user={user} />
+                )}
+              </div>
+            </div>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-foreground lg:hidden"
+              onClick={() => setMobileMenuOpen(true)}
+              data-testid="button-mobile-menu"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <MobileMenu
+          open={mobileMenuOpen}
+          onClose={() => setMobileMenuOpen(false)}
+          featuresSections={featuresSections}
+          navLinks={navLinks}
+          theme={theme}
+          setTheme={dispatch(updateTheme)}
+        />
+      </header>
+    );
+  }
+
+  if (layout === "secondary") {
+    return (
+      <header
+        className={cn(
+          "bg-card relative z-50 h-12 border-b backdrop-blur-lg lg:h-16",
+          className,
+        )}
+      >
+        <div className="flex h-full items-center justify-between gap-6 px-4">
+          {/* Logo + Desktop Nav */}
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
+              <Logo
+                className={cn("", {
+                  "lg:hidden": !isCompact,
+                  "lg:inline-block": isCompact,
+                })}
+              />
+            </div>
+
+            <div className="hidden items-center gap-1 lg:flex">
+              {/* Features Popover */}
+              <Popover open={featuresOpen} onOpenChange={setFeaturesOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className={cn(
+                      "gap-1 px-2 text-sm font-semibold transition-colors",
+                      featuresOpen
+                        ? "text-primary"
+                        : "text-muted-foreground hover:text-primary hover:bg-muted/50",
+                    )}
+                    onMouseEnter={() => setFeaturesOpen(true)}
+                    data-testid="nav-features"
+                  >
+                    Features
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent
+                  align="start"
+                  className="border-border bg-card w-[720px] max-w-[800px] border p-8 shadow-lg backdrop-blur-lg"
+                  onMouseLeave={() => setFeaturesOpen(false)}
+                  data-testid="features-dropdown"
+                >
+                  <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                    {featuresSections.map((section) => (
+                      <MenuColumn
+                        key={section.title}
+                        title={section.title}
+                        items={section.items}
+                        onItemClick={() => setFeaturesOpen(false)}
+                      />
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+
+              {/* Other Links */}
+              {navLinks.map((link) => (
+                <Button
+                  key={link.label}
+                  variant="ghost"
+                  asChild
+                  className="text-muted-foreground hover:text-primary hover:bg-muted/50 px-2 text-sm font-semibold transition-colors"
+                  data-testid={`nav-${link.label.toLowerCase()}`}
+                >
+                  <a href={link.href}>{link.label}</a>
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center gap-3">
+            <div className="hidden items-center gap-3 lg:flex">
+              <ThemeToggle />
+              <div className="flex items-center gap-2 md:gap-3">
+                {isLoading ? (
+                  <div className="flex items-center gap-1">
+                    <span className="bg-primary h-2 w-2 animate-bounce rounded-full [animation-delay:-0.3s]" />
+                    <span className="bg-primary h-2 w-2 animate-bounce rounded-full [animation-delay:-0.15s]" />
+                    <span className="bg-primary h-2 w-2 animate-bounce rounded-full" />
+                  </div>
+                ) : (
+                  user?.package !== "unlimited" && (
+                    <Link href={"/pricing?redirect=" + pathname}>
+                      <Button
+                        data-umami-event="Nav: Upgrade To Premium"
+                        className={cn("h-9 px-1 text-xs md:text-sm")}
+                      >
+                        <Gem className="h-5 w-5" />
+                        {user?.email ? "Upgrade" : "Upgrade Plan"}
+                      </Button>
+                    </Link>
+                  )
+                )}
+
+                {!isLoading && (
+                  <AccountPopover accessToken={accessToken} user={user} />
+                )}
+              </div>
+            </div>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-foreground lg:hidden"
+              onClick={() => setMobileMenuOpen(true)}
+              data-testid="button-mobile-menu"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <MobileMenu
+          open={mobileMenuOpen}
+          onClose={() => setMobileMenuOpen(false)}
+          featuresSections={featuresSections}
+          navLinks={navLinks}
+          theme={theme}
+          setTheme={dispatch(updateTheme)}
+        />
+      </header>
+    );
+  }
 }

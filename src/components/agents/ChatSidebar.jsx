@@ -105,9 +105,12 @@ export default function ChatSidebar({
                         )}
                       >
                         <CardContent className="p-4">
-                          {/* <p className="truncate font-semibold" title={chat.title}>
+                          <p
+                            className="truncate font-semibold"
+                            title={chat.title}
+                          >
                             {chat.title}
-                          </p> */}
+                          </p>
                           <p className="text-muted-foreground flex items-center gap-1 text-sm">
                             <Clock className="h-3.5 w-3.5" />
                             {format(
