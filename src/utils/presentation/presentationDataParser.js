@@ -101,7 +101,8 @@ export const parsePresentationSpecExtractor = (message) => {
     title: message.topic || "Generating...",
   };
 
-  return { enrichedLogEntry, metadata };
+  // Return structure matches history parser for consistency
+  return { logEntry: enrichedLogEntry, metadata };
 };
 
 /**

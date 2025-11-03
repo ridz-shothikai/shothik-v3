@@ -1,5 +1,3 @@
-import React from "react";
-
 declare module "*.css";
 declare module "*.scss";
 declare module "*.sass";

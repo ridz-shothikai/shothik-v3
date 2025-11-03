@@ -1,0 +1,122 @@
+/* Remove default margins from the editor container */
+.ProseMirror {
+  margin: 0; /* Remove margin from editor */
+  outline: none;
+  min-height: 150px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Remove margins from all paragraph elements */
+.ProseMirror p {
+  margin: 0;
+  margin-bottom: 1.5em !important;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+/* Remove margins from headings */
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+  margin: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+/* Remove margins from lists */
+.ProseMirror ul,
+.ProseMirror ol {
+  margin: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  padding-left: 1.5rem; /* Keep some padding for list indentation */
+}
+
+/* Remove margins from list items */
+.ProseMirror li {
+  margin: 0;
+}
+
+/* Remove margins from blockquotes */
+.ProseMirror blockquote {
+  margin: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  border-left: 2px solid #ccc;
+  padding-left: 1rem;
+}
+
+/* Placeholder style */
+.ProseMirror p.is-empty::before {
+  float: left;
+  height: 0;
+  pointer-events: none;
+  content: attr(data-placeholder);
+  color: #aaa;
+}
+
+/* Style for words that exceed the limit */
+.word-limit-exceeded {
+  opacity: 0.6;
+  color: gray;
+}
+
+/* Existing word styles */
+.frozen-word,
+.frozen-word[data-frozen-phrase="true"] {
+  border-radius: 3px;
+  background-color: #e3f2fd;
+  padding: 1px 2px;
+  color: #2196f3;
+  text-decoration: none;
+}
+
+.protected-word {
+  border-radius: 3px;
+  background-color: #ffebee;
+  padding: 1px 2px;
+  color: #f44336;
+  text-decoration: none;
+}
+
+/* New phrase styles */
+.frozen-phrase {
+  border-radius: 3px;
+  background-color: #e8f5e8;
+  padding: 1px 2px;
+  color: #4caf50;
+  text-decoration: none;
+}
+
+/* editor.css */
+.duplicate-sentence {
+  background-color: #fff3e0;
+  color: #ff9800;
+}
+
+.sentence-span.active-sentence {
+  transition: background-color 0.2s ease;
+  background-color: #f6ffe0;
+}
+
+/* New style for yellow highlight */
+.yellow-highlight {
+  background-color: #f9f4e2; /*Light background color*/
+}
+
+/* For highlighting sentences */
+.highlighted-sentence {
+  transition: background-color 0.2s ease;
+  border-radius: 4px;
+  background-color: #faf5e5 !important;
+  padding: 2px 0;
+}
+
+.active-sentence {
+  border-radius: 4px;
+  background-color: rgba(33, 150, 243, 0.1);
+}

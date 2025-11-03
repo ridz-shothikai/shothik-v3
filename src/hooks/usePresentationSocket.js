@@ -72,9 +72,21 @@ export default function usePresentationSocket(pId, token) {
             parsed.slideEntry?.author,
         });
 
+        // Validate parsed data exists before processing
+        if (!parsed || !parsed.type) {
+          console.error("[Socket] Invalid parsed result:", parsed);
+          return;
+        }
+
         // Check for duplicates before dispatching
         switch (parsed.type) {
           case "log":
+            // Validate data exists
+            if (!parsed.data) {
+              console.error("[Socket] Missing data for log type:", parsed);
+              return;
+            }
+
             // Check if this log already exists in Redux (from history)
             const logExists = currentState.logs?.some(
               (log) =>
@@ -95,6 +107,15 @@ export default function usePresentationSocket(pId, token) {
             break;
 
           case "log_with_metadata":
+            // Validate data exists
+            if (!parsed.data) {
+              console.error(
+                "[Socket] Missing data for log_with_metadata type:",
+                parsed,
+              );
+              return;
+            }
+
             // Check for duplicate
             const metadataLogExists = currentState.logs?.some(
               (log) =>

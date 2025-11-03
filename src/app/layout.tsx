@@ -1,6 +1,19 @@
+import Analytics from "@/analysers/Analytics";
+import SettingApplier from "@/components/appliers/SettingApplier";
+import ToastApplier from "@/components/appliers/ToastApplier";
+import { LoginModal, RegisterModal } from "@/components/auth/AuthModal";
+import { Login } from "@/components/auth/components/Login";
+import { Register } from "@/components/auth/components/Register";
+import Providers from "@/providers";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
+
+const manrope = Manrope({
+  variable: "--font-manrope",
+  subsets: ["latin"],
+  display: "swap",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,10 +37,47 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="503cfbe2-6b94-4fa0-8259-3353fa792769"
+        ></script>
+        <script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="a19fecea-d6b0-4093-9074-26531c827bfe"
+        ></script>
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${manrope.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=GTM-PPRFW7NP`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          ></iframe>
+        </noscript>
+        <>
+          <Providers>
+            {/* Appliers */}
+            <SettingApplier />
+            <ToastApplier />
+
+            {/* login modal  */}
+            <LoginModal>
+              <Login />
+            </LoginModal>
+            <RegisterModal>
+              <Register />
+            </RegisterModal>
+
+            <div>{children}</div>
+          </Providers>
+        </>
+        <Analytics />
       </body>
     </html>
   );
