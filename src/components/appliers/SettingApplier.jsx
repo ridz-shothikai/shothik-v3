@@ -8,6 +8,8 @@ const SettingApplier = () => {
   const theme = useSelector((state) => state.settings.theme);
   const language = useSelector((state) => state.settings.language);
 
+  console.log("[SettingApplier] direction:", direction);
+
   // Apply direction
   useEffect(() => {
     if (direction) {

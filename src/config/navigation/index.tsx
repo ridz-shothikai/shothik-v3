@@ -1,5 +1,5 @@
+import SvgColor from "@/components/common/SvgColor";
 import { PATH_ACCOUNT, PATH_TOOLS } from "@/config/route";
-import SvgColor from "@/resource/SvgColor";
 import { ReactElement } from "react";
 
 const icon = (name: string): ReactElement => (
