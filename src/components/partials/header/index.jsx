@@ -161,8 +161,15 @@ export default function Header({ className, layout }) {
           {/* Logo + Desktop Nav */}
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-2">
-              <SidebarTrigger size="icon" className="lg:hidden">
-                <Menu className="h-5 w-5" />
+              <SidebarTrigger
+                size="icon"
+                className="text-primary flex items-center justify-center rounded-none lg:hidden"
+              >
+                <div className="flex size-5 flex-col justify-between p-0.5">
+                  <span className="me-auto h-0.5 w-4/6 rounded-full bg-current" />
+                  <span className="ms-auto h-0.5 w-4/6 rounded-full bg-current" />
+                  <span className="me-auto h-0.5 w-4/6 rounded-full bg-current" />
+                </div>
               </SidebarTrigger>
               <Logo
                 className={cn("", {
@@ -226,9 +233,9 @@ export default function Header({ className, layout }) {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-3">
-            <div className="hidden items-center gap-3 lg:flex">
-              <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
+              <ThemeToggle className="hidden md:flex" />
               <div className="flex items-center gap-2 md:gap-3">
                 {isLoading ? (
                   <div className="flex items-center gap-1">
@@ -289,7 +296,7 @@ export default function Header({ className, layout }) {
           className,
         )}
       >
-        <div className="flex h-full items-center justify-between gap-6 px-4">
+        <div className="flex h-full items-center justify-between gap-4">
           {/* Logo + Desktop Nav */}
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-2">
@@ -355,9 +362,9 @@ export default function Header({ className, layout }) {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-3">
-            <div className="hidden items-center gap-3 lg:flex">
-              <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
+              <ThemeToggle className="hidden md:inline-flex" />
               <div className="flex items-center gap-2 md:gap-3">
                 {isLoading ? (
                   <div className="flex items-center gap-1">
@@ -404,7 +411,7 @@ export default function Header({ className, layout }) {
           featuresSections={featuresSections}
           navLinks={navLinks}
           theme={theme}
-          setTheme={dispatch(updateTheme)}
+          setTheme={(value) => dispatch(updateTheme(value))}
         />
       </header>
     );

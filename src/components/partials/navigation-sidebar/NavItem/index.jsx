@@ -18,10 +18,11 @@ export default function NavItem({ item, sidebar, className }) {
       href={path}
       id={item?.id}
       className={cn(
-        "relative flex items-center rounded-md py-2 capitalize transition-colors",
-        isCompact
-          ? "mx-auto w-[72px] min-w-[72px] flex-col justify-center p-2"
-          : "w-full flex-row justify-start px-4",
+        "relative flex w-full flex-row items-center justify-start gap-x-4 gap-y-1 rounded-md px-4 py-2 capitalize transition-colors",
+        {
+          "lg:mx-auto lg:w-[72px] lg:min-w-[72px] lg:flex-col lg:justify-center lg:p-2":
+            isCompact,
+        },
         isActive
           ? "text-primary bg-primary/10 hover:bg-primary/10 hover:text-primary"
           : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
@@ -30,10 +31,7 @@ export default function NavItem({ item, sidebar, className }) {
     >
       {icon && (
         <div
-          className={cn(
-            "flex h-8 w-8 flex-shrink-0 items-center justify-center",
-            isCompact ? "mb-0" : "mr-4",
-          )}
+          className={cn("flex h-8 w-8 shrink-0 items-center justify-center")}
           style={{ color: iconColor }}
         >
           {icon}
@@ -42,7 +40,7 @@ export default function NavItem({ item, sidebar, className }) {
 
       <span
         className={cn(
-          "flex-grow",
+          "grow",
           isCompact
             ? "whitespace-wrap text-center text-xs"
             : "text-start text-base whitespace-nowrap",

@@ -6,7 +6,7 @@ import { toggleTheme } from "@/redux/slices/settings-slice";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function ThemeToggle() {
+export default function ThemeToggle({ className }) {
   const dispatch = useDispatch();
   const { theme } = useSelector((state) => state.settings);
 
@@ -27,7 +27,7 @@ export default function ThemeToggle() {
       variant="outline"
       size="icon"
       onClick={() => dispatch(toggleTheme())}
-      className={cn("p-2")}
+      className={cn("p-2", className)}
       aria-label="Toggle Theme"
       data-testid="theme-toggle"
     >
