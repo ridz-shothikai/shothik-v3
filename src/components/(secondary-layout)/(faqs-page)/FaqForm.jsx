@@ -4,21 +4,21 @@ import RHFTextField from "@/components/common/RHFTextField";
 import { Button } from "@/components/ui/button";
 import useSnackbar from "@/hooks/useSnackbar";
 import { useContactMutation } from "@/redux/api/auth/authApi";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as Yup from "yup";
+import { z } from "zod";
 
 export default function FaqForm() {
   const enqueueSnackbar = useSnackbar();
   const [contact] = useContactMutation();
 
-  const contactSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
-    email: Yup.string()
-      .email("Enter a valid email")
-      .required("Email is required"),
-    subject: Yup.string().required("Subject is required"),
-    message: Yup.string().required("Message is required"),
+  const contactSchema = z.object({
+    name: z.string().min(1, "Name is required"),
+    email: z.string()
+      .min(1, "Email is required")
+      .email("Enter a valid email"),
+    subject: z.string().min(1, "Subject is required"),
+    message: z.string().min(1, "Message is required"),
   });
 
   const defaultValues = {
@@ -29,7 +29,7 @@ export default function FaqForm() {
   };
 
   const methods = useForm({
-    resolver: yupResolver(contactSchema),
+    resolver: zodResolver(contactSchema),
     defaultValues,
   });
 

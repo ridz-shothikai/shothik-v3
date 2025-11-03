@@ -5,6 +5,7 @@ import {
   useReportForSentenceMutation,
 } from "@/redux/api/tools/toolsApi";
 import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import EditableOutput from "./EditableOutput";
 import RephraseSentenceNav from "./RephraseSentenceNav";
 import RephraseSentences from "./RephraseSentences";

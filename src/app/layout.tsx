@@ -51,6 +51,7 @@ export default function RootLayout({
       </head>
       <body
         className={`${manrope.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
         <noscript>
           <iframe

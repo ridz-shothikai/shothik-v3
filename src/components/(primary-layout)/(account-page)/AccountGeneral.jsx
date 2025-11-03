@@ -28,12 +28,12 @@ import {
   useUploadImageMutation,
 } from "@/redux/api/auth/authApi";
 import { getUser, setUser } from "@/redux/slices/auth";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle, Info, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import * as Yup from "yup";
+import { z } from "zod";
 
 const StatusBadge = ({
   children,
@@ -56,27 +56,27 @@ export default function AccountGeneral({ user }) {
   const isMobile = useResponsive("down", "sm");
   const dispatch = useDispatch();
 
-  const UpdateUserSchema = Yup.object().shape({
-    name: Yup.string()
+  const UpdateUserSchema = z.object({
+    name: z.string()
       .trim()
-      .matches(
-        /^[a-zA-Z\s'-]+$/,
-        "Name can only contain alphabetic characters, spaces, hyphens, and apostrophes.",
-      )
       .min(3, "Name must be at least 2 characters")
       .max(50, "Name must not exceed 50 characters")
-      .required("Name is required"),
-    email: Yup.string()
-      .required("Email is required")
+      .regex(
+        /^[a-zA-Z\s'-]+$/,
+        "Name can only contain alphabetic characters, spaces, hyphens, and apostrophes."
+      ),
+    email: z.string()
+      .min(1, "Email is required")
       .email("Email must be a valid email address"),
-    country: Yup.string(),
-    address: Yup.string(),
-    state: Yup.string(),
-    city: Yup.string(),
-    zipCode: Yup.string()
+    country: z.string().optional(),
+    address: z.string().optional(),
+    state: z.string().optional(),
+    city: z.string().optional(),
+    zipCode: z.string()
       .trim()
-      .nullable()
-      .matches(/^\d*$/, "Zip code must be numerical"),
+      .regex(/^\d*$/, "Zip code must be numerical")
+      .optional()
+      .nullable(),
   });
 
   const defaultValues = {
@@ -93,7 +93,7 @@ export default function AccountGeneral({ user }) {
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
-    resolver: yupResolver(UpdateUserSchema),
+    resolver: zodResolver(UpdateUserSchema),
     defaultValues,
   });
 

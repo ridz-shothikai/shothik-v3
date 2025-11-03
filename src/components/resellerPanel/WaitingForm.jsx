@@ -3,20 +3,20 @@ import RHFTextField from "@/components/common/RHFTextField";
 import { Button } from "@/components/ui/button";
 import useSnackbar from "@/hooks/useSnackbar";
 import { useAffiliateMutation } from "@/redux/api/auth/authApi";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, User } from "lucide-react";
 import { FormProvider, useForm } from "react-hook-form";
-import * as Yup from "yup";
+import { z } from "zod";
 
 export default function WaitlistForm({ userType }) {
   const enqueueSnackbar = useSnackbar();
   const [affiliate] = useAffiliateMutation();
 
-  const schema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
-    email: Yup.string()
-      .email("Enter a valid email")
-      .required("Email is required"),
+  const schema = z.object({
+    name: z.string().min(1, "Name is required"),
+    email: z.string()
+      .min(1, "Email is required")
+      .email("Enter a valid email"),
   });
 
   const defaultValues = {
@@ -25,7 +25,7 @@ export default function WaitlistForm({ userType }) {
   };
 
   const methods = useForm({
-    resolver: yupResolver(schema),
+    resolver: zodResolver(schema),
     defaultValues,
   });
 

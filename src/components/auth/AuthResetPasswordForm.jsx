@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button";
 import useSnackbar from "@/hooks/useSnackbar";
 import { useForgotPasswordMutation } from "@/redux/api/auth/authApi";
 import { setShowLoginModal } from "@/redux/slices/auth";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import * as Yup from "yup";
+import { z } from "zod";
 
 // ----------------------------------------------------------------------
 
@@ -20,9 +20,9 @@ export default function AuthResetPasswordForm() {
   const [errorMessage, setErrorMessage] = useState(null);
   const dispatch = useDispatch();
 
-  const ForgotSchema = Yup.object().shape({
-    email: Yup.string()
-      .required("Email is required")
+  const ForgotSchema = z.object({
+    email: z.string()
+      .min(1, "Email is required")
       .email("Email must be a valid email address"),
   });
 
@@ -31,7 +31,7 @@ export default function AuthResetPasswordForm() {
   };
 
   const methods = useForm({
-    resolver: yupResolver(ForgotSchema),
+    resolver: zodResolver(ForgotSchema),
     defaultValues,
   });
 

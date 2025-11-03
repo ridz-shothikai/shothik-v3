@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 import useSnackbar from "@/hooks/useSnackbar";
 import { useResetPasswordMutation } from "@/redux/api/auth/authApi";
 import { setShowLoginModal } from "@/redux/slices/auth";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, Circle, Eye, EyeOff } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import * as Yup from "yup";
+import { z } from "zod";
 
 // ----------------------------------------------------------------------
 const commonPasswords = [
@@ -42,15 +42,14 @@ export default function AuthForgotPasswordForm() {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
 
-  const ResetSchema = Yup.object().shape({
-    password: Yup.string()
+  const ResetSchema = z.object({
+    password: z.string()
       .min(8, "Password must be at least 8 characters long")
       .max(20, "Password must not exceed 20 characters")
-      .notOneOf(
-        commonPasswords,
-        "This password is too common. Please choose a stronger one.",
-      )
-      .required("Password is required"),
+      .refine(
+        (val) => !commonPasswords.includes(val),
+        "This password is too common. Please choose a stronger one."
+      ),
   });
 
   const defaultValues = {
@@ -60,7 +59,7 @@ export default function AuthForgotPasswordForm() {
   };
 
   const methods = useForm({
-    resolver: yupResolver(ResetSchema),
+    resolver: zodResolver(ResetSchema),
     defaultValues,
   });
 
