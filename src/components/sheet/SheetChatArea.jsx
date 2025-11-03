@@ -1,5 +1,5 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/ui/useMobile";
 import useSnackbar from "@/hooks/useSnackbar";
 import { cn } from "@/lib/utils";
 import { useGetChatHistoryQuery } from "@/redux/api/sheet/sheetApi";

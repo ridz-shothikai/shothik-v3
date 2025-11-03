@@ -5,7 +5,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/ui/useMobile";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, Bot, Loader2, Paperclip, Send } from "lucide-react";
 import { useRef, useState } from "react";

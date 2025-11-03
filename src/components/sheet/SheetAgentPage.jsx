@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/ui/useMobile";
 import { useRegisterUserToBetaListMutation } from "@/redux/api/auth/authApi";
 import { CheckCircle, User } from "lucide-react";
 import { useEffect, useState } from "react";

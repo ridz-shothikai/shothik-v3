@@ -2,14 +2,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import {
+  Activity,
   Brain,
   Code,
   DollarSign,
   Flag,
-  Football,
   Heart,
   Languages,
-  SoccerBall,
+  Target,
   TrendingUp,
   Users,
 } from "lucide-react";
@@ -44,9 +44,9 @@ export const SuggestionCards = ({ trendingQueries, handleExampleClick }) => {
       travel: <Languages className="h-4 w-4" />,
       politics: <Flag className="h-4 w-4" />,
       health: <Heart className="h-4 w-4" />,
-      sports: <SoccerBall className="h-4 w-4" />,
+      sports: <Activity className="h-4 w-4" />,
       finance: <DollarSign className="h-4 w-4" />,
-      football: <Football className="h-4 w-4" />,
+      football: <Target className="h-4 w-4" />,
     };
 
     return iconMap[category] || <TrendingUp className="h-4 w-4" />;
