@@ -24,9 +24,7 @@ export const useProjects = () => {
   return useQuery<Project[]>({
     queryKey: ["projects"],
     queryFn: async () => {
-      const { data } = await api.get<ProjectsResponse>(
-        "/marketing/api/projects"
-      );
+      const { data } = await api.get<ProjectsResponse>("/marketing/projects");
       return data.data || [];
     },
   });
@@ -38,7 +36,7 @@ export const useDeleteProject = () => {
 
   return useMutation({
     mutationFn: async (projectId: string) => {
-      await api.delete(`/marketing/api/projects/${projectId}`);
+      await api.delete(`/marketing/projects/${projectId}`);
     },
     onSuccess: () => {
       // Invalidate and refetch projects

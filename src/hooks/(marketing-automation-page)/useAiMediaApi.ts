@@ -30,10 +30,10 @@ export const useAiMediasByProject = (projectId: string) => {
     queryFn: async () => {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `${API_URL}/marketing/api/ai-media/project/${projectId}`,
+        `${API_URL}/marketing/ai-media/project/${projectId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
       return response.data;
     },
@@ -48,10 +48,10 @@ export const useAiMediasByUser = (userId: string) => {
     queryFn: async () => {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `${API_URL}/marketing/api/ai-media/user/${userId}`,
+        `${API_URL}/marketing/ai-media/user/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
       return response.data;
     },
@@ -65,12 +65,9 @@ export const useAiMedia = (id: string) => {
     queryKey: ["aiMedia", id],
     queryFn: async () => {
       const token = localStorage.getItem("token");
-      const response = await axios.get(
-        `${API_URL}/marketing/api/ai-media/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await axios.get(`${API_URL}/marketing/ai-media/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       return response.data;
     },
     enabled: !!id,
@@ -85,10 +82,10 @@ export const useDeleteAiMedia = () => {
     mutationFn: async (id: string) => {
       const token = localStorage.getItem("token");
       const response = await axios.delete(
-        `${API_URL}/marketing/api/ai-media/${id}`,
+        `${API_URL}/marketing/ai-media/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
       return response.data;
     },

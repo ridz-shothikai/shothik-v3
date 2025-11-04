@@ -5,26 +5,23 @@ export const campaignAPI = {
   // Get initial campaign suggestions
   getInitialSuggestions: async (projectId: string) => {
     const response = await api.post(
-      `/marketing/api/campaign/initial-suggestions/${projectId}`,
+      `/marketing/campaign/initial-suggestions/${projectId}`,
     );
     return response.data;
   },
 
   // Chat with AI (with memory)
   chat: async (projectId: string, message: string) => {
-    const response = await api.post(
-      `/marketing/api/campaign/chat/${projectId}`,
-      {
-        message,
-      },
-    );
+    const response = await api.post(`/marketing/campaign/chat/${projectId}`, {
+      message,
+    });
     return response.data;
   },
 
   // Get chat history
   getChatHistory: async (projectId: string) => {
     const response = await api.get(
-      `/marketing/api/campaign/chat-history/${projectId}`,
+      `/marketing/campaign/chat-history/${projectId}`,
     );
     return response.data;
   },
@@ -32,7 +29,7 @@ export const campaignAPI = {
   // Clear chat history
   clearChatHistory: async (projectId: string) => {
     const response = await api.delete(
-      `/marketing/api/campaign/chat-history/${projectId}`,
+      `/marketing/campaign/chat-history/${projectId}`,
     );
     return response.data;
   },
@@ -48,7 +45,7 @@ export const campaignAPI = {
     },
   ) => {
     const response = await api.post(
-      `/marketing/api/campaign/data/${projectId}`,
+      `/marketing/campaign/data/${projectId}`,
       data,
     );
     return response.data;
@@ -56,7 +53,7 @@ export const campaignAPI = {
 
   // Get campaign data
   getCampaignData: async (projectId: string) => {
-    const response = await api.get(`/marketing/api/campaign/data/${projectId}`);
+    const response = await api.get(`/marketing/campaign/data/${projectId}`);
     return response.data;
   },
 
@@ -68,17 +65,14 @@ export const campaignAPI = {
     format: string;
     angle?: string;
   }) => {
-    const response = await api.post(
-      "/marketing/api/campaign/generate-ad",
-      params,
-    );
+    const response = await api.post("/marketing/campaign/generate-ad", params);
     return response.data;
   },
 
   // Improve ad copy
   improveAd: async (projectId: string, currentAd: any, feedback: string) => {
     const response = await api.post(
-      `/marketing/api/campaign/improve-ad/${projectId}`,
+      `/marketing/campaign/improve-ad/${projectId}`,
       {
         currentAd,
         feedback,
@@ -98,7 +92,7 @@ export const campaignAPI = {
     ctasWithUrls?: Array<{ cta: string; url: string }>,
   ) => {
     const response = await api.post(
-      `/marketing/api/campaign/publish-ads/${projectId}`,
+      `/marketing/campaign/publish-ads/${projectId}`,
       {
         adIds,
         pageId,
@@ -117,7 +111,7 @@ export const mediaAPI = {
   // Generate media for a specific ad
   generateMedia: async (projectId: string, adId: string) => {
     const response = await api.post(
-      `/marketing/api/media/generate/${projectId}/${adId}`,
+      `/marketing/media/generate/${projectId}/${adId}`,
     );
     return response.data;
   },
@@ -125,7 +119,7 @@ export const mediaAPI = {
   // Generate media for multiple ads
   generateMediaBatch: async (projectId: string, adIds: string[]) => {
     const response = await api.post(
-      `/marketing/api/media/generate-batch/${projectId}`,
+      `/marketing/media/generate-batch/${projectId}`,
       {
         adIds,
       },
@@ -146,7 +140,7 @@ export const mediaAPI = {
     }>,
   ) => {
     const response = await api.post(
-      `/marketing/api/media/regenerate/${projectId}/${adId}`,
+      `/marketing/media/regenerate/${projectId}/${adId}`,
       {
         prompt,
         selectedRegions,
@@ -163,7 +157,7 @@ export const mediaAPI = {
     mediaType: "image" | "video",
   ) => {
     const response = await api.post(
-      `/marketing/api/media/save/${projectId}/${adId}`,
+      `/marketing/media/save/${projectId}/${adId}`,
       {
         mediaUrl,
         mediaType,
@@ -174,14 +168,14 @@ export const mediaAPI = {
 
   // Get ImageKit authentication parameters
   getImageKitAuth: async () => {
-    const response = await api.get("/marketing/api/imagekit/auth");
+    const response = await api.get("/marketing/imagekit/auth");
     return response.data;
   },
 
   // Search cities for targeting
   searchCities: async (query: string, country: string = "BD") => {
     const response = await api.get(
-      `/marketing/api/campaign/search-cities?q=${encodeURIComponent(
+      `/marketing/campaign/search-cities?q=${encodeURIComponent(
         query,
       )}&country=${country}`,
     );
@@ -190,7 +184,7 @@ export const mediaAPI = {
 
   // Get common Bangladesh cities with real Meta API keys
   getCommonCities: async () => {
-    const response = await api.get("/marketing/api/campaign/common-cities");
+    const response = await api.get("/marketing/campaign/common-cities");
     return response.data;
   },
 };
@@ -199,13 +193,13 @@ export const mediaAPI = {
 export const metaAPI = {
   // Initiate Facebook authentication
   initiateAuth: async () => {
-    const response = await api.get("/marketing/api/connect/facebook");
+    const response = await api.get("/marketing/connect/facebook");
     return response.data;
   },
 
   // Get user's Facebook data
   getUserData: async () => {
-    const response = await api.get("/marketing/api/connect/user-data");
+    const response = await api.get("/marketing/connect/user-data");
     return response.data;
   },
 
@@ -216,7 +210,7 @@ export const metaAPI = {
     selectedAdsAccountId: string;
   }) => {
     const response = await api.post(
-      "/marketing/api/connect/update-selections",
+      "/marketing/connect/update-selections",
       data,
     );
     return response.data;
@@ -224,7 +218,7 @@ export const metaAPI = {
 
   // Get pixels for a business account
   getPixels: async (businessAccountId: string) => {
-    const response = await api.post("/marketing/api/campaign/pixels", {
+    const response = await api.post("/marketing/campaign/pixels", {
       businessAccountId,
     });
     return response.data;
@@ -232,7 +226,7 @@ export const metaAPI = {
 
   // Disconnect Facebook account
   disconnect: async () => {
-    const response = await api.delete("/marketing/api/connect/facebook");
+    const response = await api.delete("/marketing/connect/facebook");
     return response.data;
   },
 };

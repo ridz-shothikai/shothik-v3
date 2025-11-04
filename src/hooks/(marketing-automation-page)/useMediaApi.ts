@@ -48,7 +48,7 @@ export const useVoices = () => {
     queryKey: ["voices"],
     queryFn: async () => {
       console.log("Fetching voices from API...");
-      const { data } = await api.get("/marketing/api/media/voices");
+      const { data } = await api.get("/marketing/media/voices");
       console.log("API Response for voices:", data);
 
       // Get the actual data
@@ -89,7 +89,7 @@ export const useUserAds = () => {
   return useQuery<Ad[]>({
     queryKey: ["userAds"],
     queryFn: async () => {
-      const { data } = await api.get("/marketing/api/media/ads");
+      const { data } = await api.get("/marketing/media/ads");
       return data.data;
     },
   });
@@ -104,7 +104,7 @@ export const useGenerateScript = () => {
   >({
     mutationFn: async ({ projectId, adId }) => {
       const { data } = await api.post(
-        `/marketing/api/media/generate-script/${projectId}/${adId}`
+        `/marketing/media/generate-script/${projectId}/${adId}`,
       );
       return data;
     },
@@ -120,7 +120,7 @@ export const useGenerateUGCScript = () => {
   >({
     mutationFn: async ({ projectId, adId }) => {
       const { data } = await api.post(
-        `/marketing/api/media/generate-ugc-script/${projectId}/${adId}`
+        `/marketing/media/generate-ugc-script/${projectId}/${adId}`,
       );
       return data;
     },
@@ -136,8 +136,8 @@ export const useGeneratePrompt = () => {
   >({
     mutationFn: async ({ projectId, adId, generateType }) => {
       const { data } = await api.post(
-        `/marketing/api/media/generate-prompt/${projectId}/${adId}`,
-        { generateType }
+        `/marketing/media/generate-prompt/${projectId}/${adId}`,
+        { generateType },
       );
       return data;
     },
@@ -149,8 +149,8 @@ export const useGenerateVideo = () => {
   return useMutation<any, Error, VideoGenerationPayload>({
     mutationFn: async (payload) => {
       const { data } = await api.post(
-        "/marketing/api/media/generate-video",
-        payload
+        "/marketing/media/generate-video",
+        payload,
       );
       return data;
     },
@@ -174,7 +174,7 @@ export const useAvatars = (filters: {
       if (filters.search) params.append("search", filters.search);
 
       const { data } = await api.get(
-        `/marketing/api/media/avatars?${params.toString()}`
+        `/marketing/media/avatars?${params.toString()}`,
       );
       return data.data;
     },
@@ -188,9 +188,7 @@ export const useCreatorStyles = (creatorName: string) => {
     queryKey: ["creatorStyles", creatorName],
     queryFn: async () => {
       const { data } = await api.get(
-        `/marketing/api/media/avatars/creator/${encodeURIComponent(
-          creatorName
-        )}`
+        `/marketing/media/avatars/creator/${encodeURIComponent(creatorName)}`,
       );
       return data.data;
     },

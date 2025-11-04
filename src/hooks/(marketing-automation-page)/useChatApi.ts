@@ -19,7 +19,7 @@ export const useChatHistory = (projectId: string, limit = 50) => {
     queryKey: ["chatHistory", projectId, limit],
     queryFn: async () => {
       const { data } = await api.get(
-        `/marketing/api/chat/history/${projectId}?limit=${limit}`
+        `/marketing/chat/history/${projectId}?limit=${limit}`,
       );
       return data;
     },
@@ -31,7 +31,7 @@ export const useChatHistory = (projectId: string, limit = 50) => {
 export const useSendMessage = () => {
   return useMutation<any, Error, SendMessagePayload>({
     mutationFn: async (payload) => {
-      const { data } = await api.post("/marketing/api/chat/message", payload);
+      const { data } = await api.post("/marketing/chat/message", payload);
       return data;
     },
   });
@@ -43,7 +43,7 @@ export const useMindMapHistory = (analysisId: string) => {
     queryKey: ["mindMapHistory", analysisId],
     queryFn: async () => {
       const { data } = await api.get(
-        `/marketing/api/projects/${analysisId}/mindmap/history`
+        `/marketing/projects/${analysisId}/mindmap/history`,
       );
       return data;
     },
@@ -57,8 +57,8 @@ export const useMindMap = (analysisId?: string, mindMapId?: string) => {
     queryKey: ["mindMap", analysisId, mindMapId],
     queryFn: async () => {
       const url = mindMapId
-        ? `/marketing/api/projects/mindmap/${mindMapId}`
-        : `/marketing/api/projects/${analysisId}/mindmap`;
+        ? `/marketing/projects/mindmap/${mindMapId}`
+        : `/marketing/projects/${analysisId}/mindmap`;
       const { data } = await api.get(url);
       return data;
     },

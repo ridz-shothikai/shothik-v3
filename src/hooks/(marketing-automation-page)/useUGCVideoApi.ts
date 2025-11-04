@@ -24,11 +24,11 @@ export const useGenerateUGCVideo = () => {
     mutationFn: async (payload: GenerateUGCVideoPayload) => {
       const token = localStorage.getItem("token");
       const response = await axios.post<GenerateUGCVideoResponse>(
-        `${API_URL}/marketing/api/ugc-video/generate`,
+        `${API_URL}/marketing/ugc-video/generate`,
         payload,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
       return response.data;
     },

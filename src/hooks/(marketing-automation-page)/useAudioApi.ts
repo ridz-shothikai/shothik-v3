@@ -20,11 +20,11 @@ export const useGenerateDialogueAudio = () => {
     mutationFn: async (payload: GenerateDialogueAudioPayload) => {
       const token = localStorage.getItem("token");
       const response = await axios.post<GenerateDialogueAudioResponse>(
-        `${API_URL}/marketing/api/audio/generate-dialogue`,
+        `${API_URL}/marketing/audio/generate-dialogue`,
         payload,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
       return response.data;
     },

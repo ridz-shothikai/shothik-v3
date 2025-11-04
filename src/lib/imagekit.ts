@@ -10,7 +10,7 @@ const IMAGEKIT_URL_ENDPOINT = "https://ik.imagekit.io/80cblfdmy";
 // Helper function to get authentication parameters for client-side uploads
 export const getImageKitAuth = async () => {
   try {
-    const { data } = await api.get("/marketing/api/imagekit/auth");
+    const { data } = await api.get("/marketing/imagekit/auth");
     return data;
   } catch (error) {
     console.error("Error getting ImageKit auth:", error);
@@ -47,7 +47,7 @@ export const uploadToImageKit = async (
 
     console.log("Uploading to ImageKit...");
     const response = await fetch(
-      "https://upload.imagekit.io/marketing/api/v1/files/upload",
+      "https://upload.imagekit.io/marketing/v1/files/upload",
       {
         method: "POST",
         body: formData,

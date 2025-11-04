@@ -27,11 +27,11 @@ export const useGenerateAIShort = () => {
     mutationFn: async (payload: GenerateAIShortPayload) => {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `${API_URL}/marketing/api/ai-shorts/generate`,
+        `${API_URL}/marketing/ai-shorts/generate`,
         payload,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
       return response.data;
     },

@@ -136,9 +136,9 @@ export default function URLAnalysis() {
 
     try {
       const token = localStorage.getItem("accessToken");
-      const apiUrl = process.env.NEXT_PUBLIC_META_BACKEND_URL;
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       console.log(apiUrl);
-      const response = await fetch(`${apiUrl}/api/analysis/analyze`, {
+      const response = await fetch(`${apiUrl}/marketing/analysis/analyze`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

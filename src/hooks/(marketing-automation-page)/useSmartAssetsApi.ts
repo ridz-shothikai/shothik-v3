@@ -46,14 +46,14 @@ interface UploadToImageKitPayload {
 // Get smart assets by project
 export const useSmartAssetsByProject = (
   projectId: string,
-  type?: "image" | "video" | "logo"
+  type?: "image" | "video" | "logo",
 ) => {
   return useQuery<{ success: boolean; data: SmartAsset[] }>({
     queryKey: ["smartAssets", "project", projectId, type],
     queryFn: async () => {
       const params = type ? `?type=${type}` : "";
       const { data } = await api.get(
-        `/marketing/api/smart-assets/project/${projectId}${params}`
+        `/marketing/smart-assets/project/${projectId}${params}`,
       );
       return data;
     },
@@ -65,7 +65,7 @@ export const useSmartAssetsByProject = (
 export const useSmartAssetsByUser = (
   userId: string,
   projectId?: string,
-  type?: "image" | "video" | "logo"
+  type?: "image" | "video" | "logo",
 ) => {
   return useQuery<{ success: boolean; data: SmartAsset[] }>({
     queryKey: ["smartAssets", "user", userId, projectId, type],
@@ -75,7 +75,7 @@ export const useSmartAssetsByUser = (
       if (type) params.append("type", type);
       const queryString = params.toString() ? `?${params.toString()}` : "";
       const { data } = await api.get(
-        `/marketing/api/smart-assets/user/${userId}${queryString}`
+        `/marketing/smart-assets/user/${userId}${queryString}`,
       );
       return data;
     },
@@ -88,7 +88,7 @@ export const useSmartAsset = (id: string) => {
   return useQuery<{ success: boolean; data: SmartAsset }>({
     queryKey: ["smartAsset", id],
     queryFn: async () => {
-      const { data } = await api.get(`/marketing/api/smart-assets/${id}`);
+      const { data } = await api.get(`/marketing/smart-assets/${id}`);
       return data;
     },
     enabled: !!id,
@@ -114,10 +114,7 @@ interface ImageKitUploadResponse {
 export const useUploadToImageKit = () => {
   return useMutation<ImageKitUploadResponse, Error, UploadToImageKitPayload>({
     mutationFn: async (payload) => {
-      const { data } = await api.post(
-        "/marketing/api/imagekit/upload",
-        payload
-      );
+      const { data } = await api.post("/marketing/imagekit/upload", payload);
       return data;
     },
   });
@@ -133,7 +130,7 @@ export const useCreateSmartAsset = () => {
     CreateSmartAssetPayload
   >({
     mutationFn: async (payload) => {
-      const { data } = await api.post("/marketing/api/smart-assets", payload);
+      const { data } = await api.post("/marketing/smart-assets", payload);
       return data;
     },
     onSuccess: (_, variables) => {
@@ -157,10 +154,7 @@ export const useUpdateSmartAsset = () => {
     { id: string; updates: Partial<SmartAsset> }
   >({
     mutationFn: async ({ id, updates }) => {
-      const { data } = await api.put(
-        `/marketing/api/smart-assets/${id}`,
-        updates
-      );
+      const { data } = await api.put(`/marketing/smart-assets/${id}`, updates);
       return data;
     },
     onSuccess: (data) => {
@@ -185,9 +179,9 @@ export const useDeleteSmartAsset = () => {
   >({
     mutationFn: async ({ id, imagekitFileId }) => {
       // Delete from ImageKit first
-      await api.delete(`/marketing/api/imagekit/delete/${imagekitFileId}`);
+      await api.delete(`/marketing/imagekit/delete/${imagekitFileId}`);
       // Then delete from MongoDB
-      const { data } = await api.delete(`/marketing/api/smart-assets/${id}`);
+      const { data } = await api.delete(`/marketing/smart-assets/${id}`);
       return data;
     },
     onSuccess: () => {
@@ -211,16 +205,13 @@ export const useBulkDeleteSmartAssets = () => {
       // Delete from ImageKit first
       await Promise.all(
         imagekitFileIds.map((fileId) =>
-          api.delete(`/marketing/api/imagekit/delete/${fileId}`)
-        )
+          api.delete(`/marketing/imagekit/delete/${fileId}`),
+        ),
       );
       // Then bulk delete from MongoDB
-      const { data } = await api.post(
-        "/marketing/api/smart-assets/bulk-delete",
-        {
-          ids,
-        }
-      );
+      const { data } = await api.post("/marketing/smart-assets/bulk-delete", {
+        ids,
+      });
       return data;
     },
     onSuccess: () => {
@@ -258,8 +249,8 @@ export const useAIGeneration = () => {
   >({
     mutationFn: async (payload) => {
       const { data } = await api.post(
-        "/marketing/api/ai-generation/generate",
-        payload
+        "/marketing/ai-generation/generate",
+        payload,
       );
       return data;
     },

@@ -19,7 +19,7 @@ export const useProjects = () => {
   return useQuery<Project[]>({
     queryKey: ["projects"],
     queryFn: async () => {
-      const { data } = await api.get("/marketing/api/projects");
+      const { data } = await api.get("/marketing/projects");
       return data;
     },
   });
@@ -30,7 +30,7 @@ export const useProject = (projectId: string) => {
   return useQuery({
     queryKey: ["project", projectId],
     queryFn: async () => {
-      const { data } = await api.get(`/marketing/api/projects/${projectId}`);
+      const { data } = await api.get(`/marketing/projects/${projectId}`);
       return data;
     },
     enabled: !!projectId,
@@ -43,7 +43,7 @@ export const useDeleteProject = () => {
 
   return useMutation({
     mutationFn: async (projectId: string) => {
-      const { data } = await api.delete(`/marketing/api/projects/${projectId}`);
+      const { data } = await api.delete(`/marketing/projects/${projectId}`);
       return data;
     },
     onSuccess: () => {
@@ -58,10 +58,7 @@ export const useAnalyzeUrl = () => {
 
   return useMutation<any, Error, AnalysisPayload>({
     mutationFn: async (payload) => {
-      const { data } = await api.post(
-        "/marketing/api/analysis/analyze",
-        payload
-      );
+      const { data } = await api.post("/marketing/analysis/analyze", payload);
       return data;
     },
     onSuccess: () => {
