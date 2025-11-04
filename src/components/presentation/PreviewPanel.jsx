@@ -179,15 +179,15 @@ export default function PreviewPanel({
 
                             if (hasSlides) {
                               return (
-                                <div className="flex flex-col justify-center gap-2 pt-2">
+                                <div className="flex flex-col justify-center gap-4 pt-2">
                                   {slidesArray.map((slide, index) => (
                                     <SlidePreview
-                                      key={index}
                                       slide={slide}
                                       index={index}
                                       activeTab={slideTabs[index] || "preview"}
                                       onTabChange={handleSlideTabChange}
                                       totalSlides={slidesArray.length}
+                                      presentationId={presentationId}
                                     />
                                   ))}
 

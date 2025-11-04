@@ -8,11 +8,19 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import createEnhancedIframeContent from "@/lib/presentationEditScripts";
+import { useAutoSave } from "@/hooks/presentation/useAutoSave";
+import { useSlideEditor } from "@/hooks/presentation/useSlideEditor";
+import { createEnhancedIframeContentFromHTML } from "@/lib/presentationEditScripts";
 import { cn } from "@/lib/utils";
 import html2canvas from "html2canvas";
 import { Check, Copy } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { AlignmentGuides } from "./editing/AlignmentGuides";
+import { EditingErrorBoundary } from "./editing/EditingErrorBoundary";
+import { EditingToolbar } from "./editing/EditingToolbar";
+import { GridOverlay } from "./editing/GridOverlay";
+import { ResizeHandles } from "./editing/ResizeHandles";
+import { SaveStatusIndicator } from "./editing/SaveStatusIndicator";
 
 // Original slide dimensions
 const SLIDE_WIDTH = 1280;
@@ -25,6 +33,7 @@ export default function SlidePreview({
   activeTab,
   onTabChange,
   totalSlides,
+  presentationId,
 }) {
   const [dimensions, setDimensions] = useState({
     width: 0,
@@ -32,13 +41,31 @@ export default function SlidePreview({
     scale: 1,
   });
   const [copied, setCopied] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [selectionData, setSelectionData] = useState(null);
   const [showSelectionAlert, setShowSelectionAlert] = useState(false);
+  const [gridEnabled, setGridEnabled] = useState(false);
+  const [alignmentGuides, setAlignmentGuides] = useState([]);
 
   const containerRef = useRef(null);
   const iframeRef = useRef(null);
   const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+
+  // Get slide ID for editing
+  const slideId =
+    slide?.id || slide?.slideNumber?.toString() || `slide-${index}`;
+
+  // Use the editing hook for state management
+  const {
+    isEditing: isEditMode,
+    selectedElement,
+    startEditMode,
+    stopEditMode,
+  } = useSlideEditor(slideId, iframeRef);
+
+  // Auto-save hook
+  const autoSave = useAutoSave(slideId, presentationId, iframeRef, {
+    enabled: isEditMode, // Only auto-save when in edit mode
+    debounceMs: 30000, // 30 seconds
+  });
 
   // console.log(slide, "SLIDES DATA");
 
@@ -57,40 +84,13 @@ export default function SlidePreview({
 
   // EDIT LOGIC STARTS
   const handleEditSlide = () => {
-    const newEditMode = !isEditMode;
-    setIsEditMode(newEditMode);
-
-    if (newEditMode) {
-      console.log("🎯 Edit mode enabled for slide:", slide?.slideNumber + 1);
-      // console.log("📄 Slide data:", slide);
-
-      // Enable selection in iframe
-      if (iframeRef.current && iframeRef.current.contentWindow) {
-        iframeRef.current.contentWindow.postMessage(
-          {
-            type: "TOGGLE_EDIT_MODE",
-            enabled: true,
-          },
-          "*",
-        );
-      }
-
-      setShowSelectionAlert(true);
-    } else {
+    if (isEditMode) {
       console.log("🛑 Edit mode disabled for slide:", slide?.slideNumber + 1);
-
-      // Disable selection in iframe
-      if (iframeRef.current && iframeRef.current.contentWindow) {
-        iframeRef.current.contentWindow.postMessage(
-          {
-            type: "TOGGLE_EDIT_MODE",
-            enabled: false,
-          },
-          "*",
-        );
-      }
-
-      setSelectionData(null);
+      stopEditMode();
+    } else {
+      console.log("🎯 Edit mode enabled for slide:", slide?.slideNumber + 1);
+      startEditMode();
+      setShowSelectionAlert(true);
     }
   };
 
@@ -113,51 +113,8 @@ export default function SlidePreview({
     });
   }
 
-  // Handle messages from iframe
-  useEffect(() => {
-    const handleIframeMessage = (event) => {
-      if (event.data.type === "ELEMENT_SELECTED") {
-        const data = event.data.data;
-        setSelectionData(data);
-
-        console.group("🎯 ELEMENT SELECTION DETECTED");
-        console.log("🏷️  Element Type:", data.elementType);
-        console.log("🏗️  Tag Name:", data.element.tagName);
-        console.log("🆔 Element ID:", data.element.id || "No ID");
-        console.log("🎨 Class Names:", data.element.className || "No classes");
-        console.log("🛤️  Element Path:", data.elementPath);
-        console.log(
-          "📝 Text Content:",
-          data.textContent.substring(0, 100) +
-            (data.textContent.length > 100 ? "..." : ""),
-        );
-        console.log("🔧 Attributes:", data.element.attributes);
-        console.log("📐 Bounding Rectangle:", data.boundingRect);
-        console.log("🎨 Computed Styles:", data.computedStyles);
-        console.log(
-          "📄 Inner HTML:",
-          data.innerHTML.substring(0, 200) +
-            (data.innerHTML.length > 200 ? "..." : ""),
-        );
-        console.log(
-          "📦 Outer HTML:",
-          data.outerHTML.substring(0, 200) +
-            (data.outerHTML.length > 200 ? "..." : ""),
-        );
-        console.log("⏰ Timestamp:", data.timestamp);
-        console.log("🎂 Full Element Data:", data);
-
-        console.log(
-          "image data",
-          captureElementAsImageFromIframe(data.elementPath),
-        );
-        console.groupEnd();
-      }
-    };
-
-    window.addEventListener("message", handleIframeMessage);
-    return () => window.removeEventListener("message", handleIframeMessage);
-  }, []);
+  // Note: Element selection messages are now handled by useSlideEditor hook
+  // The hook automatically processes ELEMENT_SELECTED messages and updates Redux state
 
   // Update iframe pointer events based on edit mode
   const iframeStyle = {
@@ -319,21 +276,26 @@ export default function SlidePreview({
             </TabsList>
 
             <div className="flex flex-row items-center gap-1 md:gap-2 lg:gap-3 xl:gap-4">
+              {/* Save Status Indicator - only show in edit mode */}
+              {isEditMode && (
+                <SaveStatusIndicator
+                  saveStatus={autoSave.saveStatus}
+                  lastSavedAt={autoSave.lastSavedAt}
+                  errorMessage={autoSave.errorMessage}
+                  onManualSave={autoSave.saveSlide}
+                  hasUnsavedChanges={autoSave.hasUnsavedChanges}
+                />
+              )}
+
               {/* When edit mode will be on then we will need this. So don't remove it */}
-              {/* <Button
+              <Button
                 variant={isEditMode ? "default" : "outline"}
                 size="sm"
                 className="px-2 py-0.5 text-xs"
                 onClick={handleEditSlide}
               >
-                {isEditMode ? "Exit Edit" : "Edit"}
-              </Button> */}
-
-              {totalSlides && !isMobile && (
-                <p className="text-muted-foreground text-xs sm:text-sm">
-                  {slide?.slideNumber} / {totalSlides}
-                </p>
-              )}
+                {isEditMode ? "Exit" : "Edit"}
+              </Button>
             </div>
           </div>
 
@@ -348,23 +310,76 @@ export default function SlidePreview({
               )}
             >
               {dimensions.scale > 0 && (
-                <iframe
-                  ref={iframeRef}
-                  srcDoc={createEnhancedIframeContent(
-                    slide.body || slide.html_content || slide.htmlContent,
-                  )}
-                  style={iframeStyle}
-                  title={`Slide ${slide.slide_index + 1}`}
-                  sandbox="allow-scripts allow-same-origin"
+                <EditingErrorBoundary>
+                  <iframe
+                    ref={iframeRef}
+                    srcDoc={createEnhancedIframeContentFromHTML(
+                      slide.body || slide.html_content || slide.htmlContent,
+                    )}
+                    style={iframeStyle}
+                    title={`Slide ${slide.slide_index + 1}`}
+                    sandbox="allow-scripts allow-same-origin"
+                  />
+                </EditingErrorBoundary>
+              )}
+
+              {/* Resize Handles - appears when element is selected */}
+              {isEditMode && selectedElement && (
+                <ResizeHandles
+                  selectedElement={selectedElement}
+                  iframeRef={iframeRef}
+                  containerRef={containerRef}
+                  iframeScale={dimensions.scale}
+                  onResize={(width, height) => {
+                    console.log("Element resized:", { width, height });
+                    // TODO: Track change in Redux for undo/redo
+                  }}
+                />
+              )}
+
+              {/* Grid Overlay - appears when grid is enabled */}
+              {isEditMode && gridEnabled && (
+                <GridOverlay
+                  containerRef={containerRef}
+                  iframeRef={iframeRef}
+                  iframeScale={dimensions.scale}
+                  enabled={gridEnabled}
+                  gridSize={20}
+                />
+              )}
+
+              {/* Alignment Guides - appears when dragging */}
+              {isEditMode && alignmentGuides.length > 0 && (
+                <AlignmentGuides
+                  containerRef={containerRef}
+                  iframeRef={iframeRef}
+                  guides={alignmentGuides}
+                  enabled={true}
+                />
+              )}
+
+              {/* Editing Toolbar - appears when element is selected */}
+              {isEditMode && selectedElement && (
+                <EditingToolbar
+                  slideId={slideId}
+                  selectedElement={selectedElement}
+                  iframeRef={iframeRef}
+                  iframeScale={dimensions.scale}
+                  onGridToggle={setGridEnabled}
+                  onAlignmentGuidesChange={setAlignmentGuides}
+                  onSave={() => {
+                    console.log("Save changes clicked");
+                    // TODO: Implement save functionality in Phase 5
+                  }}
                 />
               )}
 
               {/* Edit mode indicator */}
-              {/* {isEditMode && (
-                <div className="absolute top-2 left-2 bg-primary text-primary-foreground px-1 py-0.5 rounded text-xs font-bold z-10">
-                  EDIT MODE
+              {isEditMode && (
+                <div className="bg-primary text-primary-foreground absolute top-2 left-2 z-10 rounded px-2 py-1 text-xs font-bold">
+                  EDIT MODE - Click on elements to edit
                 </div>
-              )} */}
+              )}
             </div>
           </TabsContent>
           <TabsContent value="thinking" className="m-0 p-0">

@@ -5,6 +5,11 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.js", "**/*.jsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.js",
+    "**/*.jsx",
+    "src/app/(slide-layout)/edit-slides/layout.tsx"
+  ],
   "exclude": ["node_modules"]
 }
