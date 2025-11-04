@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuth } from "@/context/AuthContext";
 import {
   useMetaAuth,
   useMetaData,
@@ -36,7 +35,6 @@ interface Project {
 export default function URLAnalysis() {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { user, logout, token } = useAuth();
 
   // React Query hooks
   const { data: projects = [], isLoading: loadingProjects } = useProjects();
@@ -137,8 +135,10 @@ export default function URLAnalysis() {
     setStatusMessage("Initializing analysis...");
 
     try {
-      const apiUrl = "http://localhost:3000";
-      const response = await fetch(`${apiUrl}/marketing/api/analysis/analyze`, {
+      const token = localStorage.getItem("accessToken");
+      const apiUrl = process.env.NEXT_PUBLIC_META_BACKEND_URL;
+      console.log(apiUrl);
+      const response = await fetch(`${apiUrl}/api/analysis/analyze`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -213,11 +213,6 @@ export default function URLAnalysis() {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    router.push("/login");
-  };
-
   // Meta connection handlers
   const handleMetaConnect = async () => {
     try {
@@ -273,14 +268,12 @@ export default function URLAnalysis() {
       <div className="relative mx-auto max-w-7xl px-6 py-10">
         {/* Header */}
         <Header
-          userName={user?.name}
           metaConnected={!!metaUserData}
           metaLoading={metaLoading}
           metaConnecting={metaConnecting}
           metaUserData={metaUserData}
           onMetaConnect={handleMetaConnect}
           onMetaDisconnect={handleMetaDisconnect}
-          onLogout={handleLogout}
         />
 
         {/* Hero Section */}
