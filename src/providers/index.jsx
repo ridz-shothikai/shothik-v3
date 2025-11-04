@@ -5,6 +5,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Provider } from "react-redux";
 import AnalyticsLoader from "../components/analytics/AnalyticsProvider";
 import { NotificationProvider } from "./NotificationProvider";
+import TanstackQueryProvider from "./TanstackQueryProvider";
 
 function ConditionalGoogleProvider({ children }) {
   const hasGoogleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
@@ -24,10 +25,12 @@ function ConditionalGoogleProvider({ children }) {
 export default function Providers({ children }) {
   return (
     <Provider store={store}>
-      <AnalyticsLoader />
-      <NotificationProvider>
-        <ConditionalGoogleProvider>{children}</ConditionalGoogleProvider>
-      </NotificationProvider>
+      <TanstackQueryProvider>
+        <AnalyticsLoader />
+        <NotificationProvider>
+          <ConditionalGoogleProvider>{children}</ConditionalGoogleProvider>
+        </NotificationProvider>
+      </TanstackQueryProvider>
     </Provider>
   );
 }
