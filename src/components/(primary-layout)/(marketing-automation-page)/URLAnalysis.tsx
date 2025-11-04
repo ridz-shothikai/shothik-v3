@@ -256,9 +256,6 @@ export default function URLAnalysis() {
     }
   };
 
-  // encode analysis data
-  const encoded = encodeURIComponent(JSON.stringify(analysis));
-
   return (
     <div className="relative min-h-screen overflow-hidden bg-slate-950">
       {/* Background pattern */}
@@ -298,8 +295,11 @@ export default function URLAnalysis() {
             analysis={analysis}
             onOpenCanvas={() => {
               const projectId = analysis.analysis_id;
+              // encode analysis data
+              const state = { analysis: analysis };
+              const encodedState = encodeURIComponent(JSON.stringify(state));
               router.push(
-                `/marketing-automation/canvas/${projectId}?analysis=${encoded}`,
+                `/marketing-automation/canvas/${projectId}?state=${encodedState}`,
               );
             }}
           />

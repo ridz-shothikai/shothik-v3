@@ -148,11 +148,17 @@ export default function ProjectsGrid({
                     Dashboard
                   </button>
                   <button
-                    onClick={() =>
+                    onClick={() => {
+                      const state = {
+                        projectId: project._id,
+                      };
+                      const encodedState = encodeURIComponent(
+                        JSON.stringify(state),
+                      );
                       router.push(
-                        `/marketing-automation/insights/${project.analysis_id}?projectId=${project._id}`,
-                      )
-                    }
+                        `/marketing-automation/insights/${project.analysis_id}?state=${encodedState}`,
+                      );
+                    }}
                     className="flex items-center gap-1.5 rounded-lg border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 text-xs font-medium text-blue-400 transition-all hover:scale-105 hover:bg-blue-500/20"
                     title="AI Insights"
                   >
