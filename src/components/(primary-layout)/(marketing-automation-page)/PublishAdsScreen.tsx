@@ -11,8 +11,7 @@ import {
   Settings,
   Wand2,
 } from "lucide-react";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/router";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function PublishAdsScreen() {
@@ -367,6 +366,7 @@ export default function PublishAdsScreen() {
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-bold text-white">Ad Preview</h3>
                 <button
+                  title="Close Preview"
                   onClick={() => setPreviewAd(null)}
                   className="rounded-lg p-2 transition-all hover:bg-slate-700/50"
                 >
