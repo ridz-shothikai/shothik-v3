@@ -117,6 +117,7 @@ export default function MediaCanvasModal({
             </div>
           </div>
           <button
+            aria-label="Close"
             onClick={onClose}
             className="rounded-lg p-2 text-white/60 transition-all hover:bg-white/10 hover:text-white"
           >

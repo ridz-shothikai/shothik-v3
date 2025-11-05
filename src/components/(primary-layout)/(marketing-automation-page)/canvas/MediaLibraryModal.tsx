@@ -205,6 +205,7 @@ export default function MediaLibraryModal({
             </p>
           </div>
           <button
+            aria-label="Close"
             onClick={onClose}
             className="rounded-lg p-2 transition-colors hover:bg-slate-800"
           >

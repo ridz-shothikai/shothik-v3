@@ -1,5 +1,6 @@
 import { campaignAPI, metaAPI } from "@/services/marketing-automation.service";
 import type { Ad } from "@/types/campaign";
+import { getRouteState } from "@/utils/getRouteState";
 import {
   Activity,
   ArrowLeft,
@@ -15,7 +16,7 @@ import {
   Send,
   Users,
 } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface FacebookUser {
@@ -75,7 +76,9 @@ export default function FacebookAccountSelectionScreen() {
   const { projectId } = useParams<{ projectId: string }>();
   const router = useRouter();
 
-  const location = useLocation();
+  const searchParams = useSearchParams();
+  const state = getRouteState(searchParams);
+
   const [facebookData, setFacebookData] = useState<FacebookData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -85,8 +88,8 @@ export default function FacebookAccountSelectionScreen() {
 
   // Get selected ad IDs from navigation state (memoized to prevent re-renders)
   const selectedAdIds = useMemo(
-    () => location.state?.selectedAdIds || [],
-    [location.state?.selectedAdIds],
+    () => state?.selectedAdIds || [],
+    [state?.selectedAdIds],
   );
 
   // States for project data
