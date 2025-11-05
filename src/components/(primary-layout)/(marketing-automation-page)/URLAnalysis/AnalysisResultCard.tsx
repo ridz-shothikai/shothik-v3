@@ -1,3 +1,5 @@
+"use client";
+
 import type { ProductAnalysis } from "@/types/analysis";
 import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 
@@ -11,63 +13,63 @@ export default function AnalysisResultCard({
   onOpenCanvas,
 }: AnalysisResultCardProps) {
   return (
-    <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 sm:p-12 mb-8 border border-green-200 shadow-xl">
-      <div className="flex items-center justify-between mb-8">
+    <div className="mb-8 rounded-2xl border border-green-200 bg-gradient-to-br from-green-50 to-emerald-50 p-8 shadow-xl sm:p-12">
+      <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
-            <CheckCircle2 className="w-6 h-6 text-white" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg">
+            <CheckCircle2 className="h-6 w-6 text-white" />
           </div>
           <div>
             <h3 className="text-2xl font-bold text-gray-900">
               Analysis Complete!
             </h3>
-            <p className="text-gray-600 text-sm">
+            <p className="text-sm text-gray-600">
               Your product analysis is ready for campaign creation
             </p>
           </div>
         </div>
         <button
           onClick={onOpenCanvas}
-          className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105"
+          className="flex transform items-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:from-purple-700 hover:to-pink-700 hover:shadow-xl"
         >
-          <Sparkles className="w-5 h-5" />
+          <Sparkles className="h-5 w-5" />
           Open Canvas
-          <ArrowRight className="w-5 h-5" />
+          <ArrowRight className="h-5 w-5" />
         </button>
       </div>
 
       <div className="space-y-6">
         {/* Product Info */}
-        <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
-          <h4 className="text-xl font-semibold text-gray-900 mb-4">
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md">
+          <h4 className="mb-4 text-xl font-semibold text-gray-900">
             Product Information
           </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <span className="text-gray-600 text-sm font-medium">Title:</span>
-              <p className="text-gray-900 font-semibold mt-1">
+              <span className="text-sm font-medium text-gray-600">Title:</span>
+              <p className="mt-1 font-semibold text-gray-900">
                 {analysis.product.title}
               </p>
             </div>
             <div>
-              <span className="text-gray-600 text-sm font-medium">Brand:</span>
-              <p className="text-gray-900 font-semibold mt-1">
+              <span className="text-sm font-medium text-gray-600">Brand:</span>
+              <p className="mt-1 font-semibold text-gray-900">
                 {analysis.product.brand}
               </p>
             </div>
             <div>
-              <span className="text-gray-600 text-sm font-medium">
+              <span className="text-sm font-medium text-gray-600">
                 Category:
               </span>
-              <p className="text-gray-900 font-semibold mt-1 capitalize">
+              <p className="mt-1 font-semibold text-gray-900 capitalize">
                 {analysis.product.category}
               </p>
             </div>
             <div className="md:col-span-2">
-              <span className="text-gray-600 text-sm font-medium">
+              <span className="text-sm font-medium text-gray-600">
                 Description:
               </span>
-              <p className="text-gray-700 mt-1 leading-relaxed">
+              <p className="mt-1 leading-relaxed text-gray-700">
                 {analysis.product.description}
               </p>
             </div>
@@ -76,17 +78,17 @@ export default function AnalysisResultCard({
 
         {/* Key Features */}
         {analysis.product.key_features.length > 0 && (
-          <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
-            <h4 className="text-xl font-semibold text-gray-900 mb-4">
+          <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md">
+            <h4 className="mb-4 text-xl font-semibold text-gray-900">
               Key Features
             </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               {analysis.product.key_features.map((feature, idx) => (
                 <div key={idx} className="flex items-start gap-3">
-                  <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0">
-                    <CheckCircle2 className="w-3 h-3 text-green-600" />
+                  <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-green-100">
+                    <CheckCircle2 className="h-3 w-3 text-green-600" />
                   </div>
-                  <span className="text-gray-700 text-sm">{feature}</span>
+                  <span className="text-sm text-gray-700">{feature}</span>
                 </div>
               ))}
             </div>
@@ -94,38 +96,38 @@ export default function AnalysisResultCard({
         )}
 
         {/* Target Audience */}
-        <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
-          <h4 className="text-xl font-semibold text-gray-900 mb-4">
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md">
+          <h4 className="mb-4 text-xl font-semibold text-gray-900">
             Target Audience
           </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <span className="text-gray-600 text-sm font-medium">Age:</span>
-              <p className="text-gray-900 font-semibold mt-1">
+              <span className="text-sm font-medium text-gray-600">Age:</span>
+              <p className="mt-1 font-semibold text-gray-900">
                 {analysis.product.target_audience.age}
               </p>
             </div>
             <div>
-              <span className="text-gray-600 text-sm font-medium">Gender:</span>
-              <p className="text-gray-900 font-semibold mt-1">
+              <span className="text-sm font-medium text-gray-600">Gender:</span>
+              <p className="mt-1 font-semibold text-gray-900">
                 {analysis.product.target_audience.gender}
               </p>
             </div>
             {analysis.product.target_audience.interests.length > 0 && (
               <div className="md:col-span-2">
-                <span className="text-gray-600 text-sm font-medium">
+                <span className="text-sm font-medium text-gray-600">
                   Interests:
                 </span>
-                <div className="flex flex-wrap gap-2 mt-2">
+                <div className="mt-2 flex flex-wrap gap-2">
                   {analysis.product.target_audience.interests.map(
                     (interest, idx) => (
                       <span
                         key={idx}
-                        className="px-3 py-1 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 rounded-full text-sm font-medium border border-purple-200"
+                        className="rounded-full border border-purple-200 bg-gradient-to-r from-purple-100 to-pink-100 px-3 py-1 text-sm font-medium text-purple-700"
                       >
                         {interest}
                       </span>
-                    )
+                    ),
                   )}
                 </div>
               </div>
@@ -134,38 +136,38 @@ export default function AnalysisResultCard({
         </div>
 
         {/* Market Analysis */}
-        <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
-          <h4 className="text-xl font-semibold text-gray-900 mb-4">
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md">
+          <h4 className="mb-4 text-xl font-semibold text-gray-900">
             Market Analysis
           </h4>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <span className="text-gray-600 text-sm font-medium">Trend:</span>
-              <p className="text-gray-900 font-semibold mt-1 capitalize">
+              <span className="text-sm font-medium text-gray-600">Trend:</span>
+              <p className="mt-1 font-semibold text-gray-900 capitalize">
                 {analysis.market.trend}
               </p>
             </div>
             <div>
-              <span className="text-gray-600 text-sm font-medium">
+              <span className="text-sm font-medium text-gray-600">
                 Competition:
               </span>
-              <p className="text-gray-900 font-semibold mt-1 capitalize">
+              <p className="mt-1 font-semibold text-gray-900 capitalize">
                 {analysis.market.competition_level}
               </p>
             </div>
             <div>
-              <span className="text-gray-600 text-sm font-medium">
+              <span className="text-sm font-medium text-gray-600">
                 Seasonality:
               </span>
-              <p className="text-gray-900 font-semibold mt-1 capitalize">
+              <p className="mt-1 font-semibold text-gray-900 capitalize">
                 {analysis.market.seasonality}
               </p>
             </div>
             <div>
-              <span className="text-gray-600 text-sm font-medium">
+              <span className="text-sm font-medium text-gray-600">
                 Maturity:
               </span>
-              <p className="text-gray-900 font-semibold mt-1 capitalize">
+              <p className="mt-1 font-semibold text-gray-900 capitalize">
                 {analysis.market.market_maturity}
               </p>
             </div>

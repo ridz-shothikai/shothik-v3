@@ -1,3 +1,5 @@
+"use client";
+
 import type { Campaign } from "@/types/campaign";
 import type { CampaignObjective } from "@/types/metaCampaign";
 import { X } from "lucide-react";
@@ -29,44 +31,44 @@ export default function EditCampaignModal({
   if (!showModal || !editingCampaign) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-6 overflow-y-auto">
-      <div className="bg-gradient-to-br from-slate-900 to-purple-900 rounded-2xl p-8 max-w-2xl w-full border border-white/20 my-8">
-        <div className="flex justify-between items-center mb-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-6 backdrop-blur-sm">
+      <div className="my-8 w-full max-w-2xl rounded-2xl border border-white/20 bg-gradient-to-br from-slate-900 to-purple-900 p-8">
+        <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-white">
             Edit Campaign: {editingCampaign.name}
           </h2>
           <button
             onClick={onClose}
-            className="text-white hover:text-gray-300 transition-all"
+            className="text-white transition-all hover:text-gray-300"
           >
-            <X className="w-6 h-6" />
+            <X className="h-6 w-6" />
           </button>
         </div>
 
-        <div className="space-y-4 mb-6 max-h-[60vh] overflow-y-auto pr-2">
+        <div className="mb-6 max-h-[60vh] space-y-4 overflow-y-auto pr-2">
           {/* Campaign Name */}
           <div>
-            <label className="text-purple-300 text-sm mb-2 block font-semibold">
+            <label className="mb-2 block text-sm font-semibold text-purple-300">
               Campaign Name
             </label>
             <input
               type="text"
               value={campaignEditFormData.name}
               onChange={(e) => onFieldChange("name", e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
               placeholder="Enter campaign name..."
             />
           </div>
 
           {/* Objective */}
           <div>
-            <label className="text-purple-300 text-sm mb-2 block font-semibold">
+            <label className="mb-2 block text-sm font-semibold text-purple-300">
               Objective
             </label>
             <select
               value={campaignEditFormData.objective}
               onChange={(e) => onFieldChange("objective", e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
             >
               <option value="outcome_sales">Sales</option>
               <option value="outcome_leads">Lead Generation</option>
@@ -79,7 +81,7 @@ export default function EditCampaignModal({
 
           {/* Budget */}
           <div>
-            <label className="text-purple-300 text-sm mb-2 block font-semibold">
+            <label className="mb-2 block text-sm font-semibold text-purple-300">
               Daily Budget ($)
             </label>
             <input
@@ -101,20 +103,20 @@ export default function EditCampaignModal({
                   }
                 }
               }}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
               placeholder="Enter daily budget..."
             />
           </div>
 
           {/* Status */}
           <div>
-            <label className="text-purple-300 text-sm mb-2 block font-semibold">
+            <label className="mb-2 block text-sm font-semibold text-purple-300">
               Status
             </label>
             <select
               value={campaignEditFormData.status}
               onChange={(e) => onFieldChange("status", e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
             >
               <option value="draft">Draft</option>
               <option value="active">Active</option>
@@ -127,14 +129,14 @@ export default function EditCampaignModal({
         <div className="flex gap-4">
           <button
             onClick={onClose}
-            className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-3 px-6 rounded-xl transition-all font-semibold"
+            className="flex-1 rounded-xl bg-gray-600 px-6 py-3 font-semibold text-white transition-all hover:bg-gray-700"
           >
             Cancel
           </button>
           <button
             onClick={onSave}
             disabled={saving}
-            className="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 rounded-xl transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 rounded-xl bg-purple-600 px-6 py-3 font-semibold text-white transition-all hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {saving ? "Saving..." : "Save Changes"}
           </button>

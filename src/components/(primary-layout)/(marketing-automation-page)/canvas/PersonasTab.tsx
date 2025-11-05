@@ -1,3 +1,5 @@
+"use client";
+
 import type { Ad, Persona } from "@/types/campaign";
 import { Users } from "lucide-react";
 
@@ -9,12 +11,12 @@ interface PersonasTabProps {
 export default function PersonasTab({ personas, ads }: PersonasTabProps) {
   if (personas.length === 0) {
     return (
-      <div className="bg-slate-800/60 rounded-2xl p-12 text-center border border-slate-700/50">
-        <Users className="w-16 h-16 text-purple-400 mx-auto mb-4" />
-        <h3 className="text-white font-semibold text-lg mb-2">
+      <div className="rounded-2xl border border-slate-700/50 bg-slate-800/60 p-12 text-center">
+        <Users className="mx-auto mb-4 h-16 w-16 text-purple-400" />
+        <h3 className="mb-2 text-lg font-semibold text-white">
           No Personas Yet
         </h3>
-        <p className="text-gray-400 text-sm">
+        <p className="text-sm text-gray-400">
           Chat with AI to identify buyer personas for your product
         </p>
       </div>
@@ -26,56 +28,56 @@ export default function PersonasTab({ personas, ads }: PersonasTabProps) {
       {personas.map((persona, index) => (
         <div
           key={index}
-          className="bg-slate-800/60 rounded-2xl p-6 border border-slate-700/50"
+          className="rounded-2xl border border-slate-700/50 bg-slate-800/60 p-6"
         >
-          <div className="flex items-start justify-between mb-4">
+          <div className="mb-4 flex items-start justify-between">
             <div>
-              <h3 className="text-2xl font-bold text-white mb-2">
+              <h3 className="mb-2 text-2xl font-bold text-white">
                 {persona.name}
               </h3>
               <p className="text-gray-300">{persona.description}</p>
             </div>
-            <div className="w-12 h-12 bg-purple-500/20 border border-purple-500/30 rounded-xl flex items-center justify-center">
-              <Users className="w-6 h-6 text-purple-400" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-purple-500/30 bg-purple-500/20">
+              <Users className="h-6 w-6 text-purple-400" />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
-              <h4 className="text-gray-300 text-sm font-semibold mb-3">
+            <div className="rounded-xl border border-slate-700/50 bg-slate-900/50 p-4">
+              <h4 className="mb-3 text-sm font-semibold text-gray-300">
                 Pain Points
               </h4>
               <ul className="space-y-2">
                 {persona.pain_points?.map((pain, idx) => (
                   <li
                     key={idx}
-                    className="text-gray-300 text-sm flex items-start gap-2"
+                    className="flex items-start gap-2 text-sm text-gray-300"
                   >
                     <span className="text-red-500">•</span>
                     {pain}
                   </li>
                 )) || (
-                  <li className="text-gray-400 text-sm italic">
+                  <li className="text-sm text-gray-400 italic">
                     No pain points defined
                   </li>
                 )}
               </ul>
             </div>
-            <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
-              <h4 className="text-gray-300 text-sm font-semibold mb-3">
+            <div className="rounded-xl border border-slate-700/50 bg-slate-900/50 p-4">
+              <h4 className="mb-3 text-sm font-semibold text-gray-300">
                 Motivations
               </h4>
               <ul className="space-y-2">
                 {persona.motivations?.map((motivation, idx) => (
                   <li
                     key={idx}
-                    className="text-gray-300 text-sm flex items-start gap-2"
+                    className="flex items-start gap-2 text-sm text-gray-300"
                   >
                     <span className="text-green-500">•</span>
                     {motivation}
                   </li>
                 )) || (
-                  <li className="text-gray-400 text-sm italic">
+                  <li className="text-sm text-gray-400 italic">
                     No motivations defined
                   </li>
                 )}
@@ -83,10 +85,10 @@ export default function PersonasTab({ personas, ads }: PersonasTabProps) {
             </div>
           </div>
 
-          <div className="mt-4 pt-4 border-t border-slate-700/50">
-            <p className="text-gray-400 text-sm">
+          <div className="mt-4 border-t border-slate-700/50 pt-4">
+            <p className="text-sm text-gray-400">
               Ads for this persona:{" "}
-              <span className="text-white font-semibold">
+              <span className="font-semibold text-white">
                 {ads.filter((ad) => ad.persona === persona.name).length}
               </span>
             </p>

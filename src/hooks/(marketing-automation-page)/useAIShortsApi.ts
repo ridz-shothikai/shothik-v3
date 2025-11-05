@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 interface GenerateAIShortPayload {
   script: string;
@@ -25,7 +25,7 @@ interface GenerateAIShortPayload {
 export const useGenerateAIShort = () => {
   return useMutation({
     mutationFn: async (payload: GenerateAIShortPayload) => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("accessToken");
       const response = await axios.post(
         `${API_URL}/marketing/ai-shorts/generate`,
         payload,

@@ -1,3 +1,5 @@
+"use client";
+
 import type { Ad } from "@/types/campaign";
 import { Save } from "lucide-react";
 
@@ -28,72 +30,72 @@ export default function EditAdModal({
   if (!editingAd) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-6 overflow-y-auto">
-      <div className="bg-gradient-to-br from-slate-900 to-purple-900 rounded-2xl p-8 max-w-3xl w-full border border-white/20 my-8">
-        <h2 className="text-2xl font-bold text-white mb-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-6 backdrop-blur-sm">
+      <div className="my-8 w-full max-w-3xl rounded-2xl border border-white/20 bg-gradient-to-br from-slate-900 to-purple-900 p-8">
+        <h2 className="mb-6 text-2xl font-bold text-white">
           Edit Ad: {editingAd.headline}
         </h2>
 
-        <div className="space-y-4 mb-6 max-h-[60vh] overflow-y-auto pr-2">
+        <div className="mb-6 max-h-[60vh] space-y-4 overflow-y-auto pr-2">
           {/* Headline */}
           <div>
-            <label className="text-purple-300 text-sm mb-2 block font-semibold">
+            <label className="mb-2 block text-sm font-semibold text-purple-300">
               📝 Headline
             </label>
             <input
               type="text"
               value={editFormData.headline}
               onChange={(e) => onFieldChange("headline", e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
               placeholder="Enter headline..."
             />
           </div>
 
           {/* Hook */}
           <div>
-            <label className="text-purple-300 text-sm mb-2 block font-semibold">
+            <label className="mb-2 block text-sm font-semibold text-purple-300">
               🎯 Hook
             </label>
             <textarea
               value={editFormData.hook}
               onChange={(e) => onFieldChange("hook", e.target.value)}
               rows={2}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
               placeholder="Enter hook..."
             />
           </div>
 
           {/* Primary Text */}
           <div>
-            <label className="text-purple-300 text-sm mb-2 block font-semibold">
+            <label className="mb-2 block text-sm font-semibold text-purple-300">
               📄 Primary Text
             </label>
             <textarea
               value={editFormData.primary_text}
               onChange={(e) => onFieldChange("primary_text", e.target.value)}
               rows={4}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
               placeholder="Enter primary text..."
             />
           </div>
 
           {/* Description */}
           <div>
-            <label className="text-purple-300 text-sm mb-2 block font-semibold">
+            <label className="mb-2 block text-sm font-semibold text-purple-300">
               📋 Description
             </label>
             <textarea
               value={editFormData.description}
               onChange={(e) => onFieldChange("description", e.target.value)}
               rows={3}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
               placeholder="Enter description..."
             />
           </div>
 
           {/* Creative Direction */}
           <div>
-            <label className="text-purple-300 text-sm mb-2 block font-semibold">
+            <label className="mb-2 block text-sm font-semibold text-purple-300">
               🎬 Creative Direction
             </label>
             <textarea
@@ -102,20 +104,20 @@ export default function EditAdModal({
                 onFieldChange("creative_direction", e.target.value)
               }
               rows={5}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
               placeholder="Enter creative direction..."
             />
           </div>
 
           {/* CTA */}
           <div>
-            <label className="text-purple-300 text-sm mb-2 block font-semibold">
+            <label className="mb-2 block text-sm font-semibold text-purple-300">
               🔘 Call to Action (CTA)
             </label>
             <select
               value={editFormData.cta}
               onChange={(e) => onFieldChange("cta", e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
             >
               <option value="">Select CTA</option>
               <option value="LEARN_MORE">Learn More</option>
@@ -132,27 +134,27 @@ export default function EditAdModal({
           </div>
         </div>
 
-        <div className="flex gap-3 pt-4 border-t border-white/10">
+        <div className="flex gap-3 border-t border-white/10 pt-4">
           <button
             onClick={onClose}
             disabled={saving}
-            className="flex-1 bg-white/10 hover:bg-white/20 text-white py-3 px-4 rounded-xl transition-all disabled:opacity-50"
+            className="flex-1 rounded-xl bg-white/10 px-4 py-3 text-white transition-all hover:bg-white/20 disabled:opacity-50"
           >
             Cancel
           </button>
           <button
             onClick={onSave}
             disabled={saving}
-            className="flex-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-4 rounded-xl hover:shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-3 text-white transition-all hover:shadow-lg disabled:opacity-50"
           >
             {saving ? (
               <>
-                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white"></div>
                 Saving...
               </>
             ) : (
               <>
-                <Save className="w-4 h-4" />
+                <Save className="h-4 w-4" />
                 Save Changes
               </>
             )}

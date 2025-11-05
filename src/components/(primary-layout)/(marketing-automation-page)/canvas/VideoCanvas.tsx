@@ -1,3 +1,5 @@
+"use client";
+
 import { uploadToImageKit } from "@/lib/imagekit";
 import { mediaAPI } from "@/services/marketing-automation.service";
 import { Film, Play, Upload } from "lucide-react";
@@ -47,7 +49,7 @@ export default function VideoCanvas({
   };
 
   const handleFileUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const files = event.target.files;
     if (!files || files.length === 0) return;
@@ -77,7 +79,7 @@ export default function VideoCanvas({
         projectId,
         adId,
         mediaUrl,
-        "video"
+        "video",
       );
       console.log("Database save result:", saveResult);
 
@@ -107,15 +109,15 @@ export default function VideoCanvas({
   return (
     <div className="space-y-6">
       {/* Canvas */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-lg">
-        <div className="aspect-video bg-gray-100 relative">
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
+        <div className="relative aspect-video bg-gray-100">
           {generatedMedia.length > 0 ? (
-            <div className="relative w-full h-full">
+            <div className="relative h-full w-full">
               {/* Video Player */}
               <video
                 ref={videoRef}
                 src={generatedMedia[0]} // Always use first (and only) video
-                className="w-full h-full object-contain"
+                className="h-full w-full object-contain"
                 onEnded={handleVideoEnd}
                 onClick={handlePlayPause}
               />
@@ -125,9 +127,9 @@ export default function VideoCanvas({
                 <div className="absolute inset-0 flex items-center justify-center bg-gray-900/30">
                   <button
                     onClick={handlePlayPause}
-                    className="w-20 h-20 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-all shadow-lg"
+                    className="flex h-20 w-20 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all hover:bg-white"
                   >
-                    <Play className="w-10 h-10 text-gray-900 ml-1" />
+                    <Play className="ml-1 h-10 w-10 text-gray-900" />
                   </button>
                 </div>
               )}
@@ -135,13 +137,13 @@ export default function VideoCanvas({
           ) : (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
-                <div className="w-24 h-24 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-purple-200">
-                  <Film className="w-12 h-12 text-purple-600" />
+                <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-2xl border border-purple-200 bg-gradient-to-br from-purple-100 to-pink-100">
+                  <Film className="h-12 w-12 text-purple-600" />
                 </div>
-                <p className="text-gray-900 text-lg font-semibold mb-2">
+                <p className="mb-2 text-lg font-semibold text-gray-900">
                   No Video Generated Yet
                 </p>
-                <p className="text-gray-600 text-sm">
+                <p className="text-sm text-gray-600">
                   Click "Generate Video" to create AI-powered video content
                 </p>
               </div>
@@ -151,14 +153,14 @@ export default function VideoCanvas({
       </div>
 
       {/* Upload Controls */}
-      <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm space-y-4">
+      <div className="space-y-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
         <div className="flex gap-2">
           <button
             onClick={handleUploadClick}
             disabled={isUploading}
-            className="flex-1 py-3 px-4 rounded-xl font-semibold transition-all border bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 font-semibold text-gray-700 transition-all hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <Upload className="w-4 h-4" />
+            <Upload className="h-4 w-4" />
             {isUploading ? "Uploading..." : "Upload Video"}
           </button>
         </div>
@@ -169,42 +171,42 @@ export default function VideoCanvas({
           onChange={handleFileUpload}
           className="hidden"
         />
-        <p className="text-gray-500 text-xs text-center">
+        <p className="text-center text-xs text-gray-500">
           Upload a video file (MP4, MOV, etc.)
         </p>
       </div>
 
       {/* Video Info */}
       {generatedMedia.length > 0 && (
-        <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
-          <h3 className="text-gray-900 font-semibold mb-3 text-sm">
+        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+          <h3 className="mb-3 text-sm font-semibold text-gray-900">
             Video Details
           </h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-gray-600">Format:</span>
-              <span className="text-gray-900 font-medium">{format}</span>
+              <span className="font-medium text-gray-900">{format}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Duration:</span>
-              <span className="text-gray-900 font-medium">
+              <span className="font-medium text-gray-900">
                 {totalDuration}s
               </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Status:</span>
-              <span className="text-green-600 font-medium">Ready</span>
+              <span className="font-medium text-green-600">Ready</span>
             </div>
           </div>
         </div>
       )}
 
       {/* Video-specific Tips */}
-      <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200">
-        <h3 className="text-purple-700 font-semibold mb-2 text-sm">
+      <div className="rounded-xl border border-purple-200 bg-gradient-to-r from-purple-50 to-pink-50 p-4">
+        <h3 className="mb-2 text-sm font-semibold text-purple-700">
           🎬 Video Tips
         </h3>
-        <ul className="text-purple-600 text-xs space-y-1">
+        <ul className="space-y-1 text-xs text-purple-600">
           <li>
             • 12-second videos perform best with strong hooks in first 3 seconds
           </li>

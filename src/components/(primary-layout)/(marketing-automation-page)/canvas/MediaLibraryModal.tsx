@@ -1,8 +1,10 @@
+"use client";
+
 import api from "@/lib/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Check, FileVideo, Image, Loader2, Video, X } from "lucide-react";
+import { useParams } from "next/navigation";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 import Toast from "../ui/Toast";
 
 interface MediaLibraryModalProps {
@@ -47,7 +49,7 @@ export default function MediaLibraryModal({
   const { projectId } = useParams<{ projectId: string }>();
   const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState<"smart-assets" | "ai-media">(
-    "smart-assets"
+    "smart-assets",
   );
   const [selectedMedia, setSelectedMedia] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
@@ -65,7 +67,7 @@ export default function MediaLibraryModal({
     queryKey: ["smart-assets", projectId],
     queryFn: async () => {
       const { data } = await api.get(
-        `/marketing/smart-assets/project/${projectId}`
+        `/marketing/smart-assets/project/${projectId}`,
       );
       console.log("Smart Assets Response:", data);
       return data;
@@ -78,7 +80,7 @@ export default function MediaLibraryModal({
     queryKey: ["ai-media", projectId],
     queryFn: async () => {
       const { data } = await api.get(
-        `/marketing/ai-media/project/${projectId}`
+        `/marketing/ai-media/project/${projectId}`,
       );
       console.log("AI Media Response:", data);
       return data;
@@ -105,7 +107,7 @@ export default function MediaLibraryModal({
 
       const { data } = await api.patch(
         `/marketing/campaign/${projectId}/ad/${adId}`,
-        payload
+        payload,
       );
       return data;
     },
@@ -188,25 +190,25 @@ export default function MediaLibraryModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-slate-900 rounded-2xl border border-slate-800 max-w-6xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+      <div className="flex max-h-[90vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
         {/* Header */}
-        <div className="border-b border-slate-800 p-6 flex items-center justify-between">
+        <div className="flex items-center justify-between border-b border-slate-800 p-6">
           <div>
             <h2 className="text-2xl font-bold text-white">Select Media</h2>
-            <p className="text-sm text-gray-400 mt-1">
+            <p className="mt-1 text-sm text-gray-400">
               {isCarousel
                 ? `Select up to ${maxSelection} images for carousel (${selectedMedia.length} selected)`
                 : isVideo
-                ? "Select a video"
-                : "Select an image"}
+                  ? "Select a video"
+                  : "Select an image"}
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
+            className="rounded-lg p-2 transition-colors hover:bg-slate-800"
           >
-            <X className="w-5 h-5 text-gray-400" />
+            <X className="h-5 w-5 text-gray-400" />
           </button>
         </div>
 
@@ -215,7 +217,7 @@ export default function MediaLibraryModal({
           <div className="flex gap-4">
             <button
               onClick={() => setActiveTab("smart-assets")}
-              className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+              className={`border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
                 activeTab === "smart-assets"
                   ? "border-blue-500 text-blue-400"
                   : "border-transparent text-gray-400 hover:text-gray-300"
@@ -225,7 +227,7 @@ export default function MediaLibraryModal({
             </button>
             <button
               onClick={() => setActiveTab("ai-media")}
-              className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+              className={`border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
                 activeTab === "ai-media"
                   ? "border-purple-500 text-purple-400"
                   : "border-transparent text-gray-400 hover:text-gray-300"
@@ -239,17 +241,17 @@ export default function MediaLibraryModal({
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6">
           {loading ? (
-            <div className="flex items-center justify-center h-64">
-              <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
+            <div className="flex h-64 items-center justify-center">
+              <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
             </div>
           ) : (
             <>
               {/* Smart Assets Tab */}
               {activeTab === "smart-assets" && (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
                   {smartAssets.length === 0 ? (
-                    <div className="col-span-full text-center py-12">
-                      <Image className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+                    <div className="col-span-full py-12 text-center">
+                      <Image className="mx-auto mb-3 h-12 w-12 text-gray-600" />
                       <p className="text-gray-400">No smart assets yet</p>
                     </div>
                   ) : (
@@ -261,34 +263,34 @@ export default function MediaLibraryModal({
                         <div
                           key={asset._id}
                           onClick={() => handleMediaSelect(asset._id, mediaUrl)}
-                          className={`group relative bg-slate-800 rounded-lg overflow-hidden cursor-pointer transition-all hover:ring-2 hover:ring-blue-500 ${
+                          className={`group relative cursor-pointer overflow-hidden rounded-lg bg-slate-800 transition-all hover:ring-2 hover:ring-blue-500 ${
                             isSelected ? "ring-2 ring-blue-500" : ""
                           }`}
                         >
                           {/* Thumbnail */}
-                          <div className="aspect-video bg-slate-700 relative">
+                          <div className="relative aspect-video bg-slate-700">
                             {asset.thumbnailUrl || asset.imagekitUrl ? (
                               <img
                                 src={asset.thumbnailUrl || asset.imagekitUrl}
                                 alt={asset.name}
-                                className="w-full h-full object-cover"
+                                className="h-full w-full object-cover"
                               />
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center">
-                                <Icon className="w-8 h-8 text-gray-500" />
+                              <div className="flex h-full w-full items-center justify-center">
+                                <Icon className="h-8 w-8 text-gray-500" />
                               </div>
                             )}
 
                             {/* Selection Indicator */}
                             {isSelected && (
-                              <div className="absolute top-2 right-2 bg-blue-500 rounded-full p-1">
-                                <Check className="w-4 h-4 text-white" />
+                              <div className="absolute top-2 right-2 rounded-full bg-blue-500 p-1">
+                                <Check className="h-4 w-4 text-white" />
                               </div>
                             )}
 
                             {/* Selection Number for Carousel */}
                             {isCarousel && isSelected && (
-                              <div className="absolute top-2 left-2 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                              <div className="absolute top-2 left-2 flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-xs font-bold text-white">
                                 {selectedMedia.indexOf(mediaUrl) + 1}
                               </div>
                             )}
@@ -296,10 +298,10 @@ export default function MediaLibraryModal({
 
                           {/* Info */}
                           <div className="p-3">
-                            <p className="text-sm font-medium text-white truncate">
+                            <p className="truncate text-sm font-medium text-white">
                               {asset.name}
                             </p>
-                            <div className="flex items-center justify-between mt-2">
+                            <div className="mt-2 flex items-center justify-between">
                               <span className="text-xs text-gray-400 capitalize">
                                 {asset.type}
                               </span>
@@ -317,10 +319,10 @@ export default function MediaLibraryModal({
 
               {/* AI Media Tab */}
               {activeTab === "ai-media" && (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
                   {aiMedia.length === 0 ? (
-                    <div className="col-span-full text-center py-12">
-                      <Video className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+                    <div className="col-span-full py-12 text-center">
+                      <Video className="mx-auto mb-3 h-12 w-12 text-gray-600" />
                       <p className="text-gray-400">No AI media yet</p>
                     </div>
                   ) : (
@@ -331,45 +333,45 @@ export default function MediaLibraryModal({
                         <div
                           key={media._id}
                           onClick={() => handleMediaSelect(media._id, mediaUrl)}
-                          className={`group relative bg-slate-800 rounded-lg overflow-hidden cursor-pointer transition-all hover:ring-2 hover:ring-purple-500 ${
+                          className={`group relative cursor-pointer overflow-hidden rounded-lg bg-slate-800 transition-all hover:ring-2 hover:ring-purple-500 ${
                             isSelected ? "ring-2 ring-purple-500" : ""
                           }`}
                         >
                           {/* Thumbnail */}
-                          <div className="aspect-video bg-slate-700 relative">
+                          <div className="relative aspect-video bg-slate-700">
                             {media.status === "completed" &&
                             (media.thumbnail || media.url) ? (
                               <img
                                 src={media.thumbnail || media.url}
                                 alt={media.type}
-                                className="w-full h-full object-cover"
+                                className="h-full w-full object-cover"
                               />
                             ) : media.status === "pending" ? (
-                              <div className="w-full h-full flex items-center justify-center">
-                                <Loader2 className="w-8 h-8 text-purple-500 animate-spin" />
+                              <div className="flex h-full w-full items-center justify-center">
+                                <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
                               </div>
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center">
-                                <Video className="w-8 h-8 text-gray-500" />
+                              <div className="flex h-full w-full items-center justify-center">
+                                <Video className="h-8 w-8 text-gray-500" />
                               </div>
                             )}
 
                             {/* Selection Indicator */}
                             {isSelected && (
-                              <div className="absolute top-2 left-2 bg-purple-500 rounded-full p-1">
-                                <Check className="w-4 h-4 text-white" />
+                              <div className="absolute top-2 left-2 rounded-full bg-purple-500 p-1">
+                                <Check className="h-4 w-4 text-white" />
                               </div>
                             )}
 
                             {/* Status Badge */}
                             <div className="absolute top-2 right-2">
                               <span
-                                className={`px-2 py-1 rounded text-xs font-medium ${
+                                className={`rounded px-2 py-1 text-xs font-medium ${
                                   media.status === "completed"
                                     ? "bg-green-500/20 text-green-400"
                                     : media.status === "pending"
-                                    ? "bg-yellow-500/20 text-yellow-400"
-                                    : "bg-red-500/20 text-red-400"
+                                      ? "bg-yellow-500/20 text-yellow-400"
+                                      : "bg-red-500/20 text-red-400"
                                 }`}
                               >
                                 {media.status}
@@ -382,7 +384,7 @@ export default function MediaLibraryModal({
                             <p className="text-sm font-medium text-white capitalize">
                               {media.type} Video
                             </p>
-                            <div className="flex items-center justify-between mt-2">
+                            <div className="mt-2 flex items-center justify-between">
                               <span className="text-xs text-gray-400">
                                 {formatDuration(media.duration)}
                               </span>
@@ -391,7 +393,7 @@ export default function MediaLibraryModal({
                               </span>
                             </div>
                             {media.error && (
-                              <p className="text-xs text-red-400 mt-1 truncate">
+                              <p className="mt-1 truncate text-xs text-red-400">
                                 {media.error}
                               </p>
                             )}
@@ -407,10 +409,10 @@ export default function MediaLibraryModal({
         </div>
 
         {/* Footer */}
-        <div className="border-t border-slate-800 p-4 flex items-center justify-between">
+        <div className="flex items-center justify-between border-t border-slate-800 p-4">
           <div className="text-sm text-gray-400">
             {selectedMedia.length > 0 ? (
-              <span className="text-blue-400 font-medium">
+              <span className="font-medium text-blue-400">
                 {selectedMedia.length} item{selectedMedia.length > 1 ? "s" : ""}{" "}
                 selected
               </span>
@@ -425,23 +427,23 @@ export default function MediaLibraryModal({
           <div className="flex gap-2">
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors"
+              className="rounded-lg bg-slate-800 px-4 py-2 text-white transition-colors hover:bg-slate-700"
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
               disabled={selectedMedia.length === 0 || saving}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 disabled:cursor-not-allowed text-white rounded-lg transition-colors flex items-center gap-2"
+              className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-700"
             >
               {saving ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
                   Saving...
                 </>
               ) : (
                 <>
-                  <Check className="w-4 h-4" />
+                  <Check className="h-4 w-4" />
                   Save Selection
                 </>
               )}

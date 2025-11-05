@@ -1,3 +1,5 @@
+"use client";
+
 import { campaignAPI } from "@/services/marketing-automation.service";
 import type { Ad } from "@/types/campaign";
 import {

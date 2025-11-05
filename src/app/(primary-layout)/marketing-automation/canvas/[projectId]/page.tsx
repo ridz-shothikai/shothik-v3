@@ -2,7 +2,7 @@ import Canvas from "@/components/(primary-layout)/(marketing-automation-page)/Ca
 
 const ProjectCanvasPage = () => {
   return (
-    <div>
+    <div className="flex flex-1 flex-col bg-red-500">
       <Canvas />
     </div>
   );

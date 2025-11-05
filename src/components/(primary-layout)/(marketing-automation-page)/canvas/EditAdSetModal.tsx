@@ -1,3 +1,5 @@
+"use client";
+
 import type { AdSet, Campaign } from "@/types/campaign";
 import type { BidStrategy, OptimizationGoal } from "@/types/metaCampaign";
 import {
@@ -50,57 +52,57 @@ export default function EditAdSetModal({
   if (!showModal || !editingAdSet) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden my-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 p-4 backdrop-blur-sm">
+      <div className="my-4 max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 px-8 py-6 border-b border-gray-200">
-          <div className="flex justify-between items-center">
+        <div className="border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50 px-8 py-6">
+          <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">
+              <h2 className="mb-1 text-2xl font-bold text-gray-900">
                 Edit Ad Set
               </h2>
-              <p className="text-gray-600 text-sm">{editingAdSet.name}</p>
+              <p className="text-sm text-gray-600">{editingAdSet.name}</p>
             </div>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-all text-gray-500 hover:text-gray-700"
+              className="rounded-lg p-2 text-gray-500 transition-all hover:bg-gray-100 hover:text-gray-700"
             >
-              <X className="w-6 h-6" />
+              <X className="h-6 w-6" />
             </button>
           </div>
         </div>
 
         {/* Content */}
-        <div className="p-8 overflow-y-auto max-h-[calc(90vh-200px)]">
+        <div className="max-h-[calc(90vh-200px)] overflow-y-auto p-8">
           <div className="space-y-8">
             {/* Basic Information */}
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
+              <h3 className="border-b border-gray-200 pb-2 text-lg font-semibold text-gray-900">
                 Basic Information
               </h3>
 
               {/* Ad Set Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="mb-2 block text-sm font-medium text-gray-700">
                   Ad Set Name
                 </label>
                 <input
                   type="text"
                   value={adSetEditFormData.name}
                   onChange={(e) => onFieldChange("name", e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   placeholder="Enter ad set name..."
                 />
               </div>
 
               {/* Daily Budget */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="mb-2 block text-sm font-medium text-gray-700">
                   Daily Budget (USD)
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <span className="text-gray-500 text-sm">$</span>
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <span className="text-sm text-gray-500">$</span>
                   </div>
                   <input
                     type="number"
@@ -122,11 +124,11 @@ export default function EditAdSetModal({
                         }
                       }
                     }}
-                    className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full rounded-lg border border-gray-300 py-3 pr-4 pl-8 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     placeholder="Enter daily budget..."
                   />
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="mt-1 text-xs text-gray-500">
                   Minimum $1 per day. Higher budgets allow for better
                   optimization.
                 </p>
@@ -134,7 +136,7 @@ export default function EditAdSetModal({
 
               {/* Bid Strategy */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="mb-2 block text-sm font-medium text-gray-700">
                   Bid Strategy
                 </label>
                 <select
@@ -142,7 +144,7 @@ export default function EditAdSetModal({
                   onChange={(e) =>
                     onFieldChange("bid_strategy", e.target.value)
                   }
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 >
                   <option value="LOWEST_COST_WITHOUT_CAP">
                     {BidStrategyLabels.LOWEST_COST_WITHOUT_CAP}
@@ -159,9 +161,9 @@ export default function EditAdSetModal({
 
               {/* Optimization Goal */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="mb-2 block text-sm font-medium text-gray-700">
                   Optimization Goal
-                  <span className="text-xs text-gray-500 ml-2 font-normal">
+                  <span className="ml-2 text-xs font-normal text-gray-500">
                     (Based on Campaign Objective)
                   </span>
                 </label>
@@ -170,7 +172,7 @@ export default function EditAdSetModal({
                   onChange={(e) =>
                     onFieldChange("optimization_goal", e.target.value)
                   }
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 >
                   {(() => {
                     // Get the campaign objective from the first campaign
@@ -181,7 +183,7 @@ export default function EditAdSetModal({
                       getValidOptimizationGoalsForObjective(campaignObjective);
                     const recommendedGoal =
                       getRecommendedOptimizationGoalForObjective(
-                        campaignObjective
+                        campaignObjective,
                       );
 
                     return validGoals.map((goal) => (
@@ -201,7 +203,7 @@ export default function EditAdSetModal({
                   if (!campaignObjective) return null;
 
                   return (
-                    <p className="text-xs text-gray-500 mt-2 bg-blue-50 p-3 rounded-lg">
+                    <p className="mt-2 rounded-lg bg-blue-50 p-3 text-xs text-gray-500">
                       💡 {getOptimizationGoalDescription(campaignObjective)}
                     </p>
                   );
@@ -222,27 +224,27 @@ export default function EditAdSetModal({
         </div>
 
         {/* Footer */}
-        <div className="bg-gray-50 px-8 py-6 border-t border-gray-200">
+        <div className="border-t border-gray-200 bg-gray-50 px-8 py-6">
           <div className="flex gap-4">
             <button
               onClick={onClose}
-              className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all font-medium"
+              className="flex-1 rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 transition-all hover:bg-gray-50"
             >
               Cancel
             </button>
             <button
               onClick={onSave}
               disabled={saving}
-              className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-all hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {saving ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-white"></div>
                   Saving...
                 </>
               ) : (
                 <>
-                  <Save className="w-4 h-4" />
+                  <Save className="h-4 w-4" />
                   Save Changes
                 </>
               )}

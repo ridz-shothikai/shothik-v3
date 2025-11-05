@@ -25,78 +25,78 @@ export default function CampaignsTab({
       {campaigns.map((campaign) => (
         <div
           key={campaign.id}
-          className="bg-slate-800/60 rounded-2xl p-6 border border-slate-700/50 hover:border-slate-600/50 transition-all"
+          className="rounded-2xl border border-slate-700/50 bg-slate-800/60 p-6 transition-all hover:border-slate-600/50"
         >
-          <div className="flex items-start justify-between mb-4">
+          <div className="mb-4 flex items-start justify-between">
             <div>
-              <h3 className="text-xl font-bold text-white mb-1">
+              <h3 className="mb-1 text-xl font-bold text-white">
                 {campaign.name}
               </h3>
               <div className="flex items-center gap-2">
                 <span
-                  className={`px-3 py-1 rounded-lg text-xs font-medium ${
+                  className={`rounded-lg px-3 py-1 text-xs font-medium ${
                     campaign.status === "active"
-                      ? "bg-green-100 text-green-700 border border-green-200"
-                      : "bg-yellow-100 text-yellow-700 border border-yellow-200"
+                      ? "border border-green-200 bg-green-100 text-green-700"
+                      : "border border-yellow-200 bg-yellow-100 text-yellow-700"
                   }`}
                 >
                   {campaign.status}
                 </span>
-                <span className="text-gray-400 text-sm">
+                <span className="text-sm text-gray-400">
                   {campaign.objective}
                 </span>
               </div>
             </div>
             <button
               onClick={() => onEditCampaign(campaign)}
-              className="p-2 hover:bg-slate-700/50 rounded-lg transition-all"
+              className="rounded-lg p-2 transition-all hover:bg-slate-700/50"
               title="Edit Campaign"
             >
-              <Settings className="w-5 h-5 text-gray-400" />
+              <Settings className="h-5 w-5 text-gray-400" />
             </button>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-            <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
-              <div className="flex items-center gap-2 mb-2">
-                <DollarSign className="w-4 h-4 text-green-600" />
-                <span className="text-gray-400 text-xs">Budget</span>
+          <div className="mb-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
+            <div className="rounded-xl border border-slate-700/50 bg-slate-900/50 p-4">
+              <div className="mb-2 flex items-center gap-2">
+                <DollarSign className="h-4 w-4 text-green-600" />
+                <span className="text-xs text-gray-400">Budget</span>
               </div>
-              <p className="text-white font-bold text-lg">
+              <p className="text-lg font-bold text-white">
                 ${campaign.budget}/day
               </p>
             </div>
-            <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
-              <div className="flex items-center gap-2 mb-2">
-                <Target className="w-4 h-4 text-blue-600" />
-                <span className="text-gray-400 text-xs">Ad Sets</span>
+            <div className="rounded-xl border border-slate-700/50 bg-slate-900/50 p-4">
+              <div className="mb-2 flex items-center gap-2">
+                <Target className="h-4 w-4 text-blue-600" />
+                <span className="text-xs text-gray-400">Ad Sets</span>
               </div>
-              <p className="text-white font-bold text-lg">
+              <p className="text-lg font-bold text-white">
                 {adSets.filter((as) => as.campaignId === campaign.id).length}
               </p>
             </div>
-            <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
-              <div className="flex items-center gap-2 mb-2">
-                <ImageIcon className="w-4 h-4 text-purple-600" />
-                <span className="text-gray-400 text-xs">Ads</span>
+            <div className="rounded-xl border border-slate-700/50 bg-slate-900/50 p-4">
+              <div className="mb-2 flex items-center gap-2">
+                <ImageIcon className="h-4 w-4 text-purple-600" />
+                <span className="text-xs text-gray-400">Ads</span>
               </div>
-              <p className="text-white font-bold text-lg">
+              <p className="text-lg font-bold text-white">
                 {
                   ads.filter((ad) =>
                     adSets.some(
                       (as) =>
-                        as.campaignId === campaign.id && as.id === ad.adSetId
-                    )
+                        as.campaignId === campaign.id && as.id === ad.adSetId,
+                    ),
                   ).length
                 }
               </p>
             </div>
-            <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
-              <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="w-4 h-4 text-orange-600" />
-                <span className="text-gray-400 text-xs">Objective</span>
+            <div className="rounded-xl border border-slate-700/50 bg-slate-900/50 p-4">
+              <div className="mb-2 flex items-center gap-2">
+                <TrendingUp className="h-4 w-4 text-orange-600" />
+                <span className="text-xs text-gray-400">Objective</span>
               </div>
-              <p className="text-white font-bold text-sm capitalize">
+              <p className="text-sm font-bold text-white capitalize">
                 {campaign.objective}
               </p>
             </div>

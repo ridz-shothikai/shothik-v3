@@ -1,3 +1,5 @@
+"use client";
+
 import { ArrowLeft, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 

@@ -1,3 +1,5 @@
+"use client";
+
 import { campaignAPI } from "@/services/marketing-automation.service";
 import type { ProductAnalysis } from "@/types/analysis";
 import { Loader2, Send, Sparkles, User } from "lucide-react";
@@ -48,7 +50,7 @@ export default function ChatBox({
           console.log(
             "✅ Loading chat history:",
             response.data.messages.length,
-            "messages"
+            "messages",
           );
           // Load all messages from history
           response.data.messages.forEach((msg: Message) => {
@@ -137,16 +139,16 @@ export default function ChatBox({
   ];
 
   return (
-    <div className="flex flex-col h-full bg-slate-900/30">
+    <div className="flex h-full flex-col bg-slate-900/30">
       {/* Chat Header */}
-      <div className="p-6 border-b border-slate-800/50">
+      <div className="border-b border-slate-800/50 p-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-purple-500/20 border border-purple-500/30 rounded-xl flex items-center justify-center">
-            <Sparkles className="w-5 h-5 text-purple-400" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-purple-500/30 bg-purple-500/20">
+            <Sparkles className="h-5 w-5 text-purple-400" />
           </div>
           <div>
-            <h2 className="text-white font-semibold">AI Assistant</h2>
-            <p className="text-gray-400 text-xs">
+            <h2 className="font-semibold text-white">AI Assistant</h2>
+            <p className="text-xs text-gray-400">
               Campaign & Ad Creation Helper
             </p>
           </div>
@@ -154,7 +156,7 @@ export default function ChatBox({
       </div>
 
       {/* Messages Container */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-4">
+      <div className="flex-1 space-y-4 overflow-y-auto p-6">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -163,79 +165,79 @@ export default function ChatBox({
             }`}
           >
             {message.role === "assistant" && (
-              <div className="w-8 h-8 bg-purple-500/20 border border-purple-500/30 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Sparkles className="w-4 h-4 text-purple-400" />
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg border border-purple-500/30 bg-purple-500/20">
+                <Sparkles className="h-4 w-4 text-purple-400" />
               </div>
             )}
             <div
               className={`max-w-[85%] rounded-2xl px-5 py-4 ${
                 message.role === "user"
                   ? "bg-purple-600 text-white shadow-lg shadow-purple-500/20"
-                  : "bg-slate-800/60 text-gray-100 border border-slate-700/50"
+                  : "border border-slate-700/50 bg-slate-800/60 text-gray-100"
               }`}
             >
-              <div className="text-sm leading-relaxed markdown-content break-words">
+              <div className="markdown-content text-sm leading-relaxed break-words">
                 <ReactMarkdown
                   components={{
                     p: ({ children }) => (
-                      <p className="mb-3 last:mb-0 leading-relaxed text-gray-100">
+                      <p className="mb-3 leading-relaxed text-gray-100 last:mb-0">
                         {children}
                       </p>
                     ),
                     ul: ({ children }) => (
-                      <ul className="list-none pl-0 mb-3 space-y-2">
+                      <ul className="mb-3 list-none space-y-2 pl-0">
                         {children}
                       </ul>
                     ),
                     ol: ({ children }) => (
-                      <ol className="list-decimal pl-5 mb-3 space-y-2">
+                      <ol className="mb-3 list-decimal space-y-2 pl-5">
                         {children}
                       </ol>
                     ),
                     li: ({ children }) => (
-                      <li className="text-sm flex items-start gap-2 before:content-['•'] before:text-purple-400 before:font-bold before:text-base">
+                      <li className="flex items-start gap-2 text-sm before:text-base before:font-bold before:text-purple-400 before:content-['•']">
                         <span className="text-gray-100">{children}</span>
                       </li>
                     ),
                     strong: ({ children }) => (
-                      <strong className="font-bold text-white bg-slate-700/50 px-1 rounded">
+                      <strong className="rounded bg-slate-700/50 px-1 font-bold text-white">
                         {children}
                       </strong>
                     ),
                     em: ({ children }) => (
-                      <em className="italic text-gray-300">{children}</em>
+                      <em className="text-gray-300 italic">{children}</em>
                     ),
                     code: ({ children }) => (
-                      <code className="bg-slate-900/50 px-2 py-0.5 rounded text-xs font-mono text-emerald-400 border border-slate-700/50">
+                      <code className="rounded border border-slate-700/50 bg-slate-900/50 px-2 py-0.5 font-mono text-xs text-emerald-400">
                         {children}
                       </code>
                     ),
                     pre: ({ children }) => (
-                      <pre className="bg-slate-900/50 p-3 rounded-lg mb-3 overflow-x-auto border border-slate-700/50">
+                      <pre className="mb-3 overflow-x-auto rounded-lg border border-slate-700/50 bg-slate-900/50 p-3">
                         {children}
                       </pre>
                     ),
                     blockquote: ({ children }) => (
-                      <blockquote className="border-l-4 border-purple-500 pl-4 py-2 my-3 bg-purple-500/10 rounded-r">
+                      <blockquote className="my-3 rounded-r border-l-4 border-purple-500 bg-purple-500/10 py-2 pl-4">
                         {children}
                       </blockquote>
                     ),
                     h1: ({ children }) => (
-                      <h1 className="text-lg font-bold mb-3 text-white border-b border-slate-700/50 pb-2">
+                      <h1 className="mb-3 border-b border-slate-700/50 pb-2 text-lg font-bold text-white">
                         {children}
                       </h1>
                     ),
                     h2: ({ children }) => (
-                      <h2 className="text-base font-bold mb-2 text-white mt-4 first:mt-0">
+                      <h2 className="mt-4 mb-2 text-base font-bold text-white first:mt-0">
                         {children}
                       </h2>
                     ),
                     h3: ({ children }) => (
-                      <h3 className="text-sm font-semibold mb-2 text-gray-300 mt-3 first:mt-0">
+                      <h3 className="mt-3 mb-2 text-sm font-semibold text-gray-300 first:mt-0">
                         {children}
                       </h3>
                     ),
-                    hr: () => <hr className="border-slate-700/50 my-4" />,
+                    hr: () => <hr className="my-4 border-slate-700/50" />,
                   }}
                 >
                   {message.content}
@@ -243,7 +245,7 @@ export default function ChatBox({
               </div>
               {message.timestamp && (
                 <p
-                  className={`text-xs mt-1 ${
+                  className={`mt-1 text-xs ${
                     message.role === "user" ? "text-white/70" : "text-gray-500"
                   }`}
                 >
@@ -255,8 +257,8 @@ export default function ChatBox({
               )}
             </div>
             {message.role === "user" && (
-              <div className="w-8 h-8 bg-slate-700/50 rounded-lg flex items-center justify-center flex-shrink-0">
-                <User className="w-4 h-4 text-gray-300" />
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-slate-700/50">
+                <User className="h-4 w-4 text-gray-300" />
               </div>
             )}
           </div>
@@ -265,18 +267,18 @@ export default function ChatBox({
         {/* Typing Indicator */}
         {isTyping && (
           <div className="flex gap-3">
-            <div className="w-8 h-8 bg-purple-500/20 border border-purple-500/30 rounded-lg flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-purple-400" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-purple-500/30 bg-purple-500/20">
+              <Sparkles className="h-4 w-4 text-purple-400" />
             </div>
-            <div className="bg-slate-800/60 rounded-2xl px-4 py-3 border border-slate-700/50">
+            <div className="rounded-2xl border border-slate-700/50 bg-slate-800/60 px-4 py-3">
               <div className="flex gap-1">
-                <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
+                <div className="h-2 w-2 animate-bounce rounded-full bg-purple-400"></div>
                 <div
-                  className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"
+                  className="h-2 w-2 animate-bounce rounded-full bg-purple-400"
                   style={{ animationDelay: "0.1s" }}
                 ></div>
                 <div
-                  className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"
+                  className="h-2 w-2 animate-bounce rounded-full bg-purple-400"
                   style={{ animationDelay: "0.2s" }}
                 ></div>
               </div>
@@ -290,7 +292,7 @@ export default function ChatBox({
       {/* Quick Actions */}
       {messages.length <= 1 && !isTyping && (
         <div className="px-6 pb-4">
-          <p className="text-gray-400 text-xs mb-3 font-medium">
+          <p className="mb-3 text-xs font-medium text-gray-400">
             Quick actions:
           </p>
           <div className="flex flex-wrap gap-2">
@@ -298,7 +300,7 @@ export default function ChatBox({
               <button
                 key={index}
                 onClick={() => setInput(action)}
-                className="text-xs px-3 py-2 bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 rounded-lg text-gray-300 transition-all"
+                className="rounded-lg border border-slate-700/50 bg-slate-800/60 px-3 py-2 text-xs text-gray-300 transition-all hover:bg-slate-800"
               >
                 {action}
               </button>
@@ -308,7 +310,7 @@ export default function ChatBox({
       )}
 
       {/* Input Area */}
-      <div className="p-6 border-t border-slate-800/50">
+      <div className="border-t border-slate-800/50 p-6">
         <form onSubmit={handleSubmit} className="flex gap-2">
           <input
             type="text"
@@ -316,17 +318,17 @@ export default function ChatBox({
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask anything about your campaign..."
             disabled={isTyping}
-            className="flex-1 bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:opacity-50"
+            className="flex-1 rounded-xl border border-slate-700/50 bg-slate-800/60 px-4 py-3 text-white placeholder-gray-500 focus:border-transparent focus:ring-2 focus:ring-purple-500 focus:outline-none disabled:opacity-50"
           />
           <button
             type="submit"
             disabled={!input.trim() || isTyping}
-            className="bg-purple-600 text-white p-3 rounded-xl hover:bg-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-500/20"
+            className="rounded-xl bg-purple-600 p-3 text-white shadow-lg shadow-purple-500/20 transition-all hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isTyping ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
+              <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
-              <Send className="w-5 h-5" />
+              <Send className="h-5 w-5" />
             )}
           </button>
         </form>

@@ -448,7 +448,7 @@ export function getCampaignObjectiveForGoal(goal: string): CampaignObjective {
 }
 
 export function getRecommendedOptimizationGoal(
-  objective: CampaignObjective
+  objective: CampaignObjective,
 ): OptimizationGoal {
   const goalMap: Record<CampaignObjective, OptimizationGoal> = {
     OUTCOME_AWARENESS: "REACH",

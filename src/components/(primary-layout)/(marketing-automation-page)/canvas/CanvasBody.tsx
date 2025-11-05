@@ -1,3 +1,5 @@
+"use client";
+
 import { campaignAPI } from "@/services/marketing-automation.service";
 import type { ProductAnalysis } from "@/types/analysis";
 import type {
@@ -15,9 +17,9 @@ import type {
 import { getRecommendedOptimizationGoalForObjective } from "@/utils/objectiveMapping";
 import { Lightbulb, Save, Users, Wand2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 
 // Import extracted components
+import { useParams, useRouter } from "next/navigation";
 import AdPreviewModal from "./AdPreviewModal";
 import AdSetsTab from "./AdSetsTab";
 import AdsTab from "./AdsTab";
@@ -44,7 +46,7 @@ export default function CanvasBody({
   loadingSuggestions = false,
 }: CanvasBodyProps) {
   const { projectId } = useParams<{ projectId: string }>();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [adSets, setAdSets] = useState<AdSet[]>([]);
   const [ads, setAds] = useState<Ad[]>([]);
@@ -72,7 +74,7 @@ export default function CanvasBody({
   });
   const [campaignEditFormData, setCampaignEditFormData] = useState({
     name: "",
-    objective: "outcome_sales" as CampaignObjective,
+    objective: "OUTCOME_SALES" as CampaignObjective,
     budget: 0,
     status: "draft" as "draft" | "active" | "paused",
   });
@@ -149,7 +151,7 @@ export default function CanvasBody({
     return () => {
       window.removeEventListener(
         "campaignDataUpdated",
-        handleCampaignDataUpdate
+        handleCampaignDataUpdate,
       );
     };
   }, [projectId]);
@@ -230,7 +232,7 @@ export default function CanvasBody({
     setEditingCampaign(campaign);
     setCampaignEditFormData({
       name: campaign.name || "",
-      objective: campaign.objective || "outcome_sales",
+      objective: campaign.objective || "OUTCOME_SALES",
       budget: campaign.budget || 0,
       status: campaign.status || "draft",
     });
@@ -240,7 +242,7 @@ export default function CanvasBody({
   // Handle campaign form field changes
   const handleCampaignEditFieldChange = (
     field: string,
-    value: string | number | object
+    value: string | number | object,
   ) => {
     setCampaignEditFormData((prev) => ({
       ...prev,
@@ -257,7 +259,7 @@ export default function CanvasBody({
       const updatedCampaigns = campaigns.map((campaign) =>
         campaign.id === editingCampaign.id
           ? { ...campaign, ...campaignEditFormData }
-          : campaign
+          : campaign,
       );
       setCampaigns(updatedCampaigns as Campaign[]);
       setShowEditCampaignModal(false);
@@ -310,7 +312,7 @@ export default function CanvasBody({
   // Handle ad set form field changes
   const handleAdSetEditFieldChange = (
     field: string,
-    value: string | number | object
+    value: string | number | object,
   ) => {
     setAdSetEditFormData((prev) => ({
       ...prev,
@@ -327,7 +329,7 @@ export default function CanvasBody({
       const updatedAdSets = adSets.map((adSet) =>
         adSet.id === editingAdSet.id
           ? { ...adSet, ...adSetEditFormData }
-          : adSet
+          : adSet,
       );
       setAdSets(updatedAdSets as AdSet[]);
       setShowEditAdSetModal(false);
@@ -353,7 +355,7 @@ export default function CanvasBody({
               ...ad,
               ...editFormData,
             } as Ad)
-          : ad
+          : ad,
       );
       setAds(updatedAds);
 
@@ -389,11 +391,11 @@ export default function CanvasBody({
 
   return (
     <div className="flex-1 overflow-y-auto">
-      <div className="max-w-7xl mx-auto p-8">
+      <div className="p-8">
         {/* Page Header */}
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">
+            <h1 className="mb-2 text-3xl font-bold text-white">
               Meta Campaign Builder
             </h1>
             <p className="text-gray-400">
@@ -401,69 +403,69 @@ export default function CanvasBody({
             </p>
           </div>
           {saving && (
-            <div className="flex items-center gap-2 text-gray-400 text-sm">
-              <Save className="w-4 h-4 animate-pulse" />
+            <div className="flex items-center gap-2 text-sm text-gray-400">
+              <Save className="h-4 w-4 animate-pulse" />
               Saving...
             </div>
           )}
           {!saving && dataLoaded && (
-            <div className="flex items-center gap-2 text-emerald-400 text-sm">
-              <Save className="w-4 h-4" />
+            <div className="flex items-center gap-2 text-sm text-emerald-400">
+              <Save className="h-4 w-4" />
               Saved
             </div>
           )}
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-6 overflow-x-auto border-b border-slate-800/50 pb-4">
+        <div className="mb-6 flex gap-2 overflow-x-auto border-b border-slate-800/50 pb-4">
           <button
             onClick={() => setActiveTab("suggestions")}
-            className={`px-6 py-3 rounded-lg font-medium transition-all whitespace-nowrap ${
+            className={`rounded-lg px-6 py-3 font-medium whitespace-nowrap transition-all ${
               activeTab === "suggestions"
-                ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
-                : "text-gray-400 hover:text-gray-300 hover:bg-slate-800/50"
+                ? "border border-purple-500/30 bg-purple-500/20 text-purple-300"
+                : "text-gray-400 hover:bg-slate-800/50 hover:text-gray-300"
             }`}
           >
-            <Lightbulb className="w-4 h-4 inline-block mr-2" />
+            <Lightbulb className="mr-2 inline-block h-4 w-4" />
             AI Suggestions
           </button>
           <button
             onClick={() => setActiveTab("personas")}
-            className={`px-6 py-3 rounded-lg font-medium transition-all whitespace-nowrap ${
+            className={`rounded-lg px-6 py-3 font-medium whitespace-nowrap transition-all ${
               activeTab === "personas"
-                ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
-                : "text-gray-400 hover:text-gray-300 hover:bg-slate-800/50"
+                ? "border border-purple-500/30 bg-purple-500/20 text-purple-300"
+                : "text-gray-400 hover:bg-slate-800/50 hover:text-gray-300"
             }`}
           >
-            <Users className="w-4 h-4 inline-block mr-2" />
+            <Users className="mr-2 inline-block h-4 w-4" />
             Personas ({personas.length})
           </button>
           <button
             onClick={() => setActiveTab("campaigns")}
-            className={`px-6 py-3 rounded-lg font-medium transition-all whitespace-nowrap ${
+            className={`rounded-lg px-6 py-3 font-medium whitespace-nowrap transition-all ${
               activeTab === "campaigns"
-                ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
-                : "text-gray-400 hover:text-gray-300 hover:bg-slate-800/50"
+                ? "border border-purple-500/30 bg-purple-500/20 text-purple-300"
+                : "text-gray-400 hover:bg-slate-800/50 hover:text-gray-300"
             }`}
           >
             Campaigns ({campaigns.length})
           </button>
           <button
             onClick={() => setActiveTab("adsets")}
-            className={`px-6 py-3 rounded-lg font-medium transition-all whitespace-nowrap ${
+            className={`rounded-lg px-6 py-3 font-medium whitespace-nowrap transition-all ${
               activeTab === "adsets"
-                ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
-                : "text-gray-400 hover:text-gray-300 hover:bg-slate-800/50"
+                ? "border border-purple-500/30 bg-purple-500/20 text-purple-300"
+                : "text-gray-400 hover:bg-slate-800/50 hover:text-gray-300"
             }`}
           >
             Ad Sets ({adSets.length})
           </button>
           <button
             onClick={() => setActiveTab("ads")}
-            className={`px-6 py-3 rounded-lg font-medium transition-all whitespace-nowrap ${
+            className={`rounded-lg px-6 py-3 font-medium whitespace-nowrap transition-all ${
               activeTab === "ads"
-                ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
-                : "text-gray-400 hover:text-gray-300 hover:bg-slate-800/50"
+                ? "border border-purple-500/30 bg-purple-500/20 text-purple-300"
+                : "text-gray-400 hover:bg-slate-800/50 hover:text-gray-300"
             }`}
           >
             Ads ({ads.length})
@@ -472,14 +474,14 @@ export default function CanvasBody({
 
         {/* Publish Ads Button - Only show when ads tab is active and there are ads */}
         {activeTab === "ads" && ads.length > 0 && (
-          <div className="flex justify-end mb-6">
+          <div className="mb-6 flex justify-end">
             <button
               onClick={() =>
-                navigate(`/marketing-automation/canvas/${projectId}/publish`)
+                router.push(`/marketing-automation/canvas/${projectId}/publish`)
               }
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30"
+              className="flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 font-medium text-white shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-700 hover:shadow-emerald-500/30"
             >
-              <Wand2 className="w-4 h-4" />
+              <Wand2 className="h-4 w-4" />
               Publish Ads
             </button>
           </div>
@@ -540,29 +542,29 @@ export default function CanvasBody({
 
       {/* Create Campaign Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-6">
-          <div className="bg-slate-800/90 backdrop-blur-xl rounded-2xl p-8 max-w-lg w-full border border-slate-700/50">
-            <h2 className="text-2xl font-bold text-white mb-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6 backdrop-blur-sm">
+          <div className="w-full max-w-lg rounded-2xl border border-slate-700/50 bg-slate-800/90 p-8 backdrop-blur-xl">
+            <h2 className="mb-6 text-2xl font-bold text-white">
               Create New Campaign
             </h2>
 
-            <div className="space-y-4 mb-6">
+            <div className="mb-6 space-y-4">
               <div>
-                <label className="text-gray-300 text-sm mb-2 block">
+                <label className="mb-2 block text-sm text-gray-300">
                   Campaign Name
                 </label>
                 <input
                   type="text"
                   defaultValue={`${analysis.product.title} Campaign`}
-                  className="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full rounded-xl border border-slate-700/50 bg-slate-900/50 px-4 py-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="text-gray-300 text-sm mb-2 block">
+                <label className="mb-2 block text-sm text-gray-300">
                   Objective
                 </label>
-                <select className="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <select className="w-full rounded-xl border border-slate-700/50 bg-slate-900/50 px-4 py-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none">
                   <option value="outcome_sales">Sales (Conversions)</option>
                   <option value="outcome_leads">Leads</option>
                   <option value="outcome_traffic">Traffic</option>
@@ -573,13 +575,13 @@ export default function CanvasBody({
               </div>
 
               <div>
-                <label className="text-gray-300 text-sm mb-2 block">
+                <label className="mb-2 block text-sm text-gray-300">
                   Daily Budget (USD)
                 </label>
                 <input
                   type="number"
                   defaultValue={100}
-                  className="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full rounded-xl border border-slate-700/50 bg-slate-900/50 px-4 py-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
                 />
               </div>
             </div>
@@ -587,13 +589,13 @@ export default function CanvasBody({
             <div className="flex gap-3">
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="flex-1 bg-slate-700/50 hover:bg-slate-700 text-white py-3 px-4 rounded-xl transition-all"
+                className="flex-1 rounded-xl bg-slate-700/50 px-4 py-3 text-white transition-all hover:bg-slate-700"
               >
                 Cancel
               </button>
               <button
                 onClick={createCampaign}
-                className="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-xl hover:shadow-lg transition-all"
+                className="flex-1 rounded-xl bg-purple-600 px-4 py-3 text-white transition-all hover:bg-purple-700 hover:shadow-lg"
               >
                 Create Campaign
               </button>

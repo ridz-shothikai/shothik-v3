@@ -1,3 +1,5 @@
+"use client";
+
 import { uploadToImageKit } from "@/lib/imagekit";
 import { mediaAPI } from "@/services/marketing-automation.service";
 import { Layers, Upload } from "lucide-react";
@@ -18,7 +20,7 @@ interface ImageCanvasProps {
       width: number;
       height: number;
       imageIndex: number;
-    }>
+    }>,
   ) => void;
   onRegenerate: () => void;
   onDownload: () => void;
@@ -63,7 +65,7 @@ export default function ImageCanvas({
 
   const handleMouseDown = (
     e: React.MouseEvent<HTMLDivElement>,
-    imageIndex: number
+    imageIndex: number,
   ) => {
     if (!isSelecting) return;
 
@@ -77,7 +79,7 @@ export default function ImageCanvas({
 
   const handleMouseMove = (
     e: React.MouseEvent<HTMLDivElement>,
-    imageIndex: number
+    imageIndex: number,
   ) => {
     if (!isDrawing || !startPoint || startPoint.imageIndex !== imageIndex)
       return;
@@ -139,7 +141,7 @@ export default function ImageCanvas({
   };
 
   const handleFileUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const files = event.target.files;
     if (!files || files.length === 0) return;
@@ -189,24 +191,24 @@ export default function ImageCanvas({
   return (
     <div className="space-y-6">
       {/* Canvas */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-lg">
-        <div className="aspect-video bg-gray-100 relative">
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
+        <div className="relative aspect-video bg-gray-100">
           {generatedMedia.length > 0 ? (
-            <div className="relative w-full h-full">
+            <div className="relative h-full w-full">
               {/* Carousel Navigation */}
               {isCarousel && generatedMedia.length > 1 && (
-                <div className="absolute top-4 right-4 z-20 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg text-gray-900 text-sm font-semibold shadow-lg">
+                <div className="absolute top-4 right-4 z-20 rounded-lg bg-white/90 px-4 py-2 text-sm font-semibold text-gray-900 shadow-lg backdrop-blur-sm">
                   {currentImageIndex + 1} / {generatedMedia.length}
                 </div>
               )}
 
               {/* Image Display */}
               {isCarousel ? (
-                <div className="relative w-full h-full">
+                <div className="relative h-full w-full">
                   <img
                     src={generatedMedia[currentImageIndex]}
                     alt={`Carousel ${currentImageIndex + 1}`}
-                    className="w-full h-full object-contain pointer-events-none"
+                    className="pointer-events-none h-full w-full object-contain"
                   />
 
                   {/* Carousel Controls */}
@@ -215,20 +217,20 @@ export default function ImageCanvas({
                       <button
                         onClick={() =>
                           setCurrentImageIndex((prev) =>
-                            prev > 0 ? prev - 1 : generatedMedia.length - 1
+                            prev > 0 ? prev - 1 : generatedMedia.length - 1,
                           )
                         }
-                        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-900 p-3 rounded-full transition-all z-10 shadow-lg"
+                        className="absolute top-1/2 left-4 z-10 -translate-y-1/2 rounded-full bg-white/90 p-3 text-gray-900 shadow-lg transition-all hover:bg-white"
                       >
                         ◀
                       </button>
                       <button
                         onClick={() =>
                           setCurrentImageIndex((prev) =>
-                            prev < generatedMedia.length - 1 ? prev + 1 : 0
+                            prev < generatedMedia.length - 1 ? prev + 1 : 0,
                           )
                         }
-                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-900 p-3 rounded-full transition-all z-10 shadow-lg"
+                        className="absolute top-1/2 right-4 z-10 -translate-y-1/2 rounded-full bg-white/90 p-3 text-gray-900 shadow-lg transition-all hover:bg-white"
                       >
                         ▶
                       </button>
@@ -250,7 +252,7 @@ export default function ImageCanvas({
                       .map((region, index) => (
                         <div
                           key={region.id}
-                          className="absolute border-4 border-purple-500 bg-purple-500/20 pointer-events-none"
+                          className="pointer-events-none absolute border-4 border-purple-500 bg-purple-500/20"
                           style={{
                             left: `${region.x}%`,
                             top: `${region.y}%`,
@@ -258,7 +260,7 @@ export default function ImageCanvas({
                             height: `${region.height}%`,
                           }}
                         >
-                          <div className="absolute -top-7 left-0 bg-purple-500 text-white text-xs px-2 py-1 rounded shadow-lg font-semibold">
+                          <div className="absolute -top-7 left-0 rounded bg-purple-500 px-2 py-1 text-xs font-semibold text-white shadow-lg">
                             Region {index + 1}
                           </div>
                         </div>
@@ -267,7 +269,7 @@ export default function ImageCanvas({
                 </div>
               ) : (
                 <div
-                  className={`relative w-full h-full ${
+                  className={`relative h-full w-full ${
                     isSelecting ? "cursor-crosshair" : ""
                   }`}
                   onMouseDown={(e) => handleMouseDown(e, 0)}
@@ -278,14 +280,14 @@ export default function ImageCanvas({
                   <img
                     src={generatedMedia[0]}
                     alt="Generated"
-                    className="w-full h-full object-contain pointer-events-none"
+                    className="pointer-events-none h-full w-full object-contain"
                   />
 
                   {/* Selection overlays */}
                   {selectedRegions.map((region, index) => (
                     <div
                       key={region.id}
-                      className="absolute border-4 border-purple-500 bg-purple-500/20 pointer-events-none"
+                      className="pointer-events-none absolute border-4 border-purple-500 bg-purple-500/20"
                       style={{
                         left: `${region.x}%`,
                         top: `${region.y}%`,
@@ -293,7 +295,7 @@ export default function ImageCanvas({
                         height: `${region.height}%`,
                       }}
                     >
-                      <div className="absolute -top-7 left-0 bg-purple-500 text-white text-xs px-2 py-1 rounded shadow-lg font-semibold">
+                      <div className="absolute -top-7 left-0 rounded bg-purple-500 px-2 py-1 text-xs font-semibold text-white shadow-lg">
                         Region {index + 1}
                       </div>
                     </div>
@@ -303,21 +305,21 @@ export default function ImageCanvas({
 
               {/* Status Indicators */}
               {isSelecting && selectedRegions.length === 0 && (
-                <div className="absolute top-4 left-4 bg-purple-500 text-white text-sm px-4 py-2 rounded-lg shadow-lg pointer-events-none">
+                <div className="pointer-events-none absolute top-4 left-4 rounded-lg bg-purple-500 px-4 py-2 text-sm text-white shadow-lg">
                   Click and drag to select regions
                   {isCarousel && " on this slide"}
                 </div>
               )}
 
               {isSelecting && selectedRegions.length > 0 && (
-                <div className="absolute top-4 left-4 bg-green-500 text-white text-sm px-4 py-2 rounded-lg shadow-lg pointer-events-none">
+                <div className="pointer-events-none absolute top-4 left-4 rounded-lg bg-green-500 px-4 py-2 text-sm text-white shadow-lg">
                   {selectedRegions.length} region(s) selected • Draw more or
                   apply edit
                 </div>
               )}
 
               {isDrawing && (
-                <div className="absolute top-4 right-4 bg-yellow-500 text-white text-sm px-4 py-2 rounded-lg shadow-lg pointer-events-none">
+                <div className="pointer-events-none absolute top-4 right-4 rounded-lg bg-yellow-500 px-4 py-2 text-sm text-white shadow-lg">
                   Drawing region...
                 </div>
               )}
@@ -325,13 +327,13 @@ export default function ImageCanvas({
           ) : (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
-                <div className="w-24 h-24 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-purple-200">
+                <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-2xl border border-purple-200 bg-gradient-to-br from-purple-100 to-pink-100">
                   <span className="text-6xl">🖼️</span>
                 </div>
-                <p className="text-gray-900 text-lg font-semibold mb-2">
+                <p className="mb-2 text-lg font-semibold text-gray-900">
                   No Media Generated Yet
                 </p>
-                <p className="text-gray-600 text-sm">
+                <p className="text-sm text-gray-600">
                   Click "Generate {isCarousel ? "Carousel" : "Image"}" to create
                   AI-powered media
                 </p>
@@ -343,8 +345,8 @@ export default function ImageCanvas({
 
       {/* Carousel Thumbnail Strip */}
       {isCarousel && generatedMedia.length > 1 && (
-        <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
-          <h3 className="text-gray-900 font-semibold mb-3 text-sm">
+        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+          <h3 className="mb-3 text-sm font-semibold text-gray-900">
             Carousel Slides ({generatedMedia.length})
           </h3>
           <div className="grid grid-cols-5 gap-3">
@@ -352,7 +354,7 @@ export default function ImageCanvas({
               <button
                 key={index}
                 onClick={() => setCurrentImageIndex(index)}
-                className={`aspect-square rounded-lg overflow-hidden border-2 transition-all relative ${
+                className={`relative aspect-square overflow-hidden rounded-lg border-2 transition-all ${
                   currentImageIndex === index
                     ? "border-purple-500 ring-2 ring-purple-500/50"
                     : "border-gray-200 hover:border-gray-300"
@@ -361,9 +363,9 @@ export default function ImageCanvas({
                 <img
                   src={img}
                   alt={`Slide ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  className="h-full w-full object-cover"
                 />
-                <div className="absolute bottom-1 right-1 bg-gray-900/70 text-white text-xs px-2 py-1 rounded">
+                <div className="absolute right-1 bottom-1 rounded bg-gray-900/70 px-2 py-1 text-xs text-white">
                   {index + 1}
                 </div>
               </button>
@@ -373,14 +375,14 @@ export default function ImageCanvas({
       )}
 
       {/* Upload Controls */}
-      <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm space-y-4">
+      <div className="space-y-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
         <div className="flex gap-2">
           <button
             onClick={handleUploadClick}
             disabled={isUploading}
-            className="flex-1 py-3 px-4 rounded-xl font-semibold transition-all border bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 font-semibold text-gray-700 transition-all hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <Upload className="w-4 h-4" />
+            <Upload className="h-4 w-4" />
             {isUploading ? "Uploading..." : "Upload Images"}
           </button>
         </div>
@@ -392,7 +394,7 @@ export default function ImageCanvas({
           onChange={handleFileUpload}
           className="hidden"
         />
-        <p className="text-gray-500 text-xs text-center">
+        <p className="text-center text-xs text-gray-500">
           {isCarousel
             ? "Upload multiple images for carousel"
             : "Upload a single image"}
@@ -401,23 +403,23 @@ export default function ImageCanvas({
 
       {/* Region Selection Controls */}
       {generatedMedia.length > 0 && (
-        <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm space-y-4">
+        <div className="space-y-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
           <div className="flex gap-2">
             <button
               onClick={() => setIsSelecting(!isSelecting)}
-              className={`flex-1 py-3 px-4 rounded-xl font-semibold transition-all border ${
+              className={`flex-1 rounded-xl border px-4 py-3 font-semibold transition-all ${
                 isSelecting
-                  ? "bg-purple-500 text-white border-purple-500"
-                  : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
+                  ? "border-purple-500 bg-purple-500 text-white"
+                  : "border-gray-200 bg-gray-50 text-gray-700 hover:bg-gray-100"
               }`}
             >
-              <Layers className="w-4 h-4 inline mr-2" />
+              <Layers className="mr-2 inline h-4 w-4" />
               {isSelecting ? "Drawing..." : "Select Regions"}
             </button>
             {selectedRegions.length > 0 && (
               <button
                 onClick={handleClearRegions}
-                className="py-3 px-4 rounded-xl font-semibold transition-all border bg-red-50 text-red-600 border-red-200 hover:bg-red-100"
+                className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 font-semibold text-red-600 transition-all hover:bg-red-100"
               >
                 Clear All
               </button>
@@ -425,14 +427,14 @@ export default function ImageCanvas({
           </div>
 
           {selectedRegions.length > 0 && (
-            <div className="bg-purple-50 border border-purple-200 rounded-xl p-3 space-y-2 max-h-32 overflow-y-auto">
-              <p className="text-purple-700 text-xs font-semibold mb-2">
+            <div className="max-h-32 space-y-2 overflow-y-auto rounded-xl border border-purple-200 bg-purple-50 p-3">
+              <p className="mb-2 text-xs font-semibold text-purple-700">
                 Selected Regions ({selectedRegions.length}):
               </p>
               {selectedRegions.map((region) => (
                 <div
                   key={region.id}
-                  className="flex items-center justify-between text-purple-600 text-xs bg-purple-100 p-2 rounded"
+                  className="flex items-center justify-between rounded bg-purple-100 p-2 text-xs text-purple-600"
                 >
                   <span>
                     {isCarousel && `Slide ${region.imageIndex + 1}: `}
@@ -440,7 +442,7 @@ export default function ImageCanvas({
                   </span>
                   <button
                     onClick={() => handleRemoveRegion(region.id)}
-                    className="text-red-500 hover:text-red-600 px-2"
+                    className="px-2 text-red-500 hover:text-red-600"
                   >
                     ✕
                   </button>
@@ -451,7 +453,7 @@ export default function ImageCanvas({
 
           {/* Edit Prompt */}
           <div className="space-y-3">
-            <label className="text-gray-900 text-sm font-semibold block">
+            <label className="block text-sm font-semibold text-gray-900">
               Edit Prompt{" "}
               {selectedRegions.length > 0 &&
                 `(${selectedRegions.length} region${
@@ -467,16 +469,16 @@ export default function ImageCanvas({
                   : "Describe changes for the entire image..."
               }
               rows={3}
-              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+              className="w-full resize-none rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-transparent focus:ring-2 focus:ring-purple-500 focus:outline-none"
             />
             <button
               onClick={() => onEdit(selectedRegions)}
               disabled={isGenerating || !editPrompt.trim()}
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 rounded-xl font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-purple-600 px-6 py-3 font-bold text-white transition-all hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isGenerating ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white"></div>
                   Applying Changes...
                 </>
               ) : (
