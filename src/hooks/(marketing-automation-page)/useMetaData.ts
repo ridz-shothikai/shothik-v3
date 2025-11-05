@@ -79,3 +79,78 @@ export const useMetaDisconnect = () => {
     },
   });
 };
+
+// Fetch pixels for a business account
+export const useMetaPixels = (businessAccountId: string) => {
+  return useQuery({
+    queryKey: ["metaPixels", businessAccountId],
+    queryFn: async () => {
+      const response = await metaAPI.getPixels(businessAccountId);
+      return response;
+    },
+    enabled: !!businessAccountId,
+  });
+};
+
+// Update Meta account selections
+export const useUpdateMetaSelections = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (selections: {
+      selectedPageIds: string[];
+      selectedBusinessAccountId: string;
+      selectedAdsAccountId: string;
+    }) => {
+      const response = await metaAPI.updateSelections(selections);
+      return response;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["metaData"] });
+    },
+  });
+};
+
+// Get webhook subscription status for a page
+export const useWebhookStatus = (pageId: string) => {
+  return useQuery({
+    queryKey: ["webhookStatus", pageId],
+    queryFn: async () => {
+      const response = await metaAPI.getWebhookStatus(pageId);
+      return response.data;
+    },
+    enabled: !!pageId,
+  });
+};
+
+// Subscribe a page to webhook
+export const useSubscribeWebhook = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (pageId: string) => {
+      const response = await metaAPI.subscribeWebhook(pageId);
+      return response;
+    },
+    onSuccess: (_, pageId) => {
+      // Invalidate webhook status query for this page
+      queryClient.invalidateQueries({ queryKey: ["webhookStatus", pageId] });
+    },
+  });
+};
+
+// Unsubscribe a page from webhook
+export const useUnsubscribeWebhook = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (pageId: string) => {
+      const response = await metaAPI.unsubscribeWebhook(pageId);
+      return response;
+    },
+    onSuccess: (_, pageId) => {
+      // Invalidate webhook status query for this page
+      queryClient.invalidateQueries({ queryKey: ["webhookStatus", pageId] });
+    },
+  });
+};

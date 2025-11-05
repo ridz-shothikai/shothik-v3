@@ -224,6 +224,26 @@ export const metaAPI = {
     return response.data;
   },
 
+  getWebhookStatus: async (pageId: string) => {
+    const response = await api.get(`/api/connect/webhook/status/${pageId}`);
+    return response.data;
+  },
+
+  subscribeWebhook: async (pageId: string) => {
+    const response = await api.post("/api/connect/webhook/subscribe", {
+      pageId,
+    });
+    return response.data;
+  },
+
+  // Unsubscribe a page from webhook
+  unsubscribeWebhook: async (pageId: string) => {
+    const response = await api.post("/api/connect/webhook/unsubscribe", {
+      pageId,
+    });
+    return response.data;
+  },
+
   // Disconnect Facebook account
   disconnect: async () => {
     const response = await api.delete("/marketing/connect/facebook");
