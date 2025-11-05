@@ -1,13 +1,16 @@
 "use client";
 
 import {
+  BookOpen,
   Building2,
   CreditCard,
   Facebook,
   Loader2,
   LogOut,
+  MessageSquare,
   User as UserIcon,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface MetaUserData {
@@ -54,6 +57,7 @@ export default function Header({
   onMetaConnect,
   onMetaDisconnect,
 }: HeaderProps) {
+  const router = useRouter();
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, right: 0 });
 
@@ -72,28 +76,50 @@ export default function Header({
         <div className="flex items-center gap-4">
           {/* Meta Connection Status */}
           {metaConnected ? (
-            <div
-              className="relative flex items-center gap-2 rounded-xl border border-slate-700/50 bg-slate-800/60 px-4 py-2.5 backdrop-blur-md transition-all hover:border-slate-600/50"
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={() => setShowTooltip(false)}
-            >
-              <Facebook className="h-4 w-4 text-blue-400" />
-              <span className="text-sm font-medium text-gray-200">
-                Meta Connected
-              </span>
-              <button
-                onClick={onMetaDisconnect}
-                disabled={metaLoading}
-                className="ml-2 rounded-lg p-1.5 transition-all hover:bg-red-500/20"
-                title="Disconnect Meta account"
+            <>
+              <div
+                className="relative flex items-center gap-2 rounded-xl border border-slate-700/50 bg-slate-800/60 px-4 py-2.5 backdrop-blur-md transition-all hover:border-slate-600/50"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={() => setShowTooltip(false)}
               >
-                {metaLoading ? (
-                  <Loader2 className="h-3.5 w-3.5 animate-spin text-red-400" />
-                ) : (
-                  <LogOut className="h-3.5 w-3.5 text-red-400" />
-                )}
+                <Facebook className="h-4 w-4 text-blue-400" />
+                <span className="text-sm font-medium text-gray-200">
+                  Meta Connected
+                </span>
+                <button
+                  onClick={onMetaDisconnect}
+                  disabled={metaLoading}
+                  className="ml-2 rounded-lg p-1.5 transition-all hover:bg-red-500/20"
+                  title="Disconnect Meta account"
+                >
+                  {metaLoading ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin text-red-400" />
+                  ) : (
+                    <LogOut className="h-3.5 w-3.5 text-red-400" />
+                  )}
+                </button>
+              </div>
+              <button
+                onClick={() => router.push(`/marketing-automation/messenger`)}
+                className="flex items-center gap-2 rounded-xl border border-blue-500/30 bg-gradient-to-r from-blue-600/20 to-purple-600/20 px-4 py-2.5 font-medium text-blue-300 shadow-lg shadow-blue-500/10 transition-all hover:border-blue-500/50 hover:from-blue-600/30 hover:to-purple-600/30"
+                title="Open Messenger Inbox"
+              >
+                <MessageSquare className="h-4 w-4" />
+                <span className="hidden text-sm sm:inline">Messenger</span>
               </button>
-            </div>
+
+              {/* Knowledge Button */}
+              <button
+                onClick={() =>
+                  router.push(`/marketing-automation/chat-knowledge`)
+                }
+                className="flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-gradient-to-r from-emerald-600/20 to-teal-600/20 px-4 py-2.5 font-medium text-emerald-300 shadow-lg shadow-emerald-500/10 transition-all hover:border-emerald-500/50 hover:from-emerald-600/30 hover:to-teal-600/30"
+                title="Knowledge Base"
+              >
+                <BookOpen className="h-4 w-4" />
+                <span className="hidden text-sm sm:inline">Knowledge</span>
+              </button>
+            </>
           ) : (
             <button
               onClick={onMetaConnect}
