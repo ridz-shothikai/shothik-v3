@@ -184,8 +184,7 @@ export const WebhookSettings = () => {
               <div className="pt-0.5">
                 <span className="mb-2 block">Enter your callback URL:</span>
                 <code className="block rounded-lg border border-slate-700/50 bg-slate-800/80 px-3 py-2 font-mono text-xs text-blue-300">
-                  {window.location.origin.replace("5173", "3000")}
-                  /marketing/connect/facebook/webhook
+                  https://api-qa.shothik.ai/marketing/connect/facebook/webhook
                 </code>
               </div>
             </li>

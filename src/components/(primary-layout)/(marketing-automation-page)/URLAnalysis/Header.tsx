@@ -100,6 +100,16 @@ export default function Header({
                 </button>
               </div>
               <button
+                onClick={() => router.push(`/marketing-automation/webhooks`)}
+                className="flex items-center gap-2 rounded-xl border border-blue-500/30 bg-gradient-to-r from-blue-600/20 to-purple-600/20 px-4 py-2.5 font-medium text-blue-300 shadow-lg shadow-blue-500/10 transition-all hover:border-blue-500/50 hover:from-blue-600/30 hover:to-purple-600/30"
+                title="Open Messenger Inbox"
+              >
+                <MessageSquare className="h-4 w-4" />
+                <span className="hidden text-sm sm:inline">
+                  Messenger Connect
+                </span>
+              </button>
+              <button
                 onClick={() => router.push(`/marketing-automation/messenger`)}
                 className="flex items-center gap-2 rounded-xl border border-blue-500/30 bg-gradient-to-r from-blue-600/20 to-purple-600/20 px-4 py-2.5 font-medium text-blue-300 shadow-lg shadow-blue-500/10 transition-all hover:border-blue-500/50 hover:from-blue-600/30 hover:to-purple-600/30"
                 title="Open Messenger Inbox"
