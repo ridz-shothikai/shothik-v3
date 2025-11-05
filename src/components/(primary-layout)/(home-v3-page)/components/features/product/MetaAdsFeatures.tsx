@@ -39,7 +39,7 @@ const features: Feature[] = [
     tag: "AI-Powered Analysis",
     title: "Product & Competitor Intelligence",
     description:
-      "Paste any product link and watch our AI analyze your competitors, extract market insights, and generate detailed buyer personas. Get actionable data that informs every campaign decision.",
+      "AI analyzes competitors, extracts insights, and builds personas for smarter marketing decisions.",
     mockupType: "analysis",
     reverse: false,
     Interactive: <Showcase1 />,
@@ -49,7 +49,7 @@ const features: Feature[] = [
     tag: "Conversational AI",
     title: "Meta Vibe Ad Creative Canvas",
     description:
-      "Create and refine ads through natural conversation. Drop a YouTube link or blog post for inspiration, then chat with AI to transform your vision into high-converting ad copy and creatives instantly.",
+      "Chat with AI to turn your ideas or links into high-converting ads instantly.",
     mockupType: "canvas",
     reverse: true,
     Interactive: <Showcase2 />,
@@ -59,29 +59,19 @@ const features: Feature[] = [
     tag: "Andromeda Algorithm",
     title: "AI Media Canvas",
     description:
-      "Generate AI UGC, influencer content, and video shorts across any format. Create problem-solution flows, testimonials, product demos, and before-after content as images, videos, reels, or carousels—all AI-powered.",
+      "Create AI UGC, influencer content, and video shorts in any format—fully AI-powered.",
     mockupType: "media",
     reverse: false,
     Interactive: <Showcase3 />,
-  },
-  {
-    icon: <Rocket size={24} />,
-    tag: "One-Click Deploy",
-    title: "Campaign Launch & Live Optimization",
-    description:
-      "Launch complete Facebook campaigns with a single click. No manual setup, no guesswork. AI structures your campaigns, adsets, and targeting—you just review and launch.",
-    mockupType: "launch",
-    reverse: true,
-    Interactive: <Showcase4 />,
   },
   {
     icon: <LayoutDashboard size={24} />,
     tag: "Intelligent Insights",
     title: "AI-Powered Project Dashboard",
     description:
-      "Chat with your campaign reports, get instant insights, and receive one-click optimization suggestions. Our AI analyzes performance patterns and recommends improvements that actually move the needle.",
+      "Chat with reports, get instant insights, and one-click AI optimizations that drive real results.",
     mockupType: "dashboard",
-    reverse: false,
+    reverse: true,
     Interactive: <Showcase5 />,
   },
 ];
@@ -98,9 +88,9 @@ export default function MetaAdsFeatures() {
   return (
     <section
       data-testid="meta-ads-features"
-      className="relative overflow-hidden py-24 md:py-40"
+      className="relative py-24 md:py-40"
     >
-      <div className="container mx-auto max-w-6xl px-4">
+      <div className="container mx-auto ">
         <div className="mx-auto mb-24 max-w-4xl text-center md:mb-32">
           <h2 className="text-h2 text-foreground mb-6 text-4xl leading-tight font-extrabold tracking-tight md:text-6xl">
             Meta Advertising on{" "}
@@ -127,7 +117,7 @@ export default function MetaAdsFeatures() {
             mockup={mockupComponents[feature.mockupType]}
             reverse={feature.reverse}
             index={index}
-            mockupType={feature.mockupType}
+            Interactive={feature.Interactive}
           />
         ))}
       </div>

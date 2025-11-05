@@ -2,12 +2,12 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
+import amplitudeLogo from "../../../attached_assets/AMPLITUDE_FULL_BLACK 1_1759922325253.png";
 import chargebeeLogo from "../../../attached_assets/CB Primary Logo Blue and Orange 1_1759922325254.png";
 import microsoftLogo from "../../../attached_assets/Company logo-10_1759922325255.png";
 import zapierLogo from "../../../attached_assets/Company logo-7_1759922325255.png";
 import stripeLogo from "../../../attached_assets/Company logo_1759922325256.png";
 import googleCloudLogo from "../../../attached_assets/google-cloud-platform-gcp-seeklogo 1_1759922325257.png";
-import amplitudeLogo from "../../../attached_assets/AMPLITUDE_FULL_BLACK 1_1759922325253.png";
 
 export default function TrustedBy() {
   const prefersReducedMotion = useReducedMotion();
@@ -68,7 +68,7 @@ export default function TrustedBy() {
   };
 
   return (
-    <section className="bg-background relative py-24 md:py-32">
+    <section className="bg-background relative py-18 md:py-18">
       <div className="mx-auto max-w-7xl px-8 md:px-16">
         <motion.div
           initial={{

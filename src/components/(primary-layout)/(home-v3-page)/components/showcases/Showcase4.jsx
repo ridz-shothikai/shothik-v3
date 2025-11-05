@@ -246,21 +246,19 @@ const DeepResearchAgent = () => {
   }
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-gray-50">
+    <div className="relative h-screen w-full  ">
       {/* Subtle gradient orbs */}
-      <div className="absolute inset-0 overflow-hidden opacity-20">
+      {/* <div className="absolute inset-0 overflow-hidden opacity-20">
         <div className="absolute -top-40 -right-40 h-96 w-96 rounded-full bg-gray-300 blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-gray-400 blur-3xl"></div>
-      </div>
+      </div> */}
 
       <div
         ref={windowRef}
-        className="absolute z-10 flex overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl"
+        className="z-10 flex rounded-2xl border border-gray-200 bg-white shadow-2xl"
         style={{
-          left: `${position.x}px`,
-          top: `${position.y}px`,
-          width: "1200px",
-          maxWidth: "calc(100vw - 40px)",
+          // width: "1200px",
+          // maxWidth: "calc(100vw - 40px)",
         }}
       >
         {/* Left sidebar */}
@@ -350,8 +348,7 @@ const DeepResearchAgent = () => {
         {/* Right side */}
         <div className="flex flex-1 flex-col">
           <div
-            className="drag-handle flex cursor-grab items-center justify-between border-b border-gray-200 bg-white px-6 py-4 active:cursor-grabbing"
-            onMouseDown={handleMouseDown}
+            className="drag-handle flex items-center justify-between border-b border-gray-200 bg-white px-6 py-4 "
           >
             <div>
               <h2 className="text-lg font-bold text-black">
@@ -609,7 +606,7 @@ const DeepResearchAgent = () => {
       </div>
 
       {/* Left side promotional content */}
-      <div className="absolute top-1/2 left-12 max-w-sm -translate-y-1/2">
+      {/* <div className="absolute top-1/2 left-12 max-w-sm -translate-y-1/2">
         <h1 className="mb-4 text-5xl font-bold text-black">
           Deep research made effortless
         </h1>
@@ -624,7 +621,7 @@ const DeepResearchAgent = () => {
             →
           </span>
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

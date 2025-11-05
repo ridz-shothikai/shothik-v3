@@ -29,24 +29,24 @@ import SummarizeIcon from "../../../attached_assets/icons/Summarize.svg";
 import TranslatorIcon from "../../../attached_assets/icons/Translator.svg";
 
 // Import brand-colored images
-import academicResearchImg from "../../../attached_assets/generated_images/Academic_research_database_f83c0112.webp";
-import academicSlidesImg from "../../../attached_assets/generated_images/Academic_slides_scholarly_d0594423.webp";
-import aiDetectionImg from "../../../attached_assets/generated_images/AI_detector_blue-green_b12ba8ea.webp";
-import dashboardImg from "../../../attached_assets/generated_images/Analytics_command_center_cc3460f4.webp";
-import businessPresentationImg from "../../../attached_assets/generated_images/Business_presentations_data_b07bdcf0.webp";
-import campaignImg from "../../../attached_assets/generated_images/Campaign_brain_neural_87fb1955.webp";
-import creativeImg from "../../../attached_assets/generated_images/Creative_canvas_AI_f5886843.webp";
-import aiRobotImg from "../../../attached_assets/generated_images/Humanizer_transformation_blue-green_8b4c2051.webp";
-import leadGenerationImg from "../../../attached_assets/generated_images/Lead_generation_network_fb03033e.webp";
-import marketResearchImg from "../../../attached_assets/generated_images/Market_research_insights_b3b57afc.webp";
-import paraphrasingImg from "../../../attached_assets/generated_images/Paraphrasing_green-blue_arrows_c569233c.webp";
-import plagiarismImg from "../../../attached_assets/generated_images/Plagiarism_shield_green-blue_67cd9cd3.webp";
-import productLinkImg from "../../../attached_assets/generated_images/Product_link_scanner_504b802d.webp";
-import rocketImg from "../../../attached_assets/generated_images/Rocket_launch_growth_81640870.webp";
-import stockAnalysisImg from "../../../attached_assets/generated_images/Stock_analysis_charts_f0dae739.webp";
-import summaryImg from "../../../attached_assets/generated_images/Summarizer_compression_visual_fd8495fa.webp";
-import translationImg from "../../../attached_assets/generated_images/Translation_globe_connections_35d12fd5.webp";
-import videoImg from "../../../attached_assets/generated_images/Video_production_suite_8ea05291.webp";
+import academicResearchImg from "../../../attached_assets/usecase_academicreseaearch.png";
+import academicSlidesImg from "../../../attached_assets/usecase_academicreseaearch.png";
+import dashboardImg from "../../../attached_assets/usecase_mindmap.png";
+import businessPresentationImg from "../../../attached_assets/usecase_slidegenerator.png";
+import campaignImg from "../../../attached_assets/usecase_campaignmaker.png";
+import creativeImg from "../../../attached_assets/usecase_creativechatcanvas.png";
+import leadGenerationImg from "../../../attached_assets/usecase_leadgeneration.png";
+import marketResearchImg from "../../../attached_assets/usecase_marketresearch.png";
+import productLinkImg from "../../../attached_assets/usecase_smartproductscan.png";
+import rocketImg from "../../../attached_assets/usecase_oneclick-all-live.png";
+import stockAnalysisImg from "../../../attached_assets/usecase_stockanalysis.png";
+import videoImg from "../../../attached_assets/usecase_creative-variations.png";
+import aiDetectionImg from "../../../attached_assets/usecase_aidetector.png";
+import aiRobotImg from "../../../attached_assets/usecase_humanized.png";
+import paraphrasingImg from "../../../attached_assets/usecase_parapharse.png";
+import plagiarismImg from "../../../attached_assets/usecase_plaigarism_checker.png";
+import summaryImg from "../../../attached_assets/usecase_summarize.png";
+import translationImg from "../../../attached_assets/usecase_translation-tool.png";
 
 interface GalleryCard {
   id: string;
@@ -346,13 +346,13 @@ export default function InspirationGallery() {
                     </div>
                   </CardContent>
 
-                  <div className="card-image before:to-card absolute right-0 bottom-0 left-0 translate-y-2.5 transform px-8 pb-0 transition-transform duration-300 group-hover:translate-y-16 before:pointer-events-none before:absolute before:top-[-25px] before:right-0 before:left-0 before:h-[25px] before:bg-gradient-to-b before:from-transparent before:content-['']">
+                  <div className="card-image before:to-card absolute right-0 bottom-0 left-0 translate-y-[30px] transform px-8 pb-0 transition-transform duration-300 group-hover:translate-y-16 before:pointer-events-none before:absolute before:top-[-25px] before:right-0 before:left-0 before:h-[25px] before:bg-gradient-to-b before:from-transparent before:content-['']">
                     <Image
                       src={
                         typeof card.image === "string" ? card.image : card.image
                       }
                       alt={card.title}
-                      className="mx-auto h-20 w-[85%] rounded-t-lg object-cover shadow-[0_8px_24px_rgba(0,0,0,0.15),0_4px_8px_rgba(0,0,0,0.1)]"
+                      className="mx-auto h-full w-[90%] rounded-t-lg object-cover shadow-[0_8px_24px_rgba(0,0,0,0.15),0_4px_8px_rgba(0,0,0,0.1)]"
                     />
                   </div>
                 </Card>

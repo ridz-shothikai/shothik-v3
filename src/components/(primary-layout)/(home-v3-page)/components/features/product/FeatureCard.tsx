@@ -13,7 +13,7 @@ interface FeatureCardProps {
   mockup: ReactNode;
   reverse?: boolean;
   index: number;
-  mockupType: string;
+  Interactive: ReactNode;
 }
 
 export default function FeatureCard({
@@ -25,7 +25,7 @@ export default function FeatureCard({
   mockup,
   reverse = false,
   index,
-  mockupType,
+  Interactive,
 }: FeatureCardProps) {
   return (
     <motion.div
@@ -33,13 +33,13 @@ export default function FeatureCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-      data-testid={`feature-${mockupType}`}
+      data-testid={`feature-${Interactive}`}
       className="mb-32 md:mb-48"
     >
       <div
-        className={`grid grid-cols-1 items-center gap-16 md:grid-cols-2 md:gap-24`}
+        className={`grid grid-cols-1 items-center gap-16 ${reverse ? "md:grid-cols-[70%_30%]" : "md:grid-cols-[30%_70%]"} md:gap-24`}
       >
-        <div className={reverse ? "md:order-2" : "md:order-1"}>
+        <div className={` ${reverse ? "md:order-2" : "md:order-1"} max-w-0xl`}>
           <div
             className="mb-8 inline-flex items-center gap-3 rounded-lg border px-5 py-2 transition-all duration-200 hover:translate-x-1"
             style={{
@@ -58,7 +58,7 @@ export default function FeatureCard({
             </span>
           </div>
 
-          <h3 className="text-h3 text-foreground mb-6 text-4xl leading-tight font-bold tracking-tight md:text-5xl">
+          <h3 className="text-foreground mb-6 text-4xl text-[27px] leading-tight font-bold tracking-tight md:text-3xl">
             {title}
           </h3>
 
@@ -68,7 +68,7 @@ export default function FeatureCard({
 
           <Button
             size="lg"
-            data-testid={`button-try-${mockupType}`}
+            data-testid={`button-try-${Interactive}`}
             className="rounded-lg px-10 py-7 text-base font-semibold tracking-wide shadow-[0_4px_14px_rgba(24,119,242,0.3)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(24,119,242,0.4)]"
             style={{ backgroundColor: "#1877F2" }}
           >
@@ -87,7 +87,7 @@ export default function FeatureCard({
           }}
           className={`${reverse ? "md:order-1" : "md:order-2"} hover-card-mockup`}
         >
-          {mockup}
+          {Interactive}
         </motion.div>
       </div>
 

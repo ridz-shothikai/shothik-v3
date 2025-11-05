@@ -19,13 +19,13 @@ export default function Home() {
       <ShothikHero />
       <InspirationGallery />
       <TrustedBy />
-      <FeaturesSection />
-      <ComparisonSection />
+      {/* <FeaturesSection /> */}
+      {/* <ComparisonSection /> */}
       <MetaAdsFeatures />
       <MindmapFeature />
       <FounderMessage />
-      <OneMoreThing />
-      <WhyShothik />
+      {/* <OneMoreThing /> */}
+      {/* <WhyShothik /> */}
       <FinalCTA />
     </main>
   );

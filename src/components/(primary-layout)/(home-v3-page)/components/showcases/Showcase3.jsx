@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const X = () => (
   <svg
@@ -597,23 +597,18 @@ const DataAnalysisAgent = () => {
   }
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-white">
+    <div className="relative h-80vw w-full bg-white">
       <div
         ref={windowRef}
-        className="absolute z-10 flex overflow-hidden rounded-xl border border-gray-200 bg-white shadow-2xl"
+        className="z-10 flex rounded-xl border border-gray-200 bg-white shadow-2xl"
         style={{
-          left: `${position.x}px`,
-          top: `${position.y}px`,
-          width: "1200px",
+          width: "1000px",
           maxWidth: "calc(100vw - 40px)",
         }}
       >
         {/* Left sidebar */}
         <div className="w-80 border-r border-gray-200 bg-white">
-          <div
-            className="drag-handle cursor-grab border-b border-gray-200 bg-white px-4 py-3 active:cursor-grabbing"
-            onMouseDown={handleMouseDown}
-          >
+          <div className="drag-handle border-b border-gray-200 bg-white px-4 py-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="h-3 w-3 rounded-full bg-gray-400"></div>
@@ -768,7 +763,7 @@ const DataAnalysisAgent = () => {
         </div>
       </div>
 
-      <div className="absolute top-1/2 left-12 max-w-sm -translate-y-1/2">
+      {/* <div className="absolute top-1/2 left-12 max-w-sm -translate-y-1/2">
         <h1 className="mb-4 text-5xl font-bold text-gray-900">
           Data extraction made effortless
         </h1>
@@ -781,7 +776,7 @@ const DataAnalysisAgent = () => {
           <span>Learn more</span>
           <span>→</span>
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

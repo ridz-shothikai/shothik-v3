@@ -86,7 +86,7 @@ export default function ShothikHero() {
 
       <div className="relative z-10 mx-auto max-w-[80rem] text-center">
         <div className="mb-12 md:mb-16">
-          <div className="mb-6 flex items-center justify-center gap-4 md:mb-8 md:gap-6">
+          <div className="mb-6 flex items-center justify-center md:mb-8">
             <div
               ref={checkmarkRef}
               className="animate-checkmark-bounce h-14 w-14 flex-shrink-0 motion-reduce:transform-none motion-reduce:animate-none md:h-20 md:w-20"

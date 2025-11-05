@@ -499,13 +499,13 @@ const SlideGenAgent = () => {
   }
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-white">
+    <div className="relative h-90vw w-full bg-white">
       <div
         ref={windowRef}
-        className="absolute z-10 flex overflow-hidden rounded-xl border border-gray-200 bg-white shadow-2xl"
+        className=" flex rounded-xl border border-gray-200 bg-white shadow-2xl"
         style={{
-          left: `${position.x}px`,
-          top: `${position.y}px`,
+          // left: `${position.x}px`,
+          // top: `${position.y}px`,
           width: "1000px",
           maxWidth: "calc(100vw - 40px)",
         }}
@@ -672,20 +672,6 @@ const SlideGenAgent = () => {
         </div>
       </div>
 
-      <div className="absolute top-1/2 left-12 max-w-sm -translate-y-1/2">
-        <h1 className="mb-4 text-5xl font-bold text-gray-900">
-          Ideas to presentations in minutes
-        </h1>
-        <p className="mb-6 text-xl text-gray-600">
-          Slide Gen Agent understands your topic, researches the content,
-          designs beautiful slides, and delivers a finished presentation ready
-          to present or share.
-        </p>
-        <button className="flex items-center space-x-2 text-lg font-semibold text-black transition-colors hover:text-gray-700">
-          <span>See how it works</span>
-          <span>→</span>
-        </button>
-      </div>
     </div>
   );
 };

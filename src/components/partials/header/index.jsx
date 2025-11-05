@@ -157,7 +157,7 @@ export default function Header({ className, layout }) {
         >
           <ChevronRight className="size-4" />
         </button>
-        <div className="flex h-full items-center justify-between gap-6 px-4">
+        <div className="flex h-full items-center justify-between gap-0 px-4">
           {/* Logo + Desktop Nav */}
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-2">
@@ -200,11 +200,11 @@ export default function Header({ className, layout }) {
                 </PopoverTrigger>
                 <PopoverContent
                   align="start"
-                  className="border-border bg-card w-[720px] max-w-[800px] border p-8 shadow-lg backdrop-blur-lg"
+                  className="border-border bg-card w-[1000px] max-w-[1000px] border p-8 shadow-lg backdrop-blur-lg"
                   onMouseLeave={() => setFeaturesOpen(false)}
                   data-testid="features-dropdown"
                 >
-                  <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                  <div className="grid grid-cols-2 gap-[-10px] lg:grid-cols-3">
                     {featuresSections.map((section) => (
                       <MenuColumn
                         key={section.title}

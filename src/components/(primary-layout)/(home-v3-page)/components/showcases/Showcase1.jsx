@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Simple icon components
 const X = () => (
@@ -101,7 +101,7 @@ const Trash = () => (
 );
 
 const CursorAgentUI = () => {
-  const [position, setPosition] = useState({ x: 500, y: 50 });
+  const [position, setPosition] = useState({ x: 500, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const windowRef = useRef(null);
@@ -325,19 +325,12 @@ const CursorAgentUI = () => {
   }
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden opacity-5">
-        <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-orange-500"></div>
-        <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-orange-500"></div>
-      </div>
-
+    <div>
       {/* Main modal window */}
       <div
         ref={windowRef}
-        className="absolute z-10 flex overflow-hidden rounded-xl bg-white shadow-2xl"
+        className="h-80vw z-10 flex rounded-xl bg-white shadow-2xl"
         style={{
-          left: `${position.x}px`,
           top: `${position.y}px`,
           width: "1000px",
           maxWidth: "calc(100vw - 40px)",
@@ -1224,21 +1217,6 @@ const CursorAgentUI = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Left side promotional content */}
-      <div className="absolute top-1/2 left-12 max-w-sm -translate-y-1/2">
-        <h1 className="mb-4 text-5xl font-bold text-gray-800">
-          Agent turns ideas into code
-        </h1>
-        <p className="mb-6 text-xl text-gray-600">
-          A human-AI programmer, orders of magnitude more effective than any
-          developer alone.
-        </p>
-        <button className="flex items-center space-x-2 text-lg font-semibold text-orange-600 transition-colors hover:text-orange-700">
-          <span>Learn about Agent</span>
-          <span>→</span>
-        </button>
       </div>
     </div>
   );
