@@ -1,5 +1,5 @@
-const RootPage = () => {
-  return <div></div>;
-};
+import { redirect } from "next/navigation";
 
-export default RootPage;
+export default function RootPage() {
+  redirect("/dashboard");
+}

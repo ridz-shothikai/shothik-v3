@@ -1,3 +1,5 @@
+"use client";
+
 import { campaignAPI, metaAPI } from "@/services/marketing-automation.service";
 import type { Ad } from "@/types/campaign";
 import { getRouteState } from "@/utils/getRouteState";
