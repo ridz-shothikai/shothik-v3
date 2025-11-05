@@ -1,17 +1,25 @@
-import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { useMetaData } from "../hooks/useMetaData";
-import { usePageMessages, useConversation, useSendMessage, useUserProfile } from "../hooks/useMessengerApi";
-import { useToggleAIChat } from "../hooks/useAIChatApi";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+// import { useToggleAIChat } from "@/hooks/(marketing-automation-page)/useAIChatApi";
 import {
-  MessageSquare,
+  useConversation,
+  usePageMessages,
+  useSendMessage,
+  useUserProfile,
+} from "@/hooks/(marketing-automation-page)/useMessengerApi";
+import { useMetaData } from "@/hooks/(marketing-automation-page)/useMetaData";
+import {
   ArrowLeft,
-  Send,
-  Loader2,
-  User,
-  CheckCheck,
   Check,
+  CheckCheck,
+  Loader2,
+  MessageSquare,
+  Send,
+  User,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface Attachment {
   type: string;
@@ -42,67 +50,77 @@ interface Conversation {
 }
 
 // Component to display conversation header with user name and AI toggle
-const ConversationHeader = ({ pageId, userId }: { pageId: string; userId: string }) => {
+const ConversationHeader = ({
+  pageId,
+  userId,
+}: {
+  pageId: string;
+  userId: string;
+}) => {
   const { data: userProfile } = useUserProfile(pageId, userId);
   const { data: metaData } = useMetaData();
-  const toggleAIChatMutation = useToggleAIChat();
-  
+  // const toggleAIChatMutation = useToggleAIChat();
+
   const displayName = userProfile?.name || `User ${userId.slice(-4)}`;
-  
+
   // Find current page's AI chat status
   const currentPage = metaData?.pages?.find((p: any) => p.id === pageId);
-  const aiChatEnabled = currentPage?.aiChatEnabled || false;
+  // const aiChatEnabled = currentPage?.aiChatEnabled || false;
 
-  const handleToggleAI = async () => {
-    try {
-      await toggleAIChatMutation.mutateAsync({
-        pageId,
-        enabled: !aiChatEnabled,
-      });
-    } catch (error) {
-      console.error("Failed to toggle AI chat:", error);
-    }
-  };
+  // const handleToggleAI = async () => {
+  //   try {
+  //     await toggleAIChatMutation.mutateAsync({
+  //       pageId,
+  //       enabled: !aiChatEnabled,
+  //     });
+  //   } catch (error) {
+  //     console.error("Failed to toggle AI chat:", error);
+  //   }
+  // };
 
   return (
-    <div className="bg-slate-900/80 backdrop-blur-xl border-b border-slate-700/50 px-6 py-5">
+    <div className="border-b border-slate-700/50 bg-slate-900/80 px-6 py-5 backdrop-blur-xl">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="relative">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
-              <User className="w-6 h-6 text-white" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg">
+              <User className="h-6 w-6 text-white" />
             </div>
-            <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-slate-900"></div>
+            <div className="absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-slate-900 bg-green-500"></div>
           </div>
           <div>
-            <h3 className="font-semibold text-gray-100 text-lg">{displayName}</h3>
-            <p className="text-xs text-green-400 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
+            <h3 className="text-lg font-semibold text-gray-100">
+              {displayName}
+            </h3>
+            <p className="flex items-center gap-1 text-xs text-green-400">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-400"></span>
               Active now
             </p>
           </div>
         </div>
-        
+
         {/* AI Chat Toggle */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-400">AI Chat</span>
-            <button
+            {/* <button
               onClick={handleToggleAI}
               disabled={toggleAIChatMutation.isPending}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                 aiChatEnabled ? "bg-emerald-600" : "bg-slate-700"
-              } ${toggleAIChatMutation.isPending ? "opacity-50 cursor-not-allowed" : ""}`}
+              } ${toggleAIChatMutation.isPending ? "cursor-not-allowed opacity-50" : ""}`}
             >
               <span
                 className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
                   aiChatEnabled ? "translate-x-6" : "translate-x-1"
                 }`}
               />
-            </button>
-            {aiChatEnabled && (
-              <span className="text-xs text-emerald-400 font-medium">Active</span>
-            )}
+            </button> */}
+            {/* {aiChatEnabled && (
+              <span className="text-xs font-medium text-emerald-400">
+                Active
+              </span>
+            )} */}
           </div>
         </div>
       </div>
@@ -130,31 +148,43 @@ const ConversationItem = ({
   return (
     <button
       onClick={onClick}
-      className={`w-full text-left p-4 rounded-xl transition-all duration-200 ${
+      className={`w-full rounded-xl p-4 text-left transition-all duration-200 ${
         isSelected
-          ? "bg-blue-600/20 border border-blue-500/40 shadow-lg shadow-blue-500/10"
-          : "bg-slate-800/40 border border-slate-700/40 hover:bg-slate-800/60 hover:border-slate-600/50"
+          ? "border border-blue-500/40 bg-blue-600/20 shadow-lg shadow-blue-500/10"
+          : "border border-slate-700/40 bg-slate-800/40 hover:border-slate-600/50 hover:bg-slate-800/60"
       }`}
     >
       <div className="flex items-start gap-3">
         <div className="relative flex-shrink-0">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-md">
-            <User className="w-6 h-6 text-white" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-md">
+            <User className="h-6 w-6 text-white" />
           </div>
           {conv.unreadCount > 0 && (
-            <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-blue-500 border-2 border-slate-900 flex items-center justify-center">
-              <span className="text-xs font-bold text-white">{conv.unreadCount}</span>
+            <div className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-slate-900 bg-blue-500">
+              <span className="text-xs font-bold text-white">
+                {conv.unreadCount}
+              </span>
             </div>
           )}
         </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-1.5">
-            <span className="font-semibold text-gray-100 text-sm truncate pr-2">{displayName}</span>
-            <span className="text-xs text-gray-500 flex-shrink-0">{formatTime(conv.lastMessageTime)}</span>
+        <div className="min-w-0 flex-1">
+          <div className="mb-1.5 flex items-center justify-between">
+            <span className="truncate pr-2 text-sm font-semibold text-gray-100">
+              {displayName}
+            </span>
+            <span className="flex-shrink-0 text-xs text-gray-500">
+              {formatTime(conv.lastMessageTime)}
+            </span>
           </div>
-          <p className={`text-sm truncate ${
-            conv.unreadCount > 0 ? "text-gray-300 font-medium" : "text-gray-400"
-          }`}>{conv.lastMessage}</p>
+          <p
+            className={`truncate text-sm ${
+              conv.unreadCount > 0
+                ? "font-medium text-gray-300"
+                : "text-gray-400"
+            }`}
+          >
+            {conv.lastMessage}
+          </p>
         </div>
       </div>
     </button>
@@ -162,18 +192,19 @@ const ConversationItem = ({
 };
 
 export const MessengerInbox = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { data: metaData, isLoading: metaLoading } = useMetaData();
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
-  const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
+  const [selectedConversation, setSelectedConversation] = useState<
+    string | null
+  >(null);
   const [messageText, setMessageText] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const { data: messagesData, isLoading: messagesLoading } = usePageMessages(selectedPage);
-  const { data: conversationData, isLoading: conversationLoading } = useConversation(
-    selectedPage,
-    selectedConversation
-  );
+  const { data: messagesData, isLoading: messagesLoading } =
+    usePageMessages(selectedPage);
+  const { data: conversationData, isLoading: conversationLoading } =
+    useConversation(selectedPage, selectedConversation);
   const sendMessageMutation = useSendMessage();
 
   // Auto-select first page
@@ -195,7 +226,8 @@ export const MessengerInbox = () => {
 
     messagesData.messages.forEach((msg: Message) => {
       // Group by sender (the user, not the page)
-      const senderId = msg.senderId === selectedPage ? msg.recipientId : msg.senderId;
+      const senderId =
+        msg.senderId === selectedPage ? msg.recipientId : msg.senderId;
       if (!senderMap.has(senderId)) {
         senderMap.set(senderId, []);
       }
@@ -206,7 +238,7 @@ export const MessengerInbox = () => {
       const sortedMessages = messages.sort((a, b) => b.timestamp - a.timestamp);
       const lastMessage = sortedMessages[0];
       const unreadCount = messages.filter(
-        (m) => !m.isRead && m.senderId !== selectedPage
+        (m) => !m.isRead && m.senderId !== selectedPage,
       ).length;
 
       conversations.push({
@@ -253,33 +285,36 @@ export const MessengerInbox = () => {
 
   const getMessageStatus = (msg: Message) => {
     if (msg.senderId !== selectedPage) return null; // Only show status for sent messages
-    if (msg.isRead) return <CheckCheck className="w-4 h-4 text-blue-400" />;
-    if (msg.isDelivered) return <CheckCheck className="w-4 h-4 text-gray-500" />;
-    return <Check className="w-4 h-4 text-gray-500" />;
+    if (msg.isRead) return <CheckCheck className="h-4 w-4 text-blue-400" />;
+    if (msg.isDelivered)
+      return <CheckCheck className="h-4 w-4 text-gray-500" />;
+    return <Check className="h-4 w-4 text-gray-500" />;
   };
 
   if (metaLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
+      <div className="flex min-h-screen items-center justify-center bg-slate-950">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-400" />
       </div>
     );
   }
 
   if (!metaData || !metaData.pages || metaData.pages.length === 0) {
     return (
-      <div className="min-h-screen bg-slate-950 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] opacity-20"></div>
-        <div className="relative flex items-center justify-center min-h-screen p-4">
-          <div className="max-w-md w-full bg-slate-900/60 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl p-8 text-center">
-            <MessageSquare className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-gray-200 mb-2">No Pages Connected</h2>
-            <p className="text-gray-400 mb-6">
+      <div className="relative min-h-screen overflow-hidden bg-slate-950">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] bg-[size:4rem_4rem] opacity-20"></div>
+        <div className="relative flex min-h-screen items-center justify-center p-4">
+          <div className="w-full max-w-md rounded-2xl border border-slate-700/50 bg-slate-900/60 p-8 text-center shadow-2xl backdrop-blur-xl">
+            <MessageSquare className="mx-auto mb-4 h-16 w-16 text-gray-500" />
+            <h2 className="mb-2 text-xl font-semibold text-gray-200">
+              No Pages Connected
+            </h2>
+            <p className="mb-6 text-gray-400">
               Connect your Facebook account to start managing messages.
             </p>
             <button
-              onClick={() => navigate("/analysis")}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all font-medium"
+              onClick={() => router.push("/analysis")}
+              className="rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-3 font-medium text-white transition-all hover:from-blue-700 hover:to-purple-700"
             >
               Connect Meta Account
             </button>
@@ -292,28 +327,32 @@ export const MessengerInbox = () => {
   const selectedPageData = metaData.pages.find((p) => p.id === selectedPage);
 
   return (
-    <div className="min-h-screen bg-slate-950 relative overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden bg-slate-950">
       {/* Background pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] opacity-20"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] bg-[size:4rem_4rem] opacity-20"></div>
 
-      <div className="relative h-screen flex flex-col">
+      <div className="relative flex h-screen flex-col">
         {/* Header */}
-        <div className="bg-slate-900/60 backdrop-blur-xl border-b border-slate-700/50 px-6 py-4">
+        <div className="border-b border-slate-700/50 bg-slate-900/60 px-6 py-4 backdrop-blur-xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
-                onClick={() => navigate("/analysis")}
-                className="text-gray-400 hover:text-gray-200 transition-colors"
+                onClick={() => router.push("/analysis")}
+                className="text-gray-400 transition-colors hover:text-gray-200"
               >
-                <ArrowLeft className="w-5 h-5" />
+                <ArrowLeft className="h-5 w-5" />
               </button>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-blue-500/30 flex items-center justify-center">
-                  <MessageSquare className="w-5 h-5 text-blue-400" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-500/30 bg-gradient-to-br from-blue-600/20 to-purple-600/20">
+                  <MessageSquare className="h-5 w-5 text-blue-400" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-gray-100">Messenger Inbox</h1>
-                  <p className="text-sm text-gray-400">{selectedPageData?.name}</p>
+                  <h1 className="text-xl font-bold text-gray-100">
+                    Messenger Inbox
+                  </h1>
+                  <p className="text-sm text-gray-400">
+                    {selectedPageData?.name}
+                  </p>
                 </div>
               </div>
             </div>
@@ -326,7 +365,7 @@ export const MessengerInbox = () => {
                   setSelectedPage(e.target.value);
                   setSelectedConversation(null);
                 }}
-                className="bg-slate-800/50 border border-slate-700/50 text-gray-200 rounded-xl px-4 py-2 focus:outline-none focus:border-blue-500/50"
+                className="rounded-xl border border-slate-700/50 bg-slate-800/50 px-4 py-2 text-gray-200 focus:border-blue-500/50 focus:outline-none"
               >
                 {metaData.pages.map((page) => (
                   <option key={page.id} value={page.id}>
@@ -339,22 +378,22 @@ export const MessengerInbox = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 flex overflow-hidden">
+        <div className="flex flex-1 overflow-hidden">
           {/* Conversations List */}
-          <div className="w-80 bg-slate-900/40 backdrop-blur-md border-r border-slate-700/50 overflow-y-auto">
+          <div className="w-80 overflow-y-auto border-r border-slate-700/50 bg-slate-900/40 backdrop-blur-md">
             <div className="p-4">
-              <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4 px-2">
+              <h2 className="mb-4 px-2 text-xs font-bold tracking-wider text-gray-400 uppercase">
                 Messages
               </h2>
 
               {messagesLoading ? (
                 <div className="flex items-center justify-center py-8">
-                  <Loader2 className="w-6 h-6 animate-spin text-blue-400" />
+                  <Loader2 className="h-6 w-6 animate-spin text-blue-400" />
                 </div>
               ) : conversations.length === 0 ? (
-                <div className="text-center py-8">
-                  <MessageSquare className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-                  <p className="text-gray-500 text-sm">No conversations yet</p>
+                <div className="py-8 text-center">
+                  <MessageSquare className="mx-auto mb-3 h-12 w-12 text-gray-600" />
+                  <p className="text-sm text-gray-500">No conversations yet</p>
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -374,12 +413,12 @@ export const MessengerInbox = () => {
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 flex flex-col">
+          <div className="flex flex-1 flex-col">
             {!selectedConversation ? (
-              <div className="flex-1 flex items-center justify-center">
+              <div className="flex flex-1 items-center justify-center">
                 <div className="text-center">
-                  <MessageSquare className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-300 mb-2">
+                  <MessageSquare className="mx-auto mb-4 h-16 w-16 text-gray-600" />
+                  <h3 className="mb-2 text-xl font-semibold text-gray-300">
                     Select a conversation
                   </h3>
                   <p className="text-gray-500">
@@ -390,13 +429,16 @@ export const MessengerInbox = () => {
             ) : (
               <>
                 {/* Conversation Header */}
-                <ConversationHeader pageId={selectedPage!} userId={selectedConversation} />
+                <ConversationHeader
+                  pageId={selectedPage!}
+                  userId={selectedConversation}
+                />
 
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-6 space-y-3">
+                <div className="flex-1 space-y-3 overflow-y-auto p-6">
                   {conversationLoading ? (
                     <div className="flex items-center justify-center py-8">
-                      <Loader2 className="w-6 h-6 animate-spin text-blue-400" />
+                      <Loader2 className="h-6 w-6 animate-spin text-blue-400" />
                     </div>
                   ) : (
                     <>
@@ -405,9 +447,15 @@ export const MessengerInbox = () => {
                         .reverse()
                         .map((msg: Message) => {
                           const isFromPage = msg.senderId === selectedPage;
-                          const hasImage = msg.attachments?.some((att) => att.type === "image");
-                          const imageAttachment = msg.attachments?.find((att) => att.type === "image");
-                          const imageUrl = imageAttachment?.payload?.url as string | undefined;
+                          const hasImage = msg.attachments?.some(
+                            (att) => att.type === "image",
+                          );
+                          const imageAttachment = msg.attachments?.find(
+                            (att) => att.type === "image",
+                          );
+                          const imageUrl = imageAttachment?.payload?.url as
+                            | string
+                            | undefined;
 
                           return (
                             <div
@@ -415,16 +463,16 @@ export const MessengerInbox = () => {
                               className={`flex items-end gap-2 ${isFromPage ? "justify-end" : "justify-start"}`}
                             >
                               {!isFromPage && (
-                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0 mb-1">
-                                  <User className="w-4 h-4 text-white" />
+                                <div className="mb-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600">
+                                  <User className="h-4 w-4 text-white" />
                                 </div>
                               )}
-                              <div className="flex flex-col max-w-md">
+                              <div className="flex max-w-md flex-col">
                                 <div
                                   className={`${
                                     isFromPage
-                                      ? "bg-gradient-to-r from-blue-600 to-purple-600 rounded-[20px] rounded-br-md shadow-lg"
-                                      : "bg-slate-800/80 backdrop-blur-md border border-slate-700/50 rounded-[20px] rounded-bl-md shadow-md"
+                                      ? "rounded-[20px] rounded-br-md bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg"
+                                      : "rounded-[20px] rounded-bl-md border border-slate-700/50 bg-slate-800/80 shadow-md backdrop-blur-md"
                                   } px-4 py-2.5`}
                                 >
                                   {/* Image Attachment */}
@@ -433,9 +481,10 @@ export const MessengerInbox = () => {
                                       <img
                                         src={imageUrl}
                                         alt="Attachment"
-                                        className="rounded-xl max-w-full h-auto max-h-64 object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                                        className="h-auto max-h-64 max-w-full cursor-pointer rounded-xl object-cover transition-opacity hover:opacity-90"
                                         onError={(e) => {
-                                          e.currentTarget.style.display = "none";
+                                          e.currentTarget.style.display =
+                                            "none";
                                         }}
                                       />
                                     </div>
@@ -443,19 +492,23 @@ export const MessengerInbox = () => {
 
                                   {/* Text Message */}
                                   {msg.text && (
-                                    <p className="text-white text-[15px] leading-relaxed break-words">
+                                    <p className="text-[15px] leading-relaxed break-words text-white">
                                       {msg.text}
                                     </p>
                                   )}
 
                                   {/* No content fallback */}
                                   {!msg.text && !hasImage && (
-                                    <p className="text-gray-300 text-sm italic">(attachment)</p>
+                                    <p className="text-sm text-gray-300 italic">
+                                      (attachment)
+                                    </p>
                                   )}
                                 </div>
-                                <div className={`flex items-center gap-1.5 mt-1 px-1 ${
-                                  isFromPage ? "justify-end" : "justify-start"
-                                }`}>
+                                <div
+                                  className={`mt-1 flex items-center gap-1.5 px-1 ${
+                                    isFromPage ? "justify-end" : "justify-start"
+                                  }`}
+                                >
                                   <span className="text-xs text-gray-500">
                                     {formatTime(msg.timestamp)}
                                   </span>
@@ -471,28 +524,34 @@ export const MessengerInbox = () => {
                 </div>
 
                 {/* Message Input */}
-                <div className="bg-slate-900/80 backdrop-blur-xl border-t border-slate-700/50 p-5">
+                <div className="border-t border-slate-700/50 bg-slate-900/80 p-5 backdrop-blur-xl">
                   <div className="flex items-end gap-3">
-                    <div className="flex-1 relative">
+                    <div className="relative flex-1">
                       <input
                         type="text"
                         value={messageText}
                         onChange={(e) => setMessageText(e.target.value)}
-                        onKeyPress={(e) => e.key === "Enter" && !e.shiftKey && handleSendMessage()}
+                        onKeyPress={(e) =>
+                          e.key === "Enter" &&
+                          !e.shiftKey &&
+                          handleSendMessage()
+                        }
                         placeholder="Type a message..."
-                        className="w-full bg-slate-800/60 border border-slate-700/50 text-gray-200 rounded-[24px] px-5 py-3.5 pr-12 focus:outline-none focus:border-blue-500/50 focus:bg-slate-800/80 placeholder-gray-500 transition-all text-[15px]"
+                        className="w-full rounded-[24px] border border-slate-700/50 bg-slate-800/60 px-5 py-3.5 pr-12 text-[15px] text-gray-200 placeholder-gray-500 transition-all focus:border-blue-500/50 focus:bg-slate-800/80 focus:outline-none"
                         disabled={sendMessageMutation.isPending}
                       />
                     </div>
                     <button
                       onClick={handleSendMessage}
-                      disabled={!messageText.trim() || sendMessageMutation.isPending}
-                      className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3.5 rounded-full hover:from-blue-700 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+                      disabled={
+                        !messageText.trim() || sendMessageMutation.isPending
+                      }
+                      className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 p-3.5 text-white shadow-lg transition-all hover:scale-105 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {sendMessageMutation.isPending ? (
-                        <Loader2 className="w-5 h-5 animate-spin" />
+                        <Loader2 className="h-5 w-5 animate-spin" />
                       ) : (
-                        <Send className="w-5 h-5" />
+                        <Send className="h-5 w-5" />
                       )}
                     </button>
                   </div>

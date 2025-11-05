@@ -225,12 +225,12 @@ export const metaAPI = {
   },
 
   getWebhookStatus: async (pageId: string) => {
-    const response = await api.get(`/api/connect/webhook/status/${pageId}`);
+    const response = await api.get(`/marketing/connect/webhook/status/${pageId}`);
     return response.data;
   },
 
   subscribeWebhook: async (pageId: string) => {
-    const response = await api.post("/api/connect/webhook/subscribe", {
+    const response = await api.post("/marketing/connect/webhook/subscribe", {
       pageId,
     });
     return response.data;
@@ -238,7 +238,7 @@ export const metaAPI = {
 
   // Unsubscribe a page from webhook
   unsubscribeWebhook: async (pageId: string) => {
-    const response = await api.post("/api/connect/webhook/unsubscribe", {
+    const response = await api.post("/marketing/connect/webhook/unsubscribe", {
       pageId,
     });
     return response.data;
