@@ -31,6 +31,8 @@ export default function Canvas() {
   const searchParams = useSearchParams();
   const state = getRouteState(searchParams);
 
+  console.log("state", searchParams);
+
   const [hasShownWelcomeMessage, setHasShownWelcomeMessage] = useState(false);
 
   const [chatMessages, setChatMessages] = useState<
@@ -221,8 +223,8 @@ Would you like me to explain the personas, show you the ad concepts, or help you
   return (
     <div className="flex flex-1 flex-col bg-[#020617]">
       {/* Header */}
-      <div className="sticky top-0 z-10 border-b border-slate-900/50 bg-[#020617]/80 backdrop-blur-sm">
-        <div className="px-6 py-4">
+      <div className="sticky top-0 z-10 flex h-12 items-center justify-center border-b border-slate-900/50 bg-[#020617]/80 backdrop-blur-sm lg:h-16">
+        <div className="w-full px-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button

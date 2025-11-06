@@ -69,12 +69,13 @@ export default function MindMapView() {
   const fetchMindMap = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("token");
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const token = localStorage.getItem("accessToken");
 
       // If mindMapId is provided, fetch specific mind map, otherwise generate new one
       const url = mindMapId
-        ? `http://localhost:3000/marketing/projects/mindmap/${mindMapId}`
-        : `http://localhost:3000/marketing/projects/${analysisId}/mindmap`;
+        ? `${apiUrl}/marketing/projects/mindmap/${mindMapId}`
+        : `${apiUrl}/marketing/projects/${analysisId}/mindmap`;
 
       const response = await fetch(url, {
         headers: {

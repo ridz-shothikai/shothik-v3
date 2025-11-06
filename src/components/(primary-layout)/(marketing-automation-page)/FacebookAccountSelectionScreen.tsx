@@ -165,8 +165,7 @@ export default function FacebookAccountSelectionScreen() {
         }
 
         // Fetch project to get URL
-        const apiUrl =
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
         const token = localStorage.getItem("accessToken");
         const projectResponse = await fetch(
           `${apiUrl}/marketing/projects/${projectId}`,

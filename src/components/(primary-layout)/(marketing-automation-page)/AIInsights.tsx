@@ -68,11 +68,13 @@ export default function AIInsights() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("accessToken");
 
         // Fetch mind map history
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
         const mindMapResponse = await fetch(
-          `http://localhost:3000/marketing/projects/${analysisId}/mindmap/history`,
+          `${apiUrl}/marketing/projects/${analysisId}/mindmap/history`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -88,7 +90,7 @@ export default function AIInsights() {
         // Fetch chat history if projectId is available
         if (projectId) {
           const chatResponse = await fetch(
-            `http://localhost:3000/marketing/chat/history/${projectId}?limit=50`,
+            `${apiUrl}/marketing/chat/history/${projectId}?limit=50`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -174,21 +176,19 @@ export default function AIInsights() {
     setIsLoading(true);
 
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        "http://localhost:3000/marketing/chat/message",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            projectId,
-            message: inputMessage,
-          }),
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(`${apiUrl}/marketing/chat/message`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+        body: JSON.stringify({
+          projectId,
+          message: inputMessage,
+        }),
+      });
 
       if (response.ok) {
         const result = await response.json();
