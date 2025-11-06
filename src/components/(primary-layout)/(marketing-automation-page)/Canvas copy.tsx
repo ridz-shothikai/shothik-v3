@@ -223,7 +223,7 @@ Would you like me to explain the personas, show you the ad concepts, or help you
   return (
     <div className="flex flex-1 flex-col bg-[#020617]">
       {/* Header */}
-      <div className="sticky top-0 z-10 flex h-12 items-center justify-center border-b border-slate-900/50 bg-[#020617]/80 backdrop-blur-sm md:h-16">
+      <div className="sticky top-0 z-10 flex h-12 items-center justify-center border-b border-slate-900/50 bg-[#020617]/80 backdrop-blur-sm lg:h-16">
         <div className="w-full px-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -235,11 +235,11 @@ Would you like me to explain the personas, show you the ad concepts, or help you
                 <ArrowLeft className="h-5 w-5 text-gray-400" />
               </button>
               <div>
-                <h1 className="flex items-center gap-2 text-base font-bold text-white">
+                <h1 className="flex items-center gap-2 text-xl font-bold text-white">
                   <Sparkles className="h-5 w-5 text-teal-400" />
                   Campaign Canvas
                 </h1>
-                <p className="hidden text-xs text-gray-400 lg:block">
+                <p className="text-sm text-gray-400">
                   {analysis.product.title}
                 </p>
               </div>
@@ -258,56 +258,14 @@ Would you like me to explain the personas, show you the ad concepts, or help you
       </div>
 
       {/* Main Content */}
-      <div className="relative grid md:grid-cols-3">
-        {/* Desktop ChatBox - Hidden on mobile */}
-        <div
-          className={cn(
-            "bg-background sticky top-16 bottom-0 left-0 hidden overflow-hidden overflow-y-auto md:block md:h-[calc(100vh-8rem)]",
-          )}
-        >
-          <ChatBox
-            messages={chatMessages}
-            onSendMessage={handleSendMessage}
-            analysis={analysis}
-            projectId={projectId || ""}
-            onDataModified={handleDataModified}
-          />
-        </div>
-
-        {/* Canvas Body - Full width on mobile, 2/3 on desktop */}
-        <div className="bg-background overflow-hidden md:col-span-2">
-          <CanvasBody
-            analysis={analysis}
-            initialSuggestions={initialSuggestions}
-            loadingSuggestions={isLoadingSuggestions}
-          />
-        </div>
-      </div>
-
-      {/* Mobile Chat Button - Floating action button */}
-      <button
-        onClick={() => setIsChatSheetOpen(true)}
-        className="fixed right-6 bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-purple-600 text-white shadow-lg shadow-purple-500/50 transition-all hover:scale-110 hover:bg-purple-700 active:scale-95 md:hidden"
-        aria-label="Open chat"
-      >
-        <MessageCircle className="h-6 w-6" />
-        {chatMessages.length > 0 && (
-          <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
-            {chatMessages.length}
-          </span>
-        )}
-      </button>
-
-      {/* Mobile Chat Sheet */}
-      <Sheet open={isChatSheetOpen} onOpenChange={setIsChatSheetOpen}>
-        <SheetContent
-          side="left"
-          className="w-[85vw] max-w-sm overflow-hidden p-0"
-        >
-          <SheetHeader className="sr-only">
-            <SheetTitle>AI Assistant</SheetTitle>
-          </SheetHeader>
-          <div className="h-full">
+      <div className="relative flex-1 overflow-hidden">
+        <div className="grid md:absolute md:inset-0 md:overflow-y-auto">
+          {/* Desktop ChatBox - Hidden on mobile */}
+          <div
+            className={cn(
+              "bg-background absolute top-0 bottom-0 left-0 hidden h-full overflow-hidden overflow-y-auto md:block md:w-1/3",
+            )}
+          >
             <ChatBox
               messages={chatMessages}
               onSendMessage={handleSendMessage}
@@ -316,8 +274,52 @@ Would you like me to explain the personas, show you the ad concepts, or help you
               onDataModified={handleDataModified}
             />
           </div>
-        </SheetContent>
-      </Sheet>
+
+          {/* Mobile Chat Sheet */}
+          <Sheet open={isChatSheetOpen} onOpenChange={setIsChatSheetOpen}>
+            <SheetContent
+              side="left"
+              className="w-[85vw] max-w-sm overflow-hidden p-0"
+            >
+              <SheetHeader className="sr-only">
+                <SheetTitle>AI Assistant</SheetTitle>
+              </SheetHeader>
+              <div className="h-full">
+                <ChatBox
+                  messages={chatMessages}
+                  onSendMessage={handleSendMessage}
+                  analysis={analysis}
+                  projectId={projectId || ""}
+                  onDataModified={handleDataModified}
+                />
+              </div>
+            </SheetContent>
+          </Sheet>
+
+          {/* Canvas Body - Full width on mobile, 2/3 on desktop */}
+          <div className="bg-background h-full w-full overflow-hidden overflow-y-auto md:absolute md:top-0 md:right-0 md:bottom-0 md:w-2/3">
+            <CanvasBody
+              analysis={analysis}
+              initialSuggestions={initialSuggestions}
+              loadingSuggestions={isLoadingSuggestions}
+            />
+          </div>
+
+          {/* Mobile Chat Button - Floating action button */}
+          <button
+            onClick={() => setIsChatSheetOpen(true)}
+            className="fixed right-6 bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-purple-600 text-white shadow-lg shadow-purple-500/50 transition-all hover:scale-110 hover:bg-purple-700 active:scale-95 md:hidden"
+            aria-label="Open chat"
+          >
+            <MessageCircle className="h-6 w-6" />
+            {chatMessages.length > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+                {chatMessages.length}
+              </span>
+            )}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

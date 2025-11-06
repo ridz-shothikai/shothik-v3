@@ -141,13 +141,13 @@ export default function ChatBox({
   return (
     <div className="flex h-full flex-col bg-slate-900/30">
       {/* Chat Header */}
-      <div className="border-b border-slate-800/50 p-6">
-        <div className="flex items-center gap-3">
+      <div className="flex h-12 items-center border-b border-slate-800/50 px-4 lg:h-16">
+        <div className="flex w-full items-center gap-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-purple-500/30 bg-purple-500/20">
             <Sparkles className="h-5 w-5 text-purple-400" />
           </div>
           <div>
-            <h2 className="font-semibold text-white">AI Assistant</h2>
+            <h2 className="text-base font-semibold text-white">AI Assistant</h2>
             <p className="text-xs text-gray-400">
               Campaign & Ad Creation Helper
             </p>
@@ -310,20 +310,20 @@ export default function ChatBox({
       )}
 
       {/* Input Area */}
-      <div className="border-t border-slate-800/50 p-6">
-        <form onSubmit={handleSubmit} className="flex gap-2">
+      <div className="border-t  border-slate-800/50 px-4">
+        <form onSubmit={handleSubmit} className="flex w-full gap-2">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask anything about your campaign..."
             disabled={isTyping}
-            className="flex-1 rounded-xl border border-slate-700/50 bg-slate-800/60 px-4 py-3 text-white placeholder-gray-500 focus:border-transparent focus:ring-2 focus:ring-purple-500 focus:outline-none disabled:opacity-50"
+            className="flex-1 rounded-xl border border-slate-700/50 bg-slate-800/60 px-4 text-white placeholder-gray-500 focus:border-transparent focus:ring-2 focus:ring-purple-500 focus:outline-none disabled:opacity-50"
           />
           <button
             type="submit"
             disabled={!input.trim() || isTyping}
-            className="rounded-xl bg-purple-600 p-3 text-white shadow-lg shadow-purple-500/20 transition-all hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex aspect-square size-8 items-center justify-center rounded-xl bg-purple-600 text-white shadow-lg shadow-purple-500/20 transition-all hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isTyping ? (
               <Loader2 className="h-5 w-5 animate-spin" />
