@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Target } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -7,23 +9,20 @@ export default function EmptyState() {
   const router = useRouter();
 
   return (
-    <div className="rounded-xl border border-slate-800/50 bg-slate-800/60 p-12 text-center">
-      <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-slate-800">
-        <Target className="h-10 w-10 text-gray-500" />
+    <Card className="p-12 text-center">
+      <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-muted">
+        <Target className="h-10 w-10 text-muted-foreground" />
       </div>
-      <h2 className="mb-2 text-2xl font-bold text-white">
+      <h2 className="mb-2 text-2xl font-bold text-foreground">
         No Published Campaigns Yet
       </h2>
-      <p className="mx-auto mb-6 max-w-md text-gray-400">
+      <p className="mx-auto mb-6 max-w-md text-muted-foreground">
         Publish your first campaign to Meta to see performance insights and
         AI-powered optimization suggestions.
       </p>
-      <button
-        onClick={() => router.push("/marketing-automation/analysis")}
-        className="rounded-lg bg-purple-600 px-6 py-3 font-medium text-white transition-colors hover:bg-purple-700"
-      >
+      <Button onClick={() => router.push("/marketing-automation/analysis")}>
         Go to Projects
-      </button>
-    </div>
+      </Button>
+    </Card>
   );
 }
