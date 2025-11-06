@@ -1,6 +1,6 @@
-import { Play, Settings, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Play, Settings, Trash2 } from "lucide-react";
 
 interface AvatarPreviewProps {
   personaImage: string;
@@ -22,8 +22,8 @@ export default function AvatarPreview({
           className="h-20 w-20 rounded-lg object-cover"
         />
         <div className="flex-1">
-          <h3 className="font-semibold text-foreground">{personaName}</h3>
-          <p className="text-sm text-muted-foreground">{personaId}</p>
+          <h3 className="text-foreground font-semibold">{personaName}</h3>
+          <p className="text-muted-foreground text-sm">{personaId}</p>
         </div>
         <div className="flex gap-2">
           <Button variant="ghost" size="icon">

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -132,8 +132,8 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
         <span className="font-semibold">⚙️ Advanced Settings</span>
         <svg
           className={cn(
-            "w-5 h-5 transition-transform",
-            props.showAdvancedSettings && "rotate-180"
+            "h-5 w-5 transition-transform",
+            props.showAdvancedSettings && "rotate-180",
           )}
           fill="none"
           stroke="currentColor"
@@ -152,7 +152,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
         <Card className="mt-4 space-y-6 p-6">
           {/* Avatar Settings */}
           <div>
-            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+            <CardTitle className="text-primary mb-4 text-lg font-semibold">
               Avatar Settings
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
@@ -214,13 +214,13 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 onChange={(e) => props.setAvatarHidden(e.target.checked)}
                 className="h-4 w-4"
               />
-              <span className="text-sm text-muted-foreground">Hide Avatar</span>
+              <span className="text-muted-foreground text-sm">Hide Avatar</span>
             </label>
           </div>
 
           {/* Voice Settings */}
           <div>
-            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+            <CardTitle className="text-primary mb-4 text-lg font-semibold">
               Voice Settings
             </CardTitle>
             <div>
@@ -240,7 +240,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
 
           {/* Caption Settings */}
           <div>
-            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+            <CardTitle className="text-primary mb-4 text-lg font-semibold">
               Caption Settings
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
@@ -338,13 +338,15 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 onChange={(e) => props.setCaptionHidden(e.target.checked)}
                 className="h-4 w-4"
               />
-              <span className="text-sm text-muted-foreground">Hide Captions</span>
+              <span className="text-muted-foreground text-sm">
+                Hide Captions
+              </span>
             </label>
           </div>
 
           {/* Background Settings */}
           <div>
-            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+            <CardTitle className="text-primary mb-4 text-lg font-semibold">
               Background
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
@@ -419,7 +421,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
 
           {/* Transition Effects */}
           <div>
-            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+            <CardTitle className="text-primary mb-4 text-lg font-semibold">
               Transition Effects
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
@@ -446,7 +448,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
 
           {/* Visual Style */}
           <div>
-            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+            <CardTitle className="text-primary mb-4 text-lg font-semibold">
               Visual Style
             </CardTitle>
             <div>
@@ -462,7 +464,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
 
           {/* CTA Settings */}
           <div>
-            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+            <CardTitle className="text-primary mb-4 text-lg font-semibold">
               Call to Action (CTA)
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
@@ -536,13 +538,15 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 onChange={(e) => props.setCtaBackgroundBlur(e.target.checked)}
                 className="h-4 w-4"
               />
-              <span className="text-sm text-muted-foreground">Blur Background</span>
+              <span className="text-muted-foreground text-sm">
+                Blur Background
+              </span>
             </label>
           </div>
 
           {/* End Screen CTA */}
           <div>
-            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+            <CardTitle className="text-primary mb-4 text-lg font-semibold">
               End Screen CTA
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
@@ -558,7 +562,9 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                   />
                   {props.onOpenAssetSelector && (
                     <Button
-                      onClick={() => props.onOpenAssetSelector?.("end-cta-logo")}
+                      onClick={() =>
+                        props.onOpenAssetSelector?.("end-cta-logo")
+                      }
                       size="sm"
                     >
                       Select
@@ -616,7 +622,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
 
           {/* Background Music */}
           <div>
-            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+            <CardTitle className="text-primary mb-4 text-lg font-semibold">
               Background Music
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
@@ -647,7 +653,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
 
           {/* Other Settings */}
           <div>
-            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+            <CardTitle className="text-primary mb-4 text-lg font-semibold">
               Other Settings
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
@@ -676,7 +682,9 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                   <SelectContent>
                     <SelectItem value="standard">Standard</SelectItem>
                     <SelectItem value="aurora_v1">Aurora V1</SelectItem>
-                    <SelectItem value="aurora_v1_fast">Aurora V1 Fast</SelectItem>
+                    <SelectItem value="aurora_v1_fast">
+                      Aurora V1 Fast
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -688,7 +696,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                   onChange={(e) => props.setWebhookUrl(e.target.value)}
                   placeholder="https://example.com/webhook"
                 />
-                <p className="mt-1 text-xs text-muted-foreground">
+                <p className="text-muted-foreground mt-1 text-xs">
                   Receive notification when video generation completes
                 </p>
               </div>

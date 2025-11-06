@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Camera,
   Film,
@@ -9,8 +11,6 @@ import {
   Wand2,
   Zap,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 
 interface CreativeToolsSectionProps {
   onToolClick: (toolId: string) => void;
@@ -102,7 +102,7 @@ export default function CreativeToolsSection({
     <>
       {/* Greeting */}
       <div className="mb-8">
-        <h2 className="mb-2 text-3xl font-bold text-foreground">
+        <h2 className="text-foreground mb-2 text-3xl font-bold">
           Good afternoon, Rashaduzamman Rian!
         </h2>
       </div>
@@ -113,7 +113,7 @@ export default function CreativeToolsSection({
           <Card
             key={tool.id}
             onClick={() => onToolClick(tool.id)}
-            className="group relative cursor-pointer overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:border-primary"
+            className="group hover:border-primary relative cursor-pointer overflow-hidden transition-all duration-300 hover:scale-[1.02]"
           >
             <div className="relative h-full overflow-hidden p-6">
               <div className="absolute inset-0 opacity-20">
@@ -126,15 +126,15 @@ export default function CreativeToolsSection({
               <div className="relative z-10">
                 <div className="mb-4 flex items-start justify-between">
                   <div>
-                    <h3 className="mb-2 text-2xl font-bold text-foreground">
+                    <h3 className="text-foreground mb-2 text-2xl font-bold">
                       {tool.title}
                     </h3>
-                    <p className="max-w-xs text-sm text-muted-foreground">
+                    <p className="text-muted-foreground max-w-xs text-sm">
                       {tool.description}
                     </p>
                   </div>
                   {tool.badge && (
-                    <span className="rounded-full border border-border bg-primary/10 px-3 py-1 text-xs font-semibold">
+                    <span className="border-border bg-primary/10 rounded-full border px-3 py-1 text-xs font-semibold">
                       {tool.badge}
                     </span>
                   )}
@@ -158,7 +158,7 @@ export default function CreativeToolsSection({
 
       {/* Popular Tools */}
       <div>
-        <h3 className="mb-6 text-2xl font-bold text-foreground">
+        <h3 className="text-foreground mb-6 text-2xl font-bold">
           Popular tools
         </h3>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -168,25 +168,25 @@ export default function CreativeToolsSection({
               <Card
                 key={tool.id}
                 onClick={() => onToolClick(tool.id)}
-                className="group cursor-pointer transition-all hover:scale-[1.02] hover:border-primary"
+                className="group hover:border-primary cursor-pointer transition-all hover:scale-[1.02]"
               >
                 <CardContent className="p-5">
                   <div className="flex items-start gap-4">
-                    <div className="rounded-lg bg-primary/10 p-3">
-                      <Icon className="h-6 w-6 text-primary" />
+                    <div className="bg-primary/10 rounded-lg p-3">
+                      <Icon className="text-primary h-6 w-6" />
                     </div>
                     <div className="flex-1">
                       <div className="mb-2 flex items-center gap-2">
-                        <h4 className="font-semibold text-foreground">
+                        <h4 className="text-foreground font-semibold">
                           {tool.title}
                         </h4>
                         {tool.badge && (
-                          <span className="rounded bg-primary px-2 py-0.5 text-xs font-bold text-primary-foreground">
+                          <span className="bg-primary text-primary-foreground rounded px-2 py-0.5 text-xs font-bold">
                             {tool.badge}
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-muted-foreground text-sm">
                         {tool.description}
                       </p>
                     </div>
@@ -199,14 +199,14 @@ export default function CreativeToolsSection({
       </div>
 
       {/* Coming Soon Section */}
-      <Card className="mt-12 border-primary/30 bg-primary/10 p-8">
+      <Card className="border-primary/30 bg-primary/10 mt-12 p-8">
         <div className="mb-4 flex items-center gap-3">
-          <Wand2 className="h-8 w-8 text-primary" />
-          <h3 className="text-2xl font-bold text-foreground">
+          <Wand2 className="text-primary h-8 w-8" />
+          <h3 className="text-foreground text-2xl font-bold">
             More AI Tools Coming Soon
           </h3>
         </div>
-        <p className="mb-6 text-muted-foreground">
+        <p className="text-muted-foreground mb-6">
           We're constantly adding new AI-powered tools to help you create
           amazing content. Stay tuned for updates!
         </p>

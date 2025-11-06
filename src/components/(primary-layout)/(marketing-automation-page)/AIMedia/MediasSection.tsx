@@ -1,13 +1,5 @@
-import {
-  type AiMedia,
-  useAiMediasByProject,
-  useDeleteAiMedia,
-} from "@/hooks/(marketing-automation-page)/useAiMediaApi";
-import { FileVideo, Loader2, Play, Trash2, X } from "lucide-react";
-import { useParams } from "next/navigation";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -15,7 +7,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import {
+  type AiMedia,
+  useAiMediasByProject,
+  useDeleteAiMedia,
+} from "@/hooks/(marketing-automation-page)/useAiMediaApi";
 import { cn } from "@/lib/utils";
+import { FileVideo, Loader2, Play, Trash2 } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 
 interface MediasSectionProps {
   userId: string;
@@ -62,20 +62,20 @@ export default function MediasSection({ userId }: MediasSectionProps) {
   };
 
   return (
-    <div className="flex h-full flex-col bg-background">
+    <div className="bg-background flex h-full flex-col">
       {/* Header */}
-      <div className="border-b border-border p-6">
+      <div className="border-border border-b p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="mb-2 text-2xl font-bold text-foreground">
+            <h1 className="text-foreground mb-2 text-2xl font-bold">
               AI Generated Medias
             </h1>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               View all AI-generated videos for this project
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">
+            <span className="text-muted-foreground text-sm">
               {medias.length} {medias.length === 1 ? "video" : "videos"}
             </span>
           </div>
@@ -86,15 +86,15 @@ export default function MediasSection({ userId }: MediasSectionProps) {
       <div className="flex-1 overflow-y-auto p-6">
         {loading ? (
           <div className="flex h-64 items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <Loader2 className="text-primary h-8 w-8 animate-spin" />
           </div>
         ) : !projectId ? (
-          <div className="flex h-64 flex-col items-center justify-center text-muted-foreground">
+          <div className="text-muted-foreground flex h-64 flex-col items-center justify-center">
             <FileVideo className="mb-4 h-12 w-12 opacity-50" />
             <p>No project selected</p>
           </div>
         ) : medias.length === 0 ? (
-          <div className="flex h-64 flex-col items-center justify-center text-muted-foreground">
+          <div className="text-muted-foreground flex h-64 flex-col items-center justify-center">
             <FileVideo className="mb-4 h-12 w-12 opacity-50" />
             <p className="mb-2">No videos generated yet</p>
             <p className="text-sm">
@@ -106,11 +106,11 @@ export default function MediasSection({ userId }: MediasSectionProps) {
             {medias.map((media) => (
               <Card
                 key={media._id}
-                className="group relative cursor-pointer overflow-hidden transition-all hover:border-primary"
+                className="group hover:border-primary relative cursor-pointer overflow-hidden transition-all"
                 onClick={() => setSelectedMedia(media)}
               >
                 {/* Thumbnail */}
-                <div className="relative flex aspect-video items-center justify-center overflow-hidden bg-muted">
+                <div className="bg-muted relative flex aspect-video items-center justify-center overflow-hidden">
                   {media.status === "completed" && media.url ? (
                     <>
                       {media.thumbnail ? (
@@ -127,20 +127,20 @@ export default function MediasSection({ userId }: MediasSectionProps) {
                         />
                       )}
                       <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity group-hover:opacity-100">
-                        <Play className="h-12 w-12 text-foreground" />
+                        <Play className="text-foreground h-12 w-12" />
                       </div>
                     </>
                   ) : media.status === "pending" ? (
                     <div className="flex flex-col items-center gap-2">
-                      <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                      <p className="text-xs text-muted-foreground">
+                      <Loader2 className="text-primary h-8 w-8 animate-spin" />
+                      <p className="text-muted-foreground text-xs">
                         Processing...
                       </p>
                     </div>
                   ) : (
                     <div className="flex flex-col items-center gap-2">
-                      <FileVideo className="h-8 w-8 text-destructive" />
-                      <p className="text-xs text-destructive">Failed</p>
+                      <FileVideo className="text-destructive h-8 w-8" />
+                      <p className="text-destructive text-xs">Failed</p>
                     </div>
                   )}
                 </div>
@@ -149,23 +149,23 @@ export default function MediasSection({ userId }: MediasSectionProps) {
                 <CardContent className="p-3">
                   <div className="mb-2 flex items-start justify-between gap-2">
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-foreground">
+                      <p className="text-foreground truncate text-sm font-medium">
                         {getTypeLabel(media.type)}
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-muted-foreground text-xs">
                         {new Date(media.createdAt).toLocaleDateString()}
                       </p>
                     </div>
                     <span
                       className={cn(
                         "inline-block rounded border px-2 py-1 text-xs font-medium",
-                        getStatusColor(media.status)
+                        getStatusColor(media.status),
                       )}
                     >
                       {media.status}
                     </span>
                   </div>
-                  <p className="truncate text-xs text-muted-foreground">
+                  <p className="text-muted-foreground truncate text-xs">
                     Request ID: {media.requestId}
                   </p>
                 </CardContent>
@@ -197,13 +197,15 @@ export default function MediasSection({ userId }: MediasSectionProps) {
 
       {/* Media Detail Modal */}
       {selectedMedia && (
-        <Dialog open={!!selectedMedia} onOpenChange={() => setSelectedMedia(null)}>
+        <Dialog
+          open={!!selectedMedia}
+          onOpenChange={() => setSelectedMedia(null)}
+        >
           <DialogContent className="flex max-h-[90vh] max-w-4xl flex-col">
             <DialogHeader>
               <DialogTitle>{getTypeLabel(selectedMedia.type)}</DialogTitle>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Created on{" "}
-                {new Date(selectedMedia.createdAt).toLocaleString()}
+              <p className="text-muted-foreground mt-1 text-sm">
+                Created on {new Date(selectedMedia.createdAt).toLocaleString()}
               </p>
             </DialogHeader>
 
@@ -212,7 +214,7 @@ export default function MediasSection({ userId }: MediasSectionProps) {
               {selectedMedia.status === "completed" && selectedMedia.url ? (
                 <div className="space-y-6">
                   {/* Video Player */}
-                  <div className="overflow-hidden rounded-xl bg-muted">
+                  <div className="bg-muted overflow-hidden rounded-xl">
                     <video
                       src={selectedMedia.url}
                       controls
@@ -224,20 +226,20 @@ export default function MediasSection({ userId }: MediasSectionProps) {
                   {/* Details */}
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label className="mb-1 block text-sm font-medium text-muted-foreground">
+                      <Label className="text-muted-foreground mb-1 block text-sm font-medium">
                         Status
                       </Label>
                       <span
                         className={cn(
                           "inline-block rounded border px-3 py-1.5 text-sm font-medium",
-                          getStatusColor(selectedMedia.status)
+                          getStatusColor(selectedMedia.status),
                         )}
                       >
                         {selectedMedia.status}
                       </span>
                     </div>
                     <div>
-                      <Label className="mb-1 block text-sm font-medium text-muted-foreground">
+                      <Label className="text-muted-foreground mb-1 block text-sm font-medium">
                         Type
                       </Label>
                       <p className="text-foreground">
@@ -245,22 +247,22 @@ export default function MediasSection({ userId }: MediasSectionProps) {
                       </p>
                     </div>
                     <div>
-                      <Label className="mb-1 block text-sm font-medium text-muted-foreground">
+                      <Label className="text-muted-foreground mb-1 block text-sm font-medium">
                         Request ID
                       </Label>
-                      <p className="font-mono text-sm text-foreground">
+                      <p className="text-foreground font-mono text-sm">
                         {selectedMedia.requestId}
                       </p>
                     </div>
                     <div>
-                      <Label className="mb-1 block text-sm font-medium text-muted-foreground">
+                      <Label className="text-muted-foreground mb-1 block text-sm font-medium">
                         Video URL
                       </Label>
                       <a
                         href={selectedMedia.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block truncate text-sm text-primary hover:text-primary/80"
+                        className="text-primary hover:text-primary/80 block truncate text-sm"
                       >
                         Open in new tab
                       </a>
@@ -268,7 +270,7 @@ export default function MediasSection({ userId }: MediasSectionProps) {
                   </div>
                 </div>
               ) : (
-                <div className="flex h-64 flex-col items-center justify-center text-muted-foreground">
+                <div className="text-muted-foreground flex h-64 flex-col items-center justify-center">
                   <FileVideo className="mb-4 h-12 w-12 opacity-50" />
                   <p>Video not available</p>
                 </div>

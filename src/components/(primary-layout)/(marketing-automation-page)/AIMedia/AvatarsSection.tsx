@@ -1,6 +1,3 @@
-import api from "@/lib/api";
-import { Loader2, Sparkles } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -10,7 +7,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import api from "@/lib/api";
 import { cn } from "@/lib/utils";
+import { Loader2, Sparkles } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import CreatorStylesModal from "./CreatorStylesModal";
 import VideoGenerationPage from "./VideoGenerationPage";
 
@@ -79,7 +79,7 @@ function CreatorCard({
           alt={creator.creator_name}
           className={cn(
             "h-full w-full object-cover transition-all duration-300",
-            isHovered ? "opacity-0" : "opacity-100 group-hover:scale-105"
+            isHovered ? "opacity-0" : "opacity-100 group-hover:scale-105",
           )}
         />
         <video
@@ -91,20 +91,20 @@ function CreatorCard({
           preload="metadata"
           className={cn(
             "absolute inset-0 h-full w-full object-cover transition-opacity duration-300",
-            isHovered ? "opacity-100" : "opacity-0"
+            isHovered ? "opacity-100" : "opacity-0",
           )}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
 
         {/* Style count badge */}
-        <div className="absolute top-3 right-3 rounded-full bg-primary px-2 py-1 text-xs font-bold text-primary-foreground">
+        <div className="bg-primary text-primary-foreground absolute top-3 right-3 rounded-full px-2 py-1 text-xs font-bold">
           {creator.style_count} {creator.style_count === 1 ? "style" : "styles"}
         </div>
       </Card>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-primary"></span>
-          <span className="text-sm font-medium capitalize text-foreground">
+          <span className="bg-primary h-2 w-2 rounded-full"></span>
+          <span className="text-foreground text-sm font-medium capitalize">
             {creator.creator_name}
           </span>
         </div>
@@ -122,9 +122,9 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
     "realistic",
   );
   const [filters, setFilters] = useState({
-    age_range: "",
-    gender: "",
-    location: "",
+    age_range: "all",
+    gender: "all",
+    location: "all",
   });
   const [hoveredCreator, setHoveredCreator] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -141,9 +141,12 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
         setLoading(true);
 
         const params = new URLSearchParams();
-        if (filters.age_range) params.append("age_range", filters.age_range);
-        if (filters.gender) params.append("gender", filters.gender);
-        if (filters.location) params.append("location", filters.location);
+        if (filters.age_range && filters.age_range !== "all")
+          params.append("age_range", filters.age_range);
+        if (filters.gender && filters.gender !== "all")
+          params.append("gender", filters.gender);
+        if (filters.location && filters.location !== "all")
+          params.append("location", filters.location);
 
         // Add type filter based on active tab
         params.append("type", activeTab);
@@ -209,23 +212,23 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
 
   return (
     <div>
-      <h2 className="mb-8 text-3xl font-bold text-foreground">Avatars</h2>
+      <h2 className="text-foreground mb-8 text-3xl font-bold">Avatars</h2>
 
       {/* Custom Avatar */}
       <div className="mb-8">
-        <h3 className="mb-4 text-lg font-semibold text-foreground">
+        <h3 className="text-foreground mb-4 text-lg font-semibold">
           Custom Avatar
         </h3>
         <Card
           onClick={() => onToolClick("create-avatar")}
-          className="group flex w-full max-w-xs cursor-pointer flex-col items-center justify-center border-2 border-dashed p-12 transition-all hover:border-primary"
+          className="group hover:border-primary flex w-full max-w-xs cursor-pointer flex-col items-center justify-center border-2 border-dashed p-12 transition-all"
         >
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted transition-colors group-hover:bg-muted/80">
-            <span className="text-3xl text-muted-foreground group-hover:text-foreground">
+          <div className="bg-muted group-hover:bg-muted/80 mb-4 flex h-16 w-16 items-center justify-center rounded-full transition-colors">
+            <span className="text-muted-foreground group-hover:text-foreground text-3xl">
               +
             </span>
           </div>
-          <p className="font-medium text-muted-foreground group-hover:text-foreground">
+          <p className="text-muted-foreground group-hover:text-foreground font-medium">
             Create avatar
           </p>
         </Card>
@@ -233,15 +236,15 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
 
       {/* Avatar Tabs */}
       <div className="mb-6">
-        <div className="flex items-center gap-4 border-b border-border">
+        <div className="border-border flex items-center gap-4 border-b">
           <Button
             onClick={() => setActiveTab("realistic")}
             variant="ghost"
             className={cn(
               "px-4 py-3 font-medium transition-colors",
               activeTab === "realistic"
-                ? "border-b-2 border-primary text-foreground"
-                : "text-muted-foreground hover:text-foreground"
+                ? "border-primary text-foreground border-b-2"
+                : "text-muted-foreground hover:text-foreground",
             )}
           >
             Realistic Avatars
@@ -252,8 +255,8 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
             className={cn(
               "px-4 py-3 font-medium transition-colors",
               activeTab === "styled"
-                ? "border-b-2 border-primary text-foreground"
-                : "text-muted-foreground hover:text-foreground"
+                ? "border-primary text-foreground border-b-2"
+                : "text-muted-foreground hover:text-foreground",
             )}
           >
             Styled Avatar
@@ -266,15 +269,13 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
         <div className="flex flex-wrap items-center gap-3">
           <Select
             value={filters.gender}
-            onValueChange={(value) =>
-              setFilters({ ...filters, gender: value })
-            }
+            onValueChange={(value) => setFilters({ ...filters, gender: value })}
           >
             <SelectTrigger className="w-[150px]">
               <SelectValue placeholder="All Genders" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Genders</SelectItem>
+              <SelectItem value="all">All Genders</SelectItem>
               <SelectItem value="m">Male</SelectItem>
               <SelectItem value="f">Female</SelectItem>
               <SelectItem value="nb">Non-Binary</SelectItem>
@@ -290,7 +291,7 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
               <SelectValue placeholder="All Ages" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Ages</SelectItem>
+              <SelectItem value="all">All Ages</SelectItem>
               <SelectItem value="child">Child</SelectItem>
               <SelectItem value="teen">Teen</SelectItem>
               <SelectItem value="adult">Adult</SelectItem>
@@ -307,17 +308,19 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
               <SelectValue placeholder="All Locations" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Locations</SelectItem>
+              <SelectItem value="all">All Locations</SelectItem>
               <SelectItem value="outdoor">Outdoor</SelectItem>
               <SelectItem value="fantasy">Fantasy</SelectItem>
               <SelectItem value="indoor">Indoor</SelectItem>
               <SelectItem value="other">Other</SelectItem>
             </SelectContent>
           </Select>
-          {(filters.gender || filters.age_range || filters.location) && (
+          {(filters.gender !== "all" ||
+            filters.age_range !== "all" ||
+            filters.location !== "all") && (
             <Button
               onClick={() =>
-                setFilters({ age_range: "", gender: "", location: "" })
+                setFilters({ age_range: "all", gender: "all", location: "all" })
               }
               variant="outline"
               className="border-destructive/50 bg-destructive/20 text-destructive hover:bg-destructive/30"
@@ -327,11 +330,19 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
           )}
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" size="sm" className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2"
+          >
             <Sparkles className="h-4 w-4" />
             New Arrival
           </Button>
-          <Button variant="outline" size="sm" className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2"
+          >
             <span>📑</span>
             Saved
           </Button>
@@ -341,14 +352,14 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
       {/* Loading State */}
       {loading && (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <Loader2 className="text-primary h-8 w-8 animate-spin" />
         </div>
       )}
 
       {/* Error State */}
       {error && (
         <div className="py-12 text-center">
-          <p className="mb-4 text-destructive">{error}</p>
+          <p className="text-destructive mb-4">{error}</p>
           <Button onClick={() => fetchCreators(1, false)}>Try Again</Button>
         </div>
       )}
@@ -379,7 +390,7 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
       {/* Load More / Results */}
       {!loading && !error && creators.length > 0 && (
         <div className="mt-8 text-center">
-          <p className="mb-4 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mb-4 text-sm">
             Showing {creators.length} of {totalCount} creator
             {totalCount !== 1 ? "s" : ""}
           </p>

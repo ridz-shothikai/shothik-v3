@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGenerateAIShort } from "@/hooks/(marketing-automation-page)/useAIShortsApi";
 import {
   useGenerateScript,
@@ -10,9 +12,6 @@ import { Loader2, Sparkles } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import AssetSelectorModal from "./AssetSelectorModal";
 import ScriptEditor from "./ScriptEditor";
 import VoiceSelector from "./VoiceSelector";
@@ -208,16 +207,16 @@ export default function AIShortsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="bg-background text-foreground min-h-screen">
       {/* Header */}
-      <div className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-sm">
+      <div className="border-border bg-background/80 sticky top-0 z-10 border-b backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">
+              <h1 className="text-foreground text-2xl font-bold">
                 AI Shorts Generator
               </h1>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="text-muted-foreground mt-1 text-sm">
                 Create engaging short-form videos for TikTok, Instagram Reels &
                 YouTube Shorts
               </p>
@@ -321,7 +320,9 @@ export default function AIShortsPage() {
             {/* Background Selection */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg font-semibold">Background</CardTitle>
+                <CardTitle className="text-lg font-semibold">
+                  Background
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <Button
@@ -398,12 +399,12 @@ export default function AIShortsPage() {
                   )}
                 </Button>
                 {!script.trim() && (
-                  <p className="mt-4 text-center text-sm text-muted-foreground">
+                  <p className="text-muted-foreground mt-4 text-center text-sm">
                     Please enter a script to continue
                   </p>
                 )}
                 {!selectedVoice && script.trim() && (
-                  <p className="mt-4 text-center text-sm text-muted-foreground">
+                  <p className="text-muted-foreground mt-4 text-center text-sm">
                     Please select a voice to continue
                   </p>
                 )}
@@ -430,7 +431,7 @@ export default function AIShortsPage() {
 
       {/* Notification */}
       {showNotification && (
-        <div className="animate-slide-up fixed right-6 bottom-6 z-50 rounded-lg bg-primary px-6 py-4 text-primary-foreground shadow-lg">
+        <div className="animate-slide-up bg-primary text-primary-foreground fixed right-6 bottom-6 z-50 rounded-lg px-6 py-4 shadow-lg">
           {notificationMessage}
         </div>
       )}

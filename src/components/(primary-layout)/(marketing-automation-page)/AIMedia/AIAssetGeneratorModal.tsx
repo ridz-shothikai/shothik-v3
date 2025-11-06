@@ -1,10 +1,3 @@
-import {
-  useGeneratePrompt,
-  useUserAds,
-} from "@/hooks/(marketing-automation-page)/useMediaApi";
-import { ImageIcon, Loader2, Sparkles, Wand2, X } from "lucide-react";
-import { useParams } from "next/navigation";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -23,7 +16,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  useGeneratePrompt,
+  useUserAds,
+} from "@/hooks/(marketing-automation-page)/useMediaApi";
 import { cn } from "@/lib/utils";
+import { ImageIcon, Loader2, Sparkles, Wand2, X } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 import AssetSelectorModal from "./AssetSelectorModal";
 
 interface AIAssetGeneratorModalProps {
@@ -374,8 +374,8 @@ export default function AIAssetGeneratorModal({
       <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-              <Sparkles className="h-5 w-5 text-primary-foreground" />
+            <div className="bg-primary flex h-10 w-10 items-center justify-center rounded-lg">
+              <Sparkles className="text-primary-foreground h-5 w-5" />
             </div>
             <div>
               <DialogTitle>AI Asset Generator</DialogTitle>
@@ -390,7 +390,7 @@ export default function AIAssetGeneratorModal({
           {/* Generate Type Selector */}
           <div>
             <Label className="mb-3 flex items-center gap-2 text-sm font-semibold">
-              <Wand2 className="h-4 w-4 text-primary" />
+              <Wand2 className="text-primary h-4 w-4" />
               Generate type
             </Label>
             <Select
@@ -411,22 +411,26 @@ export default function AIAssetGeneratorModal({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                <div className="text-muted-foreground px-2 py-1.5 text-xs font-semibold">
                   Video Generator
                 </div>
                 <SelectItem value="text-to-video">📹 Text to video</SelectItem>
-                <SelectItem value="image-to-video">🎬 Image to video</SelectItem>
+                <SelectItem value="image-to-video">
+                  🎬 Image to video
+                </SelectItem>
                 <SelectItem value="reference-to-video">
                   🖼️ Reference to video
                 </SelectItem>
                 <SelectItem value="first-last-frame-to-video">
                   🎞️ First-Last frame to video
                 </SelectItem>
-                <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                <div className="text-muted-foreground px-2 py-1.5 text-xs font-semibold">
                   Image Generator
                 </div>
                 <SelectItem value="text-to-image">🎨 Text to image</SelectItem>
-                <SelectItem value="image-to-image">🖼️ Image to image</SelectItem>
+                <SelectItem value="image-to-image">
+                  🖼️ Image to image
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -434,7 +438,7 @@ export default function AIAssetGeneratorModal({
           {/* Model Selector */}
           <div>
             <Label className="mb-3 flex items-center gap-2 text-sm font-semibold">
-              <Sparkles className="h-4 w-4 text-primary" />
+              <Sparkles className="text-primary h-4 w-4" />
               Select AI Model
             </Label>
             <Select value={selectedModel} onValueChange={setSelectedModel}>
@@ -449,7 +453,7 @@ export default function AIAssetGeneratorModal({
                 ))}
               </SelectContent>
             </Select>
-            <p className="mt-2 text-xs text-muted-foreground">
+            <p className="text-muted-foreground mt-2 text-xs">
               {currentModels.find((m) => m.id === selectedModel)?.description}
             </p>
           </div>
@@ -465,7 +469,7 @@ export default function AIAssetGeneratorModal({
                 <div
                   className={cn(
                     "relative overflow-hidden rounded-lg border-2 border-dashed",
-                    startFrame ? "border-primary" : "border-border"
+                    startFrame ? "border-primary" : "border-border",
                   )}
                 >
                   {startFrame ? (
@@ -493,8 +497,8 @@ export default function AIAssetGeneratorModal({
                       variant="outline"
                       className="flex aspect-video h-full w-full cursor-pointer flex-col items-center justify-center"
                     >
-                      <ImageIcon className="mb-2 h-8 w-8 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">
+                      <ImageIcon className="text-muted-foreground mb-2 h-8 w-8" />
+                      <span className="text-muted-foreground text-sm">
                         Select Start Frame
                       </span>
                     </Button>
@@ -515,7 +519,7 @@ export default function AIAssetGeneratorModal({
                 <div
                   className={cn(
                     "relative overflow-hidden rounded-lg border-2 border-dashed",
-                    startFrame ? "border-primary" : "border-border"
+                    startFrame ? "border-primary" : "border-border",
                   )}
                 >
                   {startFrame ? (
@@ -543,8 +547,8 @@ export default function AIAssetGeneratorModal({
                       variant="outline"
                       className="flex aspect-video h-full w-full cursor-pointer flex-col items-center justify-center"
                     >
-                      <ImageIcon className="mb-2 h-8 w-8 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">
+                      <ImageIcon className="text-muted-foreground mb-2 h-8 w-8" />
+                      <span className="text-muted-foreground text-sm">
                         Select Reference Image
                       </span>
                     </Button>
@@ -564,7 +568,7 @@ export default function AIAssetGeneratorModal({
                   <div
                     className={cn(
                       "relative overflow-hidden rounded-lg border-2 border-dashed",
-                      startFrame ? "border-primary" : "border-border"
+                      startFrame ? "border-primary" : "border-border",
                     )}
                   >
                     {startFrame ? (
@@ -592,8 +596,8 @@ export default function AIAssetGeneratorModal({
                         variant="outline"
                         className="flex aspect-video h-full w-full cursor-pointer flex-col items-center justify-center"
                       >
-                        <ImageIcon className="mb-2 h-8 w-8 text-muted-foreground" />
-                        <span className="text-sm text-muted-foreground">
+                        <ImageIcon className="text-muted-foreground mb-2 h-8 w-8" />
+                        <span className="text-muted-foreground text-sm">
                           Select First Frame
                         </span>
                       </Button>
@@ -605,7 +609,7 @@ export default function AIAssetGeneratorModal({
                   <div
                     className={cn(
                       "relative overflow-hidden rounded-lg border-2 border-dashed",
-                      endFrame ? "border-primary" : "border-border"
+                      endFrame ? "border-primary" : "border-border",
                     )}
                   >
                     {endFrame ? (
@@ -633,8 +637,8 @@ export default function AIAssetGeneratorModal({
                         variant="outline"
                         className="flex aspect-video h-full w-full cursor-pointer flex-col items-center justify-center"
                       >
-                        <ImageIcon className="mb-2 h-8 w-8 text-muted-foreground" />
-                        <span className="text-sm text-muted-foreground">
+                        <ImageIcon className="text-muted-foreground mb-2 h-8 w-8" />
+                        <span className="text-muted-foreground text-sm">
                           Select Last Frame
                         </span>
                       </Button>
@@ -660,7 +664,7 @@ export default function AIAssetGeneratorModal({
                     {referenceImages.map((url, index) => (
                       <div
                         key={index}
-                        className="relative aspect-video overflow-hidden rounded-lg border-2 border-primary"
+                        className="border-primary relative aspect-video overflow-hidden rounded-lg border-2"
                       >
                         <img
                           src={url}
@@ -691,8 +695,8 @@ export default function AIAssetGeneratorModal({
                   variant="outline"
                   className="flex w-full cursor-pointer flex-col items-center justify-center border-2 border-dashed py-8"
                 >
-                  <ImageIcon className="mb-2 h-8 w-8 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">
+                  <ImageIcon className="text-muted-foreground mb-2 h-8 w-8" />
+                  <span className="text-muted-foreground text-sm">
                     {referenceImages.length > 0
                       ? "Add More Images"
                       : "Select Reference Images"}
@@ -706,7 +710,7 @@ export default function AIAssetGeneratorModal({
           <div>
             <Label className="mb-3 block text-sm font-medium">
               Select Ad{" "}
-              <span className="text-xs text-muted-foreground">(Optional)</span>
+              <span className="text-muted-foreground text-xs">(Optional)</span>
             </Label>
             <Select
               value={selectedAd}
@@ -727,7 +731,7 @@ export default function AIAssetGeneratorModal({
               </SelectContent>
             </Select>
             {selectedAd && (
-              <p className="mt-2 text-xs text-muted-foreground">
+              <p className="text-muted-foreground mt-2 text-xs">
                 Selected ad will be used as context for generation
               </p>
             )}
@@ -770,7 +774,7 @@ export default function AIAssetGeneratorModal({
               rows={4}
             />
             <div className="mt-2 flex items-center justify-between">
-              <span className="text-xs text-muted-foreground">
+              <span className="text-muted-foreground text-xs">
                 {prompt.length} / 1000 characters
               </span>
             </div>
@@ -787,7 +791,7 @@ export default function AIAssetGeneratorModal({
 
           {/* Advanced Settings */}
           {showAdvanced && (
-            <div className="space-y-4 rounded-lg border border-border bg-muted/50 p-4">
+            <div className="border-border bg-muted/50 space-y-4 rounded-lg border p-4">
               {/* Aspect Ratio */}
               <div>
                 <Label className="mb-2 block text-sm font-medium">
@@ -823,7 +827,7 @@ export default function AIAssetGeneratorModal({
                     onChange={(e) => setOutputCount(Number(e.target.value))}
                     className="w-full"
                   />
-                  <div className="mt-1 flex justify-between text-xs text-muted-foreground">
+                  <div className="text-muted-foreground mt-1 flex justify-between text-xs">
                     <span>1</span>
                     <span>2</span>
                     <span>3</span>
@@ -836,7 +840,12 @@ export default function AIAssetGeneratorModal({
 
           {/* Generate Button */}
           <div className="flex gap-3 pt-4">
-            <Button onClick={onClose} disabled={isGenerating} variant="outline" className="flex-1">
+            <Button
+              onClick={onClose}
+              disabled={isGenerating}
+              variant="outline"
+              className="flex-1"
+            >
               Cancel
             </Button>
             <Button
