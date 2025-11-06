@@ -1,3 +1,16 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+
 interface AdvancedSettingsProps {
   // Avatar settings
   avatarStyle: "circle" | "normal";
@@ -91,64 +104,37 @@ interface AdvancedSettingsProps {
   videoName: string;
   setVideoName: (name: string) => void;
   modelVersion: "standard" | "aurora_v1" | "aurora_v1_fast";
-  setModelVersion: (version: "standard" | "aurora_v1" | "aurora_v1_fast") => void;
+  setModelVersion: (
+    version: "standard" | "aurora_v1" | "aurora_v1_fast",
+  ) => void;
   webhookUrl: string;
   setWebhookUrl: (url: string) => void;
 
   showAdvancedSettings: boolean;
   setShowAdvancedSettings: (show: boolean) => void;
-  
-  // Asset selector handler
-  onOpenAssetSelector?: (field: "background" | "cta-logo" | "end-cta-logo" | "end-cta-background") => void;
-}
 
-// Custom Select Component
-const CustomSelect = ({ 
-  label, 
-  value, 
-  onChange, 
-  options 
-}: { 
-  label: string; 
-  value: string; 
-  onChange: (value: string) => void; 
-  options: { value: string; label: string }[] 
-}) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-300 mb-2">{label}</label>
-    <div className="relative">
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full appearance-none bg-slate-700 border border-slate-600 hover:border-slate-500 rounded-lg px-4 py-2.5 pr-10 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer"
-      >
-        {options.map((opt) => (
-          <option key={opt.value} value={opt.value} className="bg-slate-800">
-            {opt.label}
-          </option>
-        ))}
-      </select>
-      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </div>
-    </div>
-  </div>
-);
+  // Asset selector handler
+  onOpenAssetSelector?: (
+    field: "background" | "cta-logo" | "end-cta-logo" | "end-cta-background",
+  ) => void;
+}
 
 export default function AdvancedSettings(props: AdvancedSettingsProps) {
   return (
     <div className="mb-8">
-      <button
-        onClick={() => props.setShowAdvancedSettings(!props.showAdvancedSettings)}
-        className="w-full flex items-center justify-between px-4 py-3 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors"
+      <Button
+        onClick={() =>
+          props.setShowAdvancedSettings(!props.showAdvancedSettings)
+        }
+        variant="outline"
+        className="flex w-full items-center justify-between"
       >
         <span className="font-semibold">⚙️ Advanced Settings</span>
         <svg
-          className={`w-5 h-5 transition-transform ${
-            props.showAdvancedSettings ? "rotate-180" : ""
-          }`}
+          className={cn(
+            "w-5 h-5 transition-transform",
+            props.showAdvancedSettings && "rotate-180"
+          )}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -160,235 +146,272 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
             d="M19 9l-7 7-7-7"
           />
         </svg>
-      </button>
+      </Button>
 
       {props.showAdvancedSettings && (
-        <div className="mt-4 p-6 bg-slate-800 rounded-lg space-y-6">
+        <Card className="mt-4 space-y-6 p-6">
           {/* Avatar Settings */}
           <div>
-            <h4 className="font-semibold mb-4 text-blue-400 text-lg">Avatar Settings</h4>
+            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+              Avatar Settings
+            </CardTitle>
             <div className="grid grid-cols-2 gap-4">
-              <CustomSelect
-                label="Style"
-                value={props.avatarStyle}
-                onChange={(value) => props.setAvatarStyle(value as "circle" | "normal")}
-                options={[
-                  { value: "normal", label: "Normal" },
-                  { value: "circle", label: "Circle" }
-                ]}
-              />
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Scale</label>
-                <input
+                <Label>Style</Label>
+                <Select
+                  value={props.avatarStyle}
+                  onValueChange={(value) =>
+                    props.setAvatarStyle(value as "circle" | "normal")
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="normal">Normal</SelectItem>
+                    <SelectItem value="circle">Circle</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Scale</Label>
+                <Input
                   type="number"
                   value={props.avatarScale}
-                  onChange={(e) => props.setAvatarScale(parseFloat(e.target.value))}
+                  onChange={(e) =>
+                    props.setAvatarScale(parseFloat(e.target.value))
+                  }
                   step="0.1"
                   min="0.1"
                   max="2"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Offset X</label>
-                <input
+                <Label>Offset X</Label>
+                <Input
                   type="number"
                   value={props.avatarOffsetX}
-                  onChange={(e) => props.setAvatarOffsetX(parseInt(e.target.value))}
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onChange={(e) =>
+                    props.setAvatarOffsetX(parseInt(e.target.value))
+                  }
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Offset Y</label>
-                <input
+                <Label>Offset Y</Label>
+                <Input
                   type="number"
                   value={props.avatarOffsetY}
-                  onChange={(e) => props.setAvatarOffsetY(parseInt(e.target.value))}
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onChange={(e) =>
+                    props.setAvatarOffsetY(parseInt(e.target.value))
+                  }
                 />
               </div>
             </div>
-            <label className="flex items-center gap-2 mt-3">
+            <label className="mt-3 flex items-center gap-2">
               <input
                 type="checkbox"
                 checked={props.avatarHidden}
                 onChange={(e) => props.setAvatarHidden(e.target.checked)}
-                className="w-4 h-4"
+                className="h-4 w-4"
               />
-              <span className="text-sm text-gray-400">Hide Avatar</span>
+              <span className="text-sm text-muted-foreground">Hide Avatar</span>
             </label>
           </div>
 
           {/* Voice Settings */}
           <div>
-            <h4 className="font-semibold mb-4 text-blue-400 text-lg">Voice Settings</h4>
+            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+              Voice Settings
+            </CardTitle>
             <div>
-              <label className="block text-sm text-gray-400 mb-2">Volume (0-1)</label>
-              <input
+              <Label>Volume (0-1)</Label>
+              <Input
                 type="number"
                 value={props.voiceVolume}
-                onChange={(e) => props.setVoiceVolume(parseFloat(e.target.value))}
+                onChange={(e) =>
+                  props.setVoiceVolume(parseFloat(e.target.value))
+                }
                 step="0.1"
                 min="0"
                 max="1"
-                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
 
           {/* Caption Settings */}
           <div>
-            <h4 className="font-semibold mb-4 text-blue-400 text-lg">Caption Settings</h4>
+            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+              Caption Settings
+            </CardTitle>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Caption Style</label>
-                <input
+                <Label>Caption Style</Label>
+                <Input
                   type="text"
                   value={props.captionStyle}
                   onChange={(e) => props.setCaptionStyle(e.target.value)}
                   placeholder="normal-black"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Font Family</label>
-                <input
+                <Label>Font Family</Label>
+                <Input
                   type="text"
                   value={props.fontFamily}
                   onChange={(e) => props.setFontFamily(e.target.value)}
                   placeholder="Montserrat"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Font Size</label>
-                <input
+                <Label>Font Size</Label>
+                <Input
                   type="number"
                   value={props.fontSize}
                   onChange={(e) => props.setFontSize(parseInt(e.target.value))}
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Font Style</label>
-                <input
+                <Label>Font Style</Label>
+                <Input
                   type="text"
                   value={props.fontStyle}
                   onChange={(e) => props.setFontStyle(e.target.value)}
                   placeholder="font-bold"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Caption Offset X</label>
-                <input
+                <Label>Caption Offset X</Label>
+                <Input
                   type="number"
                   value={props.captionOffsetX}
-                  onChange={(e) => props.setCaptionOffsetX(parseFloat(e.target.value))}
+                  onChange={(e) =>
+                    props.setCaptionOffsetX(parseFloat(e.target.value))
+                  }
                   step="0.1"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Caption Offset Y</label>
-                <input
+                <Label>Caption Offset Y</Label>
+                <Input
                   type="number"
                   value={props.captionOffsetY}
-                  onChange={(e) => props.setCaptionOffsetY(parseFloat(e.target.value))}
+                  onChange={(e) =>
+                    props.setCaptionOffsetY(parseFloat(e.target.value))
+                  }
                   step="0.1"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Background Color</label>
-                <input
+                <Label>Background Color</Label>
+                <Input
                   type="color"
                   value={props.captionBgColor}
                   onChange={(e) => props.setCaptionBgColor(e.target.value)}
-                  className="w-full h-10 bg-slate-700 border border-slate-600 rounded-lg px-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="h-10"
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Text Color</label>
-                <input
+                <Label>Text Color</Label>
+                <Input
                   type="color"
                   value={props.captionTextColor}
                   onChange={(e) => props.setCaptionTextColor(e.target.value)}
-                  className="w-full h-10 bg-slate-700 border border-slate-600 rounded-lg px-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="h-10"
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Highlight Color</label>
-                <input
+                <Label>Highlight Color</Label>
+                <Input
                   type="color"
                   value={props.captionHighlightColor}
-                  onChange={(e) => props.setCaptionHighlightColor(e.target.value)}
-                  className="w-full h-10 bg-slate-700 border border-slate-600 rounded-lg px-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onChange={(e) =>
+                    props.setCaptionHighlightColor(e.target.value)
+                  }
+                  className="h-10"
                 />
               </div>
             </div>
-            <label className="flex items-center gap-2 mt-3">
+            <label className="mt-3 flex items-center gap-2">
               <input
                 type="checkbox"
                 checked={props.captionHidden}
                 onChange={(e) => props.setCaptionHidden(e.target.checked)}
-                className="w-4 h-4"
+                className="h-4 w-4"
               />
-              <span className="text-sm text-gray-400">Hide Captions</span>
+              <span className="text-sm text-muted-foreground">Hide Captions</span>
             </label>
           </div>
 
           {/* Background Settings */}
           <div>
-            <h4 className="font-semibold mb-4 text-blue-400 text-lg">Background</h4>
+            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+              Background
+            </CardTitle>
             <div className="grid grid-cols-2 gap-4">
-              <CustomSelect
-                label="Type"
-                value={props.backgroundType}
-                onChange={(value) => props.setBackgroundType(value as "image" | "video")}
-                options={[
-                  { value: "image", label: "Image" },
-                  { value: "video", label: "Video" }
-                ]}
-              />
-              <CustomSelect
-                label="Fit"
-                value={props.backgroundFit}
-                onChange={(value) => props.setBackgroundFit(value as "cover" | "crop" | "contain")}
-                options={[
-                  { value: "cover", label: "Cover" },
-                  { value: "crop", label: "Crop" },
-                  { value: "contain", label: "Contain" }
-                ]}
-              />
+              <div>
+                <Label>Type</Label>
+                <Select
+                  value={props.backgroundType}
+                  onValueChange={(value) =>
+                    props.setBackgroundType(value as "image" | "video")
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="image">Image</SelectItem>
+                    <SelectItem value="video">Video</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Fit</Label>
+                <Select
+                  value={props.backgroundFit}
+                  onValueChange={(value) =>
+                    props.setBackgroundFit(
+                      value as "cover" | "crop" | "contain",
+                    )
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="cover">Cover</SelectItem>
+                    <SelectItem value="crop">Crop</SelectItem>
+                    <SelectItem value="contain">Contain</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
               <div className="col-span-2">
-                <label className="block text-sm text-gray-400 mb-2">Background URL</label>
+                <Label>Background URL</Label>
                 <div className="flex gap-2">
-                  <input
+                  <Input
                     type="url"
                     value={props.backgroundUrl}
                     onChange={(e) => props.setBackgroundUrl(e.target.value)}
                     placeholder="https://example.com/background.jpg"
-                    className="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1"
                   />
                   {props.onOpenAssetSelector && (
-                    <button
+                    <Button
                       onClick={() => props.onOpenAssetSelector?.("background")}
-                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors"
+                      size="sm"
                     >
                       Select
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
               <div className="col-span-2">
-                <label className="block text-sm text-gray-400 mb-2">Background Effect</label>
-                <input
+                <Label>Background Effect</Label>
+                <Input
                   type="text"
                   value={props.backgroundEffect}
                   onChange={(e) => props.setBackgroundEffect(e.target.value)}
                   placeholder="imageSlideLeft"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
@@ -396,26 +419,26 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
 
           {/* Transition Effects */}
           <div>
-            <h4 className="font-semibold mb-4 text-blue-400 text-lg">Transition Effects</h4>
+            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+              Transition Effects
+            </CardTitle>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Transition In</label>
-                <input
+                <Label>Transition In</Label>
+                <Input
                   type="text"
                   value={props.transitionIn}
                   onChange={(e) => props.setTransitionIn(e.target.value)}
                   placeholder="fade"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Transition Out</label>
-                <input
+                <Label>Transition Out</Label>
+                <Input
                   type="text"
                   value={props.transitionOut}
                   onChange={(e) => props.setTransitionOut(e.target.value)}
                   placeholder="fade"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
@@ -423,157 +446,168 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
 
           {/* Visual Style */}
           <div>
-            <h4 className="font-semibold mb-4 text-blue-400 text-lg">Visual Style</h4>
+            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+              Visual Style
+            </CardTitle>
             <div>
-              <label className="block text-sm text-gray-400 mb-2">Style Preset</label>
-              <input
+              <Label>Style Preset</Label>
+              <Input
                 type="text"
                 value={props.visualStyle}
                 onChange={(e) => props.setVisualStyle(e.target.value)}
                 placeholder="FullAvatar"
-                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
 
           {/* CTA Settings */}
           <div>
-            <h4 className="font-semibold mb-4 text-blue-400 text-lg">Call to Action (CTA)</h4>
+            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+              Call to Action (CTA)
+            </CardTitle>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
-                <label className="block text-sm text-gray-400 mb-2">Product Image URL</label>
+                <Label>Product Image URL</Label>
                 <div className="flex gap-2">
-                  <input
+                  <Input
                     type="url"
                     value={props.ctaLogoUrl}
                     onChange={(e) => props.setCtaLogoUrl(e.target.value)}
                     placeholder="https://example.com/product.png"
-                    className="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1"
                   />
                   {props.onOpenAssetSelector && (
-                    <button
+                    <Button
                       onClick={() => props.onOpenAssetSelector?.("cta-logo")}
-                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors"
+                      size="sm"
                     >
                       Select
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Logo Scale</label>
-                <input
+                <Label>Logo Scale</Label>
+                <Input
                   type="number"
                   value={props.ctaLogoScale}
-                  onChange={(e) => props.setCtaLogoScale(parseFloat(e.target.value))}
+                  onChange={(e) =>
+                    props.setCtaLogoScale(parseFloat(e.target.value))
+                  }
                   step="0.05"
                   min="0.1"
                   max="1"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Logo Offset X</label>
-                <input
+                <Label>Logo Offset X</Label>
+                <Input
                   type="number"
                   value={props.ctaLogoOffsetX}
-                  onChange={(e) => props.setCtaLogoOffsetX(parseInt(e.target.value))}
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onChange={(e) =>
+                    props.setCtaLogoOffsetX(parseInt(e.target.value))
+                  }
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Logo Offset Y</label>
-                <input
+                <Label>Logo Offset Y</Label>
+                <Input
                   type="number"
                   value={props.ctaLogoOffsetY}
-                  onChange={(e) => props.setCtaLogoOffsetY(parseInt(e.target.value))}
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onChange={(e) =>
+                    props.setCtaLogoOffsetY(parseInt(e.target.value))
+                  }
                 />
               </div>
               <div className="col-span-2">
-                <label className="block text-sm text-gray-400 mb-2">CTA Caption</label>
-                <input
+                <Label>CTA Caption</Label>
+                <Input
                   type="text"
                   value={props.ctaCaption}
                   onChange={(e) => props.setCtaCaption(e.target.value)}
                   placeholder="Shop Now!"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
-            <label className="flex items-center gap-2 mt-3">
+            <label className="mt-3 flex items-center gap-2">
               <input
                 type="checkbox"
                 checked={props.ctaBackgroundBlur}
                 onChange={(e) => props.setCtaBackgroundBlur(e.target.checked)}
-                className="w-4 h-4"
+                className="h-4 w-4"
               />
-              <span className="text-sm text-gray-400">Blur Background</span>
+              <span className="text-sm text-muted-foreground">Blur Background</span>
             </label>
           </div>
 
           {/* End Screen CTA */}
           <div>
-            <h4 className="font-semibold mb-4 text-blue-400 text-lg">End Screen CTA</h4>
+            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+              End Screen CTA
+            </CardTitle>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
-                <label className="block text-sm text-gray-400 mb-2">End Logo URL</label>
+                <Label>End Logo URL</Label>
                 <div className="flex gap-2">
-                  <input
+                  <Input
                     type="url"
                     value={props.endCtaLogoUrl}
                     onChange={(e) => props.setEndCtaLogoUrl(e.target.value)}
                     placeholder="https://example.com/logo.png"
-                    className="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1"
                   />
                   {props.onOpenAssetSelector && (
-                    <button
+                    <Button
                       onClick={() => props.onOpenAssetSelector?.("end-cta-logo")}
-                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors"
+                      size="sm"
                     >
                       Select
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
               <div className="col-span-2">
-                <label className="block text-sm text-gray-400 mb-2">End Caption</label>
-                <input
+                <Label>End Caption</Label>
+                <Input
                   type="text"
                   value={props.endCtaCaption}
                   onChange={(e) => props.setEndCtaCaption(e.target.value)}
                   placeholder="Thank you for watching!"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Duration (seconds)</label>
-                <input
+                <Label>Duration (seconds)</Label>
+                <Input
                   type="number"
                   value={props.endCtaDuration}
-                  onChange={(e) => props.setEndCtaDuration(parseInt(e.target.value))}
+                  onChange={(e) =>
+                    props.setEndCtaDuration(parseInt(e.target.value))
+                  }
                   min="1"
                   max="10"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div className="col-span-2">
-                <label className="block text-sm text-gray-400 mb-2">End Background URL</label>
+                <Label>End Background URL</Label>
                 <div className="flex gap-2">
-                  <input
+                  <Input
                     type="url"
                     value={props.endCtaBackgroundUrl}
-                    onChange={(e) => props.setEndCtaBackgroundUrl(e.target.value)}
+                    onChange={(e) =>
+                      props.setEndCtaBackgroundUrl(e.target.value)
+                    }
                     placeholder="https://example.com/end-bg.jpg"
-                    className="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1"
                   />
                   {props.onOpenAssetSelector && (
-                    <button
-                      onClick={() => props.onOpenAssetSelector?.("end-cta-background")}
-                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors"
+                    <Button
+                      onClick={() =>
+                        props.onOpenAssetSelector?.("end-cta-background")
+                      }
+                      size="sm"
                     >
                       Select
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
@@ -582,28 +616,30 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
 
           {/* Background Music */}
           <div>
-            <h4 className="font-semibold mb-4 text-blue-400 text-lg">Background Music</h4>
+            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+              Background Music
+            </CardTitle>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
-                <label className="block text-sm text-gray-400 mb-2">Music URL</label>
-                <input
+                <Label>Music URL</Label>
+                <Input
                   type="url"
                   value={props.musicUrl}
                   onChange={(e) => props.setMusicUrl(e.target.value)}
                   placeholder="https://example.com/music.mp3"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Volume (0-1)</label>
-                <input
+                <Label>Volume (0-1)</Label>
+                <Input
                   type="number"
                   value={props.musicVolume}
-                  onChange={(e) => props.setMusicVolume(parseFloat(e.target.value))}
+                  onChange={(e) =>
+                    props.setMusicVolume(parseFloat(e.target.value))
+                  }
                   step="0.1"
                   min="0"
                   max="1"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
@@ -611,42 +647,54 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
 
           {/* Other Settings */}
           <div>
-            <h4 className="font-semibold mb-4 text-blue-400 text-lg">Other Settings</h4>
+            <CardTitle className="mb-4 text-lg font-semibold text-primary">
+              Other Settings
+            </CardTitle>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
-                <label className="block text-sm text-gray-400 mb-2">Video Name</label>
-                <input
+                <Label>Video Name</Label>
+                <Input
                   type="text"
                   value={props.videoName}
                   onChange={(e) => props.setVideoName(e.target.value)}
                   placeholder="My Awesome Video"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              <CustomSelect
-                label="Model Version"
-                value={props.modelVersion}
-                onChange={(value) => props.setModelVersion(value as "standard" | "aurora_v1" | "aurora_v1_fast")}
-                options={[
-                  { value: "standard", label: "Standard" },
-                  { value: "aurora_v1", label: "Aurora V1" },
-                  { value: "aurora_v1_fast", label: "Aurora V1 Fast" }
-                ]}
-              />
+              <div>
+                <Label>Model Version</Label>
+                <Select
+                  value={props.modelVersion}
+                  onValueChange={(value) =>
+                    props.setModelVersion(
+                      value as "standard" | "aurora_v1" | "aurora_v1_fast",
+                    )
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="standard">Standard</SelectItem>
+                    <SelectItem value="aurora_v1">Aurora V1</SelectItem>
+                    <SelectItem value="aurora_v1_fast">Aurora V1 Fast</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
               <div className="col-span-2">
-                <label className="block text-sm text-gray-400 mb-2">Webhook URL (Optional)</label>
-                <input
+                <Label>Webhook URL (Optional)</Label>
+                <Input
                   type="url"
                   value={props.webhookUrl}
                   onChange={(e) => props.setWebhookUrl(e.target.value)}
                   placeholder="https://example.com/webhook"
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <p className="text-xs text-gray-500 mt-1">Receive notification when video generation completes</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Receive notification when video generation completes
+                </p>
               </div>
             </div>
           </div>
-        </div>
+        </Card>
       )}
     </div>
   );

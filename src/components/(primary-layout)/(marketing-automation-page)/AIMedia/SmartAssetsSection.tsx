@@ -20,6 +20,17 @@ import {
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import AIAssetGeneratorModal, {
   type GenerateParams,
 } from "./AIAssetGeneratorModal";
@@ -246,58 +257,56 @@ export default function SmartAssetsSection({
   };
 
   return (
-    <div className="flex h-full flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <div className="flex h-full flex-col bg-background">
       {/* Header */}
-      <div className="border-b border-slate-800/50 p-6">
+      <div className="border-b border-border p-6">
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h2 className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-2xl font-bold text-transparent">
+            <h2 className="bg-gradient-to-r from-primary to-primary bg-clip-text text-2xl font-bold text-transparent">
               Smart Assets
             </h2>
-            <p className="mt-1 text-sm text-gray-400">
+            <p className="mt-1 text-sm text-muted-foreground">
               {projectTitle} - Manage images, videos, and logos
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <button
+            <Button
               onClick={() => setShowAIGeneratorModal(true)}
               disabled={!projectId}
-              className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 font-medium transition-all hover:from-purple-700 hover:to-pink-700 disabled:cursor-not-allowed disabled:from-slate-700 disabled:to-slate-700"
+              className="flex items-center gap-2"
             >
               <Wand2 className="h-4 w-4" />
               AI Generate
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setShowUploadModal(true)}
               disabled={!projectId}
-              className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-2 font-medium transition-all hover:from-blue-700 hover:to-purple-700 disabled:cursor-not-allowed disabled:from-slate-700 disabled:to-slate-700"
+              variant="outline"
+              className="flex items-center gap-2"
             >
               <Plus className="h-4 w-4" />
               Upload
-            </button>
+            </Button>
           </div>
         </div>
 
         {/* Type Filter */}
         <div>
-          <label className="mb-2 block text-xs font-medium text-gray-400">
+          <Label className="mb-2 block text-xs font-medium">
             Asset Type
-          </label>
+          </Label>
           <div className="flex gap-2">
             {["all", "image", "video", "logo"].map((type) => (
-              <button
+              <Button
                 key={type}
                 onClick={() =>
                   setSelectedType(type as "all" | "image" | "video" | "logo")
                 }
-                className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${
-                  selectedType === type
-                    ? "bg-blue-600 text-white"
-                    : "bg-slate-800 text-gray-400 hover:bg-slate-700"
-                }`}
+                variant={selectedType === type ? "default" : "outline"}
+                className="flex-1"
               >
                 {type.charAt(0).toUpperCase() + type.slice(1)}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -307,34 +316,35 @@ export default function SmartAssetsSection({
       <div className="flex-1 overflow-y-auto p-6">
         {loadingAssets ? (
           <div className="flex h-64 items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : !projectId ? (
-          <div className="flex h-64 flex-col items-center justify-center text-gray-400">
+          <div className="flex h-64 flex-col items-center justify-center text-muted-foreground">
             <Sparkles className="mb-4 h-12 w-12 opacity-50" />
             <p>No project selected</p>
           </div>
         ) : assets.length === 0 ? (
-          <div className="flex h-64 flex-col items-center justify-center text-gray-400">
+          <div className="flex h-64 flex-col items-center justify-center text-muted-foreground">
             <Upload className="mb-4 h-12 w-12 opacity-50" />
             <p className="mb-2">No assets uploaded yet</p>
-            <button
+            <Button
               onClick={() => setShowUploadModal(true)}
-              className="text-sm text-blue-400 hover:text-blue-300"
+              variant="link"
+              className="text-sm"
             >
               Upload your first asset
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {assets.map((asset) => (
-              <div
+              <Card
                 key={asset._id}
-                className="group relative cursor-pointer overflow-hidden rounded-lg border border-slate-700 bg-slate-800/50 transition-all hover:border-blue-500"
+                className="group relative cursor-pointer overflow-hidden transition-all hover:border-primary"
                 onClick={() => setSelectedAsset(asset)}
               >
                 {/* Thumbnail */}
-                <div className="flex aspect-square items-center justify-center overflow-hidden bg-slate-900">
+                <div className="flex aspect-square items-center justify-center overflow-hidden bg-muted">
                   {asset.type === "video" ? (
                     <div className="relative h-full w-full">
                       <video
@@ -343,146 +353,130 @@ export default function SmartAssetsSection({
                         muted
                       />
                       <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                        <FileVideo className="h-8 w-8 text-white" />
+                        <FileVideo className="h-8 w-8 text-foreground" />
                       </div>
                     </div>
                   ) : (
                     <img
                       src={asset.imagekitUrl}
                       alt={asset.name}
-                      className={`h-full w-full ${
+                      className={cn(
+                        "h-full w-full",
                         asset.type === "logo"
                           ? "object-contain p-4"
                           : "object-cover"
-                      }`}
+                      )}
                     />
                   )}
                 </div>
 
                 {/* Info */}
-                <div className="p-3">
+                <CardContent className="p-3">
                   <div className="mb-2 flex items-start gap-2">
-                    <div className="mt-0.5 text-blue-400">
+                    <div className="mt-0.5 text-primary">
                       {getAssetIcon(asset.type)}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-white">
+                      <p className="truncate text-sm font-medium text-foreground">
                         {asset.name}
                       </p>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-muted-foreground">
                         {formatFileSize(asset.fileSize)}
                       </p>
                     </div>
                   </div>
-                  <span className="inline-block rounded bg-slate-700 px-2 py-1 text-xs font-medium text-gray-300">
+                  <span className="inline-block rounded bg-muted px-2 py-1 text-xs font-medium text-foreground">
                     {asset.type}
                   </span>
-                </div>
+                </CardContent>
 
                 {/* Delete Button */}
-                <button
+                <Button
                   onClick={(e) => {
                     e.stopPropagation();
                     handleDelete(asset);
                   }}
-                  className="absolute top-2 right-2 rounded-lg bg-red-600 p-2 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-red-700"
+                  variant="destructive"
+                  size="icon-sm"
+                  className="absolute top-2 right-2 opacity-0 transition-opacity group-hover:opacity-100"
                 >
-                  <Trash2 className="h-4 w-4 text-white" />
-                </button>
-              </div>
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </Card>
             ))}
           </div>
         )}
       </div>
 
       {/* Upload Modal */}
-      {showUploadModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-2xl rounded-2xl border border-slate-800 bg-slate-900 p-6">
-            <div className="mb-6 flex items-center justify-between">
-              <h3 className="text-xl font-bold text-white">Upload Assets</h3>
-              <button
-                onClick={() => setShowUploadModal(false)}
-                className="rounded-lg p-2 transition-colors hover:bg-slate-800"
-              >
-                <X className="h-5 w-5 text-gray-400" />
-              </button>
-            </div>
+      <Dialog open={showUploadModal} onOpenChange={setShowUploadModal}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Upload Assets</DialogTitle>
+          </DialogHeader>
 
-            {/* Upload Area */}
-            <div
-              onClick={() => fileInputRef.current?.click()}
-              className="cursor-pointer rounded-xl border-2 border-dashed border-slate-700 p-12 text-center transition-all hover:border-blue-500"
-            >
-              <Upload className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-              <p className="mb-2 font-medium text-white">
-                Click to upload or drag and drop
-              </p>
-              <p className="text-sm text-gray-400">
-                Images, videos, and logos (Max 50MB)
-              </p>
-              <input
-                ref={fileInputRef}
-                type="file"
-                multiple
-                accept="image/*,video/*"
-                onChange={handleFileSelect}
-                className="hidden"
-              />
-            </div>
-
-            {/* Upload Progress */}
-            {uploadingFiles.length > 0 && (
-              <div className="mt-6 space-y-3">
-                {uploadingFiles.map((file, idx) => (
-                  <div key={idx} className="rounded-lg bg-slate-800 p-4">
-                    <div className="mb-2 flex items-center justify-between">
-                      <span className="truncate text-sm text-white">
-                        {file.name}
-                      </span>
-                      <span className="text-sm text-gray-400">
-                        {file.progress}%
-                      </span>
-                    </div>
-                    <div className="h-2 w-full rounded-full bg-slate-700">
-                      <div
-                        className="h-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 transition-all"
-                        style={{ width: `${file.progress}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+          {/* Upload Area */}
+          <div
+            onClick={() => fileInputRef.current?.click()}
+            className="cursor-pointer rounded-xl border-2 border-dashed border-border p-12 text-center transition-all hover:border-primary"
+          >
+            <Upload className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
+            <p className="mb-2 font-medium text-foreground">
+              Click to upload or drag and drop
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Images, videos, and logos (Max 50MB)
+            </p>
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept="image/*,video/*"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
           </div>
-        </div>
-      )}
+
+          {/* Upload Progress */}
+          {uploadingFiles.length > 0 && (
+            <div className="mt-6 space-y-3">
+              {uploadingFiles.map((file, idx) => (
+                <Card key={idx} className="p-4">
+                  <div className="mb-2 flex items-center justify-between">
+                    <span className="truncate text-sm text-foreground">
+                      {file.name}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {file.progress}%
+                    </span>
+                  </div>
+                  <div className="h-2 w-full rounded-full bg-muted">
+                    <div
+                      className="h-2 rounded-full bg-primary transition-all"
+                      style={{ width: `${file.progress}%` }}
+                    />
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* Asset Detail Modal */}
       {selectedAsset && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
-          onClick={() => setSelectedAsset(null)}
+        <Dialog
+          open={!!selectedAsset}
+          onOpenChange={() => setSelectedAsset(null)}
         >
-          <div
-            className="w-full max-w-4xl rounded-2xl border border-slate-800 bg-slate-900 p-6"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="mb-6 flex items-center justify-between">
-              <h3 className="text-xl font-bold text-white">
-                {selectedAsset.name}
-              </h3>
-              <button
-                onClick={() => setSelectedAsset(null)}
-                className="rounded-lg p-2 transition-colors hover:bg-slate-800"
-              >
-                <X className="h-5 w-5 text-gray-400" />
-              </button>
-            </div>
+          <DialogContent className="max-w-4xl">
+            <DialogHeader>
+              <DialogTitle>{selectedAsset.name}</DialogTitle>
+            </DialogHeader>
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               {/* Preview */}
-              <div className="flex items-center justify-center overflow-hidden rounded-xl bg-slate-950">
+              <div className="flex items-center justify-center overflow-hidden rounded-xl bg-muted">
                 {selectedAsset.type === "video" ? (
                   <video
                     src={selectedAsset.imagekitUrl}
@@ -501,77 +495,78 @@ export default function SmartAssetsSection({
               {/* Details */}
               <div className="space-y-4">
                 <div>
-                  <label className="text-xs font-medium text-gray-400">
+                  <Label className="text-xs font-medium text-muted-foreground">
                     Type
-                  </label>
-                  <p className="mt-1 text-white capitalize">
+                  </Label>
+                  <p className="mt-1 capitalize text-foreground">
                     {selectedAsset.type}
                   </p>
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-gray-400">
+                  <Label className="text-xs font-medium text-muted-foreground">
                     File Size
-                  </label>
-                  <p className="mt-1 text-white">
+                  </Label>
+                  <p className="mt-1 text-foreground">
                     {formatFileSize(selectedAsset.fileSize)}
                   </p>
                 </div>
                 {selectedAsset.width && selectedAsset.height && (
                   <div>
-                    <label className="text-xs font-medium text-gray-400">
+                    <Label className="text-xs font-medium text-muted-foreground">
                       Dimensions
-                    </label>
-                    <p className="mt-1 text-white">
+                    </Label>
+                    <p className="mt-1 text-foreground">
                       {selectedAsset.width} × {selectedAsset.height}
                     </p>
                   </div>
                 )}
                 <div>
-                  <label className="text-xs font-medium text-gray-400">
+                  <Label className="text-xs font-medium text-muted-foreground">
                     URL
-                  </label>
+                  </Label>
                   <div className="mt-1 flex items-center gap-2">
-                    <input
+                    <Input
                       type="text"
                       value={selectedAsset.imagekitUrl}
                       readOnly
-                      className="flex-1 rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-white"
+                      className="flex-1"
                     />
-                    <button
+                    <Button
                       onClick={() => {
                         navigator.clipboard.writeText(
                           selectedAsset.imagekitUrl,
                         );
                         alert("URL copied to clipboard!");
                       }}
-                      className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium transition-colors hover:bg-blue-700"
+                      size="sm"
                     >
                       Copy
-                    </button>
+                    </Button>
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-gray-400">
+                  <Label className="text-xs font-medium text-muted-foreground">
                     Uploaded
-                  </label>
-                  <p className="mt-1 text-white">
+                  </Label>
+                  <p className="mt-1 text-foreground">
                     {new Date(selectedAsset.createdAt).toLocaleString()}
                   </p>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     handleDelete(selectedAsset);
                     setSelectedAsset(null);
                   }}
-                  className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-3 font-medium transition-colors hover:bg-red-700"
+                  variant="destructive"
+                  className="mt-6 flex w-full items-center justify-center gap-2"
                 >
                   <Trash2 className="h-4 w-4" />
                   Delete Asset
-                </button>
+                </Button>
               </div>
             </div>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* AI Asset Generator Modal */}

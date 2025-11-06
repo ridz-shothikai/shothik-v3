@@ -11,6 +11,11 @@ import { Download, Loader2, Music, Sparkles } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import AssetSelectorModal from "./AssetSelectorModal";
 import ScriptEditor from "./ScriptEditor";
 
@@ -235,23 +240,22 @@ export default function UGCVideoPage() {
   };
 
   return (
-    <div className="flex flex-1 flex-col overflow-hidden bg-gradient-to-br from-slate-950 via-purple-950/10 to-slate-950 text-white">
+    <div className="flex flex-1 flex-col overflow-hidden bg-background text-foreground">
       {/* Hero Header */}
-      <div className="relative flex-shrink-0 overflow-hidden border-b border-slate-800/50">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-pink-600/10 to-purple-600/10"></div>
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iIzhjNWNmZiIgc3Ryb2tlLXdpZHRoPSIuNSIgb3BhY2l0eT0iLjEiLz48L2c+PC9zdmc+')] opacity-20"></div>
+      <div className="relative flex-shrink-0 overflow-hidden border-b border-border">
+        <div className="absolute inset-0 bg-primary/10"></div>
         <div className="relative mx-auto max-w-5xl px-6 py-12">
           <div className="text-center">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-purple-500/20 bg-purple-500/10 px-4 py-2">
-              <Sparkles className="h-4 w-4 text-purple-400" />
-              <span className="text-sm font-medium text-purple-300">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2">
+              <Sparkles className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium text-primary">
                 AI-Powered UGC Creation
               </span>
             </div>
-            <h1 className="mb-3 bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-4xl font-bold text-transparent">
+            <h1 className="mb-3 bg-gradient-to-r from-primary via-primary to-primary bg-clip-text text-4xl font-bold text-transparent">
               UGC Video Generator
             </h1>
-            <p className="mx-auto max-w-2xl text-lg text-gray-400">
+            <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
               Transform your scripts into authentic user-generated content with
               AI-powered audio and visuals
             </p>
@@ -264,7 +268,7 @@ export default function UGCVideoPage() {
         <div className="mx-auto max-w-4xl space-y-6 px-6 py-8 pl-16">
           {/* Step 1: Script */}
           <div className="relative">
-            <div className="absolute top-6 -left-12 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-base font-bold shadow-lg">
+            <div className="absolute top-6 -left-12 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-base font-bold text-primary-foreground shadow-lg">
               1
             </div>
             <ScriptEditor
@@ -282,209 +286,218 @@ export default function UGCVideoPage() {
 
           {/* Step 2: Audio Generation */}
           <div className="relative">
-            <div className="absolute top-6 -left-12 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 text-base font-bold shadow-lg">
+            <div className="absolute top-6 -left-12 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-base font-bold text-primary-foreground shadow-lg">
               2
             </div>
-            <div className="rounded-2xl border border-slate-800/50 bg-slate-900/50 p-8 shadow-xl backdrop-blur-sm">
-              <div className="mb-6 flex items-center justify-between">
-                <div>
-                  <h3 className="flex items-center gap-2 text-xl font-bold">
-                    <Music className="h-5 w-5 text-indigo-400" />
-                    Generate Audio
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-400">
-                    Convert your script into natural-sounding dialogue
-                  </p>
+            <Card className="p-8 shadow-xl">
+              <CardHeader>
+                <div className="mb-6 flex items-center justify-between">
+                  <div>
+                    <CardTitle className="flex items-center gap-2 text-xl font-bold">
+                      <Music className="h-5 w-5 text-primary" />
+                      Generate Audio
+                    </CardTitle>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Convert your script into natural-sounding dialogue
+                    </p>
+                  </div>
+                  {generatedAudioUrl && (
+                    <div className="flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5">
+                      <div className="h-2 w-2 animate-pulse rounded-full bg-primary"></div>
+                      <span className="text-xs font-medium text-primary">
+                        Ready
+                      </span>
+                    </div>
+                  )}
                 </div>
+              </CardHeader>
+
+              <CardContent>
+                {/* Voice Selector */}
+                <div className="mb-6">
+                  <Label className="mb-3 block text-sm font-medium">
+                    Select Voice
+                  </Label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {dialogueVoices.map((voice) => (
+                      <Button
+                        key={voice}
+                        onClick={() => setSelectedDialogueVoice(voice)}
+                        variant={
+                          selectedDialogueVoice === voice ? "default" : "outline"
+                        }
+                        size="sm"
+                      >
+                        {voice}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                <Button
+                  onClick={handleGenerateAudio}
+                  disabled={generatingAudio || !script}
+                  className="mb-6 flex w-full items-center justify-center gap-3"
+                  size="lg"
+                >
+                  {generatingAudio ? (
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                      <span>Generating Audio...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Music className="h-5 w-5" />
+                      <span>Generate Audio from Script</span>
+                    </>
+                  )}
+                </Button>
+
                 {generatedAudioUrl && (
-                  <div className="flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1.5">
-                    <div className="h-2 w-2 animate-pulse rounded-full bg-green-400"></div>
-                    <span className="text-xs font-medium text-green-400">
-                      Ready
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {/* Voice Selector */}
-              <div className="mb-6">
-                <label className="mb-3 block text-sm font-medium text-gray-300">
-                  Select Voice
-                </label>
-                <div className="grid grid-cols-4 gap-2">
-                  {dialogueVoices.map((voice) => (
-                    <button
-                      key={voice}
-                      onClick={() => setSelectedDialogueVoice(voice)}
-                      className={`rounded-lg px-3 py-2 text-sm font-medium transition-all ${
-                        selectedDialogueVoice === voice
-                          ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/30"
-                          : "bg-slate-800 text-gray-400 hover:bg-slate-700 hover:text-white"
-                      }`}
+                  <Card className="space-y-4 border-border bg-muted/50 p-4">
+                    <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
+                      <Music className="h-4 w-4" />
+                      <span>Generated Audio</span>
+                    </div>
+                    <audio
+                      controls
+                      src={generatedAudioUrl}
+                      className="h-12 w-full rounded-lg"
+                    />
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="flex w-full items-center justify-center gap-2"
                     >
-                      {voice}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <button
-                onClick={handleGenerateAudio}
-                disabled={generatingAudio || !script}
-                className="mb-6 flex w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4 font-semibold text-white shadow-lg shadow-indigo-500/20 transition-all hover:scale-[1.02] hover:from-indigo-700 hover:to-purple-700 hover:shadow-indigo-500/40 active:scale-[0.98] disabled:cursor-not-allowed disabled:from-gray-700 disabled:to-gray-800"
-              >
-                {generatingAudio ? (
-                  <>
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                    <span>Generating Audio...</span>
-                  </>
-                ) : (
-                  <>
-                    <Music className="h-5 w-5" />
-                    <span>Generate Audio from Script</span>
-                  </>
+                      <a
+                        href={generatedAudioUrl}
+                        download="ugc-dialogue-audio.mp3"
+                      >
+                        <Download className="h-4 w-4" />
+                        Download Audio File
+                      </a>
+                    </Button>
+                  </Card>
                 )}
-              </button>
-
-              {generatedAudioUrl && (
-                <div className="space-y-4 rounded-xl border border-slate-700/50 bg-slate-800/50 p-4">
-                  <div className="mb-2 flex items-center gap-2 text-sm text-gray-400">
-                    <Music className="h-4 w-4" />
-                    <span>Generated Audio</span>
-                  </div>
-                  <audio
-                    controls
-                    src={generatedAudioUrl}
-                    className="h-12 w-full rounded-lg"
-                  />
-                  <a
-                    href={generatedAudioUrl}
-                    download="ugc-dialogue-audio.mp3"
-                    className="flex items-center justify-center gap-2 rounded-lg bg-slate-700 px-4 py-2.5 text-sm font-medium transition-all hover:scale-[1.02] hover:bg-slate-600 active:scale-[0.98]"
-                  >
-                    <Download className="h-4 w-4" />
-                    Download Audio File
-                  </a>
-                </div>
-              )}
-            </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Step 3: Video Settings */}
           <div className="relative">
-            <div className="absolute top-6 -left-12 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 to-purple-500 text-base font-bold shadow-lg">
+            <div className="absolute top-6 -left-12 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-base font-bold text-primary-foreground shadow-lg">
               3
             </div>
-            <div className="space-y-6 rounded-2xl border border-slate-800/50 bg-slate-900/50 p-8 shadow-xl backdrop-blur-sm">
+            <Card className="space-y-6 p-8 shadow-xl">
               <div>
-                <h3 className="flex items-center gap-2 text-xl font-bold">
-                  <Sparkles className="h-5 w-5 text-pink-400" />
+                <CardTitle className="flex items-center gap-2 text-xl font-bold">
+                  <Sparkles className="h-5 w-5 text-primary" />
                   Video Settings
-                </h3>
-                <p className="mt-1 text-sm text-gray-400">
+                </CardTitle>
+                <p className="mt-1 text-sm text-muted-foreground">
                   Customize your video generation
                 </p>
               </div>
 
               {/* Background Image */}
               <div>
-                <label className="mb-3 block text-sm font-medium text-gray-300">
-                  Image <span className="text-red-400">*</span>
-                </label>
-                <button
+                <Label className="mb-3 block text-sm font-medium">
+                  Image <span className="text-destructive">*</span>
+                </Label>
+                <Button
                   onClick={() => setShowBackgroundSelector(true)}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-6 py-4 text-sm font-medium transition-all hover:scale-[1.02] hover:border-slate-600 hover:bg-slate-700 active:scale-[0.98]"
+                  variant="outline"
+                  className="flex w-full items-center justify-center gap-2"
+                  size="lg"
                 >
                   <Sparkles className="h-4 w-4" />
                   {backgroundUrl
                     ? "Change Background Image"
                     : "Select Background Image"}
-                </button>
+                </Button>
 
                 {backgroundUrl && (
-                  <div className="mt-4 rounded-xl border border-slate-700/50 bg-slate-800/50 p-2">
+                  <Card className="mt-4 border-border bg-muted/50 p-2">
                     <img
                       src={backgroundUrl}
                       alt="Selected background"
                       className="h-40 w-full rounded-lg object-cover"
                     />
-                  </div>
+                  </Card>
                 )}
               </div>
 
               {/* Text Prompt */}
               <div>
-                <label className="mb-3 block text-sm font-medium text-gray-300">
+                <Label className="mb-3 block text-sm font-medium">
                   Visual Style Prompt{" "}
-                  <span className="text-xs text-gray-500">(Optional)</span>
-                </label>
-                <textarea
+                  <span className="text-xs text-muted-foreground">
+                    (Optional)
+                  </span>
+                </Label>
+                <Textarea
                   value={textPrompt}
                   onChange={(e) => setTextPrompt(e.target.value)}
                   placeholder="Describe the desired visual style, atmosphere, camera angles, lighting, mood, environment, etc. Leave empty for default style."
-                  className="w-full resize-none rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-transparent focus:ring-2 focus:ring-pink-500 focus:outline-none"
                   rows={3}
                 />
               </div>
 
               {/* Model Version */}
               <div>
-                <label className="mb-3 block text-sm font-medium text-gray-300">
+                <Label className="mb-3 block text-sm font-medium">
                   Quality & Speed
-                </label>
+                </Label>
                 <div className="grid grid-cols-2 gap-3">
-                  <button
+                  <Button
                     onClick={() => setModelVersion("aurora_v1_fast")}
-                    className={`rounded-xl border px-4 py-3 text-sm font-medium transition-all ${
-                      modelVersion === "aurora_v1_fast"
-                        ? "border-pink-500 bg-pink-600 text-white shadow-lg shadow-pink-500/30"
-                        : "border-slate-700 bg-slate-800 text-gray-400 hover:bg-slate-700 hover:text-white"
-                    }`}
+                    variant={
+                      modelVersion === "aurora_v1_fast" ? "default" : "outline"
+                    }
+                    className="flex flex-col"
                   >
                     <div className="font-semibold">Fast</div>
                     <div className="mt-1 text-xs opacity-75">
                       10 credits/15s
                     </div>
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     onClick={() => setModelVersion("aurora_v1")}
-                    className={`rounded-xl border px-4 py-3 text-sm font-medium transition-all ${
-                      modelVersion === "aurora_v1"
-                        ? "border-pink-500 bg-pink-600 text-white shadow-lg shadow-pink-500/30"
-                        : "border-slate-700 bg-slate-800 text-gray-400 hover:bg-slate-700 hover:text-white"
-                    }`}
+                    variant={modelVersion === "aurora_v1" ? "default" : "outline"}
+                    className="flex flex-col"
                   >
                     <div className="font-semibold">High Quality</div>
                     <div className="mt-1 text-xs opacity-75">
                       20 credits/15s
                     </div>
-                  </button>
+                  </Button>
                 </div>
               </div>
-            </div>
+            </Card>
           </div>
 
           {/* Final Step: Generate Video */}
           <div className="relative">
-            <div className="absolute top-6 -left-12 flex h-10 w-10 animate-pulse items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-lg font-bold shadow-lg">
+            <div className="absolute top-6 -left-12 flex h-10 w-10 animate-pulse items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground shadow-lg">
               ✓
             </div>
-            <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-900/20 to-pink-900/20 p-8 shadow-2xl backdrop-blur-sm">
+            <Card className="border-primary/20 bg-primary/10 p-8 shadow-2xl">
               <div className="mb-6 text-center">
-                <h3 className="mb-2 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-2xl font-bold text-transparent">
+                <h3 className="mb-2 bg-gradient-to-r from-primary to-primary bg-clip-text text-2xl font-bold text-transparent">
                   Ready to Create Magic?
                 </h3>
-                <p className="text-gray-400">
+                <p className="text-muted-foreground">
                   Generate your UGC video with AI-powered audio and visuals
                 </p>
               </div>
 
-              <button
+              <Button
                 onClick={handleGenerateUGCVideo}
                 disabled={
                   generating || !script || !generatedAudioUrl || !backgroundUrl
                 }
-                className="flex w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 px-8 py-5 text-lg font-bold text-white shadow-2xl shadow-purple-500/30 transition-all hover:scale-[1.02] hover:from-purple-700 hover:via-pink-700 hover:to-purple-700 hover:shadow-purple-500/50 active:scale-[0.98] disabled:cursor-not-allowed disabled:from-gray-700 disabled:to-gray-800"
+                size="lg"
+                className="flex w-full items-center justify-center gap-3"
               >
                 {generating ? (
                   <>
@@ -497,30 +510,32 @@ export default function UGCVideoPage() {
                     <span>Generate UGC Video</span>
                   </>
                 )}
-              </button>
+              </Button>
 
               {/* Validation Messages */}
-              <div className="mt-4 space-y-1 text-center text-sm text-gray-500">
+              <div className="mt-4 space-y-1 text-center text-sm text-muted-foreground">
                 {!script && <p>• Please write or generate a script first</p>}
                 {!generatedAudioUrl && (
                   <p>• Please generate audio from your script</p>
                 )}
                 {!backgroundUrl && <p>• Please select a background image</p>}
                 {script && generatedAudioUrl && backgroundUrl && (
-                  <p className="text-green-400">
+                  <p className="text-primary">
                     ✓ All requirements met - Ready to generate!
                   </p>
                 )}
               </div>
-            </div>
+            </Card>
           </div>
         </div>
       </div>
 
       {/* Notification Toast */}
       {showNotification && (
-        <div className="animate-slide-up fixed right-6 bottom-6 z-50 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-4 text-white shadow-2xl shadow-purple-500/50">
-          <p className="font-medium">{notificationMessage}</p>
+        <div className="animate-slide-up fixed right-6 bottom-6 z-50">
+          <Card className="bg-primary px-6 py-4 text-primary-foreground shadow-2xl">
+            <p className="font-medium">{notificationMessage}</p>
+          </Card>
         </div>
       )}
 

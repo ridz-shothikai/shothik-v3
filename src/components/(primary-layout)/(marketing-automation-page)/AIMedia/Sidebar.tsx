@@ -5,6 +5,8 @@ import {
   Users as UsersIcon,
   Video,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface SidebarProps {
   activeSidebar: string;
@@ -49,9 +51,9 @@ export default function Sidebar({
   ];
 
   return (
-    <div className="flex h-full w-64 flex-col border-r border-slate-800/50 bg-slate-900/50">
+    <div className="flex h-full w-64 flex-col border-r border-border bg-card/50">
       {/* Logo */}
-      <div className="flex-shrink-0 border-b border-slate-800/50 p-4">
+      <div className="flex-shrink-0 border-b border-border p-4">
         <div className="flex items-center gap-3">
           <div className="flex h-20 w-20 items-center justify-center rounded-lg">
             <img
@@ -64,13 +66,13 @@ export default function Sidebar({
       </div>
 
       {/* User Info */}
-      <div className="flex-shrink-0 border-b border-slate-800/50 p-3">
+      <div className="flex-shrink-0 border-b border-border p-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 font-bold">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground">
             R
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium">
+            <p className="truncate text-sm font-medium text-foreground">
               Rashaduzamman Rian's...
             </p>
           </div>
@@ -83,18 +85,20 @@ export default function Sidebar({
           {sidebarSections.map((section) => {
             const Icon = section.icon;
             return (
-              <button
+              <Button
                 key={section.id}
                 onClick={() => setActiveSidebar(section.id)}
-                className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 transition-colors ${
+                variant={activeSidebar === section.id ? "default" : "ghost"}
+                className={cn(
+                  "flex w-full items-center gap-3 justify-start",
                   activeSidebar === section.id
-                    ? "bg-slate-800 text-white"
-                    : "text-gray-400 hover:bg-slate-800/50 hover:text-white"
-                }`}
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
               >
                 <Icon className="h-5 w-5" />
                 <span className="text-sm font-medium">{section.label}</span>
-              </button>
+              </Button>
             );
           })}
         </nav>

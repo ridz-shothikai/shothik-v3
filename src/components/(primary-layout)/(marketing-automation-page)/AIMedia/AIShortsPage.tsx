@@ -10,6 +10,9 @@ import { Loader2, Sparkles } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import AssetSelectorModal from "./AssetSelectorModal";
 import ScriptEditor from "./ScriptEditor";
 import VoiceSelector from "./VoiceSelector";
@@ -205,14 +208,16 @@ export default function AIShortsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#020617] text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <div className="sticky top-0 z-10 border-b border-slate-800/50 bg-[#020617]/80 backdrop-blur-sm">
+      <div className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold">AI Shorts Generator</h1>
-              <p className="mt-1 text-sm text-gray-400">
+              <h1 className="text-2xl font-bold text-foreground">
+                AI Shorts Generator
+              </h1>
+              <p className="mt-1 text-sm text-muted-foreground">
                 Create engaging short-form videos for TikTok, Instagram Reels &
                 YouTube Shorts
               </p>
@@ -227,102 +232,116 @@ export default function AIShortsPage() {
           {/* Left Column - Settings */}
           <div className="space-y-6">
             {/* Aspect Ratio Selection */}
-            <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
-              <h3 className="mb-4 text-lg font-semibold">Aspect Ratio</h3>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { id: "9x16", label: "9:16", desc: "TikTok/Reels" },
-                  { id: "16x9", label: "16:9", desc: "YouTube" },
-                  { id: "1x1", label: "1:1", desc: "Square" },
-                ].map((p) => (
-                  <button
-                    key={p.id}
-                    onClick={() => setAspectRatio(p.id as any)}
-                    className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-                      aspectRatio === p.id
-                        ? "bg-blue-600 text-white"
-                        : "bg-slate-800 text-gray-400 hover:bg-slate-700"
-                    }`}
-                  >
-                    <div>{p.label}</div>
-                    <div className="text-xs opacity-75">{p.desc}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold">
+                  Aspect Ratio
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { id: "9x16", label: "9:16", desc: "TikTok/Reels" },
+                    { id: "16x9", label: "16:9", desc: "YouTube" },
+                    { id: "1x1", label: "1:1", desc: "Square" },
+                  ].map((p) => (
+                    <Button
+                      key={p.id}
+                      onClick={() => setAspectRatio(p.id as any)}
+                      variant={aspectRatio === p.id ? "default" : "outline"}
+                      className="flex flex-col"
+                    >
+                      <div>{p.label}</div>
+                      <div className="text-xs opacity-75">{p.desc}</div>
+                    </Button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Visual Style Selection */}
-            <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
-              <h3 className="mb-4 text-lg font-semibold">Visual Style</h3>
-              <div className="space-y-2">
-                {[
-                  { id: "4K realistic", label: "4K Realistic" },
-                  { id: "3D", label: "3D" },
-                  { id: "Cinematic", label: "Cinematic" },
-                  { id: "Cartoonish", label: "Cartoonish" },
-                  { id: "Line art", label: "Line Art" },
-                  { id: "Pixel art", label: "Pixel Art" },
-                ].map((s) => (
-                  <button
-                    key={s.id}
-                    onClick={() => setVisualStyle(s.id)}
-                    className={`w-full rounded-lg px-4 py-2 text-left text-sm font-medium transition-colors ${
-                      visualStyle === s.id
-                        ? "bg-blue-600 text-white"
-                        : "bg-slate-800 text-gray-400 hover:bg-slate-700"
-                    }`}
-                  >
-                    {s.label}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold">
+                  Visual Style
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {[
+                    { id: "4K realistic", label: "4K Realistic" },
+                    { id: "3D", label: "3D" },
+                    { id: "Cinematic", label: "Cinematic" },
+                    { id: "Cartoonish", label: "Cartoonish" },
+                    { id: "Line art", label: "Line Art" },
+                    { id: "Pixel art", label: "Pixel Art" },
+                  ].map((s) => (
+                    <Button
+                      key={s.id}
+                      onClick={() => setVisualStyle(s.id)}
+                      variant={visualStyle === s.id ? "default" : "outline"}
+                      className="w-full justify-start"
+                    >
+                      {s.label}
+                    </Button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Caption Style Selection */}
-            <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
-              <h3 className="mb-4 text-lg font-semibold">Caption Style</h3>
-              <div className="space-y-2">
-                {[
-                  { id: "normal-black", label: "Normal Black" },
-                  { id: "normal-white", label: "Normal White" },
-                  { id: "neo", label: "Neo" },
-                  { id: "glow", label: "Glow" },
-                  { id: "comic-shadow", label: "Comic Shadow" },
-                ].map((s) => (
-                  <button
-                    key={s.id}
-                    onClick={() => setCaptionStyle(s.id)}
-                    className={`w-full rounded-lg px-4 py-2 text-left text-sm font-medium transition-colors ${
-                      captionStyle === s.id
-                        ? "bg-blue-600 text-white"
-                        : "bg-slate-800 text-gray-400 hover:bg-slate-700"
-                    }`}
-                  >
-                    {s.label}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold">
+                  Caption Style
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {[
+                    { id: "normal-black", label: "Normal Black" },
+                    { id: "normal-white", label: "Normal White" },
+                    { id: "neo", label: "Neo" },
+                    { id: "glow", label: "Glow" },
+                    { id: "comic-shadow", label: "Comic Shadow" },
+                  ].map((s) => (
+                    <Button
+                      key={s.id}
+                      onClick={() => setCaptionStyle(s.id)}
+                      variant={captionStyle === s.id ? "default" : "outline"}
+                      className="w-full justify-start"
+                    >
+                      {s.label}
+                    </Button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Background Selection */}
-            <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
-              <h3 className="mb-4 text-lg font-semibold">Background</h3>
-              <button
-                onClick={() => setShowBackgroundSelector(true)}
-                className="w-full rounded-lg bg-slate-800 px-4 py-2 text-sm transition-colors hover:bg-slate-700"
-              >
-                {backgroundUrl ? "Change Background" : "Select Background"}
-              </button>
-              {backgroundUrl && (
-                <div className="mt-3">
-                  <img
-                    src={backgroundUrl}
-                    alt="Selected background"
-                    className="h-24 w-full rounded-lg object-cover"
-                  />
-                </div>
-              )}
-            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold">Background</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Button
+                  onClick={() => setShowBackgroundSelector(true)}
+                  variant="outline"
+                  className="w-full"
+                >
+                  {backgroundUrl ? "Change Background" : "Select Background"}
+                </Button>
+                {backgroundUrl && (
+                  <div className="mt-3">
+                    <img
+                      src={backgroundUrl}
+                      alt="Selected background"
+                      className="h-24 w-full rounded-lg object-cover"
+                    />
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </div>
 
           {/* Middle Column - Script & Voice */}
@@ -358,35 +377,38 @@ export default function AIShortsPage() {
             />
 
             {/* Generate Button */}
-            <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
-              <button
-                onClick={handleGenerateShort}
-                disabled={generating || !script.trim() || !selectedVoice}
-                className="flex w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4 text-lg font-semibold transition-all hover:from-blue-700 hover:to-purple-700 disabled:cursor-not-allowed disabled:from-gray-700 disabled:to-gray-700"
-              >
-                {generating ? (
-                  <>
-                    <Loader2 className="h-6 w-6 animate-spin" />
-                    Generating AI Short...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="h-6 w-6" />
-                    Generate AI Short
-                  </>
+            <Card>
+              <CardContent className="p-6">
+                <Button
+                  onClick={handleGenerateShort}
+                  disabled={generating || !script.trim() || !selectedVoice}
+                  className="flex w-full items-center justify-center gap-3"
+                  size="lg"
+                >
+                  {generating ? (
+                    <>
+                      <Loader2 className="h-6 w-6 animate-spin" />
+                      Generating AI Short...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="h-6 w-6" />
+                      Generate AI Short
+                    </>
+                  )}
+                </Button>
+                {!script.trim() && (
+                  <p className="mt-4 text-center text-sm text-muted-foreground">
+                    Please enter a script to continue
+                  </p>
                 )}
-              </button>
-              {!script.trim() && (
-                <p className="mt-4 text-center text-sm text-amber-400">
-                  Please enter a script to continue
-                </p>
-              )}
-              {!selectedVoice && script.trim() && (
-                <p className="mt-4 text-center text-sm text-amber-400">
-                  Please select a voice to continue
-                </p>
-              )}
-            </div>
+                {!selectedVoice && script.trim() && (
+                  <p className="mt-4 text-center text-sm text-muted-foreground">
+                    Please select a voice to continue
+                  </p>
+                )}
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
@@ -408,7 +430,7 @@ export default function AIShortsPage() {
 
       {/* Notification */}
       {showNotification && (
-        <div className="animate-slide-up fixed right-6 bottom-6 z-50 rounded-lg bg-green-600 px-6 py-4 text-white shadow-lg">
+        <div className="animate-slide-up fixed right-6 bottom-6 z-50 rounded-lg bg-primary px-6 py-4 text-primary-foreground shadow-lg">
           {notificationMessage}
         </div>
       )}
