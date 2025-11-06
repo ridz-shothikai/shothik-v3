@@ -111,6 +111,28 @@ const presentationSlice = createSlice({
           return true;
         }
 
+        // Special check for user messages: prevent duplicates by content
+        // Backend may send same user message multiple times with different timestamps/event_ids
+        if (
+          logEntry.author === "user" &&
+          log.author === "user" &&
+          logEntry.user_message &&
+          (log.user_message === logEntry.user_message ||
+            log.content === logEntry.user_message ||
+            log.text === logEntry.user_message) &&
+          // Allow some time difference (within 10 seconds) to catch same message from different workers
+          Math.abs(
+            new Date(log.timestamp).getTime() -
+              new Date(logEntry.timestamp).getTime(),
+          ) < 10000
+        ) {
+          console.log(
+            "[Redux] Duplicate user message detected by content:",
+            logEntry.user_message?.substring(0, 50),
+          );
+          return true;
+        }
+
         // Special check for browser workers (by author only, since they update incrementally)
         if (
           log.author?.startsWith("browser_worker_") &&

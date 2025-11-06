@@ -82,6 +82,12 @@ const parseHistoryLogEntry = (logEntry, existingLogs = []) => {
       case "LightweightSlideGeneration":
         return parseHistoryLightweightSlideGeneration(logEntry);
 
+      case "slide_insertion_orchestrator":
+        return parseHistorySlideInsertionOrchestrator(logEntry);
+
+      case "slide_orchestration_agent":
+        return parseHistorySlideOrchestrationAgent(logEntry);
+
       default:
         // Check if it's a browser worker
         if (author?.startsWith("browser_worker_")) {
@@ -333,6 +339,122 @@ const parseHistoryLightweightSlideGeneration = (logEntry) => {
     id: generateHistoryLogId("LightweightSlideGeneration", logEntry.timestamp),
     author: "LightweightSlideGeneration",
     text: logEntry.parsed_output || "",
+    data: { parsed_output: logEntry.parsed_output },
+    timestamp: logEntry.timestamp || new Date().toISOString(),
+    phase: "generation",
+  };
+
+  return enrichLogEntry(log);
+};
+
+/**
+ * Check if text contains markdown syntax
+ * @param {string} text - Text to check
+ * @returns {boolean} True if text appears to contain markdown
+ */
+const containsMarkdown = (text) => {
+  if (!text || typeof text !== "string") return false;
+
+  // Common markdown patterns
+  const markdownPatterns = [
+    /^#{1,6}\s/m, // Headers
+    /\*\*.*?\*\*/, // Bold
+    /\*.*?\*/, // Italic
+    /`.*?`/, // Inline code
+    /```[\s\S]*?```/, // Code blocks
+    /^\s*[-*+]\s/m, // Unordered lists
+    /^\s*\d+\.\s/m, // Ordered lists
+    /\[.*?\]\(.*?\)/, // Links
+    /^>\s/m, // Blockquotes
+    /\|.*\|/, // Tables
+  ];
+
+  return markdownPatterns.some((pattern) => pattern.test(text));
+};
+
+/**
+ * Parse slide insertion orchestrator from history
+ * Handles parsed_output field from history and normalizes to text/content
+ * Detects and preserves markdown formatting
+ * @param {Object} logEntry - History log entry
+ * @returns {Object} Formatted log entry
+ */
+const parseHistorySlideInsertionOrchestrator = (logEntry) => {
+  console.log("[HistoryParser] Parsing slide insertion orchestrator");
+
+  // From history: parsed_output contains the message (can be string or object)
+  // Normalize to text/content for consistent display
+  let textContent = "";
+
+  if (logEntry.parsed_output) {
+    // If parsed_output is a string, use it directly
+    if (typeof logEntry.parsed_output === "string") {
+      textContent = logEntry.parsed_output;
+    } else if (typeof logEntry.parsed_output === "object") {
+      // If it's an object, try to extract text or stringify
+      textContent =
+        logEntry.parsed_output.text ||
+        logEntry.parsed_output.message ||
+        JSON.stringify(logEntry.parsed_output);
+    }
+  }
+
+  // Check if content contains markdown
+  const hasMarkdown = containsMarkdown(textContent);
+
+  const log = {
+    id: generateHistoryLogId(
+      "slide_insertion_orchestrator",
+      logEntry.timestamp,
+    ),
+    author: "slide_insertion_orchestrator",
+    text: textContent,
+    content: textContent, // Also set content for UI compatibility
+    hasMarkdown, // Flag to indicate markdown content
+    data: { parsed_output: logEntry.parsed_output },
+    timestamp: logEntry.timestamp || new Date().toISOString(),
+    phase: "generation",
+  };
+
+  return enrichLogEntry(log);
+};
+
+/**
+ * Parse slide orchestration agent from history
+ * Handles parsed_output field from history and normalizes to text/content
+ * Detects and preserves markdown formatting
+ * @param {Object} logEntry - History log entry
+ * @returns {Object} Formatted log entry
+ */
+const parseHistorySlideOrchestrationAgent = (logEntry) => {
+  console.log("[HistoryParser] Parsing slide orchestration agent");
+
+  // From history: parsed_output contains the message (can be string or object)
+  // Normalize to text/content for consistent display
+  let textContent = "";
+
+  if (logEntry.parsed_output) {
+    // If parsed_output is a string, use it directly
+    if (typeof logEntry.parsed_output === "string") {
+      textContent = logEntry.parsed_output;
+    } else if (typeof logEntry.parsed_output === "object") {
+      // If it's an object, try to extract text or stringify
+      textContent =
+        logEntry.parsed_output.text ||
+        logEntry.parsed_output.message ||
+        JSON.stringify(logEntry.parsed_output);
+    }
+  }
+
+  // Check if content contains markdown
+  const hasMarkdown = containsMarkdown(textContent);
+
+  const log = {
+    id: generateHistoryLogId("slide_orchestration_agent", logEntry.timestamp),
+    author: "slide_orchestration_agent",
+    text: textContent,
+    content: textContent, // Also set content for UI compatibility
+    hasMarkdown, // Flag to indicate markdown content
     data: { parsed_output: logEntry.parsed_output },
     timestamp: logEntry.timestamp || new Date().toISOString(),
     phase: "generation",

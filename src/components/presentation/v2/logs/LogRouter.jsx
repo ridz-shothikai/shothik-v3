@@ -40,6 +40,12 @@ export default function LogRouter({ log, onViewSummary }) {
     case MESSAGE_TYPES.SLIDE_GENERATION:
       return <SlideGenerationLog log={log} />;
 
+    case MESSAGE_TYPES.SLIDE_INSERTION_ORCHESTRATOR:
+      return <SlideGenerationLog log={log} />;
+
+    case MESSAGE_TYPES.SLIDE_ORCHESTRATION_AGENT:
+      return <SlideGenerationLog log={log} />;
+
     default:
       // Fallback for unknown log types
       return (

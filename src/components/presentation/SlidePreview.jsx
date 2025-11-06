@@ -1,6 +1,7 @@
 // components/SlidePreview.jsx
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Tooltip,
@@ -133,6 +134,10 @@ export default function SlidePreview({
       console.error("Failed to copy: ", err);
     }
   };
+
+  const htmlContent = slide?.body || slide?.html_content || slide?.htmlContent;
+  const hasHtml =
+    typeof htmlContent === "string" && htmlContent.trim().length > 0;
 
   // EDIT LOGIC STARTS
   const handleEditSlide = () => {
@@ -348,6 +353,13 @@ export default function SlidePreview({
               >
                 {isEditMode ? "Exit" : "Edit"}
               </Button>
+              {/* Slide number indicator */}
+              <span className="text-muted-foreground text-xs font-medium">
+                {slide?.slideNumber !== undefined
+                  ? slide.slideNumber
+                  : index + 1}
+                /{totalSlides}
+              </span>
             </div>
           </div>
 
@@ -369,15 +381,30 @@ export default function SlidePreview({
                     componentName: "SlidePreview-iframe",
                   }}
                 >
-                  <iframe
-                    ref={iframeRef}
-                    srcDoc={createEnhancedIframeContentFromHTML(
-                      slide.body || slide.html_content || slide.htmlContent,
-                    )}
-                    style={iframeStyle}
-                    title={`Slide ${slide.slide_index + 1}`}
-                    sandbox="allow-scripts allow-same-origin"
-                  />
+                  {hasHtml ? (
+                    <iframe
+                      ref={iframeRef}
+                      srcDoc={createEnhancedIframeContentFromHTML(htmlContent)}
+                      style={iframeStyle}
+                      title={`Slide ${slide.slide_index + 1}`}
+                      sandbox="allow-scripts allow-same-origin"
+                    />
+                  ) : (
+                    <div
+                      style={iframeStyle}
+                      className="bg-muted/30 flex h-full w-full items-center justify-center rounded"
+                    >
+                      <div className="flex w-[85%] max-w-[900px] flex-col gap-3">
+                        <Skeleton className="h-6 w-1/2" />
+                        <Skeleton className="h-8 w-3/4" />
+                        <Skeleton className="h-40 w-full" />
+                        <div className="mt-2 flex items-center gap-2">
+                          <Skeleton className="h-8 w-24" />
+                          <Skeleton className="h-8 w-16" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </EditingErrorBoundary>
               )}
 
@@ -529,7 +556,9 @@ export default function SlidePreview({
                 className="text-secondary-foreground"
               >
                 <code className="language-html">
-                  {slide.body || slide.html_content || slide.htmlContent}
+                  {hasHtml
+                    ? htmlContent
+                    : "<!-- Code not generated yet. Please wait... -->"}
                 </code>
               </pre>
             </div>

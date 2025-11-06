@@ -18,12 +18,13 @@
 
 import {
   resetPresentationState,
+  selectPresentation,
   setCurrentSlideId,
   setHistoryData,
   setStatus,
 } from "@/redux/slices/presentationSlice";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import usePresentationSocket from "../usePresentationSocket";
 
 /**
@@ -56,6 +57,7 @@ const HOOK_STATUS = {
  */
 export default function usePresentationOrchestrator(presentationId) {
   const dispatch = useDispatch();
+  const presentationState = useSelector(selectPresentation);
   const [hookStatus, setHookStatus] = useState(HOOK_STATUS.IDLE);
   const [error, setError] = useState(null);
   const statusCheckIntervalRef = useRef(null);
@@ -67,12 +69,24 @@ export default function usePresentationOrchestrator(presentationId) {
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
   const API_URL = process.env.NEXT_PUBLIC_SLIDE_API_URL;
 
-  // Initialize socket hook (only connects when needed)
-  const { isConnected: socketConnected } = usePresentationSocket(
+  // Determine if socket should be connected based on Redux status or internal status
+  // This allows the socket to reconnect when status changes to queued/processing
+  const shouldConnectSocket =
+    presentationState.presentationStatus === PRESENTATION_STATUS.PROCESSING ||
+    presentationState.presentationStatus === PRESENTATION_STATUS.QUEUED ||
     currentStatusRef.current === PRESENTATION_STATUS.PROCESSING ||
-      currentStatusRef.current === PRESENTATION_STATUS.QUEUED
-      ? presentationId
-      : null,
+    currentStatusRef.current === PRESENTATION_STATUS.QUEUED;
+
+  // Get pId from Redux state (for follow-up queries) or from presentationId prop
+  // This ensures we use the correct pId even when it changes in Redux
+  const currentPId =
+    presentationState.slideCurrentId || presentationState.pId || presentationId;
+
+  // Initialize socket hook (connects when status is processing or queued)
+  // CRITICAL: Use currentPId from Redux state, not presentationId prop
+  // This ensures follow-up queries with same p_id reconnect properly
+  const { isConnected: socketConnected } = usePresentationSocket(
+    shouldConnectSocket ? currentPId : null,
     token,
   );
 
@@ -524,11 +538,110 @@ export default function usePresentationOrchestrator(presentationId) {
     initialize();
   }, [initialize, dispatch]);
 
+  /**
+   * Handle follow-up queued status
+   * Called when a follow-up query returns with queued status
+   * This resumes the orchestrator process for the same presentation
+   */
+  const handleFollowUpQueued = useCallback(
+    async (pId) => {
+      console.log(
+        "[Orchestrator] 🔄 Handling follow-up queued status for:",
+        pId,
+      );
+
+      // Update internal status ref
+      currentStatusRef.current = PRESENTATION_STATUS.QUEUED;
+
+      // Update hook status
+      setHookStatus(HOOK_STATUS.STREAMING);
+
+      // Update Redux status (if not already set)
+      dispatch(
+        setStatus({
+          status: "streaming",
+          presentationStatus: PRESENTATION_STATUS.QUEUED,
+        }),
+      );
+
+      dispatch(setCurrentSlideId({ presentationId: pId }));
+
+      // Start the presentation process
+      await startPresentation(pId);
+
+      console.log(
+        "[Orchestrator] ✅ Follow-up queued status handled, socket will connect",
+      );
+    },
+    [dispatch, startPresentation],
+  );
+
+  // Watch for status changes in Redux and handle follow-up queued status
+  // This ensures the orchestrator's internal state stays in sync with Redux
+  useEffect(() => {
+    const reduxStatus = presentationState.presentationStatus;
+    const currentPId =
+      presentationState.slideCurrentId ||
+      presentationState.pId ||
+      presentationId;
+
+    // Handle status changes
+    if (reduxStatus && currentStatusRef.current !== reduxStatus) {
+      console.log(
+        "[Orchestrator] 🔄 Detected status change in Redux, updating internal state",
+        {
+          reduxStatus,
+          currentStatus: currentStatusRef.current,
+          pId: currentPId,
+        },
+      );
+
+      // Update internal state to match Redux
+      currentStatusRef.current = reduxStatus;
+
+      // Handle different statuses
+      if (
+        reduxStatus === PRESENTATION_STATUS.QUEUED ||
+        reduxStatus === PRESENTATION_STATUS.PROCESSING
+      ) {
+        // For queued/processing, set to streaming mode
+        setHookStatus(HOOK_STATUS.STREAMING);
+
+        // If status is queued, also call startPresentation to ensure the backend is ready
+        if (reduxStatus === PRESENTATION_STATUS.QUEUED && currentPId) {
+          console.log(
+            "[Orchestrator] Status is queued, ensuring presentation is started",
+          );
+          startPresentation(currentPId);
+        }
+      } else if (reduxStatus === PRESENTATION_STATUS.COMPLETED) {
+        // For completed status, set to ready mode (socket will disconnect automatically)
+        console.log(
+          "[Orchestrator] ✅ Presentation completed, transitioning to ready state",
+        );
+        setHookStatus(HOOK_STATUS.READY);
+      } else if (reduxStatus === PRESENTATION_STATUS.FAILED) {
+        // For failed status, set to error mode
+        console.log(
+          "[Orchestrator] ❌ Presentation failed, transitioning to error state",
+        );
+        setHookStatus(HOOK_STATUS.ERROR);
+      }
+    }
+  }, [
+    presentationState.presentationStatus,
+    presentationState.slideCurrentId,
+    presentationState.pId,
+    presentationId,
+    startPresentation,
+  ]);
+
   return {
     hookStatus,
     error,
     retry,
     currentStatus: currentStatusRef.current,
     socketConnected,
+    handleFollowUpQueued, // Expose method for follow-up queries
   };
 }

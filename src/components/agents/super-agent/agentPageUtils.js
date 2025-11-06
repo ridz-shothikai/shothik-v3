@@ -1,8 +1,14 @@
 // ====== For Slide creation handler ======
 
-import { setPresentationState } from "@/redux/slices/presentationSlice";
+import {
+  addLog,
+  setCurrentSlideId,
+  setPresentationState,
+  setStatus,
+} from "@/redux/slices/presentationSlice";
 import { setSheetState } from "@/redux/slices/sheetSlice";
 import { createPresentationServer } from "@/services/createPresentationServer";
+import { enrichLogEntry } from "@/utils/presentation/messageTypeClassifier.js.js";
 
 // ====== For SLIDE generation handler ======
 async function handleSlideCreation(
@@ -33,6 +39,19 @@ async function handleSlideCreation(
         totalSlides: 0,
       }),
     );
+
+    // Immediately show the user's query in the presentation logs (optimistic UI)
+    const localUserLog = enrichLogEntry({
+      id: `local-user-${Date.now()}`,
+      author: "user",
+      type: "chunk",
+      user_message: inputValue,
+      timestamp: new Date().toISOString(),
+      p_id: null,
+      file_urls: fileUrls && fileUrls.length ? fileUrls : null,
+      temp: true,
+    });
+    dispatch(addLog(localUserLog));
 
     console.log(
       "[AgentLandingPage] Initiating presentation with message:",
@@ -283,11 +302,182 @@ async function handleResearchRequest(
     setIsInitiatingResearch(false);
   }
 }
+// ====== For Follow-up query handler ======
+async function handleFollowUpQuery(
+  inputValue,
+  fileUrls,
+  currentPId,
+  userId,
+  dispatch,
+  setIsLoading,
+  showToast,
+) {
+  try {
+    console.log(
+      "[handleFollowUpQuery] Sending follow-up query:",
+      inputValue,
+      "for p_id:",
+      currentPId,
+    );
+
+    // Validate required parameters
+    if (!inputValue || !inputValue.trim()) {
+      showToast("Please enter a message", "error");
+      return { success: false };
+    }
+
+    if (!currentPId) {
+      showToast(
+        "Presentation ID is missing. Please refresh the page.",
+        "error",
+      );
+      return { success: false };
+    }
+
+    if (!userId) {
+      showToast("User authentication required. Please log in.", "error");
+      return { success: false };
+    }
+
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      showToast("Authentication required. Please log in.", "error");
+      return { success: false };
+    }
+
+    // Immediately show the user's query in the presentation logs (optimistic UI)
+    // Include both user_message (for backend) and content/text (for UI display)
+    const localUserLog = enrichLogEntry({
+      id: `local-user-${Date.now()}`,
+      author: "user",
+      type: "chunk",
+      user_message: inputValue,
+      content: inputValue, // For UI display in UserMessageLog
+      text: inputValue, // Alternative field for UI display
+      timestamp: new Date().toISOString(),
+      p_id: currentPId,
+      file_urls: fileUrls && fileUrls.length ? fileUrls : null,
+      temp: true,
+    });
+
+    // Dispatch the optimistic log - ensure it's added to Redux
+    console.log(
+      "[handleFollowUpQuery] Adding optimistic user log:",
+      localUserLog,
+    );
+    dispatch(addLog(localUserLog));
+
+    setIsLoading(true);
+
+    const response = await createPresentationServer({
+      message: inputValue,
+      file_urls: fileUrls,
+      p_id: currentPId,
+      userId: userId,
+      token: token,
+    });
+
+    if (!response?.success) {
+      console.error("[handleFollowUpQuery] Failed to send follow-up query");
+      showToast("Failed to send follow-up query. Please try again.", "error");
+      setIsLoading(false);
+      return { success: false };
+    }
+
+    const returnedPId = response?.presentationId;
+    const responseStatus = response?.status; // "queued" status from API
+
+    console.log(
+      "[handleFollowUpQuery] Follow-up query sent successfully. p_id:",
+      returnedPId,
+      "status:",
+      responseStatus,
+    );
+
+    // Update Redux with the returned p_id and status
+    if (returnedPId) {
+      dispatch(setCurrentSlideId({ presentationId: returnedPId }));
+    }
+
+    // Handle the queued status - resume orchestrator process
+    if (responseStatus === "queued") {
+      console.log(
+        "[handleFollowUpQuery] Status is queued, resuming orchestrator process",
+      );
+
+      // Update status to queued in Redux
+      dispatch(
+        setStatus({
+          status: "streaming",
+          presentationStatus: "queued",
+        }),
+      );
+
+      // Start the presentation process (same as orchestrator does)
+      const API_URL = process.env.NEXT_PUBLIC_SLIDE_API_URL;
+      try {
+        console.log(
+          `[handleFollowUpQuery] Starting presentation: ${returnedPId}`,
+        );
+        const startResponse = await fetch(
+          `${API_URL}/start-presentation/${returnedPId}`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          },
+        );
+
+        const startData = await startResponse.json();
+        console.log(
+          "[handleFollowUpQuery] Start presentation response:",
+          startData,
+        );
+      } catch (error) {
+        console.error(
+          "[handleFollowUpQuery] Error starting presentation:",
+          error,
+        );
+        // Don't fail the whole operation if start fails
+      }
+
+      // The socket connection will be automatically established by usePresentationSocket
+      // because the status is now "queued" in Redux and the orchestrator will detect it
+      console.log(
+        "[handleFollowUpQuery] Socket connection will be established automatically",
+      );
+    } else {
+      // For other statuses, just update the status
+      dispatch(
+        setStatus({
+          status: "streaming",
+          presentationStatus: responseStatus || "processing",
+        }),
+      );
+    }
+
+    setIsLoading(false);
+    showToast("Follow-up query sent successfully", "success");
+    return { success: true };
+  } catch (error) {
+    console.error("[handleFollowUpQuery] Error:", error);
+    showToast(
+      "An error occurred while sending the follow-up query. Please try again.",
+      "error",
+    );
+    setIsLoading(false);
+    return { success: false };
+  }
+}
+
 // ====== For AI Chat generation handler ======
 // ====== For Calls generation handler ======
 // ====== For ALl Agents generation handler ======
 
 export {
+  handleFollowUpQuery,
   handleResearchRequest,
   handleSheetGenerationRequest,
   handleSlideCreation,

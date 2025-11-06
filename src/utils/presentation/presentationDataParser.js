@@ -64,10 +64,15 @@ export const parseConnectedEvent = (payload) => {
 export const parseUserMessage = (message) => {
   console.log("[Parser] Parsing user message:", message);
 
+  // Preserve user_message field for matching with optimistic logs
+  const userMessageText = message.user_message || message.content || "";
+
   const logEntry = {
     id: generateLogId("user", message.timestamp),
     author: "user",
-    content: message.content || message.user_message || "",
+    user_message: userMessageText, // Preserve for matching
+    content: userMessageText, // For UI display
+    text: userMessageText, // Alternative field for UI
     timestamp: message.timestamp || new Date().toISOString(),
     phase: "planning",
   };
@@ -249,6 +254,93 @@ export const parseLightweightSlideGeneration = (message) => {
 };
 
 /**
+ * Check if text contains markdown syntax
+ * @param {string} text - Text to check
+ * @returns {boolean} True if text appears to contain markdown
+ */
+const containsMarkdown = (text) => {
+  if (!text || typeof text !== "string") return false;
+
+  // Common markdown patterns
+  const markdownPatterns = [
+    /^#{1,6}\s/m, // Headers
+    /\*\*.*?\*\*/, // Bold
+    /\*.*?\*/, // Italic
+    /`.*?`/, // Inline code
+    /```[\s\S]*?```/, // Code blocks
+    /^\s*[-*+]\s/m, // Unordered lists
+    /^\s*\d+\.\s/m, // Ordered lists
+    /\[.*?\]\(.*?\)/, // Links
+    /^>\s/m, // Blockquotes
+    /\|.*\|/, // Tables
+  ];
+
+  return markdownPatterns.some((pattern) => pattern.test(text));
+};
+
+/**
+ * Parse slide insertion orchestrator output
+ * Handles both streaming (text field) and normalizes for display
+ * Detects and preserves markdown formatting
+ * @param {Object} message - Agent output message
+ * @returns {Object} Formatted log entry
+ */
+export const parseSlideInsertionOrchestrator = (message) => {
+  console.log("[Parser] Parsing slide insertion orchestrator:", message);
+
+  // From streaming: text field contains the message
+  // Normalize to text/content for consistent display
+  const textContent = message.text || message.content || "";
+
+  // Check if content contains markdown
+  const hasMarkdown = containsMarkdown(textContent);
+
+  const logEntry = {
+    id: generateLogId("slide_insertion_orchestrator", message.timestamp),
+    author: "slide_insertion_orchestrator",
+    text: textContent,
+    content: textContent, // Also set content for UI compatibility
+    hasMarkdown, // Flag to indicate markdown content
+    data: { ...message },
+    timestamp: message.timestamp || new Date().toISOString(),
+    phase: "generation",
+  };
+
+  return enrichLogEntry(logEntry);
+};
+
+/**
+ * Parse slide orchestration agent output
+ * Handles both streaming (text field) and normalizes for display
+ * Detects and preserves markdown formatting
+ * @param {Object} message - Agent output message
+ * @returns {Object} Formatted log entry
+ */
+export const parseSlideOrchestrationAgent = (message) => {
+  console.log("[Parser] Parsing slide orchestration agent:", message);
+
+  // From streaming: text field contains the message
+  // Normalize to text/content for consistent display
+  const textContent = message.text || message.content || "";
+
+  // Check if content contains markdown
+  const hasMarkdown = containsMarkdown(textContent);
+
+  const logEntry = {
+    id: generateLogId("slide_orchestration_agent", message.timestamp),
+    author: "slide_orchestration_agent",
+    text: textContent,
+    content: textContent, // Also set content for UI compatibility
+    hasMarkdown, // Flag to indicate markdown content
+    data: { ...message },
+    timestamp: message.timestamp || new Date().toISOString(),
+    phase: "generation",
+  };
+
+  return enrichLogEntry(logEntry);
+};
+
+/**
  * Parse enhanced slide generator output
  * This handles grouping of thinking and html_content by slide number
  *
@@ -372,6 +464,20 @@ export const parseAgentOutput = (message, currentState = {}) => {
     return {
       type: "log",
       data: parseLightweightSlideGeneration(message),
+    };
+  }
+
+  if (author === "slide_insertion_orchestrator") {
+    return {
+      type: "log",
+      data: parseSlideInsertionOrchestrator(message),
+    };
+  }
+
+  if (author === "slide_orchestration_agent") {
+    return {
+      type: "log",
+      data: parseSlideOrchestrationAgent(message),
     };
   }
 
