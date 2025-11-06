@@ -1,12 +1,14 @@
 "use client";
 
 import { Presentation } from "lucide-react";
+import BrowserWorkerMarkdown from "../BrowserWorkerMarkdown";
 
 /**
  * SlideGenerationLog Component
  *
  * Displays lightweight slide generation logs in a chat bubble format.
  * Similar to UserMessageLog but aligned to the left side (agent messages).
+ * Supports markdown rendering for slide_orchestration_agent and slide_insertion_orchestrator.
  */
 export default function SlideGenerationLog({ log }) {
   const timeFormatter = new Intl.DateTimeFormat([], {
@@ -17,6 +19,7 @@ export default function SlideGenerationLog({ log }) {
 
   const displayTime = log?.timestamp || log?.lastUpdated;
   const content = log?.text || log?.content || "";
+  const hasMarkdown = log?.hasMarkdown || false;
 
   return (
     <div className="mb-6 flex justify-start">
@@ -38,9 +41,15 @@ export default function SlideGenerationLog({ log }) {
 
         {/* Message bubble - left aligned with different border radius */}
         <div className="bg-muted rounded-t-[18px] rounded-br-[18px] rounded-bl-[4px] px-4 py-3 wrap-break-word">
-          <span className="text-foreground text-sm leading-[1.5] md:text-base">
-            {content}
-          </span>
+          {hasMarkdown ? (
+            <div className="text-foreground [&_*]:text-foreground text-sm leading-[1.5] md:text-base">
+              <BrowserWorkerMarkdown content={content} />
+            </div>
+          ) : (
+            <span className="text-foreground text-sm leading-[1.5] md:text-base">
+              {content}
+            </span>
+          )}
         </div>
       </div>
     </div>

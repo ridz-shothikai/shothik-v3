@@ -1,4 +1,10 @@
-export async function createPresentationServer({ message, file_urls, token }) {
+export async function createPresentationServer({
+  message,
+  file_urls,
+  token,
+  p_id,
+  userId,
+}) {
   const api = `${process.env.NEXT_PUBLIC_SLIDE_API_URL}/create-presentation`; // TODO: This needs to be redirected.
   /**
    * api return expected: 
@@ -12,13 +18,27 @@ export async function createPresentationServer({ message, file_urls, token }) {
   }
    */
   try {
+    // Build request body - include p_id and userId for follow-up queries
+    const requestBody = {
+      message,
+      file_urls: file_urls || null,
+    };
+
+    // Add p_id and userId only for follow-up queries
+    if (p_id) {
+      requestBody.p_id = p_id;
+    }
+    if (userId) {
+      requestBody.userId = userId;
+    }
+
     const res = await fetch(api, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ message, file_urls }),
+      body: JSON.stringify(requestBody),
     });
 
     const data = await res.json();
@@ -29,12 +49,18 @@ export async function createPresentationServer({ message, file_urls, token }) {
 
     if (!res.ok) {
       console.log(data.message || "Failed to create presentation");
+      return {
+        success: false,
+        error: data.message || "Failed to create presentation",
+      };
     }
 
     return {
       success: true,
       presentationId:
         data?.presentationId || data?.presentation_id || data?.p_id,
+      status: data?.status, // Include status for follow-up queries
+      message: data?.message, // Include message
     };
   } catch (err) {
     console.error("Server action failed:", err);

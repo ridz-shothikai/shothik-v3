@@ -1,29 +1,84 @@
 "use client";
 
-import useResponsive from "@/hooks/ui/useResponsive";
+import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import InputArea from "../InputAreas";
 import MessageBubble from "./MessageBubble";
 
-export default function PresentationLogsUi({ logs = [], onViewSummary }) {
+export default function PresentationLogsUi({
+  logs = [],
+  onViewSummary,
+  onSend,
+  isLoading: externalIsLoading = false,
+  status = null,
+  presentationStatus = null,
+  handlePreviewOpen = null,
+  slidesCount = 0,
+}) {
   const scrollContainerRef = useRef(null);
+  const router = useRouter();
 
-  const isMobile = useResponsive("down", "md");
   const [inputValue, setInputValue] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [uploadedFiles, setUploadedFiles] = useState(null);
-  const [fileUrls, setFileUrls] = useState(null);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [fileUrls, setFileUrls] = useState([]);
 
-  const onSend = () => {};
+  // Handle send action
+  const handleSend = async () => {
+    if (!inputValue.trim() || externalIsLoading) return;
+
+    // Extract file URLs from uploaded files
+    const urls = fileUrls.length > 0 ? fileUrls : null;
+    const message = inputValue.trim();
+
+    // Clear input and files immediately for better UX
+    // The optimistic log will be added, so user sees their message right away
+    setInputValue("");
+    setUploadedFiles([]);
+    setFileUrls([]);
+
+    // Scroll to bottom immediately after clearing input (optimistic UI)
+    // This ensures scroll happens before the optimistic log is added
+    setTimeout(() => {
+      const el = scrollContainerRef.current;
+      if (el) {
+        el.scrollTop = el.scrollHeight;
+      }
+    }, 0);
+
+    // Call the parent's onSend handler
+    if (onSend) {
+      await onSend(message, urls);
+      // Note: Input is already cleared above for immediate feedback
+      // If send fails, the optimistic log will still be there
+    }
+  };
+
+  // Handle new chat - redirect to agents page with slides tab
+  const handleNewChat = () => {
+    console.log(
+      "[PresentationLogsUi] New Chat button clicked - redirecting to agents page",
+    );
+    router.push("/agents?tab=slides");
+  };
 
   // Auto-scroll to bottom when logs change
   useEffect(() => {
     const el = scrollContainerRef.current;
     if (!el) return;
-    // small timeout to allow render
-    requestAnimationFrame(() => {
+
+    // Use a small delay to ensure DOM has updated
+    const scrollToBottom = () => {
+      // Use scrollTop for instant scroll (better for real-time updates)
       el.scrollTop = el.scrollHeight;
+    };
+
+    // Use requestAnimationFrame for better performance, then a small timeout for DOM updates
+    requestAnimationFrame(() => {
+      scrollToBottom();
+      // Also try after a small delay to catch any async DOM updates
+      setTimeout(scrollToBottom, 50);
     });
   }, [logs]);
 
@@ -63,8 +118,71 @@ export default function PresentationLogsUi({ logs = [], onViewSummary }) {
           ) : (
             <p className="text-muted-foreground">No logs yet</p>
           )}
+
+          {/* Show spinner at the end when presentation is still generating */}
+          {(() => {
+            // Determine if presentation is still generating
+            // Show spinner when status is NOT "failed" or "completed"
+            const isFailed =
+              status === "failed" || presentationStatus === "failed";
+            const isCompleted =
+              status === "completed" || presentationStatus === "completed";
+            const isGenerating =
+              !isFailed &&
+              !isCompleted &&
+              (status === "streaming" ||
+                status === "loading_history" ||
+                presentationStatus === "queued" ||
+                presentationStatus === "processing" ||
+                (logs?.length > 0 &&
+                  status !== "idle" &&
+                  status !== "checking" &&
+                  status !== "ready"));
+
+            if (isGenerating) {
+              return (
+                <div className="flex items-center justify-start gap-2 py-4">
+                  <Spinner className="text-muted-foreground h-4 w-4" />
+                  <span className="text-muted-foreground text-sm">
+                    Generating...
+                  </span>
+                </div>
+              );
+            }
+            return null;
+          })()}
         </div>
       </div>
+
+      {/* Mobile: Preview button above input area */}
+      {handlePreviewOpen && (
+        <div
+          className="border-border bg-accent flex w-full cursor-pointer items-start gap-2 border-t p-4"
+          onClick={handlePreviewOpen}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24"
+            width="24"
+            viewBox="0 0 24 24"
+            className="text-primary h-7 w-7 shrink-0"
+          >
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4.86 8.86l-3 3.87L9 13.14 6 17h12l-3.86-5.14z" />
+          </svg>
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold">Preview Slides</h3>
+            {slidesCount > 0 && (
+              <p className="text-muted-foreground text-sm">
+                {slidesCount} slide{slidesCount > 1 ? "s" : ""} available
+              </p>
+            )}
+            {slidesCount === 0 && (
+              <p className="text-muted-foreground text-sm">Click to open</p>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Input area pinned to bottom */}
       <div className="border-border bg-card flex-shrink-0 border-t">
@@ -72,8 +190,9 @@ export default function PresentationLogsUi({ logs = [], onViewSummary }) {
           currentAgentType={"presentation"}
           inputValue={inputValue}
           setInputValue={setInputValue}
-          onSend={onSend}
-          isLoading={isLoading}
+          onSend={handleSend}
+          onNewChat={handleNewChat}
+          isLoading={externalIsLoading}
           setUploadedFiles={setUploadedFiles}
           setFileUrls={setFileUrls}
           uploadedFiles={uploadedFiles}

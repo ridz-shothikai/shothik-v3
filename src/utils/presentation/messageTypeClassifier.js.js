@@ -8,6 +8,8 @@ export const MESSAGE_TYPES = {
   BROWSER_WORKER: "browser_worker",
   PLANNING: "planning",
   SLIDE_GENERATION: "slide_generation",
+  SLIDE_INSERTION_ORCHESTRATOR: "slide_insertion_orchestrator",
+  SLIDE_ORCHESTRATION_AGENT: "slide_orchestration_agent",
   UNKNOWN: "unknown",
 };
 
@@ -26,6 +28,10 @@ export function classifyMessageType(author) {
   if (author === "lightweight_planning_agent") return MESSAGE_TYPES.PLANNING;
   if (author === "LightweightSlideGeneration")
     return MESSAGE_TYPES.SLIDE_GENERATION;
+  if (author === "slide_insertion_orchestrator")
+    return MESSAGE_TYPES.SLIDE_INSERTION_ORCHESTRATOR;
+  if (author === "slide_orchestration_agent")
+    return MESSAGE_TYPES.SLIDE_ORCHESTRATION_AGENT;
 
   return MESSAGE_TYPES.UNKNOWN;
 }

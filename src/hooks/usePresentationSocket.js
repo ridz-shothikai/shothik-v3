@@ -16,6 +16,7 @@ import {
   updateLog,
   updateSlide,
 } from "@/redux/slices/presentationSlice";
+import { enrichLogEntry } from "@/utils/presentation/messageTypeClassifier.js.js";
 import {
   parseAgentOutput,
   parseConnectedEvent,
@@ -87,7 +88,75 @@ export default function usePresentationSocket(pId, token) {
               return;
             }
 
-            // Check if this log already exists in Redux (from history)
+            // For user messages, check for duplicates by content first (before timestamp check)
+            // This handles cases where backend sends same message multiple times with different timestamps
+            if (parsed.data.author === "user" && parsed.data.user_message) {
+              // First, try to merge with optimistic temp log
+              const optimisticLogIndex = currentState.logs?.findIndex(
+                (log) =>
+                  log.author === "user" &&
+                  log.temp === true &&
+                  (log.user_message === parsed.data.user_message ||
+                    log.content === parsed.data.user_message ||
+                    log.text === parsed.data.user_message),
+              );
+
+              if (
+                optimisticLogIndex !== undefined &&
+                optimisticLogIndex !== -1
+              ) {
+                console.log(
+                  "[Socket] 🔄 Replacing optimistic user log with backend log",
+                  {
+                    optimisticIndex: optimisticLogIndex,
+                    message: parsed.data.user_message,
+                  },
+                );
+                dispatch(
+                  updateLog({
+                    logIndex: optimisticLogIndex,
+                    logEntry: enrichLogEntry({ ...parsed.data, temp: false }),
+                  }),
+                );
+                break; // Exit early, don't add as new log
+              }
+
+              // Check if this exact user message already exists (even if not temp)
+              // This prevents duplicates when backend sends same message multiple times
+              const duplicateUserMessage = currentState.logs?.some(
+                (log) =>
+                  log.author === "user" &&
+                  !log.temp && // Only check non-temp logs (already processed backend logs)
+                  (log.user_message === parsed.data.user_message ||
+                    log.content === parsed.data.user_message ||
+                    log.text === parsed.data.user_message) &&
+                  // Allow some time difference (within 5 seconds) to catch same message from different workers
+                  Math.abs(
+                    new Date(log.timestamp).getTime() -
+                      new Date(parsed.data.timestamp).getTime(),
+                  ) < 5000,
+              );
+
+              if (duplicateUserMessage) {
+                console.log(
+                  "[Socket] ⏭️ Skipping duplicate user message (same content):",
+                  parsed.data.user_message?.substring(0, 50),
+                );
+                break; // Exit early, don't add duplicate
+              }
+            }
+
+            // Skip unknown agent logs during streaming
+            // Unknown logs should not be added to Redux to avoid cluttering the UI
+            if (parsed.data.author === "unknown" || !parsed.data.author) {
+              console.log(
+                "[Socket] ⏭️ Skipping unknown agent log during streaming:",
+                parsed.data.author,
+              );
+              break;
+            }
+
+            // General duplicate check for all logs (by ID or author+timestamp)
             const logExists = currentState.logs?.some(
               (log) =>
                 log.id === parsed.data.id ||
@@ -286,8 +355,19 @@ export default function usePresentationSocket(pId, token) {
    * FIXED: Stable dependencies - only pId, token, dispatch
    */
   useEffect(() => {
+    // If pId or token is missing, clean up any existing socket and return
+    // This is expected during cleanup/unmount, so we don't warn in that case
     if (!pId || !token) {
-      console.warn("[Socket] ⚠️ Missing pId or token");
+      // Only clean up if there's an existing socket
+      if (socketRef.current) {
+        console.log(
+          "[Socket] 🧹 Cleaning up socket (pId/token missing or component unmounting)",
+        );
+        socketRef.current.removeAllListeners();
+        socketRef.current.disconnect();
+        socketRef.current = null;
+        messageBufferRef.current = [];
+      }
       return;
     }
 
@@ -330,21 +410,50 @@ export default function usePresentationSocket(pId, token) {
     });
 
     socket.on("agent_output", (message) => {
-      console.log("[Socket] 📨 AGENT OUTPUT:", message.author);
-      if (message.type === "terminal" || message.event === "completed") {
+      console.log("[Socket] 📨 AGENT OUTPUT:", {
+        author: message.author,
+        type: message.type,
+        event: message.event,
+        status: message.status,
+      });
+
+      // Check for terminal/completion events
+      // Terminal events can have: author === "terminal", type === "terminal", or event === "completed"
+      const isTerminalEvent =
+        message.author === "terminal" ||
+        message.type === "terminal" ||
+        message.event === "completed" ||
+        (message.status === "completed" && message.author === "terminal");
+
+      if (isTerminalEvent) {
+        console.log(
+          "[Socket] 🏁 Terminal/completion event detected, closing socket",
+        );
         const terminalData = parseTerminalEvent(message);
         dispatch(
           setStatus({
-            status: terminalData.status,
-            presentationStatus: terminalData.status,
+            status: terminalData.status || "completed",
+            presentationStatus: terminalData.status || "completed",
           }),
         );
 
-        setTimeout(() => socket?.disconnect(), 1000);
-      } else {
-        messageBufferRef.current.push(message);
-        processBuffer();
+        // Use socketRef.current to ensure we're disconnecting the correct socket instance
+        const currentSocket = socketRef.current;
+        if (currentSocket && currentSocket.connected) {
+          console.log("[Socket] 🔌 Disconnecting socket due to completion");
+          setTimeout(() => {
+            if (currentSocket && currentSocket.connected) {
+              currentSocket.disconnect();
+              console.log("[Socket] ✅ Socket disconnected after completion");
+            }
+          }, 500); // Reduced delay for faster cleanup
+        }
+        return; // Don't process this message further
       }
+
+      // Normal message processing
+      messageBufferRef.current.push(message);
+      processBuffer();
     });
 
     socket.on("message", (data) => {});
@@ -357,18 +466,26 @@ export default function usePresentationSocket(pId, token) {
     console.log("[Socket] 🚀 Connecting...");
     socket.connect();
 
-    // Cleanup
+    // Cleanup function - runs when component unmounts or dependencies change
     return () => {
-      console.log("[Socket] 🧹 Cleanup - disconnecting");
+      console.log("[Socket] 🧹 Cleanup - disconnecting socket");
 
+      // Process any remaining buffered messages before disconnecting
       if (messageBufferRef.current.length > 0) {
+        console.log(
+          `[Socket] Processing ${messageBufferRef.current.length} buffered messages before cleanup`,
+        );
         processBuffer();
       }
 
-      socket.removeAllListeners();
-      socket.disconnect();
-      socketRef.current = null;
-      messageBufferRef.current = [];
+      // Clean up socket connection
+      if (socketRef.current) {
+        socketRef.current.removeAllListeners();
+        socketRef.current.disconnect();
+        socketRef.current = null;
+        messageBufferRef.current = [];
+        console.log("[Socket] ✅ Socket cleanup completed");
+      }
     };
   }, [pId, token, dispatch]);
 
