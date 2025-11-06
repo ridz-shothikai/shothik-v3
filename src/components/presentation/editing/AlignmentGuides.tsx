@@ -1,23 +1,59 @@
 "use client";
 
+import { memo } from "react";
+
+/**
+ * Alignment guide data structure
+ */
 interface AlignmentGuide {
+  /** Type of guide line (horizontal or vertical) */
   type: "horizontal" | "vertical";
-  position: number; // Position in viewport coordinates
+  /** Position in viewport coordinates */
+  position: number;
+  /** IDs of elements that are aligned */
   elementIds: string[];
 }
 
+/**
+ * Props for AlignmentGuides component
+ */
 interface AlignmentGuidesProps {
+  /** Reference to the container element */
   containerRef: React.RefObject<HTMLDivElement>;
+  /** Reference to the iframe containing the slide content */
   iframeRef: React.RefObject<HTMLIFrameElement>;
+  /** Array of alignment guides to display */
   guides: AlignmentGuide[];
+  /** Whether alignment guides are enabled */
   enabled: boolean;
 }
 
 /**
  * Alignment Guides Component
- * Displays visual guide lines when elements align
+ *
+ * Displays visual guide lines (SVG) when elements align during drag operations.
+ * Helps users align elements with other elements or slide boundaries.
+ *
+ * Features:
+ * - Horizontal and vertical guide lines
+ * - Automatically positioned relative to container
+ * - Updates in real-time during drag
+ * - Shows which elements are aligned
+ *
+ * @param props - AlignmentGuides component props
+ * @returns The alignment guides SVG or null if disabled/no guides
+ *
+ * @example
+ * ```tsx
+ * <AlignmentGuides
+ *   containerRef={containerRef}
+ *   iframeRef={iframeRef}
+ *   guides={alignmentGuides}
+ *   enabled={true}
+ * />
+ * ```
  */
-export function AlignmentGuides({
+export const AlignmentGuides = memo(function AlignmentGuides({
   containerRef,
   iframeRef,
   guides,
@@ -84,4 +120,4 @@ export function AlignmentGuides({
       })}
     </svg>
   );
-}
+});

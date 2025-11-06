@@ -182,6 +182,13 @@ export default function PreviewPanel({
                                 <div className="flex flex-col justify-center gap-4 pt-2">
                                   {slidesArray.map((slide, index) => (
                                     <SlidePreview
+                                      key={
+                                        slide?.id ||
+                                        slide?._id ||
+                                        slide?.slideNumber?.toString() ||
+                                        slide?.slide_index?.toString() ||
+                                        `slide-${index}`
+                                      }
                                       slide={slide}
                                       index={index}
                                       activeTab={slideTabs[index] || "preview"}

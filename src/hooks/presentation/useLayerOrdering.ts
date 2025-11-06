@@ -4,9 +4,38 @@ import { trackChange } from "@/redux/slices/slideEditSlice";
 import { useCallback } from "react";
 
 /**
- * Layer ordering hook for managing z-index
- * - Bring forward / Send backward
- * - Bring to front / Send to back
+ * Layer ordering hook for managing z-index of elements
+ *
+ * Features:
+ * - Bring Forward: Increases z-index to be above next sibling
+ * - Send Backward: Decreases z-index to be below previous sibling
+ * - Bring to Front: Sets z-index to be above all siblings
+ * - Send to Back: Sets z-index to be below all siblings (minimum 0)
+ * - Tracks z-index changes in Redux for undo/redo
+ * - Automatically calculates appropriate z-index values
+ *
+ * @param elementPath - CSS selector path to the element
+ * @param slideId - The unique identifier of the slide being edited
+ * @param elementId - Unique identifier of the element
+ * @param iframeRef - Reference to the iframe containing the slide content
+ * @returns Object with layer ordering functions
+ *
+ * @example
+ * ```tsx
+ * const { bringForward, sendBackward, bringToFront, sendToBack } =
+ *   useLayerOrdering(
+ *     selectedElement.elementPath,
+ *     slideId,
+ *     selectedElement.id,
+ *     iframeRef
+ *   );
+ *
+ * // Bring element forward
+ * bringForward();
+ *
+ * // Bring element to front
+ * bringToFront();
+ * ```
  */
 export function useLayerOrdering(
   elementPath: string,

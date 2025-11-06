@@ -3,16 +3,56 @@ import { useAppDispatch } from "@/redux/hooks";
 import { trackChange } from "@/redux/slices/slideEditSlice";
 import { useCallback, useState } from "react";
 
+/**
+ * Options for element deletion behavior
+ */
 interface UseElementDeletionOptions {
+  /** Optional callback when element is successfully deleted */
   onDelete?: (elementId: string) => void;
+  /** Whether to show confirmation dialog before deletion (default: true) */
   requireConfirmation?: boolean;
 }
 
 /**
  * Hook for handling element deletion with undo support
- * - Stores element data before deletion for undo
- * - Tracks deletion in Redux history
- * - Supports confirmation dialog
+ *
+ * Features:
+ * - Stores complete element data (outerHTML, position, parent) before deletion
+ * - Tracks deletion in Redux history for undo/redo
+ * - Supports confirmation dialog to prevent accidental deletions
+ * - Multiple fallback strategies for element finding (path, ID, selected class)
+ * - Handles edge cases (text nodes, non-element nodes, body/html protection)
+ *
+ * @param slideId - The unique identifier of the slide being edited
+ * @param elementPath - CSS selector path to the element to delete
+ * @param elementId - Unique identifier of the element
+ * @param iframeRef - Reference to the iframe containing the slide content
+ * @param options - Optional configuration for deletion behavior
+ * @param options.onDelete - Callback when element is successfully deleted
+ * @param options.requireConfirmation - Whether to show confirmation dialog (default: true)
+ * @returns Object with deletion functions and state
+ *
+ * @example
+ * ```tsx
+ * const deletion = useElementDeletion(
+ *   slideId,
+ *   selectedElement.elementPath,
+ *   selectedElement.id,
+ *   iframeRef,
+ *   { requireConfirmation: true }
+ * );
+ *
+ * // Delete element
+ * deletion.deleteElement();
+ *
+ * // Check if confirmation dialog is showing
+ * if (deletion.showConfirmDialog) {
+ *   // Show confirmation UI
+ * }
+ *
+ * // Confirm deletion
+ * deletion.confirmDelete();
+ * ```
  */
 export function useElementDeletion(
   slideId: string,

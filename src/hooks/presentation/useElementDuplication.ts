@@ -6,18 +6,53 @@ import { useAppDispatch } from "@/redux/hooks";
 import { trackChange } from "@/redux/slices/slideEditSlice";
 import { useCallback, useState } from "react";
 
+/**
+ * Options for element duplication behavior
+ */
 interface UseElementDuplicationOptions {
-  offsetX?: number; // Default: 10px
-  offsetY?: number; // Default: 10px
-  selectAfterClone?: boolean; // Default: false
+  /** Horizontal offset for cloned element in pixels (default: 10px) */
+  offsetX?: number;
+  /** Vertical offset for cloned element in pixels (default: 10px) */
+  offsetY?: number;
+  /** Whether to auto-select the cloned element (default: false) */
+  selectAfterClone?: boolean;
 }
 
 /**
  * Hook for duplicating elements with smart positioning
- * - Clones element with all attributes and styles
- * - Generates unique IDs for cloned elements
- * - Smart offset positioning
- * - Tracks duplication in Redux history
+ *
+ * Features:
+ * - Deep clone with all attributes, styles, and children
+ * - Generates unique IDs for cloned elements (prevents conflicts)
+ * - Smart offset positioning (10px default) relative to original
+ * - Tracks duplication in Redux history for undo/redo
+ * - Auto-selects cloned element if configured
+ * - Ensures original element also has ID (prevents path ambiguity)
+ * - Multiple fallback strategies for element finding
+ *
+ * @param slideId - The unique identifier of the slide being edited
+ * @param elementPath - CSS selector path to the element to duplicate
+ * @param elementId - Unique identifier of the element
+ * @param iframeRef - Reference to the iframe containing the slide content
+ * @param options - Optional configuration for duplication behavior
+ * @param options.offsetX - Horizontal offset in pixels (default: 10)
+ * @param options.offsetY - Vertical offset in pixels (default: 10)
+ * @param options.selectAfterClone - Auto-select cloned element (default: false)
+ * @returns Object with duplication function and state
+ *
+ * @example
+ * ```tsx
+ * const duplication = useElementDuplication(
+ *   slideId,
+ *   selectedElement.elementPath,
+ *   selectedElement.id,
+ *   iframeRef,
+ *   { offsetX: 20, offsetY: 20, selectAfterClone: true }
+ * );
+ *
+ * // Duplicate element
+ * duplication.duplicateElement();
+ * ```
  */
 export function useElementDuplication(
   slideId: string,

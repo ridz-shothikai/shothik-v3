@@ -14,13 +14,59 @@ import { createEnhancedIframeContentFromHTML } from "@/lib/presentationEditScrip
 import { cn } from "@/lib/utils";
 import html2canvas from "html2canvas";
 import { Check, Copy } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
-import { AlignmentGuides } from "./editing/AlignmentGuides";
+import { AlignmentGuidesSkeleton } from "./editing/AlignmentGuidesSkeleton";
 import { EditingErrorBoundary } from "./editing/EditingErrorBoundary";
-import { EditingToolbar } from "./editing/EditingToolbar";
-import { GridOverlay } from "./editing/GridOverlay";
-import { ResizeHandles } from "./editing/ResizeHandles";
+import { EditingToolbarSkeleton } from "./editing/EditingToolbarSkeleton";
+import { GridOverlaySkeleton } from "./editing/GridOverlaySkeleton";
+import { ResizeHandlesSkeleton } from "./editing/ResizeHandlesSkeleton";
 import { SaveStatusIndicator } from "./editing/SaveStatusIndicator";
+
+// Lazy load editing components for code splitting
+const AlignmentGuides = dynamic(
+  () =>
+    import("./editing/AlignmentGuides").then((mod) => ({
+      default: mod.AlignmentGuides,
+    })),
+  {
+    loading: () => <AlignmentGuidesSkeleton />,
+    ssr: false,
+  },
+);
+
+const EditingToolbar = dynamic(
+  () =>
+    import("./editing/EditingToolbar").then((mod) => ({
+      default: mod.EditingToolbar,
+    })),
+  {
+    loading: () => <EditingToolbarSkeleton />,
+    ssr: false,
+  },
+);
+
+const GridOverlay = dynamic(
+  () =>
+    import("./editing/GridOverlay").then((mod) => ({
+      default: mod.GridOverlay,
+    })),
+  {
+    loading: () => <GridOverlaySkeleton />,
+    ssr: false,
+  },
+);
+
+const ResizeHandles = dynamic(
+  () =>
+    import("./editing/ResizeHandles").then((mod) => ({
+      default: mod.ResizeHandles,
+    })),
+  {
+    loading: () => <ResizeHandlesSkeleton />,
+    ssr: false,
+  },
+);
 
 // Original slide dimensions
 const SLIDE_WIDTH = 1280;
@@ -62,10 +108,16 @@ export default function SlidePreview({
   } = useSlideEditor(slideId, iframeRef);
 
   // Auto-save hook
-  const autoSave = useAutoSave(slideId, presentationId, iframeRef, {
-    enabled: isEditMode, // Only auto-save when in edit mode
-    debounceMs: 30000, // 30 seconds
-  });
+  const autoSave = useAutoSave(
+    slideId,
+    presentationId,
+    iframeRef,
+    {
+      enabled: isEditMode, // Only auto-save when in edit mode
+      debounceMs: 10000, // 10 seconds
+    },
+    index,
+  );
 
   // console.log(slide, "SLIDES DATA");
 
@@ -310,7 +362,13 @@ export default function SlidePreview({
               )}
             >
               {dimensions.scale > 0 && (
-                <EditingErrorBoundary>
+                <EditingErrorBoundary
+                  context={{
+                    slideId,
+                    operation: "iframe-render",
+                    componentName: "SlidePreview-iframe",
+                  }}
+                >
                   <iframe
                     ref={iframeRef}
                     srcDoc={createEnhancedIframeContentFromHTML(
@@ -325,53 +383,87 @@ export default function SlidePreview({
 
               {/* Resize Handles - appears when element is selected */}
               {isEditMode && selectedElement && (
-                <ResizeHandles
-                  selectedElement={selectedElement}
-                  iframeRef={iframeRef}
-                  containerRef={containerRef}
-                  iframeScale={dimensions.scale}
-                  onResize={(width, height) => {
-                    console.log("Element resized:", { width, height });
-                    // TODO: Track change in Redux for undo/redo
+                <EditingErrorBoundary
+                  context={{
+                    slideId,
+                    elementPath: selectedElement.elementPath,
+                    operation: "resize",
+                    componentName: "ResizeHandles",
                   }}
-                />
+                >
+                  <ResizeHandles
+                    selectedElement={selectedElement}
+                    iframeRef={iframeRef}
+                    containerRef={containerRef}
+                    iframeScale={dimensions.scale}
+                    onResize={(width, height) => {
+                      console.log("Element resized:", { width, height });
+                      // TODO: Track change in Redux for undo/redo
+                    }}
+                  />
+                </EditingErrorBoundary>
               )}
 
               {/* Grid Overlay - appears when grid is enabled */}
               {isEditMode && gridEnabled && (
-                <GridOverlay
-                  containerRef={containerRef}
-                  iframeRef={iframeRef}
-                  iframeScale={dimensions.scale}
-                  enabled={gridEnabled}
-                  gridSize={20}
-                />
+                <EditingErrorBoundary
+                  context={{
+                    slideId,
+                    operation: "grid-overlay",
+                    componentName: "GridOverlay",
+                  }}
+                >
+                  <GridOverlay
+                    containerRef={containerRef}
+                    iframeRef={iframeRef}
+                    iframeScale={dimensions.scale}
+                    enabled={gridEnabled}
+                    gridSize={20}
+                  />
+                </EditingErrorBoundary>
               )}
 
               {/* Alignment Guides - appears when dragging */}
               {isEditMode && alignmentGuides.length > 0 && (
-                <AlignmentGuides
-                  containerRef={containerRef}
-                  iframeRef={iframeRef}
-                  guides={alignmentGuides}
-                  enabled={true}
-                />
+                <EditingErrorBoundary
+                  context={{
+                    slideId,
+                    operation: "alignment-guides",
+                    componentName: "AlignmentGuides",
+                  }}
+                >
+                  <AlignmentGuides
+                    containerRef={containerRef}
+                    iframeRef={iframeRef}
+                    guides={alignmentGuides}
+                    enabled={true}
+                  />
+                </EditingErrorBoundary>
               )}
 
               {/* Editing Toolbar - appears when element is selected */}
               {isEditMode && selectedElement && (
-                <EditingToolbar
-                  slideId={slideId}
-                  selectedElement={selectedElement}
-                  iframeRef={iframeRef}
-                  iframeScale={dimensions.scale}
-                  onGridToggle={setGridEnabled}
-                  onAlignmentGuidesChange={setAlignmentGuides}
-                  onSave={() => {
-                    console.log("Save changes clicked");
-                    // TODO: Implement save functionality in Phase 5
+                <EditingErrorBoundary
+                  context={{
+                    slideId,
+                    elementPath: selectedElement.elementPath,
+                    operation: "editing",
+                    componentName: "EditingToolbar",
                   }}
-                />
+                >
+                  <EditingToolbar
+                    slideId={slideId}
+                    selectedElement={selectedElement}
+                    iframeRef={iframeRef}
+                    iframeScale={dimensions.scale}
+                    onGridToggle={setGridEnabled}
+                    onAlignmentGuidesChange={setAlignmentGuides}
+                    onSave={() => {
+                      console.log("Save changes clicked");
+                      // TODO: Implement save functionality in Phase 5
+                    }}
+                  />
+                </EditingErrorBoundary>
               )}
 
               {/* Edit mode indicator */}

@@ -8,8 +8,48 @@ import DOMPurify from "dompurify";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
- * Hook for text editing functionality
- * Handles contentEditable editing with validation and change tracking
+ * Hook for text editing functionality with contentEditable
+ *
+ * Features:
+ * - Inline text editing with contentEditable
+ * - HTML sanitization using DOMPurify to prevent XSS
+ * - Preserves HTML structure (tags like <p>, <span>, <strong>, etc.)
+ * - Auto-selects all text when editing starts
+ * - Save on blur (when clicking outside)
+ * - Keyboard shortcuts (Ctrl/Cmd+S to save, Esc to cancel)
+ * - Paste handling (strips formatting, inserts plain text)
+ * - Tracks text changes in Redux for undo/redo
+ * - Visual feedback with `.element-editing` class
+ *
+ * @param slideId - The unique identifier of the slide being edited
+ * @param elementId - Unique identifier of the element being edited
+ * @param elementPath - CSS selector path to the element
+ * @param iframeRef - Reference to the iframe containing the slide content
+ * @returns Object with editing functions and state
+ *
+ * @example
+ * ```tsx
+ * const textEditing = useTextEditing(
+ *   slideId,
+ *   selectedElement.id,
+ *   selectedElement.elementPath,
+ *   iframeRef
+ * );
+ *
+ * // Start editing
+ * textEditing.startEditing();
+ *
+ * // Check if currently editing
+ * if (textEditing.isEditing) {
+ *   // Show editing UI
+ * }
+ *
+ * // Stop editing and save
+ * textEditing.stopEditing(true);
+ *
+ * // Cancel editing (discard changes)
+ * textEditing.stopEditing(false);
+ * ```
  */
 export function useTextEditing(
   slideId: string,
@@ -328,7 +368,19 @@ export function useTextEditing(
 }
 
 /**
- * Sanitize HTML content - prevent XSS while preserving structure
+ * Sanitize HTML content to prevent XSS while preserving structure
+ *
+ * Uses DOMPurify to sanitize HTML, allowing safe tags like <p>, <span>, <strong>
+ * while removing dangerous scripts and attributes.
+ *
+ * @param html - The HTML string to sanitize
+ * @returns The sanitized HTML string
+ *
+ * @example
+ * ```tsx
+ * const safeHTML = sanitizeHTML("<p>Hello <script>alert('xss')</script></p>");
+ * // Returns: "<p>Hello </p>" (script removed)
+ * ```
  */
 function sanitizeHTML(html: string): string {
   // Use DOMPurify to sanitize HTML (allows safe HTML tags)
@@ -363,7 +415,24 @@ function sanitizeHTML(html: string): string {
 }
 
 /**
- * Validate text doesn't break HTML structure
+ * Validate text content for safety and size limits
+ *
+ * Checks for:
+ * - HTML tag injection
+ * - Excessive length (prevents memory issues)
+ *
+ * @param text - The text string to validate
+ * @returns Validation result with valid flag and optional error message
+ *
+ * @example
+ * ```tsx
+ * const result = validateText("Hello World");
+ * if (result.valid) {
+ *   // Text is safe to use
+ * } else {
+ *   console.error(result.error);
+ * }
+ * ```
  */
 export function validateText(text: string): {
   valid: boolean;

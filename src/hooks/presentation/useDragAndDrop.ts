@@ -1,36 +1,95 @@
 import { getElementFromIframe } from "@/lib/presentation/editing/editorUtils";
+import { useAppDispatch } from "@/redux/hooks";
+import { trackChange } from "@/redux/slices/slideEditSlice";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+/**
+ * Options for drag and drop behavior
+ */
 interface UseDragOptions {
-  gridSize?: number; // px
+  /** Grid size in pixels for snapping (default: 8px) */
+  gridSize?: number;
+  /** Whether to constrain element movement within slide boundaries (default: true) */
   constrainToSlide?: boolean;
 }
 
+/**
+ * Internal state during drag operation
+ */
 interface DragState {
+  /** Starting mouse X position in viewport coordinates */
   startClientX: number;
+  /** Starting mouse Y position in viewport coordinates */
   startClientY: number;
+  /** Starting element left position in iframe coordinates */
   startLeft: number;
+  /** Starting element top position in iframe coordinates */
   startTop: number;
+  /** Element width in iframe coordinates */
   width: number;
+  /** Element height in iframe coordinates */
   height: number;
+  /** Whether element had static position initially */
   isStaticPosition: boolean;
+  /** Base transform string before drag */
   baseTransform: string;
+  /** Current X delta in iframe coordinates */
   currentDx: number;
+  /** Current Y delta in iframe coordinates */
   currentDy: number;
 }
 
 /**
- * Drag-and-drop hook for moving a selected element inside the iframe.
- * - Uses CSS transform for smooth live preview; commits to left/top on drop
- * - Handles iframe scale factor
- * - Supports grid snapping and slide bounds constraints
+ * Drag-and-drop hook for moving a selected element inside the iframe
+ *
+ * Features:
+ * - Uses CSS transform for smooth live preview during drag
+ * - Commits position to left/top styles on drop
+ * - Handles iframe scale factor for coordinate conversion
+ * - Supports grid snapping (8px default)
+ * - Constrains element movement within slide boundaries
+ * - Tracks position changes in Redux for undo/redo
+ *
+ * @param elementPath - CSS selector path to the element to drag
+ * @param iframeRef - Reference to the iframe containing the slide content
+ * @param _iframeScale - Scale factor of the iframe (unused, kept for API compatibility)
+ * @param options - Optional configuration for drag behavior
+ * @param options.gridSize - Grid size in pixels for snapping (default: 8)
+ * @param options.constrainToSlide - Whether to constrain to slide boundaries (default: true)
+ * @param options.slideId - The unique identifier of the slide being edited
+ * @param options.elementId - Unique identifier of the element being dragged
+ * @returns Object with enable/disable functions and drag state
+ *
+ * @example
+ * ```tsx
+ * const { enable, disable, isDragging } = useDragAndDrop(
+ *   "div.my-element",
+ *   iframeRef,
+ *   0.5,
+ *   { gridSize: 8, constrainToSlide: true, slideId: "slide-1", elementId: "element-123" }
+ * );
+ *
+ * // Enable drag when element is selected
+ * useEffect(() => {
+ *   if (selectedElement) {
+ *     enable();
+ *     return () => disable();
+ *   }
+ * }, [selectedElement, enable, disable]);
+ * ```
  */
 export function useDragAndDrop(
   elementPath: string,
   iframeRef: React.RefObject<HTMLIFrameElement>,
   _iframeScale: number,
-  { gridSize = 8, constrainToSlide = true }: UseDragOptions = {},
+  {
+    gridSize = 8,
+    constrainToSlide = true,
+    slideId,
+    elementId,
+  }: UseDragOptions & { slideId?: string; elementId?: string } = {},
 ) {
+  const dispatch = useAppDispatch();
   const [isDragging, setIsDragging] = useState(false);
   const dragStateRef = useRef<DragState | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -226,6 +285,14 @@ export function useDragAndDrop(
       const dx = state.currentDx || 0;
       const dy = state.currentDy || 0;
 
+      // Store previous position for change tracking
+      const previousLeft = state.startLeft;
+      const previousTop = state.startTop;
+      const previousPosition = element.style.position || "static";
+
+      let finalLeft: number;
+      let finalTop: number;
+
       if (state.isStaticPosition) {
         // Preserve layout: convert to relative offsets and clear transform
         if (!element.style.position || element.style.position === "static") {
@@ -233,16 +300,49 @@ export function useDragAndDrop(
         }
         const finalDx = snap(state.startLeft + dx) - state.startLeft;
         const finalDy = snap(state.startTop + dy) - state.startTop;
+        // For relative positioning, store the offset values
+        finalLeft = finalDx;
+        finalTop = finalDy;
         element.style.left = `${finalDx}px`;
         element.style.top = `${finalDy}px`;
         clearTransform(element);
       } else {
         // Positioned elements: commit to left/top and clear transform
-        const finalLeft = snap(state.startLeft + dx);
-        const finalTop = snap(state.startTop + dy);
+        finalLeft = snap(state.startLeft + dx);
+        finalTop = snap(state.startTop + dy);
         element.style.left = `${finalLeft}px`;
         element.style.top = `${finalTop}px`;
         clearTransform(element);
+      }
+
+      // Track position change in Redux if position actually changed
+      // Check if position changed (accounting for relative vs absolute positioning)
+      const positionChanged = state.isStaticPosition
+        ? Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5
+        : Math.abs(finalLeft - previousLeft) > 0.5 ||
+          Math.abs(finalTop - previousTop) > 0.5;
+
+      if (slideId && elementId && positionChanged) {
+        const computedStyle = (doc.defaultView || window).getComputedStyle(
+          element,
+        );
+        dispatch(
+          trackChange({
+            slideId,
+            elementId,
+            type: "position",
+            data: {
+              left: finalLeft,
+              top: finalTop,
+              position: element.style.position || computedStyle.position,
+            },
+            previousData: {
+              left: state.isStaticPosition ? 0 : previousLeft,
+              top: state.isStaticPosition ? 0 : previousTop,
+              position: previousPosition,
+            },
+          }),
+        );
       }
     }
 
@@ -251,7 +351,16 @@ export function useDragAndDrop(
     if (doc) {
       doc.removeEventListener("pointermove", onPointerMove);
     }
-  }, [elementPath, iframeRef, getIframeDoc, onPointerMove, snap]);
+  }, [
+    elementPath,
+    iframeRef,
+    getIframeDoc,
+    onPointerMove,
+    snap,
+    slideId,
+    elementId,
+    dispatch,
+  ]);
 
   // Attach pointerdown to the target element when hook is active
   const enable = useCallback(() => {

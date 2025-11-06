@@ -72,6 +72,7 @@ const slideEditSlice = createSlice({
   reducers: {
     /**
      * Start editing a slide
+     * Preserves existing state (including hasUnsavedChanges) if it exists
      */
     startEditing: (state, action: PayloadAction<{ slideId: string }>) => {
       const { slideId } = action.payload;
@@ -85,7 +86,9 @@ const slideEditSlice = createSlice({
           currentHistoryIndex: -1,
         };
       } else {
+        // Preserve existing state, only update isEditing flag
         state.editingSlides[slideId].isEditing = true;
+        // Don't reset hasUnsavedChanges - preserve it if it was true
       }
     },
 
@@ -120,6 +123,7 @@ const slideEditSlice = createSlice({
     ) => {
       const { slideId, elementId, type, data, previousData } = action.payload;
 
+      // Ensure slide state exists before tracking change
       if (!state.editingSlides[slideId]) {
         state.editingSlides[slideId] = {
           isEditing: true,
@@ -131,6 +135,11 @@ const slideEditSlice = createSlice({
       }
 
       const slide = state.editingSlides[slideId];
+
+      // Ensure isEditing is true when tracking changes
+      if (!slide.isEditing) {
+        slide.isEditing = true;
+      }
 
       // Create change object
       const change: Change = {
@@ -151,13 +160,24 @@ const slideEditSlice = createSlice({
         );
       }
 
-      // Add new change (limit to 50 operations)
-      slide.changeHistory.push(change);
-      if (slide.changeHistory.length > 50) {
+      // Check if we need to remove oldest change (circular buffer)
+      const MAX_HISTORY = 50;
+      if (slide.changeHistory.length >= MAX_HISTORY) {
+        // Remove oldest change
         slide.changeHistory.shift();
+
+        // Adjust currentHistoryIndex before adding new change
+        // If we removed a change, all indices shift down by 1
+        if (slide.currentHistoryIndex >= 0) {
+          slide.currentHistoryIndex -= 1;
+        }
+        // If currentHistoryIndex was -1 (no history), it stays -1
       }
 
+      // Add new change to end
+      slide.changeHistory.push(change);
       slide.currentHistoryIndex = slide.changeHistory.length - 1;
+      // Always set hasUnsavedChanges to true when tracking a change
       slide.hasUnsavedChanges = true;
     },
 
@@ -372,6 +392,12 @@ export const selectCanRedo = (slideId: string) =>
       slide.currentHistoryIndex < slide.changeHistory.length - 1 &&
       slide.changeHistory.length > 0
     );
+  });
+
+export const selectCurrentHistoryIndex = (slideId: string) =>
+  createSelector([selectEditingSlide(slideId)], (slide) => {
+    if (!slide) return -1;
+    return slide.currentHistoryIndex;
   });
 
 export const selectPerformanceMetrics = createSelector(

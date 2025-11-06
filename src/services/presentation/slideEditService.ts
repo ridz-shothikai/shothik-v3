@@ -8,6 +8,7 @@ export interface SaveSlideParams {
   slideId: string;
   presentationId: string;
   htmlContent: string;
+  slideIndex?: number;
   metadata?: {
     lastEdited: string;
     editedBy: string;
@@ -67,15 +68,16 @@ export class SlideEditService {
       }
 
       // Call API
-      const response = await fetch(`${apiUrl}/slides/${params.slideId}`, {
-        method: "PUT",
+      const response = await fetch(`${apiUrl}/slides/save`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           ...(token && { Authorization: `Bearer ${token}` }),
         },
         body: JSON.stringify({
-          html_content: htmlContent,
-          presentation_id: params.presentationId,
+          htmlContent: htmlContent,
+          presentationId: params.presentationId,
+          slideIndex: params.slideIndex,
           metadata: {
             ...params.metadata,
             lastEdited: params.metadata?.lastEdited || new Date().toISOString(),

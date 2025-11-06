@@ -2,21 +2,54 @@
 
 import { cn } from "@/lib/utils";
 import type { ElementData } from "@/redux/slices/slideEditSlice";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 
+/**
+ * Props for ResizeHandles component
+ */
 interface ResizeHandlesProps {
+  /** The currently selected element data */
   selectedElement: ElementData;
+  /** Reference to the iframe containing the slide content */
   iframeRef: React.RefObject<HTMLIFrameElement>;
+  /** Reference to the container element */
   containerRef: React.RefObject<HTMLDivElement>;
+  /** Scale factor of the iframe (for coordinate conversion) */
   iframeScale: number;
+  /** Optional callback when resize completes (called on mouseup) */
   onResize?: (width: number, height: number) => void;
 }
 
 /**
  * Resize Handles Component
- * Shows resize handles around selected elements and allows resizing
+ *
+ * Displays 8 resize handles (4 corners + 4 edges) around a selected element
+ * and allows users to resize elements by dragging the handles.
+ *
+ * Features:
+ * - Real-time visual feedback during resize
+ * - Maintains minimum size constraints (20px)
+ * - Supports all 8 directions (n, s, e, w, ne, nw, se, sw)
+ * - Handles position updates for corner/edge resizing
+ * - Uses iframe scale for accurate coordinate conversion
+ *
+ * @param props - ResizeHandles component props
+ * @returns The resize handles overlay or null if element not found
+ *
+ * @example
+ * ```tsx
+ * <ResizeHandles
+ *   selectedElement={selectedElement}
+ *   iframeRef={iframeRef}
+ *   containerRef={containerRef}
+ *   iframeScale={0.5}
+ *   onResize={(width, height) => {
+ *     console.log(`Resized to: ${width}x${height}`);
+ *   }}
+ * />
+ * ```
  */
-export function ResizeHandles({
+export const ResizeHandles = memo(function ResizeHandles({
   selectedElement,
   iframeRef,
   containerRef,
@@ -376,4 +409,4 @@ export function ResizeHandles({
       />
     </div>
   );
-}
+});

@@ -3,16 +3,54 @@ import { useAppDispatch } from "@/redux/hooks";
 import { trackChange } from "@/redux/slices/slideEditSlice";
 import { useCallback, useEffect, useRef } from "react";
 
+/**
+ * Options for keyboard navigation behavior
+ */
 interface UseKeyboardNavigationOptions {
+  /** Grid size in pixels for snapping (default: 8px) */
   gridSize?: number;
+  /** Whether to constrain element movement within slide boundaries (default: true) */
   constrainToSlide?: boolean;
 }
 
 /**
  * Keyboard navigation hook for precise element movement
- * - Arrow keys: 1px movement (or grid-snapped if grid enabled)
+ *
+ * Features:
+ * - Arrow keys: 1px movement (or grid-snapped if Ctrl/Cmd held)
  * - Shift+Arrow: 10px movement
- * - Ctrl/Cmd+Arrow: Grid snapping
+ * - Ctrl/Cmd+Arrow: Grid-snapped movement (moves by grid size)
+ * - Constrains movement within slide boundaries
+ * - Tracks position changes in Redux for undo/redo
+ * - Automatically handles static vs. absolute/relative positioning
+ * - Ignores arrow keys when typing in inputs/contentEditable
+ *
+ * @param elementPath - CSS selector path to the element to move
+ * @param slideId - The unique identifier of the slide being edited
+ * @param elementId - Unique identifier of the element
+ * @param iframeRef - Reference to the iframe containing the slide content
+ * @param iframeScale - Scale factor of the iframe (for coordinate conversion)
+ * @param enabled - Whether keyboard navigation is currently enabled
+ * @param options - Optional configuration for navigation behavior
+ * @param options.gridSize - Grid size in pixels (default: 8)
+ * @param options.constrainToSlide - Whether to constrain to slide boundaries (default: true)
+ * @returns Object with moveElement function
+ *
+ * @example
+ * ```tsx
+ * const { moveElement } = useKeyboardNavigation(
+ *   selectedElement.elementPath,
+ *   slideId,
+ *   selectedElement.id,
+ *   iframeRef,
+ *   0.5,
+ *   editingMode === "position",
+ *   { gridSize: 8, constrainToSlide: true }
+ * );
+ *
+ * // Manual movement (if needed)
+ * moveElement(10, 10, false); // Move 10px right, 10px down, no grid
+ * ```
  */
 export function useKeyboardNavigation(
   elementPath: string,

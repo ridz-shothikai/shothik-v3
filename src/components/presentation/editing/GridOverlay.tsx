@@ -1,20 +1,50 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
+/**
+ * Props for GridOverlay component
+ */
 interface GridOverlayProps {
+  /** Reference to the container element */
   containerRef: React.RefObject<HTMLDivElement>;
+  /** Reference to the iframe containing the slide content */
   iframeRef: React.RefObject<HTMLIFrameElement>;
+  /** Scale factor of the iframe (for coordinate conversion) */
   iframeScale: number;
+  /** Whether the grid overlay is enabled */
   enabled: boolean;
-  gridSize?: number; // Grid size in pixels (default: 8px)
+  /** Grid size in pixels (default: 8px) */
+  gridSize?: number;
 }
 
 /**
  * Grid Overlay Component
- * Displays a visual grid overlay when enabled, matching the drag snap grid
+ *
+ * Displays a visual grid overlay on top of the slide content when enabled.
+ * The grid helps users align elements and matches the drag snap grid.
+ *
+ * Features:
+ * - SVG-based grid lines for performance
+ * - Automatically adjusts to iframe size and position
+ * - Updates on window resize
+ * - Can be toggled on/off
+ *
+ * @param props - GridOverlay component props
+ * @returns The grid overlay SVG or null if disabled
+ *
+ * @example
+ * ```tsx
+ * <GridOverlay
+ *   containerRef={containerRef}
+ *   iframeRef={iframeRef}
+ *   iframeScale={0.5}
+ *   enabled={gridEnabled}
+ *   gridSize={8}
+ * />
+ * ```
  */
-export function GridOverlay({
+export const GridOverlay = memo(function GridOverlay({
   containerRef,
   iframeRef,
   iframeScale,
@@ -119,4 +149,4 @@ export function GridOverlay({
       </svg>
     </div>
   );
-}
+});

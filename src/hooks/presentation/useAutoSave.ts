@@ -29,6 +29,7 @@ export function useAutoSave(
   presentationId: string,
   iframeRef: React.RefObject<HTMLIFrameElement>,
   options: UseAutoSaveOptions = {},
+  slideIndex?: number,
 ) {
   const dispatch = useAppDispatch();
   const editingSlide = useAppSelector(selectEditingSlide(slideId));
@@ -75,6 +76,7 @@ export function useAutoSave(
         slideId,
         presentationId,
         htmlContent,
+        slideIndex,
         metadata: {
           lastEdited: new Date().toISOString(),
           editedBy: "user",
@@ -122,7 +124,7 @@ export function useAutoSave(
     } finally {
       isSavingRef.current = false;
     }
-  }, [slideId, presentationId, iframeRef, dispatch, options]);
+  }, [slideId, presentationId, iframeRef, dispatch, options, slideIndex]);
 
   // Debounced auto-save function
   const debouncedSave = useRef(

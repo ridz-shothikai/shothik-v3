@@ -29,28 +29,67 @@ import {
   Type,
   Undo2,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
 // import { useState } from "react";
 // import { StyleEditor } from "./StyleEditor";
 
+/**
+ * Props for EditingToolbar component
+ */
 interface EditingToolbarProps {
+  /** The unique identifier of the slide being edited */
   slideId: string;
+  /** The currently selected element data or null if no element selected */
   selectedElement: ElementData | null;
+  /** Reference to the iframe containing the slide content */
   iframeRef: React.RefObject<HTMLIFrameElement>;
+  /** Scale factor of the iframe (default: 1) */
   iframeScale?: number;
+  /** Optional callback when element is deleted */
   onElementDelete?: () => void;
+  /** Optional callback when element is duplicated */
   onElementDuplicate?: () => void;
+  /** Optional callback when save is triggered */
   onSave?: () => void;
+  /** Optional callback when grid toggle state changes */
   onGridToggle?: (enabled: boolean) => void;
+  /** Optional callback when alignment guides change */
   onAlignmentGuidesChange?: (guides: any[]) => void;
 }
 
 /**
  * Editing Toolbar Component
- * Provides editing controls for selected elements
+ *
+ * Provides a comprehensive set of editing controls for selected slide elements.
+ * Includes buttons for undo/redo, text editing, drag mode, layer ordering,
+ * deletion, duplication, and grid toggle.
+ *
+ * Features:
+ * - Undo/Redo functionality with keyboard shortcuts
+ * - Text editing mode toggle
+ * - Drag & drop mode toggle
+ * - Layer ordering (bring forward/send backward)
+ * - Element deletion with confirmation
+ * - Element duplication
+ * - Grid overlay toggle
+ * - Alignment guides integration
+ *
+ * @param props - EditingToolbar component props
+ * @returns The editing toolbar UI
+ *
+ * @example
+ * ```tsx
+ * <EditingToolbar
+ *   slideId="slide-1"
+ *   selectedElement={selectedElement}
+ *   iframeRef={iframeRef}
+ *   iframeScale={0.5}
+ *   onGridToggle={(enabled) => setGridEnabled(enabled)}
+ * />
+ * ```
  */
-export function EditingToolbar({
+export const EditingToolbar = memo(function EditingToolbar({
   slideId,
   selectedElement,
   iframeRef,
@@ -65,8 +104,10 @@ export function EditingToolbar({
     slideId,
     iframeRef,
   );
-  const { undoChange, redoChange, canUndo, canRedo } =
-    useChangeTracking(slideId);
+  const { undoChange, redoChange, canUndo, canRedo } = useChangeTracking(
+    slideId,
+    iframeRef,
+  );
   const [gridEnabled, setGridEnabled] = useState(false);
 
   // Style editing - commented out for now
@@ -85,7 +126,12 @@ export function EditingToolbar({
     selectedElement?.elementPath || "",
     iframeRef,
     iframeScale,
-    { gridSize: 8, constrainToSlide: true },
+    {
+      gridSize: 8,
+      constrainToSlide: true,
+      slideId,
+      elementId: selectedElement?.id || "",
+    },
   );
 
   // Keyboard navigation when in position mode
@@ -473,4 +519,4 @@ export function EditingToolbar({
       )}
     </TooltipProvider>
   );
-}
+});

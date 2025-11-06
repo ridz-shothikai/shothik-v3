@@ -5,9 +5,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import { Component, ErrorInfo, ReactNode } from "react";
 
+/**
+ * Props for EditingErrorBoundary component
+ */
 interface Props {
+  /** Child components to wrap */
   children: ReactNode;
+  /** Custom fallback UI to display on error */
   fallback?: ReactNode;
+  /** Optional context for error logging (slideId, elementPath, operation) */
+  context?: {
+    slideId?: string;
+    elementPath?: string;
+    operation?: string;
+    componentName?: string;
+  };
 }
 
 interface State {
@@ -18,7 +30,30 @@ interface State {
 
 /**
  * Error Boundary for editing components
- * Catches errors in editing components and displays a fallback UI
+ *
+ * Catches errors in editing components and displays a fallback UI.
+ * Provides enhanced error logging with context information.
+ *
+ * Features:
+ * - Catches React errors in child components
+ * - Logs errors with context (slideId, elementPath, operation)
+ * - Provides error recovery (Try Again button)
+ * - Shows error details in development mode
+ * - Supports custom fallback UI
+ *
+ * @example
+ * ```tsx
+ * <EditingErrorBoundary
+ *   context={{
+ *     slideId: "slide-1",
+ *     elementPath: "div.my-element",
+ *     operation: "text-edit",
+ *     componentName: "EditingToolbar"
+ *   }}
+ * >
+ *   <EditingToolbar ... />
+ * </EditingErrorBoundary>
+ * ```
  */
 export class EditingErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
@@ -39,16 +74,49 @@ export class EditingErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Log error to monitoring service
-    console.error("Editing Error Boundary caught an error:", error, errorInfo);
+    // Enhanced error logging with context
+    const context = this.props.context || {};
+    const errorContext = {
+      error: {
+        message: error.message,
+        stack: error.stack,
+        name: error.name,
+      },
+      errorInfo: {
+        componentStack: errorInfo.componentStack,
+      },
+      context: {
+        slideId: context.slideId || "unknown",
+        elementPath: context.elementPath || "unknown",
+        operation: context.operation || "unknown",
+        componentName: context.componentName || "unknown",
+        timestamp: new Date().toISOString(),
+        userAgent:
+          typeof window !== "undefined"
+            ? window.navigator.userAgent
+            : "unknown",
+        url: typeof window !== "undefined" ? window.location.href : "unknown",
+      },
+    };
+
+    // Log error with full context
+    console.error("[EditingErrorBoundary] Error caught:", errorContext);
 
     this.setState({
       error,
       errorInfo,
     });
 
-    // TODO: Send to error tracking service
-    // logErrorToService(error, errorInfo);
+    // TODO: Send to error tracking service (e.g., Sentry, LogRocket)
+    // Example:
+    // if (typeof window !== "undefined" && window.Sentry) {
+    //   window.Sentry.captureException(error, {
+    //     contexts: {
+    //       editing: errorContext.context,
+    //     },
+    //     extra: errorContext,
+    //   });
+    // }
   }
 
   handleReset = () => {
@@ -77,9 +145,17 @@ export class EditingErrorBoundary extends Component<Props, State> {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground mb-4 text-sm">
-              An error occurred while editing. Please try again or refresh the
-              page.
+              An error occurred while editing. Your work is saved. Please try
+              again or refresh the page.
             </p>
+
+            {this.props.context?.componentName && (
+              <p className="text-muted-foreground mb-2 text-xs">
+                Component: {this.props.context.componentName}
+                {this.props.context.operation &&
+                  ` • Operation: ${this.props.context.operation}`}
+              </p>
+            )}
 
             {process.env.NODE_ENV === "development" && this.state.error && (
               <details className="mb-4">
