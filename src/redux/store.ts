@@ -30,6 +30,7 @@ import researchCoreReducer from "./slices/researchCoreSlice";
 import researchUiSlice from "./slices/researchUiSlice";
 import settings from "./slices/settings-slice";
 import sheetSlice from "./slices/sheetSlice";
+import slideEditReducer from "./slices/slideEditSlice";
 import tools from "./slices/tools";
 
 export const store = configureStore({
@@ -39,6 +40,7 @@ export const store = configureStore({
     settings: settings as Reducer,
     tools: tools as Reducer,
     presentation: presentationSlice as Reducer,
+    slideEdit: slideEditReducer as Reducer,
     sheet: sheetSlice as Reducer,
     analytics: analyticsReducer as Reducer,
     researchChat: researchChatReducer as Reducer,

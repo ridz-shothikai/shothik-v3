@@ -1,14 +1,74 @@
 const PRIMARY_GREEN = "#07B37A";
 
+// Parse backend HTML to extract body content, styles, and meta tags
+export function parseBackendHTML(fullHTML: string) {
+  try {
+    // Use DOMParser to parse the HTML string
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(fullHTML, "text/html");
+
+    // Extract body content
+    const bodyContent = doc.body?.innerHTML || "";
+
+    // Extract all styles from head
+    const styles = Array.from(doc.head.querySelectorAll("style"))
+      .map((style) => style.innerHTML)
+      .join("\n");
+
+    // Extract meta tags and title
+    const metaTags = Array.from(doc.head.querySelectorAll("meta, title"))
+      .map((tag) => tag.outerHTML)
+      .join("\n");
+
+    // Extract link tags (external stylesheets, fonts, etc.)
+    const linkTags = Array.from(
+      doc.head.querySelectorAll(
+        'link[rel="stylesheet"], link[rel="preconnect"], link[rel="preload"]',
+      ),
+    )
+      .map((link) => link.outerHTML)
+      .join("\n");
+
+    return {
+      bodyContent,
+      styles,
+      metaTags,
+      linkTags,
+    };
+  } catch (error) {
+    console.error("Error parsing backend HTML:", error);
+    // Fallback: return the full HTML as body content
+    return {
+      bodyContent: fullHTML,
+      styles: "",
+      metaTags: "",
+      linkTags: "",
+    };
+  }
+}
+
 // Enhanced iframe content with selection handling
-const createEnhancedIframeContent = (originalContent: string) => {
+// Now accepts parsed components to properly inject backend styles
+const createEnhancedIframeContent = (
+  bodyContent: string,
+  backendStyles?: string,
+  backendMetaTags?: string,
+  backendLinkTags?: string,
+) => {
   return `
       <!DOCTYPE html>
       <html>
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
+        ${backendMetaTags || ""}
+        ${backendLinkTags || ""}
+        
+        <!-- Backend styles (preserves all layout/design) -->
+        ${backendStyles ? `<style id="backend-styles">${backendStyles}</style>` : ""}
+        
+        <!-- Editor styles (for selection/hover effects) -->
+        <style id="editor-styles">
           body {
             margin: 0;
             padding: 0;
@@ -47,10 +107,24 @@ const createEnhancedIframeContent = (originalContent: string) => {
             background-color: ${PRIMARY_GREEN}30 !important;
             box-shadow: 0 0 10px ${PRIMARY_GREEN}40 !important;
           }
+          
+          /* Editing mode style - visual feedback for inline editing */
+          .element-editing {
+            outline: 2px dashed ${PRIMARY_GREEN} !important;
+            outline-offset: 2px !important;
+            background-color: ${PRIMARY_GREEN}15 !important;
+            box-shadow: 0 0 8px ${PRIMARY_GREEN}30 !important;
+            cursor: text !important;
+          }
+          
+          .element-editing:focus {
+            outline: 2px solid ${PRIMARY_GREEN} !important;
+            background-color: ${PRIMARY_GREEN}20 !important;
+          }
         </style>
       </head>
       <body>
-        ${originalContent ? originalContent : ""}
+        ${bodyContent || ""}
         
         <script>
           let isEditMode = false;
@@ -60,6 +134,30 @@ const createEnhancedIframeContent = (originalContent: string) => {
             if (event.data.type === 'TOGGLE_EDIT_MODE') {
               isEditMode = event.data.enabled;
               toggleEditMode(isEditMode);
+            } else if (event.data.type === 'SELECT_ELEMENT') {
+              // Handle programmatic element selection
+              const elementPath = event.data.elementPath;
+              if (elementPath) {
+                const element = document.querySelector(elementPath);
+                if (element) {
+                  // CRITICAL FIX: Ensure element has an ID for reliable path generation
+                  if (!element.id) {
+                    const newId = 'element-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+                    element.id = newId;
+                    console.log('Assigned ID to element (programmatic):', newId);
+                  }
+                  
+                  clearAllHighlights();
+                  element.classList.add('element-selected');
+                  
+                  // Send selection info to parent
+                  const selectionInfo = getElementSelectionInfo(element);
+                  window.parent.postMessage({
+                    type: 'ELEMENT_SELECTED',
+                    data: selectionInfo
+                  }, '*');
+                }
+              }
             }
           });
           
@@ -90,6 +188,13 @@ const createEnhancedIframeContent = (originalContent: string) => {
             
             // Clear any existing highlights
             clearAllHighlights();
+            
+            // Clean up all editing states (remove element-editing class)
+            const editingElements = document.querySelectorAll('.element-editing');
+            editingElements.forEach(el => {
+              el.classList.remove('element-editing');
+              el.contentEditable = 'false';
+            });
           }
           
           let currentHoveredElement = null;
@@ -139,6 +244,14 @@ const createEnhancedIframeContent = (originalContent: string) => {
               return;
             }
             
+            // CRITICAL FIX: Ensure element has an ID for reliable path generation
+            // If no ID exists, generate one to ensure unique, reliable selectors
+            if (!element.id) {
+              const newId = 'element-' + Date.now() + '-' + Math.random().toString(36).slice(2, 9);
+              element.id = newId;
+              console.log('Assigned ID to element:', newId);
+            }
+            
             // Clear all previous selections
             clearAllHighlights();
             
@@ -166,9 +279,27 @@ const createEnhancedIframeContent = (originalContent: string) => {
           }
           
           function getElementSelectionInfo(element) {
+            // CRITICAL: Temporarily remove editor classes before generating path
+            // This ensures clean paths that don't include editor classes
+            const editorClasses = ['element-selected', 'element-hovered', 'element-editing'];
+            const hadClasses = {};
+            editorClasses.forEach(className => {
+              hadClasses[className] = element.classList.contains(className);
+              if (hadClasses[className]) {
+                element.classList.remove(className);
+              }
+            });
+            
             const elementInfo = getElementInfo(element);
             const elementPath = getElementPath(element);
             const boundingRect = element.getBoundingClientRect();
+            
+            // Restore editor classes
+            editorClasses.forEach(className => {
+              if (hadClasses[className]) {
+                element.classList.add(className);
+              }
+            });
             
             return {
               element: elementInfo,
@@ -276,18 +407,70 @@ const createEnhancedIframeContent = (originalContent: string) => {
             let current = element;
             
             while (current && current !== document.body) {
+              // Skip non-element nodes
+              if (current.nodeType !== Node.ELEMENT_NODE || !(current instanceof HTMLElement)) {
+                current = current.parentElement;
+                continue;
+              }
+              
               let selector = current.tagName.toLowerCase();
               
               if (current.id) {
+                // ID is unique, use it and stop
                 selector += '#' + current.id;
-              } else if (current.className) {
-                const classes = current.className.trim().split(/\\s+/);
-                selector += '.' + classes.join('.');
-              } else {
-                // Add nth-child if no id or class
-                const siblings = Array.from(current.parentNode.children);
-                const index = siblings.indexOf(current) + 1;
-                selector += ':nth-child(' + index + ')';
+                path.unshift(selector);
+                break;
+              }
+              
+              // Handle className - filter out editor classes more aggressively
+              if (current.className) {
+                let classes = '';
+                
+                if (typeof current.className === 'string') {
+                  // Split and filter editor classes
+                  const classList = current.className
+                    .trim()
+                    .split(/\s+/)
+                    .filter(c => {
+                      // Filter out empty strings and editor classes
+                      if (!c || c.length === 0) return false;
+                      // Filter out any class containing 'element-' prefix (editor classes)
+                      if (c.startsWith('element-')) return false;
+                      return true;
+                    });
+                  
+                  if (classList.length > 0) {
+                    // Join classes with dots (CSS selector format)
+                    classes = classList.slice(0, 3).join('.');
+                  }
+                } else if (current.className instanceof DOMTokenList) {
+                  // Handle DOMTokenList
+                  const classList = Array.from(current.className)
+                    .filter(c => {
+                      if (!c || c.length === 0) return false;
+                      if (c.startsWith('element-')) return false;
+                      return true;
+                    });
+                  
+                  if (classList.length > 0) {
+                    classes = classList.slice(0, 3).join('.');
+                  }
+                }
+                
+                if (classes) {
+                  selector += '.' + classes;
+                }
+              }
+              
+              // Add nth-of-type if needed for uniqueness (only if no ID)
+              if (!current.id && current.parentNode) {
+                const siblings = Array.from(current.parentNode.children).filter(
+                  child => child.nodeType === Node.ELEMENT_NODE && child.tagName === current.tagName
+                );
+                if (siblings.length > 1) {
+                  const index = siblings.indexOf(current) + 1;
+                  selector += ':nth-of-type(' + index + ')';
+                }
               }
               
               path.unshift(selector);
@@ -343,5 +526,119 @@ const createEnhancedIframeContent = (originalContent: string) => {
       </html>
     `;
 };
+
+// Convenience function that accepts full HTML and parses it
+export function createEnhancedIframeContentFromHTML(fullHTML: string) {
+  const parsed = parseBackendHTML(fullHTML);
+  return createEnhancedIframeContent(
+    parsed.bodyContent,
+    parsed.styles,
+    parsed.metaTags,
+    parsed.linkTags,
+  );
+}
+
+// Extract modified content from iframe with styles preserved
+export function extractModifiedContent(iframe: HTMLIFrameElement | null) {
+  if (!iframe || !iframe.contentDocument) {
+    return null;
+  }
+
+  const iframeDoc = iframe.contentDocument;
+
+  try {
+    // Get modified body content
+    const bodyHTML = iframeDoc.body.innerHTML;
+
+    // Clean up injected classes using DOM manipulation
+    const parser = new DOMParser();
+    const tempDoc = parser.parseFromString(
+      `<body>${bodyHTML}</body>`,
+      "text/html",
+    );
+
+    // Remove injected editor classes from all elements
+    const injectedClasses = [
+      "element-hovered",
+      "element-selected",
+      "selection-enabled",
+    ];
+    const allElements = tempDoc.body.querySelectorAll("*");
+
+    allElements.forEach((node) => {
+      if (node.className && typeof node.className === "string") {
+        const classes = node.className
+          .split(" ")
+          .filter((c) => c && !injectedClasses.includes(c));
+        if (classes.length > 0) {
+          node.className = classes.join(" ");
+        } else {
+          node.removeAttribute("class");
+        }
+      }
+    });
+
+    // Also check body element itself
+    if (tempDoc.body.className && typeof tempDoc.body.className === "string") {
+      const bodyClasses = tempDoc.body.className
+        .split(" ")
+        .filter((c) => c && !injectedClasses.includes(c));
+      if (bodyClasses.length > 0) {
+        tempDoc.body.className = bodyClasses.join(" ");
+      } else {
+        tempDoc.body.removeAttribute("class");
+      }
+    }
+
+    const cleanedBodyHTML = tempDoc.body.innerHTML;
+
+    // Extract backend styles from iframe head (exclude editor styles)
+    const backendStyles = Array.from(iframeDoc.head.querySelectorAll("style"))
+      .filter((style) => {
+        const styleId = style.id;
+        const styleContent = style.innerHTML;
+        // Exclude editor styles (identified by id or content)
+        return (
+          styleId !== "editor-styles" &&
+          !styleContent.includes("selection-enabled") &&
+          !styleContent.includes("element-hovered") &&
+          !styleContent.includes("element-selected")
+        );
+      })
+      .map((style) => style.innerHTML)
+      .join("\n");
+
+    // Get meta tags and link tags from iframe head
+    const metaTags = Array.from(iframeDoc.head.querySelectorAll("meta, title"))
+      .map((tag) => tag.outerHTML)
+      .join("\n");
+
+    const linkTags = Array.from(
+      iframeDoc.head.querySelectorAll(
+        'link[rel="stylesheet"], link[rel="preconnect"], link[rel="preload"]',
+      ),
+    )
+      .map((link) => link.outerHTML)
+      .join("\n");
+
+    // Reconstruct full HTML document
+    const fullHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    ${metaTags}
+    ${linkTags}
+    ${backendStyles ? `<style>${backendStyles}</style>` : ""}
+</head>
+<body>
+    ${cleanedBodyHTML}
+</body>
+</html>`;
+
+    return fullHTML;
+  } catch (error) {
+    console.error("Error extracting modified content:", error);
+    return null;
+  }
+}
 
 export default createEnhancedIframeContent;

@@ -108,6 +108,22 @@ export const presentationApiSlice = createApi({
         };
       },
     }),
+
+    // Save slide edits
+    saveSlide: builder.mutation({
+      query: ({ slideId, presentationId, htmlContent, metadata }) => ({
+        url: `/slides/${slideId}/save`,
+        method: "PUT",
+        body: {
+          presentation_id: presentationId,
+          html_content: htmlContent,
+          metadata: metadata || {},
+        },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "slides", id: arg.presentationId },
+      ],
+    }),
   }),
 });
 
@@ -117,4 +133,5 @@ export const {
   useFetchSlidesQuery,
   useFetchAllPresentationsQuery,
   useUploadPresentationFilesMutation,
+  useSaveSlideMutation,
 } = presentationApiSlice;
