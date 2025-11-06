@@ -82,6 +82,8 @@ const DataAnalysisAgent = () => {
   const [showModal, setShowModal] = useState(true);
   const [userQuery, setUserQuery] = useState("");
 
+  const PHASE_DELAY_MS = 6000; // 6 seconds per phase
+
   const stages = [
     {
       title: "Parse Data Request",
@@ -214,11 +216,15 @@ const DataAnalysisAgent = () => {
   }, [isDragging, dragStart]);
 
   useEffect(() => {
-    if (agentStage < 4) {
-      const timer = setTimeout(() => setAgentStage(agentStage + 1), 4000);
-      return () => clearTimeout(timer);
-    }
-  }, [agentStage]);
+    if (!showModal) return;
+    if (agentStage < 0) return;
+
+    const timer = setTimeout(() => {
+      setAgentStage((prev) => (prev + 1) % stages.length);
+    }, PHASE_DELAY_MS);
+
+    return () => clearTimeout(timer);
+  }, [agentStage, showModal, stages.length]);
 
   const handleExtractData = () => {
     if (userQuery.trim()) {
@@ -597,7 +603,7 @@ const DataAnalysisAgent = () => {
   }
 
   return (
-    <div className="relative h-80vw w-full bg-white">
+    <div className="h-80vw relative w-full bg-white">
       <div
         ref={windowRef}
         className="z-10 flex rounded-xl border border-gray-200 bg-white shadow-2xl"
@@ -669,7 +675,7 @@ const DataAnalysisAgent = () => {
             {agentStage === 4 && (
               <div className="mt-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
                 <div className="flex items-start space-x-3">
-                  <Database className="mt-0.5 h-5 w-5 flex-shrink-0 text-gray-900" />
+                  <Database className="mt-0.5 h-5 w-5 shrink-0 text-gray-900" />
                   <div>
                     <p className="text-sm font-semibold text-gray-900">
                       Spreadsheet Ready!

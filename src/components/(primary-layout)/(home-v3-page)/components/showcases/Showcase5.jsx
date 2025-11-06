@@ -52,6 +52,9 @@ const MetaAutomationAgent = () => {
   const [showModal, setShowModal] = useState(true);
   const [productLink, setProductLink] = useState("");
 
+  // How long each phase should be visible (ms)
+  const PHASE_DELAY_MS = 6000; // 6 seconds per phase
+
   const stages = [
     {
       title: "Product Analysis",
@@ -214,14 +217,18 @@ const MetaAutomationAgent = () => {
     };
   }, [isDragging, dragStart]);
 
+  // Advance stages but allow each phase to be visible for PHASE_DELAY_MS.
+  // Uses a timeout that reschedules on agentStage change so each phase
+  // stays visible for the configured duration. Pauses when modal is closed.
   useEffect(() => {
-    if (agentStage < 5) {
-      const timer = setTimeout(() => {
-        setAgentStage(agentStage + 1);
-      }, 4000);
-      return () => clearTimeout(timer);
-    }
-  }, [agentStage]);
+    if (!showModal) return; // pause when modal is closed
+
+    const timer = setTimeout(() => {
+      setAgentStage((prev) => (prev + 1) % stages.length);
+    }, PHASE_DELAY_MS);
+
+    return () => clearTimeout(timer);
+  }, [agentStage, showModal]);
 
   const handleStartCampaign = () => {
     if (productLink.trim()) {
@@ -655,11 +662,20 @@ const MetaAutomationAgent = () => {
                 {stages.map((stage, index) => (
                   <div
                     key={index}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => setAgentStage(index)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setAgentStage(index);
+                      }
+                    }}
                     className={`group cursor-pointer rounded-lg p-3 shadow-sm transition-all ${
                       index <= agentStage
                         ? "border border-gray-200 bg-white hover:border-gray-300"
                         : "border border-gray-200 bg-gray-50 opacity-60"
-                    }`}
+                    } ${index === agentStage ? "ring-2 ring-black" : ""}`}
                   >
                     <div className="mb-2 flex items-start justify-between">
                       <div className="flex items-start space-x-2">

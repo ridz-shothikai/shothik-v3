@@ -1,11 +1,13 @@
 "use client";
 
 import {
-  BarChart3,
-  LayoutDashboard,
+  Database,
   MessageSquare,
+  PenTool,
   Rocket,
+  Search,
   Sparkles,
+  TrendingUp,
 } from "lucide-react";
 import React from "react";
 import FeatureCard from "./FeatureCard";
@@ -15,11 +17,13 @@ import DashboardMockup from "./mockups/DashboardMockup";
 import LaunchMockup from "./mockups/LaunchMockup";
 import MediaMockup from "./mockups/MediaMockup";
 
-import Showcase1 from "../../showcases/Showcase1";
 import Showcase2 from "../../showcases/Showcase2";
 import Showcase3 from "../../showcases/Showcase3";
-import Showcase4 from "../../showcases/Showcase4";
 import Showcase5 from "../../showcases/Showcase5";
+import Showcase6 from "../../showcases/Showcase6";
+import Showcase7 from "../../showcases/Showcase7";
+import WritingToolsShowcase from "../../showcases/WritingToolsShowcase";
+import DeepResearchAgentShowcase from "../../showcases/DeepResearchAgentShowcase";
 
 const accentColor = "#1877F2";
 
@@ -35,44 +39,75 @@ interface Feature {
 
 const features: Feature[] = [
   {
-    icon: <BarChart3 size={24} />,
-    tag: "AI-Powered Analysis",
-    title: "Product & Competitor Intelligence",
-    description:
-      "AI analyzes competitors, extracts insights, and builds personas for smarter marketing decisions.",
-    mockupType: "analysis",
-    reverse: false,
-    Interactive: <Showcase1 />,
-  },
-  {
     icon: <MessageSquare size={24} />,
-    tag: "Conversational AI",
-    title: "Meta Vibe Ad Creative Canvas",
+    tag: "Creative Vibe Ads Marketing",
+    title: "Full Meta Marketing Automation",
     description:
       "Chat with AI to turn your ideas or links into high-converting ads instantly.",
     mockupType: "canvas",
     reverse: true,
-    Interactive: <Showcase2 />,
+    Interactive: <Showcase5 />,
+  },
+  {
+    icon: <Rocket size={24} />,
+    tag: "Strategic Planning",
+    title: "Campaign Strategy Agent",
+    description:
+      "AI-powered campaign planning with multiple budget options, creative strategies, and detailed personas for targeted advertising.",
+    mockupType: "dashboard",
+    reverse: false,
+    Interactive: <Showcase6 />,
+  },
+  {
+    icon: <TrendingUp size={24} />,
+    tag: "Performance Optimization",
+    title: "Performance Optimization Agent",
+    description:
+      "Real-time campaign monitoring, 3-hour scaling window detection, and autonomous optimization for maximum ROAS.",
+    mockupType: "dashboard",
+    reverse: true,
+    Interactive: <Showcase7 />,
   },
   {
     icon: <Sparkles size={24} />,
-    tag: "Andromeda Algorithm",
-    title: "AI Media Canvas",
+    tag: "Presentation AI",
+    title: "Slide Generation Agent",
     description:
-      "Create AI UGC, influencer content, and video shorts in any format—fully AI-powered.",
+      "Create professional presentations instantly with AI-powered slide generation, content research, and smart structuring.",
     mockupType: "media",
     reverse: false,
+    Interactive: <Showcase2 />,
+  },
+  {
+    icon: <Database size={24} />,
+    tag: "Data Intelligence",
+    title: "Data Analysis Agent",
+    description:
+      "Extract, analyze, and structure data from multiple sources automatically with AI-powered spreadsheets and insights.",
+    mockupType: "dashboard",
+    reverse: true,
     Interactive: <Showcase3 />,
   },
   {
-    icon: <LayoutDashboard size={24} />,
-    tag: "Intelligent Insights",
-    title: "AI-Powered Project Dashboard",
+    icon: <Search size={24} />,
+    tag: "Deep Research Intelligence",
+    title: "Deep Research Agent",
     description:
-      "Chat with reports, get instant insights, and one-click AI optimizations that drive real results.",
+      "Conduct comprehensive market and competitor research with AI-powered insights, trend analysis, and actionable intelligence for strategic decision-making.",
+    mockupType: "dashboard",
+    reverse: false,
+    Interactive: <DeepResearchAgentShowcase />,
+  },
+
+  {
+    icon: <PenTool size={24} />,
+    tag: "Content Intelligence",
+    title: "AI Writing & Content Agent",
+    description:
+      "Transform your copy with AI-powered paraphrasing, grammar enhancement, humanization, translation, and smart summarization in 180+ languages.",
     mockupType: "dashboard",
     reverse: true,
-    Interactive: <Showcase5 />,
+    Interactive: <WritingToolsShowcase />,
   },
 ];
 
@@ -90,7 +125,7 @@ export default function MetaAdsFeatures() {
       data-testid="meta-ads-features"
       className="relative py-24 md:py-40"
     >
-      <div className="container mx-auto ">
+      <div className="container mx-auto">
         <div className="mx-auto mb-24 max-w-4xl text-center md:mb-32">
           <h2 className="text-h2 text-foreground mb-6 text-4xl leading-tight font-extrabold tracking-tight md:text-6xl">
             Meta Advertising on{" "}

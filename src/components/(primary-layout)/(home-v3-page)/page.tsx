@@ -12,6 +12,8 @@ import {
   TrustedBy,
   WhyShothik,
 } from "./components/features/social-proof";
+import WritingToolsShowcase from "./components/showcases/WritingToolsShowcase";
+import DeepResearchAgentShowcase from "./components/showcases/DeepResearchAgentShowcase";
 
 export default function Home() {
   return (

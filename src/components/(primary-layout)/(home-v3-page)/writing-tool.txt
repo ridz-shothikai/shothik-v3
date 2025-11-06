@@ -1,0 +1,93 @@
+1. Paraphrasing Engine (Revamped)
+AI Agent-Driven Automation
+Dedicated AI agents tailor paraphrasing based on tone, domain, and intent.
+Agents adapt to legal, academic, business, or creative writing styles.
+Domain-Aware Smart Rewriting
+Maintains technical terms while rewriting surrounding content.
+Context-aware: adjusts tone/style for legal, medical, and academic content.
+Auto Mode
+Paste content and let AI handle everything—zero input needed.
+UI Customizations
+View Modes: Toggle between Compact, Wide, and Split Views.
+Layout Controls: Resize/move input-output panels freely.
+One-Click Re-Injection
+Instantly move output back to input for further refinement.
+Mood & Tone Control
+Choose from: Formal, Friendly, Academic, Conversational, Confident, etc.
+Multi-File Upload
+Upload DOCX, PDF, TXT—even full books—for batch rewriting.
+Language Coverage
+Supports over 180 languages for input and output.
+Preset Domain Templates
+Templates for Students, Bloggers, Business, Legal, and more.
+Editable Draft History
+Version control: Compare, restore, or edit past drafts.
+User Feedback Loop
+Rate output quality and guide future improvements.
+
+______________________________________________________
+
+1. Paraphrasing
+    🧠 AI Agent-Driven Rewriting
+    Auto-detects tone, domain, and rewrite intent.
+    Adapts to legal, academic, business, or creative writing.
+
+⚙️ Smart Domain Rewriting
+    Preserves technical terminology and structure.
+    Context-aware phrasing improvements.
+
+🔍 Built-in Plagiarism Checker
+    Checks paraphrased content for originality.
+    Detects copied content in real time during rewriting.
+    Ensures safer, publish-ready output for students, bloggers, and professionals.
+
+🚀 Auto Mode
+    One-click intelligent rewriting without manual configuration.
+
+🎨 Mood & Tone Control
+    Choose tone: Formal, Friendly, Conversational, Academic, Confident, etc.
+
+🖥️ UI Enhancements
+    Compact/Wide/Split View Modes.
+    Resizable input-output panels.
+    One-click re-injection of output into input.
+
+📂 Multi-File Upload
+    Batch rewrite PDF, DOCX, and TXT files.
+    Supports long-form and multi-page documents.
+
+🌍 Language Support
+    180+ input/output languages.
+
+🧩 Domain Templates
+    Presets for Students, Bloggers, Legal Writers, Business Professionals.
+
+🕓 Editable Draft History
+    Track and restore earlier outputs for comparison or reuse.
+
+⭐ User Feedback Loop
+    The output rating system helps personalize future results.
+
+2. 📝 Grammar & Style Correction
+    Inline suggestions for grammar, punctuation, spelling.
+    Smart rewrites for fluency, tone, and clarity.
+    Live readability and polish score.
+    Context-aware grammar based on selected tone.
+
+3. 🤖 Humanized GPT (AI Detection Bypass)
+    Multi-pass humanization (up to 3 layers).
+    Output undetectable by GPTZero, Turnitin, etc.
+    Format options: Paragraph, List, Long-form, Concise.
+    Ideal for students, ghostwriters, researchers.
+
+4. 🌐 Translation Tool
+    Supports 180+ global and regional languages.
+    Tone-sensitive translation preserves meaning.
+    Side-by-side comparison of original and translated text.
+    (Coming Soon): Audio & full document translation with context awareness.
+
+5. 📚 Smart Summarizer
+    Modes: Executive Summary, TL;DR, Bullet Points, Key Quotes.
+    Summarize full content or selected sections.
+    File input: PDF, DOCX, TXT.
+    Output length control: Short, Medium, Detailed.
