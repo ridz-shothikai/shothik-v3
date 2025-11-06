@@ -36,3 +36,61 @@ export const useCampaignSuggestions = () => {
     },
   });
 };
+
+// Generate campaign suggestions (mutation)
+export const useGenerateCampaignSuggestions = () => {
+  return useMutation({
+    mutationFn: async (projectId: string) => {
+      const { data } = await api.get(
+        `/marketing/campaigns/suggestions/${projectId}`,
+      );
+      return data;
+    },
+  });
+};
+
+// Fetch initial campaign suggestions
+export const useInitialSuggestions = (
+  projectId: string,
+  enabled: boolean = true,
+) => {
+  return useQuery({
+    queryKey: ["initialSuggestions", projectId],
+    queryFn: async () => {
+      const { data } = await api.post(
+        `/marketing/campaign/initial-suggestions/${projectId}`,
+      );
+      return data;
+    },
+    enabled: !!projectId && enabled,
+    staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes
+  });
+};
+
+// Publish ads mutation
+export const usePublishAds = () => {
+  return useMutation({
+    mutationFn: async (payload: {
+      projectId: string;
+      adIds: string[];
+      pageId: string;
+      adAccountId: string;
+      pixelId?: string;
+      businessAccountId: string;
+      ctasWithUrls: Array<{ cta: string; url: string }>;
+    }) => {
+      const { data } = await api.post(
+        `/marketing/campaign/publish/${payload.projectId}`,
+        {
+          adIds: payload.adIds,
+          pageId: payload.pageId,
+          adAccountId: payload.adAccountId,
+          pixelId: payload.pixelId,
+          businessAccountId: payload.businessAccountId,
+          ctasWithUrls: payload.ctasWithUrls,
+        },
+      );
+      return data;
+    },
+  });
+};

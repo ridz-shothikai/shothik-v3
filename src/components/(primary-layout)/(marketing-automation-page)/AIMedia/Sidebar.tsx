@@ -1,7 +1,6 @@
 import {
   FileVideo,
   Film,
-  Palette,
   ShoppingBag,
   Users as UsersIcon,
   Video,
@@ -17,11 +16,11 @@ export default function Sidebar({
   setActiveSidebar,
 }: SidebarProps) {
   const sidebarSections = [
-    {
-      id: "creative-tools",
-      label: "Creative Tools",
-      icon: Palette,
-    },
+    // {
+    //   id: "creative-tools",
+    //   label: "Creative Tools",
+    //   icon: Palette,
+    // },
     {
       id: "avatars",
       label: "Avatars",

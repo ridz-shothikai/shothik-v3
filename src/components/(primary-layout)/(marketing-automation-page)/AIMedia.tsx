@@ -12,7 +12,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import AIShortsSection from "./AIMedia/AIShortsSection";
 import AvatarsSection from "./AIMedia/AvatarsSection";
-import CreativeToolsSection from "./AIMedia/CreativeToolsSection";
 import MediasSection from "./AIMedia/MediasSection";
 import Sidebar from "./AIMedia/Sidebar";
 import SmartAssetsSection from "./AIMedia/SmartAssetsSection";
@@ -26,7 +25,7 @@ export default function AIMedia() {
   const { user } = useSelector((state: RootState) => state.auth);
 
   // Get section from URL or default to creative-tools
-  const sectionFromUrl = searchParams.get("section") || "creative-tools";
+  const sectionFromUrl = searchParams.get("section") || "avatars";
   const [activeSidebar, setActiveSidebar] = useState(sectionFromUrl);
   const [isInitialMount, setIsInitialMount] = useState(true);
 
@@ -80,9 +79,12 @@ export default function AIMedia() {
         return <AIShortsSection onToolClick={handleToolClick} />;
       case "ugc-video":
         return <UGCVideoSection />;
-      case "creative-tools":
       default:
-        return <CreativeToolsSection onToolClick={handleToolClick} />;
+        return <AvatarsSection onToolClick={handleToolClick} />;
+
+      // case "creative-tools":
+      // default:
+      //   return <CreativeToolsSection onToolClick={handleToolClick} />;
     }
   };
 

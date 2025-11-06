@@ -6,9 +6,10 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { useInitialSuggestions } from "@/hooks/(marketing-automation-page)/useCampaignsApi";
+import { useProject } from "@/hooks/(marketing-automation-page)/useProjectsApi";
 import useResponsive from "@/hooks/ui/useResponsive";
 import { cn } from "@/lib/utils";
-import { campaignAPI } from "@/services/marketing-automation.service";
 import type { ProductAnalysis } from "@/types/analysis";
 import type { CampaignSuggestion } from "@/types/campaign";
 import { getRouteState } from "@/utils/getRouteState";
@@ -20,7 +21,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import CanvasBody from "./canvas/CanvasBody";
 import ChatBox from "./canvas/ChatBox";
 
@@ -29,13 +30,7 @@ export default function Canvas() {
   const { projectId } = useParams<{ projectId: string }>();
   const searchParams = useSearchParams();
   const state = getRouteState(searchParams);
-  const [analysis, setAnalysis] = useState<ProductAnalysis | null>(
-    state?.analysis || null,
-  );
-  const [loading, setLoading] = useState(!state?.analysis);
-  const [initialSuggestions, setInitialSuggestions] =
-    useState<CampaignSuggestion | null>(null);
-  const [loadingSuggestions, setLoadingSuggestions] = useState(false);
+
   const [hasShownWelcomeMessage, setHasShownWelcomeMessage] = useState(false);
 
   const [chatMessages, setChatMessages] = useState<
@@ -43,6 +38,49 @@ export default function Canvas() {
   >([]);
   const [isChatSheetOpen, setIsChatSheetOpen] = useState(false);
   const isMobile = useResponsive("down", "md");
+
+  // Get analysis from location state or fetch from API
+  const hasAnalysisInState = !!state?.analysis;
+  const { data: projectData, isLoading: isLoadingProject } = useProject(
+    projectId || "",
+  );
+
+  // Fetch initial suggestions only when we have analysis
+  const hasAnalysis = hasAnalysisInState || !!projectData?.data;
+
+  const { data: suggestionsResponse, isLoading: isLoadingSuggestions } =
+    useInitialSuggestions(projectId || "", hasAnalysis);
+
+  const analysis = useMemo((): ProductAnalysis | null => {
+    if (state?.analysis) {
+      return state.analysis;
+    }
+
+    if (projectData?.data) {
+      const data = projectData.data;
+      return {
+        analysis_id: data.analysis_id,
+        url: data.url,
+        timestamp: data.timestamp,
+        scrape_status: data.scrape_status,
+        product: data.product,
+        social_proof: data.social_proof,
+        website: data.website,
+        competitors: data.competitors,
+        funnel: data.funnel,
+        market: data.market,
+        brand: data.brand,
+      };
+    }
+
+    return null;
+  }, [state?.analysis, projectData]);
+
+  const initialSuggestions = useMemo((): CampaignSuggestion | null => {
+    return suggestionsResponse?.data || null;
+  }, [suggestionsResponse]);
+
+  const loading = isLoadingProject && !hasAnalysisInState;
 
   // Close sheet when screen size changes from mobile to desktop
   useEffect(() => {
@@ -75,122 +113,76 @@ export default function Canvas() {
     window.dispatchEvent(event);
   }, []);
 
-  // Fetch project data if not in state but projectId exists
+  // Show welcome message when suggestions are loaded
   useEffect(() => {
-    if (!analysis && projectId) {
-      const fetchProject = async () => {
-        try {
-          const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-          const token = localStorage.getItem("accessToken");
-          const response = await fetch(
-            `${apiUrl}/marketing/projects/${projectId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            },
-          );
-
-          if (response.ok) {
-            const data = await response.json();
-            const projectAnalysis: ProductAnalysis = {
-              analysis_id: data.data.analysis_id,
-              url: data.data.url,
-              timestamp: data.data.timestamp,
-              scrape_status: data.data.scrape_status,
-              product: data.data.product,
-              social_proof: data.data.social_proof,
-              website: data.data.website,
-              competitors: data.data.competitors,
-              funnel: data.data.funnel,
-              market: data.data.market,
-              brand: data.data.brand,
-            };
-            setAnalysis(projectAnalysis);
-          } else {
-            router.push("/marketing-automation/analysis");
-          }
-        } catch (error) {
-          console.error("Failed to load project:", error);
-          router.push("/marketing-automation/analysis");
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchProject();
-    } else if (!analysis && !projectId) {
-      setLoading(false);
-    }
-  }, [projectId, analysis]);
-
-  // Fetch initial campaign suggestions when analysis is loaded
-  useEffect(() => {
-    if (analysis && projectId && !initialSuggestions && !loadingSuggestions) {
-      const fetchSuggestions = async () => {
-        setLoadingSuggestions(true);
-        try {
-          const response = await campaignAPI.getInitialSuggestions(projectId);
-          setInitialSuggestions(response.data);
-
-          // Only show welcome message once (on initial load, not on data refreshes)
-          if (!hasShownWelcomeMessage) {
-            const summaryMessage = `✨ **Campaign Strategy Ready!**
+    if (
+      analysis &&
+      initialSuggestions &&
+      !hasShownWelcomeMessage &&
+      !isLoadingSuggestions
+    ) {
+      const summaryMessage = `✨ **Campaign Strategy Ready!**
 
 I've created a comprehensive campaign structure for **${
-              analysis.product.title
-            }** based on Meta's 2025 Andromeda strategy:
+        analysis.product.title
+      }** based on Meta's 2025 Andromeda strategy:
 
-📊 **Campaign**: ${response.data.campaign.name}
+📊 **Campaign**: ${initialSuggestions.campaign.name}
 💰 **Recommended Budget**: $${
-              response.data.campaign.budget_recommendation.daily_min
-            }-${response.data.campaign.budget_recommendation.daily_max}/day
-🎯 **Campaign**: ${response.data.campaign.name} (${
-              response.data.campaign.objective
-            })
+        initialSuggestions.campaign.budget_recommendation.daily_min
+      }-${initialSuggestions.campaign.budget_recommendation.daily_max}/day
+🎯 **Objective**: ${initialSuggestions.campaign.objective}
 
-👥 **${response.data.personas.length} Buyer Personas** identified
+👥 **${initialSuggestions.personas.length} Buyer Personas** identified
 🎨 **${
-              response.data.ad_concepts.length
-            } Ad Concepts** created across all awareness stages
+        initialSuggestions.ad_concepts.length
+      } Ad Concepts** created across all awareness stages
 
 **Key Strategy Notes:**
-${response.data.strategy_notes.map((note: string) => `• ${note}`).join("\n")}
+${initialSuggestions.strategy_notes
+  .map((note: string) => `• ${note}`)
+  .join("\n")}
 
 Would you like me to explain the personas, show you the ad concepts, or help you refine any part of this strategy?`;
 
-            setChatMessages((prev) => [
-              ...prev,
-              { role: "assistant", content: summaryMessage },
-            ]);
-            setHasShownWelcomeMessage(true);
-          }
-        } catch (error) {
-          console.error("Failed to load campaign suggestions:", error);
-          if (!hasShownWelcomeMessage) {
-            setChatMessages((prev) => [
-              ...prev,
-              {
-                role: "assistant",
-                content:
-                  "I encountered an issue generating initial suggestions. But don't worry! I can still help you create campaigns. What would you like to work on?",
-              },
-            ]);
-            setHasShownWelcomeMessage(true);
-          }
-        } finally {
-          setLoadingSuggestions(false);
-        }
-      };
-
-      fetchSuggestions();
+      setChatMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: summaryMessage },
+      ]);
+      setHasShownWelcomeMessage(true);
     }
   }, [
     analysis,
-    projectId,
     initialSuggestions,
-    loadingSuggestions,
     hasShownWelcomeMessage,
+    isLoadingSuggestions,
+  ]);
+
+  // Show error message if suggestions failed to load
+  useEffect(() => {
+    if (
+      analysis &&
+      !initialSuggestions &&
+      !isLoadingSuggestions &&
+      !hasShownWelcomeMessage &&
+      suggestionsResponse === undefined
+    ) {
+      setChatMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content:
+            "I encountered an issue generating initial suggestions. But don't worry! I can still help you create campaigns. What would you like to work on?",
+        },
+      ]);
+      setHasShownWelcomeMessage(true);
+    }
+  }, [
+    analysis,
+    initialSuggestions,
+    isLoadingSuggestions,
+    hasShownWelcomeMessage,
+    suggestionsResponse,
   ]);
 
   if (loading) {
@@ -307,7 +299,7 @@ Would you like me to explain the personas, show you the ad concepts, or help you
             <CanvasBody
               analysis={analysis}
               initialSuggestions={initialSuggestions}
-              loadingSuggestions={loadingSuggestions}
+              loadingSuggestions={isLoadingSuggestions}
             />
           </div>
 
