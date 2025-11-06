@@ -14,7 +14,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Check, FileVideo, Image, Loader2, Video } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
-import Toast from "../ui/Toast";
+import { toast } from "react-toastify";
 
 interface MediaLibraryModalProps {
   isOpen: boolean;
@@ -62,9 +62,6 @@ export default function MediaLibraryModal({
   );
   const [selectedMedia, setSelectedMedia] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [toastType, setToastType] = useState<"success" | "error">("success");
 
   // Determine if format supports multiple media
   const isCarousel = adFormat === "CAROUSEL";
@@ -125,9 +122,7 @@ export default function MediaLibraryModal({
       queryClient.invalidateQueries({ queryKey: ["campaign", projectId] });
 
       // Show success toast
-      setToastType("success");
-      setToastMessage("Media updated successfully!");
-      setShowToast(true);
+      toast.success("Media updated successfully!");
 
       // Close modal after a short delay
       setTimeout(() => {
@@ -136,9 +131,7 @@ export default function MediaLibraryModal({
     },
     onError: (error: any) => {
       // Show error toast
-      setToastType("error");
-      setToastMessage(error.response?.data?.error || "Failed to update media");
-      setShowToast(true);
+      toast.error(error.response?.data?.error || "Failed to update media");
       setSaving(false);
     },
   });
@@ -162,7 +155,7 @@ export default function MediaLibraryModal({
 
   const handleSave = async () => {
     if (selectedMedia.length === 0) {
-      alert("Please select at least one media item");
+      toast.warning("Please select at least one media item");
       return;
     }
 
@@ -171,7 +164,7 @@ export default function MediaLibraryModal({
       await saveMediaMutation.mutateAsync(selectedMedia);
     } catch (error) {
       console.error("Failed to save media:", error);
-      alert("Failed to save media");
+      // Error toast is already handled in mutation's onError
     } finally {
       setSaving(false);
     }
@@ -449,15 +442,6 @@ export default function MediaLibraryModal({
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Toast Notification */}
-      {showToast && (
-        <Toast
-          message={toastMessage}
-          type={toastType}
-          onClose={() => setShowToast(false)}
-        />
-      )}
     </>
   );
 }

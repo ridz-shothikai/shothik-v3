@@ -1,7 +1,4 @@
-import api from "@/lib/api";
-import { Loader2, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +6,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Card } from "@/components/ui/card";
+import api from "@/lib/api";
+import { Loader2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 interface PersonaStyle {
   id: string;
@@ -89,10 +88,10 @@ function StyleCard({
         />
         <div className="absolute right-3 bottom-3 left-3">
           <div className="rounded-lg bg-black/60 px-3 py-2 backdrop-blur-sm">
-            <p className="truncate text-xs font-medium text-foreground capitalize">
+            <p className="text-foreground truncate text-xs font-medium capitalize">
               {style.video_scene}
             </p>
-            <p className="text-[10px] text-muted-foreground capitalize">
+            <p className="text-muted-foreground text-[10px] capitalize">
               {style.location} • {style.style}
             </p>
           </div>
@@ -150,7 +149,7 @@ export default function CreatorStylesModal({
         <div className="max-h-[calc(90vh-100px)] overflow-y-auto p-6">
           {loading && (
             <div className="flex items-center justify-center py-20">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <Loader2 className="text-primary h-8 w-8 animate-spin" />
             </div>
           )}
 

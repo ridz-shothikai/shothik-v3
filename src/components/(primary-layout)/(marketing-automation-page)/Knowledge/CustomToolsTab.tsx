@@ -1,3 +1,17 @@
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   useCreateCustomTool,
   useCustomTools,
@@ -149,53 +163,50 @@ export const CustomToolsTab = ({ selectedPage }: CustomToolsTabProps) => {
   };
 
   return (
-    <div className="rounded-2xl border border-slate-700/50 bg-slate-900/60 p-6 backdrop-blur-xl">
-      <h2 className="mb-4 text-lg font-semibold text-gray-100">
+    <Card className="p-6">
+      <h2 className="mb-4 text-lg font-semibold text-foreground">
         Create Custom AI Tool
       </h2>
-      <p className="mb-6 text-sm text-gray-400">
+      <p className="mb-6 text-sm text-muted-foreground">
         Create custom AI tools with API integrations using LangGraph and Gemini.
       </p>
 
       <div className="space-y-4">
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-300">
-            Tool Name
-          </label>
-          <input
+          <Label htmlFor="tool-name">Tool Name</Label>
+          <Input
+            id="tool-name"
             type="text"
             value={toolName}
             onChange={(e) => setToolName(e.target.value)}
             placeholder="e.g., Weather API, Stock Price Checker"
-            className="w-full rounded-xl border border-slate-700/50 bg-slate-800/50 px-4 py-3 text-gray-200 focus:border-emerald-500/50 focus:outline-none"
+            className="mt-2"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-300">
-            Description
-          </label>
-          <textarea
+          <Label htmlFor="tool-description">Description</Label>
+          <Textarea
+            id="tool-description"
             value={toolDescription}
             onChange={(e) => setToolDescription(e.target.value)}
             placeholder="Describe what this tool does..."
             rows={3}
-            className="w-full resize-none rounded-xl border border-slate-700/50 bg-slate-800/50 px-4 py-3 text-gray-200 focus:border-emerald-500/50 focus:outline-none"
+            className="mt-2"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-300">
-            API Endpoint
-          </label>
-          <input
+          <Label htmlFor="tool-endpoint">API Endpoint</Label>
+          <Input
+            id="tool-endpoint"
             type="url"
             value={toolEndpoint}
             onChange={(e) => setToolEndpoint(e.target.value)}
             placeholder={getEndpointPlaceholder()}
-            className="w-full rounded-xl border border-slate-700/50 bg-slate-800/50 px-4 py-3 text-gray-200 focus:border-emerald-500/50 focus:outline-none"
+            className="mt-2"
           />
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-muted-foreground">
             {toolMethod === "GET"
               ? "Base URL only - query params will be added automatically"
               : toolMethod === "POST"
@@ -205,70 +216,66 @@ export const CustomToolsTab = ({ selectedPage }: CustomToolsTabProps) => {
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-300">
-            HTTP Method
-          </label>
-          <select
-            value={toolMethod}
-            onChange={(e) => setToolMethod(e.target.value)}
-            className="w-full rounded-xl border border-slate-700/50 bg-slate-800/50 px-4 py-3 text-gray-200 focus:border-emerald-500/50 focus:outline-none"
-          >
-            <option value="GET">GET - Retrieve data</option>
-            <option value="POST">POST - Create new resource</option>
-            <option value="PUT">PUT - Update existing resource</option>
-            <option value="DELETE">DELETE - Remove resource</option>
-          </select>
+          <Label htmlFor="tool-method">HTTP Method</Label>
+          <Select value={toolMethod} onValueChange={setToolMethod}>
+            <SelectTrigger id="tool-method" className="mt-2">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="GET">GET - Retrieve data</SelectItem>
+              <SelectItem value="POST">POST - Create new resource</SelectItem>
+              <SelectItem value="PUT">PUT - Update existing resource</SelectItem>
+              <SelectItem value="DELETE">DELETE - Remove resource</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-300">
-            Auth Token (Optional)
-          </label>
-          <input
+          <Label htmlFor="tool-auth-token">Auth Token (Optional)</Label>
+          <Input
+            id="tool-auth-token"
             type="password"
             value={authToken}
             onChange={(e) => setAuthToken(e.target.value)}
             placeholder="your-api-token-here (will be added as Bearer token)"
-            className="w-full rounded-xl border border-slate-700/50 bg-slate-800/50 px-4 py-3 text-gray-200 focus:border-emerald-500/50 focus:outline-none"
+            className="mt-2"
           />
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-muted-foreground">
             If provided, will be added as "Authorization: Bearer token" header
           </p>
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-300">
-            Headers (JSON)
-          </label>
-          <textarea
+          <Label htmlFor="tool-headers">Headers (JSON)</Label>
+          <Textarea
+            id="tool-headers"
             value={toolHeaders}
             onChange={(e) => setToolHeaders(e.target.value)}
             placeholder={getHeadersPlaceholder()}
             rows={3}
-            className="w-full resize-none rounded-xl border border-slate-700/50 bg-slate-800/50 px-4 py-3 font-mono text-sm text-gray-200 focus:border-emerald-500/50 focus:outline-none"
+            className="mt-2 font-mono text-sm"
           />
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-muted-foreground">
             Additional headers (auth token will be auto-added if provided above)
           </p>
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-300">
-            Parameters (JSON)
-          </label>
-          <textarea
+          <Label htmlFor="tool-parameters">Parameters (JSON)</Label>
+          <Textarea
+            id="tool-parameters"
             value={toolParameters}
             onChange={(e) => setToolParameters(e.target.value)}
             placeholder={getParametersPlaceholder()}
             rows={3}
-            className="w-full resize-none rounded-xl border border-slate-700/50 bg-slate-800/50 px-4 py-3 font-mono text-sm text-gray-200 focus:border-emerald-500/50 focus:outline-none"
+            className="mt-2 font-mono text-sm"
           />
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-muted-foreground">
             {getParametersHelpText()}
           </p>
         </div>
 
-        <button
+        <Button
           onClick={handleCreateTool}
           disabled={
             !toolName ||
@@ -277,7 +284,7 @@ export const CustomToolsTab = ({ selectedPage }: CustomToolsTabProps) => {
             !selectedPage ||
             createCustomToolMutation.isPending
           }
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 py-3 font-medium text-white transition-all hover:from-emerald-700 hover:to-teal-700 disabled:cursor-not-allowed disabled:opacity-50"
+          className="w-full"
         >
           {createCustomToolMutation.isPending ? (
             <>
@@ -290,62 +297,63 @@ export const CustomToolsTab = ({ selectedPage }: CustomToolsTabProps) => {
               <span>Create Tool</span>
             </>
           )}
-        </button>
+        </Button>
       </div>
 
       {!selectedPage && (
-        <div className="mt-4 flex items-center gap-2 text-sm text-amber-400">
+        <Alert className="mt-4">
           <AlertCircle className="h-4 w-4" />
-          <span>Please select a page first</span>
-        </div>
+          <AlertDescription>Please select a page first</AlertDescription>
+        </Alert>
       )}
 
       {/* Display existing custom tools */}
       {selectedPage && customToolsData && customToolsData.length > 0 && (
-        <div className="mt-6 border-t border-slate-700/50 pt-6">
-          <h3 className="text-md mb-4 font-semibold text-gray-200">
+        <div className="mt-6 border-t border-border pt-6">
+          <h3 className="text-md mb-4 font-semibold text-foreground">
             Existing Tools ({customToolsData.length})
           </h3>
           <div className="space-y-3">
             {customToolsData.map((tool: CustomTool) => (
-              <div
-                key={tool.id}
-                className="flex items-start justify-between gap-4 rounded-xl border border-slate-700/50 bg-slate-800/50 p-4"
-              >
-                <div className="min-w-0 flex-1">
-                  <div className="mb-2 flex items-center gap-2">
-                    <Wrench className="h-4 w-4 flex-shrink-0 text-purple-400" />
-                    <h4 className="truncate text-sm font-medium text-gray-200">
-                      {tool.name}
-                    </h4>
+              <Card key={tool.id} className="p-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-2 flex items-center gap-2">
+                      <Wrench className="h-4 w-4 flex-shrink-0 text-primary" />
+                      <h4 className="truncate text-sm font-medium text-foreground">
+                        {tool.name}
+                      </h4>
+                    </div>
+                    <p className="mb-2 text-xs text-muted-foreground">
+                      {tool.description}
+                    </p>
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                      <Badge variant="secondary" className="px-2 py-1">
+                        {tool.method}
+                      </Badge>
+                      <span className="truncate">{tool.apiEndpoint}</span>
+                    </div>
                   </div>
-                  <p className="mb-2 text-xs text-gray-400">
-                    {tool.description}
-                  </p>
-                  <div className="flex items-center gap-4 text-xs text-gray-500">
-                    <span className="rounded bg-slate-700/50 px-2 py-1">
-                      {tool.method}
-                    </span>
-                    <span className="truncate">{tool.apiEndpoint}</span>
-                  </div>
+                  <Button
+                    onClick={() =>
+                      deleteCustomToolMutation.mutate({
+                        id: tool.id,
+                        pageId: selectedPage,
+                      })
+                    }
+                    variant="ghost"
+                    size="icon"
+                    className="text-destructive hover:text-destructive"
+                    title="Delete tool"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </div>
-                <button
-                  onClick={() =>
-                    deleteCustomToolMutation.mutate({
-                      id: tool.id,
-                      pageId: selectedPage,
-                    })
-                  }
-                  className="rounded-lg p-2 text-red-400 transition-colors hover:bg-red-500/10 hover:text-red-300"
-                  title="Delete tool"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
+              </Card>
             ))}
           </div>
         </div>
       )}
-    </div>
+    </Card>
   );
 };
