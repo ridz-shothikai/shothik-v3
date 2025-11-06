@@ -357,6 +357,7 @@ export default function MindMapView() {
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <div className="flex items-center gap-3">
             <button
+              title="Back to Campaign"
               onClick={() =>
                 router.push(`/marketing-automation/insights/${analysisId}`)
               }

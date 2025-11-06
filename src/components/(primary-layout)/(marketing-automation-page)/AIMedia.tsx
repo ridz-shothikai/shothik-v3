@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import type { RootState } from "@/redux/store";
 import { ArrowLeft } from "lucide-react";
 import {
@@ -89,7 +90,7 @@ export default function AIMedia() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#020617] text-white">
+    <div className="flex h-screen overflow-hidden bg-background text-foreground">
       {/* Sidebar */}
       <Sidebar
         activeSidebar={activeSidebar}
@@ -99,18 +100,19 @@ export default function AIMedia() {
       {/* Main Content */}
       <div className="flex h-full flex-1 flex-col">
         {/* Header */}
-        <div className="flex-shrink-0 border-b border-slate-800/50 bg-[#020617]/80 backdrop-blur-sm">
+        <div className="flex-shrink-0 border-b border-border bg-background/80 backdrop-blur-sm">
           <div className="mx-auto max-w-7xl px-6 py-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <button
+                <Button
                   onClick={() => router.push("/marketing-automation/analysis")}
-                  className="rounded-lg p-2 transition-colors hover:bg-slate-800"
+                  variant="ghost"
+                  size="icon"
                   aria-label="Back to analysis"
                 >
-                  <ArrowLeft className="h-5 w-5 text-gray-400" />
-                </button>
-                <h2 className="text-lg font-semibold text-white">
+                  <ArrowLeft className="h-5 w-5" />
+                </Button>
+                <h2 className="text-lg font-semibold text-foreground">
                   AI Media Studio
                 </h2>
               </div>

@@ -1,5 +1,9 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   useSubscribeWebhook,
   useUnsubscribeWebhook,
@@ -52,59 +56,51 @@ export const WebhookManager = ({ pageId, pageName }: WebhookManagerProps) => {
   };
 
   return (
-    <div className="rounded-2xl border border-slate-700/50 bg-slate-900/60 p-6 backdrop-blur-md transition-all hover:border-slate-600/50">
+    <Card className="p-6 transition-all hover:border-primary">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-blue-500/30 bg-gradient-to-br from-blue-600/20 to-purple-600/20">
-            <MessageSquare className="h-6 w-6 text-blue-400" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-primary/20">
+            <MessageSquare className="h-6 w-6 text-primary" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-100">{pageName}</h3>
-            <p className="text-sm text-gray-400">Messenger Webhook</p>
+            <h3 className="text-lg font-semibold text-foreground">{pageName}</h3>
+            <p className="text-sm text-muted-foreground">Messenger Webhook</p>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
           {statusLoading ? (
-            <Loader2 className="h-5 w-5 animate-spin text-blue-400" />
+            <Loader2 className="h-5 w-5 animate-spin text-primary" />
           ) : (
             <>
               {isSubscribed ? (
-                <div className="flex items-center gap-2 rounded-lg border border-green-500/30 bg-green-500/10 px-3 py-1.5">
-                  <CheckCircle className="h-4 w-4 text-green-400" />
-                  <span className="text-sm font-medium text-green-400">
-                    Active
-                  </span>
-                </div>
+                <Badge variant="secondary" className="px-3 py-1.5">
+                  <CheckCircle className="h-4 w-4" />
+                  <span className="text-sm font-medium">Active</span>
+                </Badge>
               ) : (
-                <div className="flex items-center gap-2 rounded-lg border border-slate-700/50 bg-slate-800/50 px-3 py-1.5">
-                  <XCircle className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm font-medium text-gray-500">
-                    Inactive
-                  </span>
-                </div>
+                <Badge variant="outline" className="px-3 py-1.5">
+                  <XCircle className="h-4 w-4" />
+                  <span className="text-sm font-medium">Inactive</span>
+                </Badge>
               )}
 
-              <button
+              <Button
                 onClick={isSubscribed ? handleUnsubscribe : handleSubscribe}
                 disabled={isProcessing || statusLoading}
-                className={`rounded-xl px-5 py-2.5 text-sm font-medium transition-all ${
-                  isSubscribed
-                    ? "border border-red-500/30 bg-red-500/10 text-red-400 hover:border-red-500/50 hover:bg-red-500/20 disabled:opacity-50"
-                    : "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/20 hover:from-blue-700 hover:to-purple-700 disabled:opacity-50"
-                }`}
+                variant={isSubscribed ? "destructive" : "default"}
               >
                 {isProcessing ? (
-                  <span className="flex items-center gap-2">
+                  <>
                     <Loader2 className="h-4 w-4 animate-spin" />
                     Processing...
-                  </span>
+                  </>
                 ) : isSubscribed ? (
                   "Unsubscribe"
                 ) : (
                   "Subscribe"
                 )}
-              </button>
+              </Button>
             </>
           )}
         </div>
@@ -112,10 +108,11 @@ export const WebhookManager = ({ pageId, pageName }: WebhookManagerProps) => {
 
       {/* Show details toggle */}
       {isSubscribed && webhookStatus?.subscriptions?.length > 0 && (
-        <div className="mt-5 border-t border-slate-700/50 pt-5">
-          <button
+        <div className="mt-5 border-t border-border pt-5">
+          <Button
             onClick={() => setShowDetails(!showDetails)}
-            className="flex items-center gap-2 text-sm text-blue-400 transition-colors hover:text-blue-300"
+            variant="ghost"
+            className="flex items-center gap-2 text-sm"
           >
             {showDetails ? (
               <>
@@ -128,60 +125,57 @@ export const WebhookManager = ({ pageId, pageName }: WebhookManagerProps) => {
                 Show subscription details
               </>
             )}
-          </button>
+          </Button>
 
           {showDetails && (
-            <div className="mt-4 rounded-xl border border-slate-700/30 bg-slate-800/50 p-4">
-              <p className="mb-3 text-xs font-semibold tracking-wide text-gray-400 uppercase">
+            <Card className="mt-4 p-4">
+              <p className="mb-3 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                 Subscribed Fields:
               </p>
               <div className="flex flex-wrap gap-2">
                 {webhookStatus.subscriptions.map((sub: any, idx: number) => (
-                  <span
-                    key={idx}
-                    className="rounded-lg border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 text-xs font-medium text-blue-300"
-                  >
+                  <Badge key={idx} variant="secondary" className="px-3 py-1.5 text-xs">
                     {sub.name || sub.id}
-                  </span>
+                  </Badge>
                 ))}
               </div>
-            </div>
+            </Card>
           )}
         </div>
       )}
 
       {/* Error messages */}
       {subscribeMutation.isError && (
-        <div className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 p-4">
-          <p className="text-sm text-red-400">
+        <Alert variant="destructive" className="mt-4">
+          <AlertDescription>
             ❌ Failed to subscribe webhook. Please try again.
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
       )}
 
       {unsubscribeMutation.isError && (
-        <div className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 p-4">
-          <p className="text-sm text-red-400">
+        <Alert variant="destructive" className="mt-4">
+          <AlertDescription>
             ❌ Failed to unsubscribe webhook. Please try again.
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
       )}
 
       {/* Success messages */}
       {subscribeMutation.isSuccess && (
-        <div className="mt-4 rounded-xl border border-green-500/30 bg-green-500/10 p-4">
-          <p className="text-sm text-green-400">
+        <Alert className="mt-4 border-primary/30 bg-primary/10">
+          <AlertDescription className="text-primary">
             ✓ Webhook subscribed successfully!
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
       )}
 
       {unsubscribeMutation.isSuccess && (
-        <div className="mt-4 rounded-xl border border-green-500/30 bg-green-500/10 p-4">
-          <p className="text-sm text-green-400">
+        <Alert className="mt-4 border-primary/30 bg-primary/10">
+          <AlertDescription className="text-primary">
             ✓ Webhook unsubscribed successfully!
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
       )}
     </div>
   );

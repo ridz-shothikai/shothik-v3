@@ -1,5 +1,9 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
 import { getRouteState } from "@/utils/getRouteState";
 import {
   ArrowLeft,
@@ -133,16 +137,15 @@ export default function AIInsights() {
       id: "mindmap",
       title: "Mind Map",
       icon: <Brain className="h-5 w-5" />,
-      color: "text-purple-400",
-      bgColor:
-        "bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/30",
+      color: "",
+      bgColor: "",
     },
     {
       id: "reports",
       title: "Reports",
       icon: <FileText className="h-5 w-5" />,
-      color: "text-blue-400",
-      bgColor: "bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/30",
+      color: "",
+      bgColor: "",
     },
   ];
 
@@ -238,36 +241,44 @@ export default function AIInsights() {
   }, [messages]);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#020617]">
+    <div className="flex h-screen overflow-hidden bg-background">
       {/* Chat Panel */}
       <div className="flex h-full flex-1 flex-col">
         {/* Header */}
-        <div className="flex-shrink-0 border-b border-slate-800/50 bg-[#020617]/80 px-6 py-3 backdrop-blur-sm">
+        <div className="flex-shrink-0 border-b border-border bg-background/80 px-6 py-3 backdrop-blur-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <button
+              <Button
                 onClick={() => router.push("/marketing-automation/analysis")}
-                className="rounded-lg p-2 transition-colors hover:bg-slate-800"
+                variant="ghost"
+                size="icon"
+                aria-label="Go back to analysis"
+                title="Go back to analysis"
               >
-                <ArrowLeft className="h-5 w-5 text-gray-400" />
-              </button>
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
               <div className="flex items-center gap-2">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/20">
-                  <Bot className="h-5 w-5 text-white" />
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary shadow-lg">
+                  <Bot className="h-5 w-5 text-primary-foreground" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold text-white">
+                  <h1 className="text-lg font-bold text-foreground">
                     AI Insights Assistant
                   </h1>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-muted-foreground">
                     Powered by advanced AI
                   </p>
                 </div>
               </div>
             </div>
-            <button className="rounded-lg p-2 transition-colors hover:bg-slate-800">
-              <Sparkles className="h-5 w-5 text-indigo-400" />
-            </button>
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="AI features"
+              title="AI features"
+            >
+              <Sparkles className="h-5 w-5" />
+            </Button>
           </div>
         </div>
 
@@ -281,15 +292,15 @@ export default function AIInsights() {
               }`}
             >
               {message.role === "assistant" && (
-                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/20">
-                  <Bot className="h-5 w-5 text-white" />
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-primary shadow-lg">
+                  <Bot className="h-5 w-5 text-primary-foreground" />
                 </div>
               )}
               <div
                 className={`max-w-2xl rounded-xl px-4 py-3 shadow-lg ${
                   message.role === "user"
-                    ? "bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-indigo-500/20"
-                    : "border border-slate-700/50 bg-slate-800/60 text-gray-100 shadow-black/20"
+                    ? "bg-primary text-primary-foreground"
+                    : "border border-border bg-card text-card-foreground"
                 }`}
               >
                 {message.role === "user" ? (
@@ -297,7 +308,7 @@ export default function AIInsights() {
                     {message.content}
                   </p>
                 ) : (
-                  <div className="prose prose-sm prose-headings:mt-3 prose-headings:mb-1.5 prose-headings:font-semibold prose-h2:text-base prose-h3:text-sm prose-headings:text-white prose-p:my-1.5 prose-p:text-gray-300 prose-strong:text-white prose-strong:font-semibold prose-ul:my-1.5 prose-ul:text-gray-300 prose-ol:my-1.5 prose-ol:text-gray-300 prose-li:my-0.5 prose-li:text-gray-300 prose-code:text-indigo-400 prose-code:bg-indigo-500/20 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-xs prose-code:font-mono prose-pre:bg-slate-900/50 prose-pre:border prose-pre:border-slate-700/50 prose-pre:rounded-lg prose-pre:p-2.5 prose-pre:my-2 prose-table:border-collapse prose-table:my-2 prose-th:border prose-th:border-slate-700 prose-th:bg-slate-900/50 prose-th:px-2.5 prose-th:py-1.5 prose-th:text-gray-300 prose-td:border prose-td:border-slate-700 prose-td:px-2.5 prose-td:py-1.5 prose-td:text-gray-300 max-w-none text-sm leading-relaxed">
+                  <div className="prose prose-sm prose-headings:mt-3 prose-headings:mb-1.5 prose-headings:font-semibold prose-h2:text-base prose-h3:text-sm prose-headings:text-foreground prose-p:my-1.5 prose-p:text-muted-foreground prose-strong:text-foreground prose-strong:font-semibold prose-ul:my-1.5 prose-ul:text-muted-foreground prose-ol:my-1.5 prose-ol:text-muted-foreground prose-li:my-0.5 prose-li:text-muted-foreground prose-code:text-primary prose-code:bg-primary/20 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-xs prose-code:font-mono prose-pre:bg-muted prose-pre:border prose-pre:border-border prose-pre:rounded-lg prose-pre:p-2.5 prose-pre:my-2 prose-table:border-collapse prose-table:my-2 prose-th:border prose-th:border-border prose-th:bg-muted prose-th:px-2.5 prose-th:py-1.5 prose-th:text-muted-foreground prose-td:border prose-td:border-border prose-td:px-2.5 prose-td:py-1.5 prose-td:text-muted-foreground max-w-none text-sm leading-relaxed">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
                       {message.content}
                     </ReactMarkdown>
@@ -306,8 +317,8 @@ export default function AIInsights() {
                 <span
                   className={`mt-1.5 block text-xs ${
                     message.role === "user"
-                      ? "text-indigo-200"
-                      : "text-gray-500"
+                      ? "text-primary-foreground/70"
+                      : "text-muted-foreground"
                   }`}
                 >
                   {message.timestamp.toLocaleTimeString([], {
@@ -317,8 +328,8 @@ export default function AIInsights() {
                 </span>
               </div>
               {message.role === "user" && (
-                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 shadow-lg shadow-purple-500/20">
-                  <Lightbulb className="h-5 w-5 text-white" />
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-secondary shadow-lg">
+                  <Lightbulb className="h-5 w-5 text-secondary-foreground" />
                 </div>
               )}
             </div>
@@ -326,18 +337,18 @@ export default function AIInsights() {
           <div ref={messagesEndRef} />
           {isLoading && (
             <div className="flex justify-start gap-4">
-              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/20">
-                <Bot className="h-5 w-5 text-white" />
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-primary shadow-lg">
+                <Bot className="h-5 w-5 text-primary-foreground" />
               </div>
-              <div className="rounded-xl border border-slate-700/50 bg-slate-800/60 px-4 py-3 shadow-lg shadow-black/20">
+              <div className="rounded-xl border border-border bg-card px-4 py-3 shadow-lg">
                 <div className="flex gap-2">
-                  <div className="h-2 w-2 animate-bounce rounded-full bg-indigo-400"></div>
+                  <div className="h-2 w-2 animate-bounce rounded-full bg-primary"></div>
                   <div
-                    className="h-2 w-2 animate-bounce rounded-full bg-indigo-400"
+                    className="h-2 w-2 animate-bounce rounded-full bg-primary"
                     style={{ animationDelay: "0.2s" }}
                   ></div>
                   <div
-                    className="h-2 w-2 animate-bounce rounded-full bg-indigo-400"
+                    className="h-2 w-2 animate-bounce rounded-full bg-primary"
                     style={{ animationDelay: "0.4s" }}
                   ></div>
                 </div>
@@ -347,23 +358,23 @@ export default function AIInsights() {
         </div>
 
         {/* Input Area */}
-        <div className="flex-shrink-0 border-t border-slate-800/50 bg-slate-900/50 px-6 py-3">
+        <div className="flex-shrink-0 border-t border-border bg-muted/50 px-6 py-3">
           <div className="mx-auto max-w-4xl">
             <div className="flex items-end gap-2">
               <div className="relative flex-1">
-                <textarea
+                <Textarea
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Ask me anything about your campaigns..."
-                  className="w-full resize-none rounded-lg border border-slate-700/50 bg-slate-800/60 px-3 py-2.5 pr-28 text-sm text-white placeholder-gray-500 transition-all focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                  className="w-full resize-none pr-28"
                   rows={1}
                   style={{
                     minHeight: "42px",
                     maxHeight: "100px",
                   }}
                 />
-                <span className="absolute right-2 bottom-2.5 rounded border border-slate-700/50 bg-slate-900/50 px-1.5 py-0.5 text-xs text-gray-500">
+                <span className="absolute right-2 bottom-2.5 rounded border border-border bg-background px-1.5 py-0.5 text-xs text-muted-foreground">
                   {dataSource === "meta_api"
                     ? "Meta API"
                     : dataSource === "campaign"
@@ -373,36 +384,43 @@ export default function AIInsights() {
                         : "Project"}
                 </span>
               </div>
-              <button
+              <Button
                 onClick={handleSendMessage}
                 disabled={!inputMessage.trim() || isLoading}
-                className="rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 p-2.5 text-white shadow-lg shadow-indigo-500/20 transition-all hover:from-indigo-700 hover:to-purple-700 disabled:cursor-not-allowed disabled:from-slate-700 disabled:to-slate-700"
+                size="icon"
+                aria-label="Send message"
+                title="Send message"
               >
                 <Send className="h-4 w-4" />
-              </button>
+              </Button>
             </div>
-            <div className="mt-2 flex items-center gap-2 text-xs text-gray-400">
+            <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
               <span>Suggested:</span>
-              <button className="rounded-full border border-slate-700/50 bg-slate-800/60 px-2.5 py-1 text-gray-300 transition-colors hover:bg-slate-700/60">
+              <Button variant="outline" size="sm" className="h-auto rounded-full px-2.5 py-1 text-xs">
                 Campaign performance
-              </button>
-              <button className="rounded-full border border-slate-700/50 bg-slate-800/60 px-2.5 py-1 text-gray-300 transition-colors hover:bg-slate-700/60">
+              </Button>
+              <Button variant="outline" size="sm" className="h-auto rounded-full px-2.5 py-1 text-xs">
                 Audience insights
-              </button>
+              </Button>
             </div>
           </div>
         </div>
       </div>
 
       {/* Studio Panel */}
-      <div className="flex h-full w-80 flex-col border-l border-slate-800/50 bg-slate-900/50">
+      <div className="flex h-full w-80 flex-col border-l border-border bg-muted/50">
         {/* Studio Header */}
-        <div className="flex-shrink-0 border-b border-slate-800/50 px-4 py-3">
+        <div className="flex-shrink-0 border-b border-border px-4 py-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-white">Studio</h2>
-            <button className="rounded-lg p-1.5 transition-colors hover:bg-slate-800">
-              <BarChart3 className="h-4 w-4 text-gray-400" />
-            </button>
+            <h2 className="text-base font-bold text-foreground">Studio</h2>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              aria-label="View analytics"
+              title="View analytics"
+            >
+              <BarChart3 className="h-4 w-4" />
+            </Button>
           </div>
         </div>
 
@@ -410,49 +428,50 @@ export default function AIInsights() {
         <div className="custom-scrollbar flex-1 overflow-y-auto p-4">
           <div className="grid grid-cols-2 gap-3">
             {studioCards.map((card) => (
-              <button
+              <Button
                 key={card.id}
                 onClick={() => handleStudioCardClick(card.id)}
-                className={`${card.bgColor} ${card.color} flex flex-col items-center justify-center gap-2 rounded-xl p-4 shadow-sm transition-all hover:scale-105 hover:shadow-md`}
+                variant="outline"
+                className="flex h-auto flex-col items-center justify-center gap-2 rounded-xl p-4"
               >
                 {card.icon}
                 <span className="text-center text-xs font-medium">
                   {card.title}
                 </span>
-              </button>
+              </Button>
             ))}
           </div>
 
           {/* Recent Activity - Mind Map History */}
           <div className="mt-4">
-            <h3 className="mb-2 text-xs font-semibold tracking-wide text-gray-300 uppercase">
+            <h3 className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
               Mind Map History
             </h3>
             <div className="space-y-2">
               {mindMapHistory.length === 0 ? (
-                <p className="py-3 text-center text-xs text-gray-500">
+                <p className="py-3 text-center text-xs text-muted-foreground">
                   No mind maps generated yet
                 </p>
               ) : (
                 mindMapHistory.map((mindMap) => (
-                  <div
+                  <Card
                     key={mindMap._id}
                     onClick={() => handleMindMapClick(mindMap._id)}
-                    className="cursor-pointer rounded-lg border border-slate-700/50 bg-slate-800/60 p-2.5 transition-all hover:border-purple-500/50"
+                    className="cursor-pointer p-2.5 transition-all hover:border-primary"
                   >
                     <div className="flex items-start gap-2">
-                      <Brain className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-purple-400" />
+                      <Brain className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-primary" />
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-xs font-medium text-white">
+                        <p className="truncate text-xs font-medium text-foreground">
                           {mindMap.title}
                         </p>
-                        <p className="mt-0.5 text-xs text-gray-500">
+                        <p className="mt-0.5 text-xs text-muted-foreground">
                           {mindMap.insights.totalCampaigns} campaigns •{" "}
                           {mindMap.insights.totalAds} ads
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </Card>
                 ))
               )}
             </div>
@@ -460,11 +479,11 @@ export default function AIInsights() {
         </div>
 
         {/* Add Note Button */}
-        <div className="flex-shrink-0 border-t border-slate-800/50 p-3">
-          <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 px-3 py-2.5 text-sm font-medium text-white shadow-lg shadow-indigo-500/20 transition-all hover:from-indigo-700 hover:to-purple-700">
+        <div className="flex-shrink-0 border-t border-border p-3">
+          <Button className="w-full">
             <Sparkles className="h-4 w-4" />
             Add note
-          </button>
+          </Button>
         </div>
       </div>
     </div>
