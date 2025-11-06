@@ -33,6 +33,14 @@ import {
   SuggestionsLoadingSkeleton,
 } from "./LoadingSkeletons";
 import PersonasTab from "./PersonasTab";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 interface CanvasBodyProps {
   analysis: ProductAnalysis;
@@ -395,21 +403,21 @@ export default function CanvasBody({
         {/* Page Header */}
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="mb-2 text-3xl font-bold text-white">
+            <h1 className="mb-2 text-3xl font-bold text-foreground">
               Meta Campaign Builder
             </h1>
-            <p className="text-gray-400">
+            <p className="text-muted-foreground">
               Create and manage your Facebook & Instagram campaigns
             </p>
           </div>
           {saving && (
-            <div className="flex items-center gap-2 text-sm text-gray-400">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Save className="h-4 w-4 animate-pulse" />
               Saving...
             </div>
           )}
           {!saving && dataLoaded && (
-            <div className="flex items-center gap-2 text-sm text-emerald-400">
+            <div className="flex items-center gap-2 text-sm text-primary">
               <Save className="h-4 w-4" />
               Saved
             </div>
@@ -417,73 +425,58 @@ export default function CanvasBody({
         </div>
 
         {/* Tabs */}
-        <div className="mb-6 flex gap-2 overflow-x-auto border-b border-slate-800/50 pb-4">
-          <button
+        <div className="mb-6 flex gap-2 overflow-x-auto border-b pb-4">
+          <Button
+            variant={activeTab === "suggestions" ? "default" : "ghost"}
             onClick={() => setActiveTab("suggestions")}
-            className={`rounded-lg px-6 py-3 font-medium whitespace-nowrap transition-all ${
-              activeTab === "suggestions"
-                ? "border border-purple-500/30 bg-purple-500/20 text-purple-300"
-                : "text-gray-400 hover:bg-slate-800/50 hover:text-gray-300"
-            }`}
+            className="whitespace-nowrap"
           >
             <Lightbulb className="mr-2 inline-block h-4 w-4" />
             AI Suggestions
-          </button>
-          <button
+          </Button>
+          <Button
+            variant={activeTab === "personas" ? "default" : "ghost"}
             onClick={() => setActiveTab("personas")}
-            className={`rounded-lg px-6 py-3 font-medium whitespace-nowrap transition-all ${
-              activeTab === "personas"
-                ? "border border-purple-500/30 bg-purple-500/20 text-purple-300"
-                : "text-gray-400 hover:bg-slate-800/50 hover:text-gray-300"
-            }`}
+            className="whitespace-nowrap"
           >
             <Users className="mr-2 inline-block h-4 w-4" />
             Personas ({personas.length})
-          </button>
-          <button
+          </Button>
+          <Button
+            variant={activeTab === "campaigns" ? "default" : "ghost"}
             onClick={() => setActiveTab("campaigns")}
-            className={`rounded-lg px-6 py-3 font-medium whitespace-nowrap transition-all ${
-              activeTab === "campaigns"
-                ? "border border-purple-500/30 bg-purple-500/20 text-purple-300"
-                : "text-gray-400 hover:bg-slate-800/50 hover:text-gray-300"
-            }`}
+            className="whitespace-nowrap"
           >
             Campaigns ({campaigns.length})
-          </button>
-          <button
+          </Button>
+          <Button
+            variant={activeTab === "adsets" ? "default" : "ghost"}
             onClick={() => setActiveTab("adsets")}
-            className={`rounded-lg px-6 py-3 font-medium whitespace-nowrap transition-all ${
-              activeTab === "adsets"
-                ? "border border-purple-500/30 bg-purple-500/20 text-purple-300"
-                : "text-gray-400 hover:bg-slate-800/50 hover:text-gray-300"
-            }`}
+            className="whitespace-nowrap"
           >
             Ad Sets ({adSets.length})
-          </button>
-          <button
+          </Button>
+          <Button
+            variant={activeTab === "ads" ? "default" : "ghost"}
             onClick={() => setActiveTab("ads")}
-            className={`rounded-lg px-6 py-3 font-medium whitespace-nowrap transition-all ${
-              activeTab === "ads"
-                ? "border border-purple-500/30 bg-purple-500/20 text-purple-300"
-                : "text-gray-400 hover:bg-slate-800/50 hover:text-gray-300"
-            }`}
+            className="whitespace-nowrap"
           >
             Ads ({ads.length})
-          </button>
+          </Button>
         </div>
 
         {/* Publish Ads Button - Only show when ads tab is active and there are ads */}
         {activeTab === "ads" && ads.length > 0 && (
           <div className="mb-6 flex justify-end">
-            <button
+            <Button
               onClick={() =>
                 router.push(`/marketing-automation/canvas/${projectId}/publish`)
               }
-              className="flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 font-medium text-white shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-700 hover:shadow-emerald-500/30"
+              className="flex items-center gap-2"
             >
               <Wand2 className="h-4 w-4" />
               Publish Ads
-            </button>
+            </Button>
           </div>
         )}
 
@@ -541,68 +534,67 @@ export default function CanvasBody({
       </div>
 
       {/* Create Campaign Modal */}
-      {showCreateModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-2xl border border-slate-700/50 bg-slate-800/90 p-8 backdrop-blur-xl">
-            <h2 className="mb-6 text-2xl font-bold text-white">
+      <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold">
               Create New Campaign
-            </h2>
+            </DialogTitle>
+          </DialogHeader>
 
-            <div className="mb-6 space-y-4">
-              <div>
-                <label className="mb-2 block text-sm text-gray-300">
-                  Campaign Name
-                </label>
-                <input
-                  type="text"
-                  defaultValue={`${analysis.product.title} Campaign`}
-                  className="w-full rounded-xl border border-slate-700/50 bg-slate-900/50 px-4 py-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm text-gray-300">
-                  Objective
-                </label>
-                <select className="w-full rounded-xl border border-slate-700/50 bg-slate-900/50 px-4 py-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none">
-                  <option value="outcome_sales">Sales (Conversions)</option>
-                  <option value="outcome_leads">Leads</option>
-                  <option value="outcome_traffic">Traffic</option>
-                  <option value="outcome_engagement">Engagement</option>
-                  <option value="outcome_app_promotion">App Promotion</option>
-                  <option value="outcome_awareness">Awareness</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm text-gray-300">
-                  Daily Budget (USD)
-                </label>
-                <input
-                  type="number"
-                  defaultValue={100}
-                  className="w-full rounded-xl border border-slate-700/50 bg-slate-900/50 px-4 py-3 text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                />
-              </div>
+          <div className="space-y-4">
+            <div>
+              <label className="mb-2 block text-sm font-medium">
+                Campaign Name
+              </label>
+              <Input
+                type="text"
+                defaultValue={`${analysis.product.title} Campaign`}
+              />
             </div>
 
-            <div className="flex gap-3">
-              <button
-                onClick={() => setShowCreateModal(false)}
-                className="flex-1 rounded-xl bg-slate-700/50 px-4 py-3 text-white transition-all hover:bg-slate-700"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={createCampaign}
-                className="flex-1 rounded-xl bg-purple-600 px-4 py-3 text-white transition-all hover:bg-purple-700 hover:shadow-lg"
-              >
-                Create Campaign
-              </button>
+            <div>
+              <label className="mb-2 block text-sm font-medium">
+                Objective
+              </label>
+              <select className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none">
+                <option value="outcome_sales">Sales (Conversions)</option>
+                <option value="outcome_leads">Leads</option>
+                <option value="outcome_traffic">Traffic</option>
+                <option value="outcome_engagement">Engagement</option>
+                <option value="outcome_app_promotion">App Promotion</option>
+                <option value="outcome_awareness">Awareness</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium">
+                Daily Budget (USD)
+              </label>
+              <Input
+                type="number"
+                defaultValue={100}
+              />
             </div>
           </div>
-        </div>
-      )}
+
+          <div className="flex gap-3">
+            <Button
+              variant="outline"
+              onClick={() => setShowCreateModal(false)}
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={createCampaign}
+              className="flex-1"
+            >
+              Create Campaign
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Edit Ad Modal */}
       <EditAdModal

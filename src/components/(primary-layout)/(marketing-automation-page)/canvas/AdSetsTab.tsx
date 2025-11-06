@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Ad, AdSet, Campaign } from "@/types/campaign";
 import type { BidStrategy, OptimizationGoal } from "@/types/metaCampaign";
 import {
@@ -21,199 +23,217 @@ export default function AdSetsTab({
 }: AdSetsTabProps) {
   if (adSets.length === 0) {
     return (
-      <div className="bg-slate-800/60 rounded-2xl p-12 text-center border border-slate-700/50">
-        <Target className="w-16 h-16 text-purple-600 mx-auto mb-4" />
-        <h3 className="text-white font-semibold text-lg mb-2">
+      <Card className="p-12 text-center">
+        <Target className="text-primary mx-auto mb-4 h-16 w-16" />
+        <h3 className="text-foreground mb-2 text-lg font-semibold">
           No Ad Sets Yet
         </h3>
-        <p className="text-gray-400 text-sm">
+        <p className="text-muted-foreground text-sm">
           Create a campaign first, then add ad sets
         </p>
-      </div>
+      </Card>
     );
   }
 
   return (
     <>
       {adSets.map((adSet) => (
-        <div
+        <Card
           key={adSet.id}
-          className="bg-slate-800/60 rounded-2xl p-6 border border-slate-700/50 hover:border-slate-600/50 transition-all"
+          className="hover:border-primary/50 transition-border p-6"
         >
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <h3 className="text-xl font-bold text-white mb-1">
-                {adSet.name}
-              </h3>
-              <div className="flex items-center gap-2">
-                <span className="text-gray-400 text-sm">
-                  Campaign:{" "}
-                  {campaigns.find((c) => c.id === adSet.campaignId)?.name ||
-                    "Unknown"}
-                </span>
-                {adSet.status && (
-                  <span
-                    className={`px-2 py-1 rounded text-xs font-medium ${
-                      adSet.status === "draft"
-                        ? "bg-yellow-100 text-yellow-700 border border-yellow-200"
-                        : adSet.status === "active"
-                        ? "bg-green-100 text-green-700 border border-green-200"
-                        : adSet.status === "paused"
-                        ? "bg-slate-700/50 text-gray-300 border border-slate-600/50"
-                        : "bg-slate-700/50 text-gray-300 border border-slate-600/50"
-                    }`}
-                  >
-                    {adSet.status.charAt(0).toUpperCase() +
-                      adSet.status.slice(1)}
+          <CardHeader>
+            <div className="mb-4 flex items-start justify-between">
+              <div>
+                <CardTitle className="mb-1 text-xl font-bold">
+                  {adSet.name}
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <span className="text-muted-foreground text-sm">
+                    Campaign:{" "}
+                    {campaigns.find((c) => c.id === adSet.campaignId)?.name ||
+                      "Unknown"}
                   </span>
-                )}
-              </div>
-            </div>
-            <button
-              onClick={() => onEditAdSet(adSet)}
-              className="p-2 hover:bg-slate-700/50 rounded-lg transition-all"
-              title="Edit Ad Set"
-            >
-              <Settings className="w-5 h-5 text-gray-400" />
-            </button>
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-            <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
-              <div className="flex items-center gap-2 mb-2">
-                <ImageIcon className="w-4 h-4 text-purple-600" />
-                <span className="text-gray-400 text-xs">Ads</span>
-              </div>
-              <p className="text-white font-bold text-lg">
-                {ads.filter((ad) => ad.adSetId === adSet.id).length}
-              </p>
-            </div>
-
-            {adSet.budget && (
-              <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
-                <div className="flex items-center gap-2 mb-2">
-                  <DollarSign className="w-4 h-4 text-green-600" />
-                  <span className="text-gray-400 text-xs">Daily Budget</span>
-                </div>
-                <p className="text-white font-bold text-lg">${adSet.budget}</p>
-              </div>
-            )}
-          </div>
-
-          {/* Additional Ad Set Details */}
-          {(adSet.bid_strategy ||
-            adSet.optimization_goal ||
-            adSet.targeting) && (
-            <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50 mb-4">
-              <h4 className="text-sm font-semibold text-gray-300 mb-3">
-                Ad Set Details
-              </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {adSet.bid_strategy && (
-                  <div>
-                    <span className="text-gray-400 text-xs">Bid Strategy</span>
-                    <p className="text-white font-medium text-sm">
-                      {BidStrategyLabels[adSet.bid_strategy as BidStrategy]}
-                    </p>
-                  </div>
-                )}
-                {adSet.optimization_goal && (
-                  <div>
-                    <span className="text-gray-400 text-xs">
-                      Optimization Goal
+                  {adSet.status && (
+                    <span
+                      className={`rounded border px-2 py-1 text-xs font-medium ${
+                        adSet.status === "draft"
+                          ? "border-muted bg-muted/50 text-muted-foreground"
+                          : adSet.status === "active"
+                            ? "border-primary/30 bg-primary/20 text-primary"
+                            : adSet.status === "paused"
+                              ? "border-muted bg-muted/50 text-muted-foreground"
+                              : "border-muted bg-muted/50 text-muted-foreground"
+                      }`}
+                    >
+                      {adSet.status.charAt(0).toUpperCase() +
+                        adSet.status.slice(1)}
                     </span>
-                    <p className="text-white font-medium text-sm">
-                      {
-                        OptimizationGoalLabels[
-                          adSet.optimization_goal as OptimizationGoal
-                        ]
-                      }
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Targeting Details */}
-              {adSet.targeting && (
-                <div className="mt-4 pt-4 border-t border-slate-700/50">
-                  <h5 className="text-sm font-semibold text-gray-300 mb-3">
-                    Targeting
-                  </h5>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Age Range */}
-                    {(adSet.targeting.age_min || adSet.targeting.age_max) && (
-                      <div>
-                        <span className="text-gray-400 text-xs">Age Range</span>
-                        <p className="text-white font-medium text-sm">
-                          {adSet.targeting.age_min || 18} -{" "}
-                          {adSet.targeting.age_max || 65}
-                        </p>
-                      </div>
-                    )}
-
-                    {/* Geographic Location */}
-                    {adSet.targeting.geo_locations && (
-                      <div>
-                        <span className="text-gray-400 text-xs">Location</span>
-                        <div className="text-white font-medium text-sm">
-                          {adSet.targeting.geo_locations.countries && (
-                            <div className="flex flex-wrap gap-1">
-                              {adSet.targeting.geo_locations.countries.map(
-                                (country, index) => (
-                                  <span
-                                    key={index}
-                                    className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs"
-                                  >
-                                    {country === "BD" ? "Bangladesh" : country}
-                                  </span>
-                                )
-                              )}
-                            </div>
-                          )}
-                          {adSet.targeting.geo_locations.cities &&
-                            adSet.targeting.geo_locations.cities.length > 0 && (
-                              <div className="mt-1">
-                                <span className="text-gray-500 text-xs">
-                                  Cities:{" "}
-                                </span>
-                                <span className="text-gray-700 text-xs">
-                                  {adSet.targeting.geo_locations.cities
-                                    .map((city) => city.name || city.key)
-                                    .join(", ")}
-                                </span>
-                              </div>
-                            )}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Advantage Audience */}
-                    {adSet.targeting.advantage_audience !== undefined && (
-                      <div>
-                        <span className="text-gray-400 text-xs">
-                          Advantage Audience
-                        </span>
-                        <p className="text-white font-medium text-sm">
-                          <span
-                            className={`px-2 py-1 rounded text-xs ${
-                              adSet.targeting.advantage_audience
-                                ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                                : "bg-slate-700/50 text-gray-400 border border-slate-600/50"
-                            }`}
-                          >
-                            {adSet.targeting.advantage_audience
-                              ? "Enabled"
-                              : "Disabled"}
-                          </span>
-                        </p>
-                      </div>
-                    )}
-                  </div>
+                  )}
                 </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => onEditAdSet(adSet)}
+                title="Edit Ad Set"
+              >
+                <Settings className="h-5 w-5" />
+              </Button>
+            </div>
+          </CardHeader>
+
+          <CardContent>
+            <div className="mb-4 grid grid-cols-2 gap-4 lg:grid-cols-3">
+              <Card className="p-4">
+                <div className="mb-2 flex items-center gap-2">
+                  <ImageIcon className="text-primary h-4 w-4" />
+                  <span className="text-muted-foreground text-xs">Ads</span>
+                </div>
+                <p className="text-foreground text-lg font-bold">
+                  {ads.filter((ad) => ad.adSetId === adSet.id).length}
+                </p>
+              </Card>
+
+              {adSet.budget && (
+                <Card className="p-4">
+                  <div className="mb-2 flex items-center gap-2">
+                    <DollarSign className="text-primary h-4 w-4" />
+                    <span className="text-muted-foreground text-xs">
+                      Daily Budget
+                    </span>
+                  </div>
+                  <p className="text-foreground text-lg font-bold">
+                    ${adSet.budget}
+                  </p>
+                </Card>
               )}
             </div>
-          )}
-        </div>
+
+            {/* Additional Ad Set Details */}
+            {(adSet.bid_strategy ||
+              adSet.optimization_goal ||
+              adSet.targeting) && (
+              <Card className="mb-4 p-4">
+                <h4 className="text-foreground mb-3 text-sm font-semibold">
+                  Ad Set Details
+                </h4>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  {adSet.bid_strategy && (
+                    <div>
+                      <span className="text-muted-foreground text-xs">
+                        Bid Strategy
+                      </span>
+                      <p className="text-foreground text-sm font-medium">
+                        {BidStrategyLabels[adSet.bid_strategy as BidStrategy]}
+                      </p>
+                    </div>
+                  )}
+                  {adSet.optimization_goal && (
+                    <div>
+                      <span className="text-muted-foreground text-xs">
+                        Optimization Goal
+                      </span>
+                      <p className="text-foreground text-sm font-medium">
+                        {
+                          OptimizationGoalLabels[
+                            adSet.optimization_goal as OptimizationGoal
+                          ]
+                        }
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Targeting Details */}
+                {adSet.targeting && (
+                  <div className="mt-4 border-t pt-4">
+                    <h5 className="text-foreground mb-3 text-sm font-semibold">
+                      Targeting
+                    </h5>
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                      {/* Age Range */}
+                      {(adSet.targeting.age_min || adSet.targeting.age_max) && (
+                        <div>
+                          <span className="text-muted-foreground text-xs">
+                            Age Range
+                          </span>
+                          <p className="text-foreground text-sm font-medium">
+                            {adSet.targeting.age_min || 18} -{" "}
+                            {adSet.targeting.age_max || 65}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Geographic Location */}
+                      {adSet.targeting.geo_locations && (
+                        <div>
+                          <span className="text-muted-foreground text-xs">
+                            Location
+                          </span>
+                          <div className="text-foreground text-sm font-medium">
+                            {adSet.targeting.geo_locations.countries && (
+                              <div className="flex flex-wrap gap-1">
+                                {adSet.targeting.geo_locations.countries.map(
+                                  (country, index) => (
+                                    <span
+                                      key={index}
+                                      className="bg-primary/20 text-primary border-primary/30 rounded border px-2 py-1 text-xs"
+                                    >
+                                      {country === "BD"
+                                        ? "Bangladesh"
+                                        : country}
+                                    </span>
+                                  ),
+                                )}
+                              </div>
+                            )}
+                            {adSet.targeting.geo_locations.cities &&
+                              adSet.targeting.geo_locations.cities.length >
+                                0 && (
+                                <div className="mt-1">
+                                  <span className="text-muted-foreground text-xs">
+                                    Cities:{" "}
+                                  </span>
+                                  <span className="text-muted-foreground text-xs">
+                                    {adSet.targeting.geo_locations.cities
+                                      .map((city) => city.name || city.key)
+                                      .join(", ")}
+                                  </span>
+                                </div>
+                              )}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Advantage Audience */}
+                      {adSet.targeting.advantage_audience !== undefined && (
+                        <div>
+                          <span className="text-muted-foreground text-xs">
+                            Advantage Audience
+                          </span>
+                          <p className="text-foreground text-sm font-medium">
+                            <span
+                              className={`rounded border px-2 py-1 text-xs ${
+                                adSet.targeting.advantage_audience
+                                  ? "bg-primary/20 text-primary border-primary/30"
+                                  : "bg-muted/50 text-muted-foreground border-muted"
+                              }`}
+                            >
+                              {adSet.targeting.advantage_audience
+                                ? "Enabled"
+                                : "Disabled"}
+                            </span>
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </Card>
+            )}
+          </CardContent>
+        </Card>
       ))}
     </>
   );

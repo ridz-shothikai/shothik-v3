@@ -1,8 +1,17 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import api from "@/lib/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Check, FileVideo, Image, Loader2, Video, X } from "lucide-react";
+import { Check, FileVideo, Image, Loader2, Video } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import Toast from "../ui/Toast";
@@ -168,8 +177,6 @@ export default function MediaLibraryModal({
     }
   };
 
-  if (!isOpen) return null;
-
   const getMediaIcon = (type: string) => {
     if (type.includes("image")) return Image;
     if (type.includes("video")) return Video;
@@ -190,268 +197,258 @@ export default function MediaLibraryModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[90vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 p-6">
-          <div>
-            <h2 className="text-2xl font-bold text-white">Select Media</h2>
-            <p className="mt-1 text-sm text-gray-400">
+    <>
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="flex max-h-[90vh] max-w-6xl flex-col">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold">
+              Select Media
+            </DialogTitle>
+            <DialogDescription>
               {isCarousel
                 ? `Select up to ${maxSelection} images for carousel (${selectedMedia.length} selected)`
                 : isVideo
                   ? "Select a video"
                   : "Select an image"}
-            </p>
-          </div>
-          <button
-            aria-label="Close"
-            onClick={onClose}
-            className="rounded-lg p-2 transition-colors hover:bg-slate-800"
-          >
-            <X className="h-5 w-5 text-gray-400" />
-          </button>
-        </div>
+            </DialogDescription>
+          </DialogHeader>
 
-        {/* Tabs */}
-        <div className="border-b border-slate-800 px-6">
-          <div className="flex gap-4">
-            <button
-              onClick={() => setActiveTab("smart-assets")}
-              className={`border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
-                activeTab === "smart-assets"
-                  ? "border-blue-500 text-blue-400"
-                  : "border-transparent text-gray-400 hover:text-gray-300"
-              }`}
-            >
-              Smart Assets ({smartAssets.length})
-            </button>
-            <button
-              onClick={() => setActiveTab("ai-media")}
-              className={`border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
-                activeTab === "ai-media"
-                  ? "border-purple-500 text-purple-400"
-                  : "border-transparent text-gray-400 hover:text-gray-300"
-              }`}
-            >
-              AI Media ({aiMedia.length})
-            </button>
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
-          {loading ? (
-            <div className="flex h-64 items-center justify-center">
-              <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+          {/* Tabs */}
+          <div className="border-b px-6">
+            <div className="flex gap-4">
+              <Button
+                variant={activeTab === "smart-assets" ? "default" : "ghost"}
+                onClick={() => setActiveTab("smart-assets")}
+                className="data-[state=active]:border-primary border-b-2 border-transparent"
+              >
+                Smart Assets ({smartAssets.length})
+              </Button>
+              <Button
+                variant={activeTab === "ai-media" ? "default" : "ghost"}
+                onClick={() => setActiveTab("ai-media")}
+                className="data-[state=active]:border-primary border-b-2 border-transparent"
+              >
+                AI Media ({aiMedia.length})
+              </Button>
             </div>
-          ) : (
-            <>
-              {/* Smart Assets Tab */}
-              {activeTab === "smart-assets" && (
-                <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-                  {smartAssets.length === 0 ? (
-                    <div className="col-span-full py-12 text-center">
-                      <Image className="mx-auto mb-3 h-12 w-12 text-gray-600" />
-                      <p className="text-gray-400">No smart assets yet</p>
-                    </div>
-                  ) : (
-                    smartAssets.map((asset: SmartAsset) => {
-                      const Icon = getMediaIcon(asset.type);
-                      const mediaUrl = asset.imagekitUrl;
-                      const isSelected = selectedMedia.includes(mediaUrl);
-                      return (
-                        <div
-                          key={asset._id}
-                          onClick={() => handleMediaSelect(asset._id, mediaUrl)}
-                          className={`group relative cursor-pointer overflow-hidden rounded-lg bg-slate-800 transition-all hover:ring-2 hover:ring-blue-500 ${
-                            isSelected ? "ring-2 ring-blue-500" : ""
-                          }`}
-                        >
-                          {/* Thumbnail */}
-                          <div className="relative aspect-video bg-slate-700">
-                            {asset.thumbnailUrl || asset.imagekitUrl ? (
-                              <img
-                                src={asset.thumbnailUrl || asset.imagekitUrl}
-                                alt={asset.name}
-                                className="h-full w-full object-cover"
-                              />
-                            ) : (
-                              <div className="flex h-full w-full items-center justify-center">
-                                <Icon className="h-8 w-8 text-gray-500" />
-                              </div>
-                            )}
+          </div>
 
-                            {/* Selection Indicator */}
-                            {isSelected && (
-                              <div className="absolute top-2 right-2 rounded-full bg-blue-500 p-1">
-                                <Check className="h-4 w-4 text-white" />
-                              </div>
-                            )}
-
-                            {/* Selection Number for Carousel */}
-                            {isCarousel && isSelected && (
-                              <div className="absolute top-2 left-2 flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-xs font-bold text-white">
-                                {selectedMedia.indexOf(mediaUrl) + 1}
-                              </div>
-                            )}
-                          </div>
-
-                          {/* Info */}
-                          <div className="p-3">
-                            <p className="truncate text-sm font-medium text-white">
-                              {asset.name}
-                            </p>
-                            <div className="mt-2 flex items-center justify-between">
-                              <span className="text-xs text-gray-400 capitalize">
-                                {asset.type}
-                              </span>
-                              <span className="text-xs text-gray-500">
-                                {formatFileSize(asset.fileSize)}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })
-                  )}
-                </div>
-              )}
-
-              {/* AI Media Tab */}
-              {activeTab === "ai-media" && (
-                <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-                  {aiMedia.length === 0 ? (
-                    <div className="col-span-full py-12 text-center">
-                      <Video className="mx-auto mb-3 h-12 w-12 text-gray-600" />
-                      <p className="text-gray-400">No AI media yet</p>
-                    </div>
-                  ) : (
-                    aiMedia.map((media: AiMedia) => {
-                      const mediaUrl = media.url || "";
-                      const isSelected = selectedMedia.includes(mediaUrl);
-                      return (
-                        <div
-                          key={media._id}
-                          onClick={() => handleMediaSelect(media._id, mediaUrl)}
-                          className={`group relative cursor-pointer overflow-hidden rounded-lg bg-slate-800 transition-all hover:ring-2 hover:ring-purple-500 ${
-                            isSelected ? "ring-2 ring-purple-500" : ""
-                          }`}
-                        >
-                          {/* Thumbnail */}
-                          <div className="relative aspect-video bg-slate-700">
-                            {media.status === "completed" &&
-                            (media.thumbnail || media.url) ? (
-                              <img
-                                src={media.thumbnail || media.url}
-                                alt={media.type}
-                                className="h-full w-full object-cover"
-                              />
-                            ) : media.status === "pending" ? (
-                              <div className="flex h-full w-full items-center justify-center">
-                                <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
-                              </div>
-                            ) : (
-                              <div className="flex h-full w-full items-center justify-center">
-                                <Video className="h-8 w-8 text-gray-500" />
-                              </div>
-                            )}
-
-                            {/* Selection Indicator */}
-                            {isSelected && (
-                              <div className="absolute top-2 left-2 rounded-full bg-purple-500 p-1">
-                                <Check className="h-4 w-4 text-white" />
-                              </div>
-                            )}
-
-                            {/* Status Badge */}
-                            <div className="absolute top-2 right-2">
-                              <span
-                                className={`rounded px-2 py-1 text-xs font-medium ${
-                                  media.status === "completed"
-                                    ? "bg-green-500/20 text-green-400"
-                                    : media.status === "pending"
-                                      ? "bg-yellow-500/20 text-yellow-400"
-                                      : "bg-red-500/20 text-red-400"
-                                }`}
-                              >
-                                {media.status}
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Info */}
-                          <div className="p-3">
-                            <p className="text-sm font-medium text-white capitalize">
-                              {media.type} Video
-                            </p>
-                            <div className="mt-2 flex items-center justify-between">
-                              <span className="text-xs text-gray-400">
-                                {formatDuration(media.duration)}
-                              </span>
-                              <span className="text-xs text-gray-500">
-                                {formatFileSize(media.fileSize)}
-                              </span>
-                            </div>
-                            {media.error && (
-                              <p className="mt-1 truncate text-xs text-red-400">
-                                {media.error}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })
-                  )}
-                </div>
-              )}
-            </>
-          )}
-        </div>
-
-        {/* Footer */}
-        <div className="flex items-center justify-between border-t border-slate-800 p-4">
-          <div className="text-sm text-gray-400">
-            {selectedMedia.length > 0 ? (
-              <span className="font-medium text-blue-400">
-                {selectedMedia.length} item{selectedMedia.length > 1 ? "s" : ""}{" "}
-                selected
-              </span>
+          {/* Content */}
+          <div className="flex-1 overflow-y-auto p-6">
+            {loading ? (
+              <div className="flex h-64 items-center justify-center">
+                <Loader2 className="text-primary h-8 w-8 animate-spin" />
+              </div>
             ) : (
-              <span>
-                {activeTab === "smart-assets"
-                  ? `${smartAssets.length} smart assets`
-                  : `${aiMedia.length} AI media files`}
-              </span>
+              <>
+                {/* Smart Assets Tab */}
+                {activeTab === "smart-assets" && (
+                  <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+                    {smartAssets.length === 0 ? (
+                      <div className="col-span-full py-12 text-center">
+                        <Image className="text-muted-foreground mx-auto mb-3 h-12 w-12" />
+                        <p className="text-muted-foreground">
+                          No smart assets yet
+                        </p>
+                      </div>
+                    ) : (
+                      smartAssets.map((asset: SmartAsset) => {
+                        const Icon = getMediaIcon(asset.type);
+                        const mediaUrl = asset.imagekitUrl;
+                        const isSelected = selectedMedia.includes(mediaUrl);
+                        return (
+                          <Card
+                            key={asset._id}
+                            onClick={() =>
+                              handleMediaSelect(asset._id, mediaUrl)
+                            }
+                            className={`group hover:ring-primary relative cursor-pointer overflow-hidden hover:ring-2 ${
+                              isSelected ? "ring-primary ring-2" : ""
+                            }`}
+                          >
+                            {/* Thumbnail */}
+                            <div className="bg-muted relative aspect-video">
+                              {asset.thumbnailUrl || asset.imagekitUrl ? (
+                                <img
+                                  src={asset.thumbnailUrl || asset.imagekitUrl}
+                                  alt={asset.name}
+                                  className="h-full w-full object-cover"
+                                />
+                              ) : (
+                                <div className="flex h-full w-full items-center justify-center">
+                                  <Icon className="text-muted-foreground h-8 w-8" />
+                                </div>
+                              )}
+
+                              {/* Selection Indicator */}
+                              {isSelected && (
+                                <div className="bg-primary absolute top-2 right-2 rounded-full p-1">
+                                  <Check className="text-primary-foreground h-4 w-4" />
+                                </div>
+                              )}
+
+                              {/* Selection Number for Carousel */}
+                              {isCarousel && isSelected && (
+                                <div className="bg-primary text-primary-foreground absolute top-2 left-2 flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold">
+                                  {selectedMedia.indexOf(mediaUrl) + 1}
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Info */}
+                            <CardContent className="p-3">
+                              <p className="text-foreground truncate text-sm font-medium">
+                                {asset.name}
+                              </p>
+                              <div className="mt-2 flex items-center justify-between">
+                                <span className="text-muted-foreground text-xs capitalize">
+                                  {asset.type}
+                                </span>
+                                <span className="text-muted-foreground text-xs">
+                                  {formatFileSize(asset.fileSize)}
+                                </span>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        );
+                      })
+                    )}
+                  </div>
+                )}
+
+                {/* AI Media Tab */}
+                {activeTab === "ai-media" && (
+                  <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+                    {aiMedia.length === 0 ? (
+                      <div className="col-span-full py-12 text-center">
+                        <Video className="text-muted-foreground mx-auto mb-3 h-12 w-12" />
+                        <p className="text-muted-foreground">No AI media yet</p>
+                      </div>
+                    ) : (
+                      aiMedia.map((media: AiMedia) => {
+                        const mediaUrl = media.url || "";
+                        const isSelected = selectedMedia.includes(mediaUrl);
+                        return (
+                          <Card
+                            key={media._id}
+                            onClick={() =>
+                              handleMediaSelect(media._id, mediaUrl)
+                            }
+                            className={`group hover:ring-primary relative cursor-pointer overflow-hidden hover:ring-2 ${
+                              isSelected ? "ring-primary ring-2" : ""
+                            }`}
+                          >
+                            {/* Thumbnail */}
+                            <div className="bg-muted relative aspect-video">
+                              {media.status === "completed" &&
+                              (media.thumbnail || media.url) ? (
+                                <img
+                                  src={media.thumbnail || media.url}
+                                  alt={media.type}
+                                  className="h-full w-full object-cover"
+                                />
+                              ) : media.status === "pending" ? (
+                                <div className="flex h-full w-full items-center justify-center">
+                                  <Loader2 className="text-primary h-8 w-8 animate-spin" />
+                                </div>
+                              ) : (
+                                <div className="flex h-full w-full items-center justify-center">
+                                  <Video className="text-muted-foreground h-8 w-8" />
+                                </div>
+                              )}
+
+                              {/* Selection Indicator */}
+                              {isSelected && (
+                                <div className="bg-primary absolute top-2 left-2 rounded-full p-1">
+                                  <Check className="text-primary-foreground h-4 w-4" />
+                                </div>
+                              )}
+
+                              {/* Status Badge */}
+                              <div className="absolute top-2 right-2">
+                                <span
+                                  className={`rounded border px-2 py-1 text-xs font-medium ${
+                                    media.status === "completed"
+                                      ? "border-primary/30 bg-primary/20 text-primary"
+                                      : media.status === "pending"
+                                        ? "border-muted bg-muted/50 text-muted-foreground"
+                                        : "border-destructive/30 bg-destructive/20 text-destructive"
+                                  }`}
+                                >
+                                  {media.status}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Info */}
+                            <CardContent className="p-3">
+                              <p className="text-foreground text-sm font-medium capitalize">
+                                {media.type} Video
+                              </p>
+                              <div className="mt-2 flex items-center justify-between">
+                                <span className="text-muted-foreground text-xs">
+                                  {formatDuration(media.duration)}
+                                </span>
+                                <span className="text-muted-foreground text-xs">
+                                  {formatFileSize(media.fileSize)}
+                                </span>
+                              </div>
+                              {media.error && (
+                                <p className="text-destructive mt-1 truncate text-xs">
+                                  {media.error}
+                                </p>
+                              )}
+                            </CardContent>
+                          </Card>
+                        );
+                      })
+                    )}
+                  </div>
+                )}
+              </>
             )}
           </div>
-          <div className="flex gap-2">
-            <button
-              onClick={onClose}
-              className="rounded-lg bg-slate-800 px-4 py-2 text-white transition-colors hover:bg-slate-700"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleSave}
-              disabled={selectedMedia.length === 0 || saving}
-              className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-700"
-            >
-              {saving ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Saving...
-                </>
+
+          {/* Footer */}
+          <div className="flex items-center justify-between border-t p-4">
+            <div className="text-muted-foreground text-sm">
+              {selectedMedia.length > 0 ? (
+                <span className="text-primary font-medium">
+                  {selectedMedia.length} item
+                  {selectedMedia.length > 1 ? "s" : ""} selected
+                </span>
               ) : (
-                <>
-                  <Check className="h-4 w-4" />
-                  Save Selection
-                </>
+                <span>
+                  {activeTab === "smart-assets"
+                    ? `${smartAssets.length} smart assets`
+                    : `${aiMedia.length} AI media files`}
+                </span>
               )}
-            </button>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={onClose}>
+                Cancel
+              </Button>
+              <Button
+                onClick={handleSave}
+                disabled={selectedMedia.length === 0 || saving}
+              >
+                {saving ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Check className="h-4 w-4" />
+                    Save Selection
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
-        </div>
-      </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Toast Notification */}
       {showToast && (
@@ -461,6 +458,6 @@ export default function MediaLibraryModal({
           onClose={() => setShowToast(false)}
         />
       )}
-    </div>
+    </>
   );
 }

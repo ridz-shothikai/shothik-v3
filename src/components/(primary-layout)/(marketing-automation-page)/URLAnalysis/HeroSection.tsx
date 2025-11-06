@@ -1,32 +1,32 @@
 export default function HeroSection() {
   return (
-    <div className="text-center mb-16 relative py-12">
+    <div className="relative mb-16 py-12 text-center">
       {/* Animated background gradient */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-teal-500/20 rounded-full filter blur-3xl opacity-40 animate-blob"></div>
-        <div className="absolute top-1/2 right-1/4 w-[500px] h-[500px] bg-emerald-500/20 rounded-full filter blur-3xl opacity-40 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-1/2 left-1/2 w-[500px] h-[500px] bg-cyan-500/20 rounded-full filter blur-3xl opacity-40 animate-blob animation-delay-4000"></div>
+        <div className="absolute top-1/2 left-1/4 h-[500px] w-[500px] rounded-full bg-primary/20 filter blur-3xl opacity-40 animate-blob"></div>
+        <div className="absolute top-1/2 right-1/4 h-[500px] w-[500px] rounded-full bg-primary/20 filter blur-3xl opacity-40 animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-1/2 left-1/2 h-[500px] w-[500px] rounded-full bg-primary/20 filter blur-3xl opacity-40 animate-blob animation-delay-4000"></div>
       </div>
 
-      <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full border border-teal-500/30 bg-teal-500/5 backdrop-blur-sm hover:bg-teal-500/10 transition-all">
+      <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-2 backdrop-blur-sm transition-all hover:bg-primary/10">
         <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-400"></span>
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
         </span>
-        <span className="text-teal-400 text-xs font-semibold tracking-wider uppercase">
+        <span className="text-primary text-xs font-semibold uppercase tracking-wider">
           AI-Powered Analysis
         </span>
       </div>
 
-      <h1 className="text-5xl sm:text-7xl font-bold text-white mb-6 leading-tight tracking-tight">
+      <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight text-foreground sm:text-7xl">
         Meta Ads Automation
-        <span className="block text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-emerald-400 to-cyan-400">
+        <span className="block bg-gradient-to-r from-primary via-primary to-primary bg-clip-text text-transparent">
           Suite
         </span>
       </h1>
-      <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed font-light">
-        From AI analysis to campaign launch—everything you need to create, optimize, and
-        scale Meta ads with intelligent automation
+      <p className="mx-auto max-w-2xl text-lg leading-relaxed font-light text-muted-foreground sm:text-xl">
+        From AI analysis to campaign launch—everything you need to create,
+        optimize, and scale Meta ads with intelligent automation
       </p>
     </div>
   );

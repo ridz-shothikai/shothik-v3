@@ -11,6 +11,16 @@ import {
   getRecommendedOptimizationGoalForObjective,
   getValidOptimizationGoalsForObjective,
 } from "@/utils/objectiveMapping";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Save, X } from "lucide-react";
 import TargetingConfig from "../TargetingConfig";
 
@@ -52,59 +62,47 @@ export default function EditAdSetModal({
   if (!showModal || !editingAdSet) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 p-4 backdrop-blur-sm">
-      <div className="my-4 max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl">
-        {/* Header */}
-        <div className="border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50 px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="mb-1 text-2xl font-bold text-gray-900">
-                Edit Ad Set
-              </h2>
-              <p className="text-sm text-gray-600">{editingAdSet.name}</p>
-            </div>
-            <button
-              onClick={onClose}
-              className="rounded-lg p-2 text-gray-500 transition-all hover:bg-gray-100 hover:text-gray-700"
-            >
-              <X className="h-6 w-6" />
-            </button>
-          </div>
-        </div>
+    <Dialog open={showModal} onOpenChange={onClose}>
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold">
+            Edit Ad Set
+          </DialogTitle>
+          <DialogDescription>{editingAdSet.name}</DialogDescription>
+        </DialogHeader>
 
-        {/* Content */}
-        <div className="max-h-[calc(90vh-200px)] overflow-y-auto p-8">
-          <div className="space-y-8">
-            {/* Basic Information */}
-            <div className="space-y-6">
-              <h3 className="border-b border-gray-200 pb-2 text-lg font-semibold text-gray-900">
+        <div className="space-y-8">
+          {/* Basic Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold border-b pb-2">
                 Basic Information
-              </h3>
-
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
               {/* Ad Set Name */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium">
                   Ad Set Name
                 </label>
-                <input
+                <Input
                   type="text"
                   value={adSetEditFormData.name}
                   onChange={(e) => onFieldChange("name", e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   placeholder="Enter ad set name..."
                 />
               </div>
 
               {/* Daily Budget */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium">
                   Daily Budget (USD)
                 </label>
                 <div className="relative">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <span className="text-sm text-gray-500">$</span>
+                    <span className="text-sm text-muted-foreground">$</span>
                   </div>
-                  <input
+                  <Input
                     type="number"
                     min="1"
                     step="0.01"
@@ -124,11 +122,11 @@ export default function EditAdSetModal({
                         }
                       }
                     }}
-                    className="w-full rounded-lg border border-gray-300 py-3 pr-4 pl-8 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    className="pl-8"
                     placeholder="Enter daily budget..."
                   />
                 </div>
-                <p className="mt-1 text-xs text-gray-500">
+                <p className="mt-1 text-xs text-muted-foreground">
                   Minimum $1 per day. Higher budgets allow for better
                   optimization.
                 </p>
@@ -136,7 +134,7 @@ export default function EditAdSetModal({
 
               {/* Bid Strategy */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium">
                   Bid Strategy
                 </label>
                 <select
@@ -144,7 +142,7 @@ export default function EditAdSetModal({
                   onChange={(e) =>
                     onFieldChange("bid_strategy", e.target.value)
                   }
-                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none"
                 >
                   <option value="LOWEST_COST_WITHOUT_CAP">
                     {BidStrategyLabels.LOWEST_COST_WITHOUT_CAP}
@@ -161,9 +159,9 @@ export default function EditAdSetModal({
 
               {/* Optimization Goal */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium">
                   Optimization Goal
-                  <span className="ml-2 text-xs font-normal text-gray-500">
+                  <span className="ml-2 text-xs font-normal text-muted-foreground">
                     (Based on Campaign Objective)
                   </span>
                 </label>
@@ -172,7 +170,7 @@ export default function EditAdSetModal({
                   onChange={(e) =>
                     onFieldChange("optimization_goal", e.target.value)
                   }
-                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none"
                 >
                   {(() => {
                     // Get the campaign objective from the first campaign
@@ -203,55 +201,63 @@ export default function EditAdSetModal({
                   if (!campaignObjective) return null;
 
                   return (
-                    <p className="mt-2 rounded-lg bg-blue-50 p-3 text-xs text-gray-500">
-                      💡 {getOptimizationGoalDescription(campaignObjective)}
-                    </p>
+                    <Card className="mt-2 p-3">
+                      <p className="text-xs text-muted-foreground">
+                        💡 {getOptimizationGoalDescription(campaignObjective)}
+                      </p>
+                    </Card>
                   );
                 })()}
               </div>
-            </div>
+            </CardContent>
+          </Card>
 
-            {/* Targeting Configuration */}
-            <div className="border-t border-gray-200 pt-8">
+          {/* Targeting Configuration */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold border-b pb-2">
+                Targeting Configuration
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
               <TargetingConfig
                 targeting={adSetEditFormData.targeting}
                 onTargetingChange={(targeting) =>
                   onFieldChange("targeting", targeting)
                 }
               />
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Footer */}
-        <div className="border-t border-gray-200 bg-gray-50 px-8 py-6">
-          <div className="flex gap-4">
-            <button
-              onClick={onClose}
-              className="flex-1 rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 transition-all hover:bg-gray-50"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={onSave}
-              disabled={saving}
-              className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-all hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {saving ? (
-                <>
-                  <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-white"></div>
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <Save className="h-4 w-4" />
-                  Save Changes
-                </>
-              )}
-            </button>
-          </div>
+        <div className="flex gap-4 border-t pt-6">
+          <Button
+            variant="outline"
+            onClick={onClose}
+            className="flex-1"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={onSave}
+            disabled={saving}
+            className="flex-1"
+          >
+            {saving ? (
+              <>
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground/30 border-t-primary-foreground"></div>
+                Saving...
+              </>
+            ) : (
+              <>
+                <Save className="h-4 w-4" />
+                Save Changes
+              </>
+            )}
+          </Button>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

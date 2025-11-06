@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { uploadToImageKit } from "@/lib/imagekit";
 import { mediaAPI } from "@/services/marketing-automation.service";
 import { Film, Play, Upload } from "lucide-react";
@@ -109,8 +111,8 @@ export default function VideoCanvas({
   return (
     <div className="space-y-6">
       {/* Canvas */}
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
-        <div className="relative aspect-video bg-gray-100">
+      <Card className="overflow-hidden shadow-lg">
+        <div className="bg-muted relative aspect-video">
           {generatedMedia.length > 0 ? (
             <div className="relative h-full w-full">
               {/* Video Player */}
@@ -124,45 +126,48 @@ export default function VideoCanvas({
 
               {/* Play/Pause Overlay */}
               {!isPlaying && (
-                <div className="absolute inset-0 flex items-center justify-center bg-gray-900/30">
-                  <button
+                <div className="bg-background/30 absolute inset-0 flex items-center justify-center">
+                  <Button
+                    variant="secondary"
+                    size="lg"
                     onClick={handlePlayPause}
-                    className="flex h-20 w-20 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all hover:bg-white"
+                    className="flex h-20 w-20 items-center justify-center rounded-full shadow-lg"
                   >
-                    <Play className="ml-1 h-10 w-10 text-gray-900" />
-                  </button>
+                    <Play className="ml-1 h-10 w-10" />
+                  </Button>
                 </div>
               )}
             </div>
           ) : (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
-                <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-2xl border border-purple-200 bg-gradient-to-br from-purple-100 to-pink-100">
-                  <Film className="h-12 w-12 text-purple-600" />
+                <div className="border-primary/30 bg-primary/20 mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-2xl border">
+                  <Film className="text-primary h-12 w-12" />
                 </div>
-                <p className="mb-2 text-lg font-semibold text-gray-900">
+                <p className="text-foreground mb-2 text-lg font-semibold">
                   No Video Generated Yet
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="text-muted-foreground text-sm">
                   Click "Generate Video" to create AI-powered video content
                 </p>
               </div>
             </div>
           )}
         </div>
-      </div>
+      </Card>
 
       {/* Upload Controls */}
-      <div className="space-y-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+      <Card className="p-4">
         <div className="flex gap-2">
-          <button
+          <Button
+            variant="outline"
             onClick={handleUploadClick}
             disabled={isUploading}
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 font-semibold text-gray-700 transition-all hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex-1"
           >
             <Upload className="h-4 w-4" />
             {isUploading ? "Uploading..." : "Upload Video"}
-          </button>
+          </Button>
         </div>
         <input
           ref={fileInputRef}
@@ -171,42 +176,46 @@ export default function VideoCanvas({
           onChange={handleFileUpload}
           className="hidden"
         />
-        <p className="text-center text-xs text-gray-500">
+        <p className="text-muted-foreground mt-2 text-center text-xs">
           Upload a video file (MP4, MOV, etc.)
         </p>
-      </div>
+      </Card>
 
       {/* Video Info */}
       {generatedMedia.length > 0 && (
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-          <h3 className="mb-3 text-sm font-semibold text-gray-900">
-            Video Details
-          </h3>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span className="text-gray-600">Format:</span>
-              <span className="font-medium text-gray-900">{format}</span>
+        <Card className="p-4">
+          <CardHeader>
+            <CardTitle className="text-sm font-semibold">
+              Video Details
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Format:</span>
+                <span className="text-foreground font-medium">{format}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Duration:</span>
+                <span className="text-foreground font-medium">
+                  {totalDuration}s
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Status:</span>
+                <span className="text-primary font-medium">Ready</span>
+              </div>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Duration:</span>
-              <span className="font-medium text-gray-900">
-                {totalDuration}s
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Status:</span>
-              <span className="font-medium text-green-600">Ready</span>
-            </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       )}
 
       {/* Video-specific Tips */}
-      <div className="rounded-xl border border-purple-200 bg-gradient-to-r from-purple-50 to-pink-50 p-4">
-        <h3 className="mb-2 text-sm font-semibold text-purple-700">
+      <Card className="border-primary/30 bg-primary/10 p-4">
+        <h3 className="text-primary mb-2 text-sm font-semibold">
           🎬 Video Tips
         </h3>
-        <ul className="space-y-1 text-xs text-purple-600">
+        <ul className="text-foreground space-y-1 text-xs">
           <li>
             • 12-second videos perform best with strong hooks in first 3 seconds
           </li>
@@ -214,7 +223,7 @@ export default function VideoCanvas({
           <li>• Use vertical format for Stories and Reels</li>
           <li>• Focus on clear storytelling from problem to solution</li>
         </ul>
-      </div>
+      </Card>
     </div>
   );
 }

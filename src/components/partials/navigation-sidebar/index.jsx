@@ -104,7 +104,7 @@ export default function NavigationSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="border-sidebar-border flex min-h-12 items-center border-t">
+      <SidebarFooter className="border-sidebar-border flex min-h-12 items-center border-t lg:min-h-16">
         <div className="w-full">
           {!accessToken ? <UserInfo /> : <NavigantionIcons />}
         </div>

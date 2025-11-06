@@ -2,6 +2,8 @@
 
 import { campaignAPI } from "@/services/marketing-automation.service";
 import type { ProductAnalysis } from "@/types/analysis";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Loader2, Send, Sparkles, User } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -139,16 +141,16 @@ export default function ChatBox({
   ];
 
   return (
-    <div className="flex h-full flex-col bg-slate-900/30">
+    <div className="flex h-full flex-col bg-background/30">
       {/* Chat Header */}
-      <div className="border-b border-slate-800/50 p-6">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-purple-500/30 bg-purple-500/20">
-            <Sparkles className="h-5 w-5 text-purple-400" />
+      <div className="flex h-12 items-center border-b px-4 lg:h-16">
+        <div className="flex w-full items-center gap-2">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/30 bg-primary/20">
+            <Sparkles className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <h2 className="font-semibold text-white">AI Assistant</h2>
-            <p className="text-xs text-gray-400">
+            <h2 className="text-base font-semibold text-foreground">AI Assistant</h2>
+            <p className="text-xs text-muted-foreground">
               Campaign & Ad Creation Helper
             </p>
           </div>
@@ -156,7 +158,7 @@ export default function ChatBox({
       </div>
 
       {/* Messages Container */}
-      <div className="flex-1 space-y-4 overflow-y-auto p-6">
+      <div className="flex-1 space-y-4 overflow-y-auto p-4">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -165,22 +167,22 @@ export default function ChatBox({
             }`}
           >
             {message.role === "assistant" && (
-              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg border border-purple-500/30 bg-purple-500/20">
-                <Sparkles className="h-4 w-4 text-purple-400" />
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg border border-primary/30 bg-primary/20">
+                <Sparkles className="h-4 w-4 text-primary" />
               </div>
             )}
             <div
               className={`max-w-[85%] rounded-2xl px-5 py-4 ${
                 message.role === "user"
-                  ? "bg-purple-600 text-white shadow-lg shadow-purple-500/20"
-                  : "border border-slate-700/50 bg-slate-800/60 text-gray-100"
+                  ? "bg-primary text-primary-foreground shadow-lg"
+                  : "border bg-card text-card-foreground"
               }`}
             >
               <div className="markdown-content text-sm leading-relaxed break-words">
                 <ReactMarkdown
                   components={{
                     p: ({ children }) => (
-                      <p className="mb-3 leading-relaxed text-gray-100 last:mb-0">
+                      <p className="mb-3 leading-relaxed text-foreground last:mb-0">
                         {children}
                       </p>
                     ),
@@ -195,49 +197,49 @@ export default function ChatBox({
                       </ol>
                     ),
                     li: ({ children }) => (
-                      <li className="flex items-start gap-2 text-sm before:text-base before:font-bold before:text-purple-400 before:content-['•']">
-                        <span className="text-gray-100">{children}</span>
+                      <li className="flex items-start gap-2 text-sm before:text-base before:font-bold before:text-primary before:content-['•']">
+                        <span className="text-foreground">{children}</span>
                       </li>
                     ),
                     strong: ({ children }) => (
-                      <strong className="rounded bg-slate-700/50 px-1 font-bold text-white">
+                      <strong className="rounded bg-muted px-1 font-bold text-foreground">
                         {children}
                       </strong>
                     ),
                     em: ({ children }) => (
-                      <em className="text-gray-300 italic">{children}</em>
+                      <em className="text-muted-foreground italic">{children}</em>
                     ),
                     code: ({ children }) => (
-                      <code className="rounded border border-slate-700/50 bg-slate-900/50 px-2 py-0.5 font-mono text-xs text-emerald-400">
+                      <code className="rounded border bg-muted px-2 py-0.5 font-mono text-xs text-primary">
                         {children}
                       </code>
                     ),
                     pre: ({ children }) => (
-                      <pre className="mb-3 overflow-x-auto rounded-lg border border-slate-700/50 bg-slate-900/50 p-3">
+                      <pre className="mb-3 overflow-x-auto rounded-lg border bg-muted p-3">
                         {children}
                       </pre>
                     ),
                     blockquote: ({ children }) => (
-                      <blockquote className="my-3 rounded-r border-l-4 border-purple-500 bg-purple-500/10 py-2 pl-4">
+                      <blockquote className="my-3 rounded-r border-l-4 border-primary bg-primary/10 py-2 pl-4">
                         {children}
                       </blockquote>
                     ),
                     h1: ({ children }) => (
-                      <h1 className="mb-3 border-b border-slate-700/50 pb-2 text-lg font-bold text-white">
+                      <h1 className="mb-3 border-b pb-2 text-lg font-bold text-foreground">
                         {children}
                       </h1>
                     ),
                     h2: ({ children }) => (
-                      <h2 className="mt-4 mb-2 text-base font-bold text-white first:mt-0">
+                      <h2 className="mt-4 mb-2 text-base font-bold text-foreground first:mt-0">
                         {children}
                       </h2>
                     ),
                     h3: ({ children }) => (
-                      <h3 className="mt-3 mb-2 text-sm font-semibold text-gray-300 first:mt-0">
+                      <h3 className="mt-3 mb-2 text-sm font-semibold text-muted-foreground first:mt-0">
                         {children}
                       </h3>
                     ),
-                    hr: () => <hr className="my-4 border-slate-700/50" />,
+                    hr: () => <hr className="my-4 border-border" />,
                   }}
                 >
                   {message.content}
@@ -246,7 +248,7 @@ export default function ChatBox({
               {message.timestamp && (
                 <p
                   className={`mt-1 text-xs ${
-                    message.role === "user" ? "text-white/70" : "text-gray-500"
+                    message.role === "user" ? "text-primary-foreground/70" : "text-muted-foreground"
                   }`}
                 >
                   {new Date(message.timestamp).toLocaleTimeString([], {
@@ -257,8 +259,8 @@ export default function ChatBox({
               )}
             </div>
             {message.role === "user" && (
-              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-slate-700/50">
-                <User className="h-4 w-4 text-gray-300" />
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-muted">
+                <User className="h-4 w-4 text-muted-foreground" />
               </div>
             )}
           </div>
@@ -267,18 +269,18 @@ export default function ChatBox({
         {/* Typing Indicator */}
         {isTyping && (
           <div className="flex gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-purple-500/30 bg-purple-500/20">
-              <Sparkles className="h-4 w-4 text-purple-400" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-primary/30 bg-primary/20">
+              <Sparkles className="h-4 w-4 text-primary" />
             </div>
-            <div className="rounded-2xl border border-slate-700/50 bg-slate-800/60 px-4 py-3">
+            <div className="rounded-2xl border bg-card px-4 py-3">
               <div className="flex gap-1">
-                <div className="h-2 w-2 animate-bounce rounded-full bg-purple-400"></div>
+                <div className="h-2 w-2 animate-bounce rounded-full bg-primary"></div>
                 <div
-                  className="h-2 w-2 animate-bounce rounded-full bg-purple-400"
+                  className="h-2 w-2 animate-bounce rounded-full bg-primary"
                   style={{ animationDelay: "0.1s" }}
                 ></div>
                 <div
-                  className="h-2 w-2 animate-bounce rounded-full bg-purple-400"
+                  className="h-2 w-2 animate-bounce rounded-full bg-primary"
                   style={{ animationDelay: "0.2s" }}
                 ></div>
               </div>
@@ -292,45 +294,46 @@ export default function ChatBox({
       {/* Quick Actions */}
       {messages.length <= 1 && !isTyping && (
         <div className="px-6 pb-4">
-          <p className="mb-3 text-xs font-medium text-gray-400">
+          <p className="mb-3 text-xs font-medium text-muted-foreground">
             Quick actions:
           </p>
           <div className="flex flex-wrap gap-2">
             {quickActions.map((action, index) => (
-              <button
+              <Button
                 key={index}
+                variant="outline"
+                size="sm"
                 onClick={() => setInput(action)}
-                className="rounded-lg border border-slate-700/50 bg-slate-800/60 px-3 py-2 text-xs text-gray-300 transition-all hover:bg-slate-800"
               >
                 {action}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
       )}
 
       {/* Input Area */}
-      <div className="border-t border-slate-800/50 p-6">
-        <form onSubmit={handleSubmit} className="flex gap-2">
-          <input
+      <div className="flex h-12 items-center border-t px-4 lg:h-16">
+        <form onSubmit={handleSubmit} className="flex w-full gap-2">
+          <Input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask anything about your campaign..."
             disabled={isTyping}
-            className="flex-1 rounded-xl border border-slate-700/50 bg-slate-800/60 px-4 py-3 text-white placeholder-gray-500 focus:border-transparent focus:ring-2 focus:ring-purple-500 focus:outline-none disabled:opacity-50"
+            className="flex-1"
           />
-          <button
+          <Button
             type="submit"
+            size="icon"
             disabled={!input.trim() || isTyping}
-            className="rounded-xl bg-purple-600 p-3 text-white shadow-lg shadow-purple-500/20 transition-all hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isTyping ? (
               <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
               <Send className="h-5 w-5" />
             )}
-          </button>
+          </Button>
         </form>
       </div>
 

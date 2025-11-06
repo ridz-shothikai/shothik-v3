@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import type { Ad } from "@/types/campaign";
 import { Eye, Image as ImageIcon, Settings, Wand2 } from "lucide-react";
 import { useState } from "react";
@@ -26,28 +28,28 @@ export default function AdsTab({
 
   if (ads.length === 0) {
     return (
-      <div className="rounded-2xl border border-slate-700/50 bg-slate-800/60 p-12 text-center">
-        <ImageIcon className="mx-auto mb-4 h-16 w-16 text-purple-400" />
-        <h3 className="mb-2 text-lg font-semibold text-white">
+      <Card className="p-12 text-center">
+        <ImageIcon className="text-primary mx-auto mb-4 h-16 w-16" />
+        <h3 className="text-foreground mb-2 text-lg font-semibold">
           No Ads Created
         </h3>
-        <p className="text-sm text-gray-400">
+        <p className="text-muted-foreground text-sm">
           Create an ad set first, then add ads
         </p>
-      </div>
+      </Card>
     );
   }
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
       {ads.map((ad, index) => (
-        <div
+        <Card
           key={ad.id}
-          className="relative overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-800/60 shadow-lg shadow-black/20 transition-all hover:border-purple-500/50 hover:shadow-purple-500/20"
+          className="transition-border hover:border-primary/50 relative overflow-hidden"
         >
           {/* Serial Number Badge */}
           <div className="absolute top-4 right-4 z-10">
-            <span className="rounded-full bg-purple-600 px-4 py-2 text-sm font-bold text-white shadow-lg">
+            <span className="bg-primary text-primary-foreground rounded-full px-4 py-2 text-sm font-bold shadow-lg">
               #{index + 1}
             </span>
           </div>
@@ -60,7 +62,7 @@ export default function AdsTab({
               className="h-48 w-full object-cover"
             />
           ) : ad.videoUrl ? (
-            <div className="relative flex h-48 w-full items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 text-lg font-bold text-white">
+            <div className="bg-primary text-primary-foreground relative flex h-48 w-full items-center justify-center text-lg font-bold">
               <video
                 src={ad.videoUrl}
                 className="h-full w-full object-cover"
@@ -70,21 +72,21 @@ export default function AdsTab({
               />
             </div>
           ) : ad.imageUrls && ad.imageUrls.length > 0 ? (
-            <div className="relative flex h-48 w-full items-center justify-center bg-gradient-to-br from-green-500 to-teal-600 text-lg font-bold text-white">
+            <div className="bg-primary text-primary-foreground relative flex h-48 w-full items-center justify-center text-lg font-bold">
               <img
                 src={ad.imageUrls[0]}
                 alt={ad.headline}
                 className="h-full w-full object-cover"
               />
-              <div className="absolute top-2 right-2 rounded bg-black/50 px-2 py-1 text-xs text-white">
+              <div className="bg-background/80 text-foreground absolute top-2 right-2 rounded px-2 py-1 text-xs">
                 {ad.imageUrls.length} images
               </div>
-              <div className="absolute bottom-2 left-2 rounded bg-black/50 px-2 py-1 text-xs text-white">
+              <div className="bg-background/80 text-foreground absolute bottom-2 left-2 rounded px-2 py-1 text-xs">
                 📸 CAROUSEL
               </div>
             </div>
           ) : (
-            <div className="flex h-48 w-full items-center justify-center bg-gradient-to-br from-yellow-400 to-orange-500 text-lg font-bold text-white">
+            <div className="bg-muted text-foreground flex h-48 w-full items-center justify-center text-lg font-bold">
               {ad.format === "SHORT_VIDEO" ||
               ad.format === "VIDEO" ||
               ad.format === "LONG_VIDEO" ? (
@@ -110,139 +112,138 @@ export default function AdsTab({
               )}
             </div>
           )}
-          <div className="space-y-4 p-6">
+          <CardContent className="space-y-4 p-6">
             {/* Tags and Metadata */}
             <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-lg border border-blue-500/30 bg-blue-500/20 px-3 py-1 text-xs font-medium text-blue-400">
+              <span className="border-primary/30 bg-primary/20 text-primary rounded-lg border px-3 py-1 text-xs font-medium">
                 {ad.format?.replace("_", " ")}
               </span>
               {ad.awareness_stage && (
-                <span className="rounded-lg border border-emerald-500/30 bg-emerald-500/20 px-3 py-1 text-xs font-medium text-emerald-400">
+                <span className="border-primary/30 bg-primary/20 text-primary rounded-lg border px-3 py-1 text-xs font-medium">
                   {ad.awareness_stage.replace("_", " ")}
                 </span>
               )}
               {ad.persona && (
-                <span className="rounded-lg border border-purple-500/30 bg-purple-500/20 px-3 py-1 text-xs font-medium text-purple-400">
+                <span className="border-primary/30 bg-primary/20 text-primary rounded-lg border px-3 py-1 text-xs font-medium">
                   {ad.persona}
                 </span>
               )}
               {ad.language && ad.language !== "english" && (
-                <span className="rounded-lg border border-pink-500/30 bg-pink-500/20 px-3 py-1 text-xs font-medium text-pink-400">
+                <span className="border-primary/30 bg-primary/20 text-primary rounded-lg border px-3 py-1 text-xs font-medium">
                   🌐 {ad.language}
                 </span>
               )}
             </div>
 
             {/* Headline */}
-            <h4 className="text-xl leading-tight font-bold text-white">
+            <h4 className="text-foreground text-xl leading-tight font-bold">
               {ad.headline}
             </h4>
 
             {/* Hook (if available) */}
             {ad.hook && (
-              <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3">
-                <p className="mb-1 text-xs font-medium text-yellow-400">
+              <Card className="border-primary/30 bg-primary/10 p-3">
+                <p className="text-primary mb-1 text-xs font-medium">
                   🎯 Hook:
                 </p>
-                <p className="text-sm text-yellow-300 italic">{ad.hook}</p>
-              </div>
+                <p className="text-foreground text-sm italic">{ad.hook}</p>
+              </Card>
             )}
 
             {/* Primary Text */}
             {ad.primary_text && (
-              <p className="text-sm leading-relaxed text-gray-300">
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 {ad.primary_text}
               </p>
             )}
 
             {/* Description */}
-            <p className="text-sm text-gray-400">{ad.description}</p>
+            <p className="text-muted-foreground text-sm">{ad.description}</p>
 
             {/* Creative Direction */}
             {ad.creative_direction && (
-              <div className="rounded-lg border border-slate-700/50 bg-slate-900/50 p-3">
-                <p className="mb-1 text-xs font-medium text-gray-300">
+              <Card className="p-3">
+                <p className="text-foreground mb-1 text-xs font-medium">
                   📹 Creative Direction:
                 </p>
-                <p className="text-xs text-gray-400">{ad.creative_direction}</p>
-              </div>
+                <p className="text-muted-foreground text-xs">
+                  {ad.creative_direction}
+                </p>
+              </Card>
             )}
 
             {/* Angle & Benefit Focus */}
             <div className="grid grid-cols-2 gap-2">
               {ad.angle && (
-                <div className="rounded-lg border border-orange-500/30 bg-orange-500/10 p-2">
-                  <p className="mb-1 text-xs font-medium text-orange-400">
+                <Card className="border-primary/30 bg-primary/10 p-2">
+                  <p className="text-primary mb-1 text-xs font-medium">
                     🎯 Angle:
                   </p>
-                  <p className="text-xs text-orange-300">{ad.angle}</p>
-                </div>
+                  <p className="text-foreground text-xs">{ad.angle}</p>
+                </Card>
               )}
               {ad.benefit_focus && (
-                <div className="rounded-lg border border-cyan-500/30 bg-cyan-500/10 p-2">
-                  <p className="mb-1 text-xs font-medium text-cyan-400">
+                <Card className="border-primary/30 bg-primary/10 p-2">
+                  <p className="text-primary mb-1 text-xs font-medium">
                     💡 Benefit:
                   </p>
-                  <p className="text-xs text-cyan-300">{ad.benefit_focus}</p>
-                </div>
+                  <p className="text-foreground text-xs">{ad.benefit_focus}</p>
+                </Card>
               )}
             </div>
 
             {/* Recommended Placements */}
             {ad.recommended_placements &&
               ad.recommended_placements.length > 0 && (
-                <div className="rounded-lg border border-indigo-500/30 bg-indigo-500/10 p-3">
-                  <p className="mb-2 text-xs font-medium text-indigo-400">
+                <Card className="border-primary/30 bg-primary/10 p-3">
+                  <p className="text-primary mb-2 text-xs font-medium">
                     📍 Recommended Placements:
                   </p>
                   <div className="flex flex-wrap gap-1">
                     {ad.recommended_placements.map((placement, i) => (
                       <span
                         key={i}
-                        className="rounded border border-indigo-500/30 bg-indigo-500/20 px-2 py-1 text-xs text-indigo-300"
+                        className="border-primary/30 bg-primary/20 text-primary rounded border px-2 py-1 text-xs"
                       >
                         {placement.replace(/_/g, " ")}
                       </span>
                     ))}
                   </div>
-                </div>
+                </Card>
               )}
 
             {/* CTA Button */}
-            <button className="w-full rounded-lg bg-purple-600 px-4 py-3 text-sm font-bold text-white shadow-lg transition-all hover:bg-purple-700">
-              {ad.cta || "Learn More"}
-            </button>
+            <Button className="w-full">{ad.cta || "Learn More"}</Button>
 
             {/* Action Buttons */}
             <div className="grid grid-cols-3 gap-2 pt-2">
-              <button
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={() => onPreviewAd(ad)}
-                className="flex items-center justify-center gap-1 rounded-lg border border-slate-600/50 bg-slate-700/50 px-2 py-2 text-xs text-gray-300 transition-all hover:bg-slate-700"
               >
                 <Eye className="h-4 w-4" />
                 Preview
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={() => {
                   setSelectedAdId(ad.id);
                   setSelectedAdFormat(ad.format);
                   setShowMediaModal(true);
                 }}
-                className="flex items-center justify-center gap-1 rounded-lg border border-purple-500/30 bg-purple-500/20 px-2 py-2 text-xs text-purple-300 transition-all hover:bg-purple-500/30"
               >
                 <Wand2 className="h-4 w-4" />
                 Media
-              </button>
-              <button
-                onClick={() => onEditAd(ad)}
-                className="flex items-center justify-center gap-1 rounded-lg border border-slate-600/50 bg-slate-700/50 px-2 py-2 text-xs text-gray-300 transition-all hover:bg-slate-700"
-              >
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => onEditAd(ad)}>
                 <Settings className="h-4 w-4" />
                 Edit
-              </button>
+              </Button>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       ))}
 
       {/* Media Library Modal */}

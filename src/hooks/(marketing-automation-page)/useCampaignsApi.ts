@@ -57,13 +57,19 @@ export const useInitialSuggestions = (
   return useQuery({
     queryKey: ["initialSuggestions", projectId],
     queryFn: async () => {
+      console.log("🔵 Fetching initial suggestions for projectId:", projectId);
       const { data } = await api.post(
         `/marketing/campaign/initial-suggestions/${projectId}`,
       );
+      console.log("🟢 Initial suggestions API response:", data);
       return data;
     },
     enabled: !!projectId && enabled,
-    staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes
+    staleTime: Infinity, // Keep data fresh indefinitely
+    gcTime: Infinity, // Never garbage collect cached data
+    refetchOnMount: false, // Don't refetch on component mount
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
+    refetchOnReconnect: false, // Don't refetch on network reconnection
   });
 };
 
