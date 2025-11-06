@@ -156,7 +156,7 @@ export default function ChatBox({
       </div>
 
       {/* Messages Container */}
-      <div className="flex-1 space-y-4 overflow-y-auto p-6">
+      <div className="flex-1 space-y-4 overflow-y-auto p-4">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -310,7 +310,7 @@ export default function ChatBox({
       )}
 
       {/* Input Area */}
-      <div className="border-t border-slate-800/50 px-4">
+      <div className="flex h-12 items-center border-t border-slate-800/50 px-4 lg:h-16">
         <form onSubmit={handleSubmit} className="flex w-full gap-2">
           <input
             type="text"

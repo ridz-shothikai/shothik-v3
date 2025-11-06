@@ -82,12 +82,12 @@ export default function UserInfo() {
           </>
         ) : (
           <div className="flex w-full flex-col items-start gap-2 text-left">
-            <div className="flex flex-col gap-0.5">
+            {/* <div className="flex flex-col gap-0.5">
               <span className="font-medium">Log In or Sign Up</span>
               <span className="text-sm">
                 Unlock hidden features. Write with confidence.
               </span>
-            </div>
+            </div> */}
             <div className="flex w-full flex-col gap-1.5">
               <Button
                 data-umami-event="Nav: Sign In"
