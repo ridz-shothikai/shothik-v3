@@ -6,7 +6,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useInitialSuggestions } from "@/hooks/(marketing-automation-page)/useCampaignsApi";
+import { useCampaignData, useInitialSuggestions } from "@/hooks/(marketing-automation-page)/useCampaignsApi";
 import { useProject } from "@/hooks/(marketing-automation-page)/useProjectsApi";
 import useResponsive from "@/hooks/ui/useResponsive";
 import { cn } from "@/lib/utils";
@@ -47,11 +47,36 @@ export default function Canvas() {
     projectId || "",
   );
 
+  // Check if campaign data already exists in the database
+  const { data: existingCampaignData, isLoading: isLoadingCampaignData } = useCampaignData(
+    projectId || "",
+  );
+
   // Fetch initial suggestions only when we have analysis
   const hasAnalysis = hasAnalysisInState || !!projectData?.data;
+  
+  // Check if campaign data exists (has campaigns, adSets, ads, or personas)
+  const hasCampaignData = existingCampaignData?.data && (
+    (existingCampaignData.data.campaigns?.length ?? 0) > 0 ||
+    (existingCampaignData.data.adSets?.length ?? 0) > 0 ||
+    (existingCampaignData.data.ads?.length ?? 0) > 0 ||
+    (existingCampaignData.data.personas?.length ?? 0) > 0
+  );
 
-  const { data: suggestionsResponse, isLoading: isLoadingSuggestions } =
-    useInitialSuggestions(projectId || "", hasAnalysis);
+  console.log("hasAnalysis--->", hasAnalysis);
+  console.log("hasCampaignData--->", hasCampaignData);
+  console.log("isLoadingCampaignData--->", isLoadingCampaignData);
+
+  // Only generate initial suggestions if we have analysis but NO existing campaign data
+  const shouldGenerateSuggestions = hasAnalysis && !hasCampaignData && !isLoadingCampaignData;
+  
+  console.log("shouldGenerateSuggestions--->", shouldGenerateSuggestions);
+
+  const { data: suggestionsResponse, isLoading: isLoadingSuggestions, error: suggestionsError } =
+    useInitialSuggestions(projectId || "", shouldGenerateSuggestions);
+  
+  console.log("isLoadingSuggestions--->", isLoadingSuggestions);
+  console.log("suggestionsError--->", suggestionsError);
 
   const analysis = useMemo((): ProductAnalysis | null => {
     if (state?.analysis) {
@@ -79,8 +104,42 @@ export default function Canvas() {
   }, [state?.analysis, projectData]);
 
   const initialSuggestions = useMemo((): CampaignSuggestion | null => {
-    return suggestionsResponse?.data || null;
-  }, [suggestionsResponse]);
+    console.log("suggestionsResponse--->", suggestionsResponse);
+    console.log("suggestionsResponse?.data--->", suggestionsResponse?.data);
+    
+    // If we have suggestions from the API, use them
+    if (suggestionsResponse?.data) {
+      return suggestionsResponse.data;
+    }
+    
+    // If we have existing campaign data but no suggestions, reconstruct from campaign data
+    if (hasCampaignData && existingCampaignData?.data) {
+      const data = existingCampaignData.data;
+      console.log("Reconstructing suggestions from existing campaign data:", data);
+      
+      const firstCampaign = data.campaigns?.[0];
+      if (!firstCampaign) return null;
+      
+      // Reconstruct the suggestions object from saved campaign data
+      return {
+        campaign: {
+          name: firstCampaign.name,
+          objective: firstCampaign.objective,
+          budget_recommendation: {
+            daily_min: firstCampaign.budget || 10,
+            daily_max: (firstCampaign.budget || 10) * 2,
+            reasoning: "Budget based on saved campaign data",
+          },
+        },
+        ad_sets: data.adSets || [],
+        personas: data.personas || [],
+        ad_concepts: data.ads || [],
+        strategy_notes: (firstCampaign as any).strategy_notes || [],
+      } as CampaignSuggestion;
+    }
+    
+    return null;
+  }, [suggestionsResponse, hasCampaignData, existingCampaignData]);
 
   const loading = isLoadingProject && !hasAnalysisInState;
 
