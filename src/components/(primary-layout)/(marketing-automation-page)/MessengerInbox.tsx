@@ -337,6 +337,7 @@ export const MessengerInbox = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
+                title="Back to Campaign"
                 onClick={() => router.push("/analysis")}
                 className="text-gray-400 transition-colors hover:text-gray-200"
               >
@@ -360,6 +361,7 @@ export const MessengerInbox = () => {
             {/* Page Selector */}
             {metaData.pages.length > 1 && (
               <select
+                title="Select a page"
                 value={selectedPage || ""}
                 onChange={(e) => {
                   setSelectedPage(e.target.value);

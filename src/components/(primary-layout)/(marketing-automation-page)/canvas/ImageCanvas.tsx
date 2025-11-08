@@ -1,10 +1,10 @@
 "use client";
 
-import { uploadToImageKit } from "@/lib/imagekit";
-import { mediaAPI } from "@/services/marketing-automation.service";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { uploadToImageKit } from "@/lib/imagekit";
+import { mediaAPI } from "@/services/marketing-automation.service";
 import { Layers, Upload } from "lucide-react";
 import { useRef, useState } from "react";
 
@@ -195,12 +195,12 @@ export default function ImageCanvas({
     <div className="space-y-6">
       {/* Canvas */}
       <Card className="overflow-hidden shadow-lg">
-        <div className="relative aspect-video bg-muted">
+        <div className="bg-muted relative aspect-video">
           {generatedMedia.length > 0 ? (
             <div className="relative h-full w-full">
               {/* Carousel Navigation */}
               {isCarousel && generatedMedia.length > 1 && (
-                <div className="absolute top-4 right-4 z-20 rounded-lg bg-background/90 px-4 py-2 text-sm font-semibold text-foreground shadow-lg backdrop-blur-sm">
+                <div className="bg-background/90 text-foreground absolute top-4 right-4 z-20 rounded-lg px-4 py-2 text-sm font-semibold shadow-lg backdrop-blur-sm">
                   {currentImageIndex + 1} / {generatedMedia.length}
                 </div>
               )}
@@ -259,7 +259,7 @@ export default function ImageCanvas({
                       .map((region, index) => (
                         <div
                           key={region.id}
-                          className="pointer-events-none absolute border-4 border-primary bg-primary/20"
+                          className="border-primary bg-primary/20 pointer-events-none absolute border-4"
                           style={{
                             left: `${region.x}%`,
                             top: `${region.y}%`,
@@ -267,7 +267,7 @@ export default function ImageCanvas({
                             height: `${region.height}%`,
                           }}
                         >
-                          <div className="absolute -top-7 left-0 rounded bg-primary px-2 py-1 text-xs font-semibold text-primary-foreground shadow-lg">
+                          <div className="bg-primary text-primary-foreground absolute -top-7 left-0 rounded px-2 py-1 text-xs font-semibold shadow-lg">
                             Region {index + 1}
                           </div>
                         </div>
@@ -294,7 +294,7 @@ export default function ImageCanvas({
                   {selectedRegions.map((region, index) => (
                     <div
                       key={region.id}
-                      className="pointer-events-none absolute border-4 border-primary bg-primary/20"
+                      className="border-primary bg-primary/20 pointer-events-none absolute border-4"
                       style={{
                         left: `${region.x}%`,
                         top: `${region.y}%`,
@@ -302,7 +302,7 @@ export default function ImageCanvas({
                         height: `${region.height}%`,
                       }}
                     >
-                      <div className="absolute -top-7 left-0 rounded bg-primary px-2 py-1 text-xs font-semibold text-primary-foreground shadow-lg">
+                      <div className="bg-primary text-primary-foreground absolute -top-7 left-0 rounded px-2 py-1 text-xs font-semibold shadow-lg">
                         Region {index + 1}
                       </div>
                     </div>
@@ -312,21 +312,21 @@ export default function ImageCanvas({
 
               {/* Status Indicators */}
               {isSelecting && selectedRegions.length === 0 && (
-                <div className="pointer-events-none absolute top-4 left-4 rounded-lg bg-primary px-4 py-2 text-sm text-primary-foreground shadow-lg">
+                <div className="bg-primary text-primary-foreground pointer-events-none absolute top-4 left-4 rounded-lg px-4 py-2 text-sm shadow-lg">
                   Click and drag to select regions
                   {isCarousel && " on this slide"}
                 </div>
               )}
 
               {isSelecting && selectedRegions.length > 0 && (
-                <div className="pointer-events-none absolute top-4 left-4 rounded-lg bg-primary px-4 py-2 text-sm text-primary-foreground shadow-lg">
+                <div className="bg-primary text-primary-foreground pointer-events-none absolute top-4 left-4 rounded-lg px-4 py-2 text-sm shadow-lg">
                   {selectedRegions.length} region(s) selected • Draw more or
                   apply edit
                 </div>
               )}
 
               {isDrawing && (
-                <div className="pointer-events-none absolute top-4 right-4 rounded-lg bg-muted px-4 py-2 text-sm text-foreground shadow-lg">
+                <div className="bg-muted text-foreground pointer-events-none absolute top-4 right-4 rounded-lg px-4 py-2 text-sm shadow-lg">
                   Drawing region...
                 </div>
               )}
@@ -334,13 +334,13 @@ export default function ImageCanvas({
           ) : (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
-                <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-2xl border border-primary/30 bg-primary/20">
+                <div className="border-primary/30 bg-primary/20 mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-2xl border">
                   <span className="text-6xl">🖼️</span>
                 </div>
-                <p className="mb-2 text-lg font-semibold text-foreground">
+                <p className="text-foreground mb-2 text-lg font-semibold">
                   No Media Generated Yet
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   Click "Generate {isCarousel ? "Carousel" : "Image"}" to create
                   AI-powered media
                 </p>
@@ -372,7 +372,7 @@ export default function ImageCanvas({
                     alt={`Slide ${index + 1}`}
                     className="h-full w-full object-cover"
                   />
-                  <div className="absolute right-1 bottom-1 rounded bg-background/70 px-2 py-1 text-xs text-foreground">
+                  <div className="bg-background/70 text-foreground absolute right-1 bottom-1 rounded px-2 py-1 text-xs">
                     {index + 1}
                   </div>
                 </Button>
@@ -396,6 +396,8 @@ export default function ImageCanvas({
           </Button>
         </div>
         <input
+          title="Upload Images"
+          placeholder="Upload Images"
           ref={fileInputRef}
           type="file"
           accept="image/*"
@@ -403,7 +405,7 @@ export default function ImageCanvas({
           onChange={handleFileUpload}
           className="hidden"
         />
-        <p className="mt-2 text-center text-xs text-muted-foreground">
+        <p className="text-muted-foreground mt-2 text-center text-xs">
           {isCarousel
             ? "Upload multiple images for carousel"
             : "Upload a single image"}
@@ -423,24 +425,21 @@ export default function ImageCanvas({
               {isSelecting ? "Drawing..." : "Select Regions"}
             </Button>
             {selectedRegions.length > 0 && (
-              <Button
-                variant="destructive"
-                onClick={handleClearRegions}
-              >
+              <Button variant="destructive" onClick={handleClearRegions}>
                 Clear All
               </Button>
             )}
           </div>
 
           {selectedRegions.length > 0 && (
-            <Card className="mt-4 max-h-32 space-y-2 overflow-y-auto border-primary/30 bg-primary/10 p-3">
-              <p className="mb-2 text-xs font-semibold text-primary">
+            <Card className="border-primary/30 bg-primary/10 mt-4 max-h-32 space-y-2 overflow-y-auto p-3">
+              <p className="text-primary mb-2 text-xs font-semibold">
                 Selected Regions ({selectedRegions.length}):
               </p>
               {selectedRegions.map((region) => (
                 <div
                   key={region.id}
-                  className="flex items-center justify-between rounded bg-primary/20 p-2 text-xs text-foreground"
+                  className="bg-primary/20 text-foreground flex items-center justify-between rounded p-2 text-xs"
                 >
                   <span>
                     {isCarousel && `Slide ${region.imageIndex + 1}: `}
@@ -450,7 +449,7 @@ export default function ImageCanvas({
                     variant="ghost"
                     size="sm"
                     onClick={() => handleRemoveRegion(region.id)}
-                    className="px-2 text-destructive hover:text-destructive"
+                    className="text-destructive hover:text-destructive px-2"
                   >
                     ✕
                   </Button>
@@ -485,7 +484,7 @@ export default function ImageCanvas({
             >
               {isGenerating ? (
                 <>
-                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary-foreground/30 border-t-primary-foreground"></div>
+                  <div className="border-primary-foreground/30 border-t-primary-foreground h-5 w-5 animate-spin rounded-full border-2"></div>
                   Applying Changes...
                 </>
               ) : (

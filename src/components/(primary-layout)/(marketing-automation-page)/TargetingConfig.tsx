@@ -205,6 +205,7 @@ const TargetingConfig: React.FC<TargetingConfigProps> = ({
               Min:
             </label>
             <input
+              title="Age Range"
               type="number"
               min="18"
               max="65"
@@ -218,6 +219,7 @@ const TargetingConfig: React.FC<TargetingConfigProps> = ({
               Max:
             </label>
             <input
+              title="Age Range"
               type="number"
               min="18"
               max="65"

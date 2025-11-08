@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Play, Settings, Trash2 } from "lucide-react";
 
 interface AvatarPreviewProps {
@@ -12,29 +14,29 @@ export default function AvatarPreview({
   personaId,
 }: AvatarPreviewProps) {
   return (
-    <div className="rounded-xl bg-slate-800 p-4">
-      <div className="flex items-center gap-4">
+    <Card className="rounded-xl p-4">
+      <CardContent className="flex items-center gap-4 p-0">
         <img
           src={personaImage}
           alt={personaName}
           className="h-20 w-20 rounded-lg object-cover"
         />
         <div className="flex-1">
-          <h3 className="font-semibold">{personaName}</h3>
-          <p className="text-sm text-gray-400">{personaId}</p>
+          <h3 className="text-foreground font-semibold">{personaName}</h3>
+          <p className="text-muted-foreground text-sm">{personaId}</p>
         </div>
         <div className="flex gap-2">
-          <button className="rounded-lg p-2 transition-colors hover:bg-slate-700">
+          <Button variant="ghost" size="icon">
             <Play className="h-5 w-5" />
-          </button>
-          <button className="rounded-lg p-2 transition-colors hover:bg-slate-700">
+          </Button>
+          <Button variant="ghost" size="icon">
             <Settings className="h-5 w-5" />
-          </button>
-          <button className="rounded-lg p-2 text-red-400 transition-colors hover:bg-slate-700">
+          </Button>
+          <Button variant="ghost" size="icon" className="text-destructive">
             <Trash2 className="h-5 w-5" />
-          </button>
+          </Button>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

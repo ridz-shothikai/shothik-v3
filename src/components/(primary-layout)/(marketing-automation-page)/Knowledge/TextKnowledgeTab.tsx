@@ -1,3 +1,9 @@
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   useAddTextKnowledge,
   useDeleteKnowledge,
@@ -53,43 +59,41 @@ export const TextKnowledgeTab = ({ selectedPage }: TextKnowledgeTabProps) => {
   };
 
   return (
-    <div className="rounded-2xl border border-slate-700/50 bg-slate-900/60 p-6 backdrop-blur-xl">
-      <h2 className="mb-4 text-lg font-semibold text-gray-100">
+    <Card className="p-6">
+      <h2 className="mb-4 text-lg font-semibold text-foreground">
         Add Text Knowledge
       </h2>
-      <p className="mb-6 text-sm text-gray-400">
+      <p className="mb-6 text-sm text-muted-foreground">
         Add custom text-based knowledge that will be stored in the vector
         database.
       </p>
 
       <div className="space-y-4">
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-300">
-            Title
-          </label>
-          <input
+          <Label htmlFor="knowledge-title">Title</Label>
+          <Input
+            id="knowledge-title"
             type="text"
             value={knowledgeTitle}
             onChange={(e) => setKnowledgeTitle(e.target.value)}
             placeholder="e.g., Product Information, FAQ, etc."
-            className="w-full rounded-xl border border-slate-700/50 bg-slate-800/50 px-4 py-3 text-gray-200 focus:border-emerald-500/50 focus:outline-none"
+            className="mt-2"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-300">
-            Knowledge Content
-          </label>
-          <textarea
+          <Label htmlFor="knowledge-content">Knowledge Content</Label>
+          <Textarea
+            id="knowledge-content"
             value={knowledgeText}
             onChange={(e) => setKnowledgeText(e.target.value)}
             placeholder="Enter your knowledge content here..."
             rows={10}
-            className="w-full resize-none rounded-xl border border-slate-700/50 bg-slate-800/50 px-4 py-3 text-gray-200 focus:border-emerald-500/50 focus:outline-none"
+            className="mt-2"
           />
         </div>
 
-        <button
+        <Button
           onClick={handleAddTextKnowledge}
           disabled={
             !knowledgeText ||
@@ -97,7 +101,7 @@ export const TextKnowledgeTab = ({ selectedPage }: TextKnowledgeTabProps) => {
             !selectedPage ||
             addTextKnowledgeMutation.isPending
           }
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 py-3 font-medium text-white transition-all hover:from-emerald-700 hover:to-teal-700 disabled:cursor-not-allowed disabled:opacity-50"
+          className="w-full"
         >
           {addTextKnowledgeMutation.isPending ? (
             <>
@@ -110,20 +114,20 @@ export const TextKnowledgeTab = ({ selectedPage }: TextKnowledgeTabProps) => {
               <span>Add Knowledge</span>
             </>
           )}
-        </button>
+        </Button>
       </div>
 
       {!selectedPage && (
-        <div className="mt-4 flex items-center gap-2 text-sm text-amber-400">
+        <Alert className="mt-4">
           <AlertCircle className="h-4 w-4" />
-          <span>Please select a page first</span>
-        </div>
+          <AlertDescription>Please select a page first</AlertDescription>
+        </Alert>
       )}
 
       {/* Display existing text knowledge */}
       {selectedPage && knowledgeData && knowledgeData.length > 0 && (
-        <div className="mt-6 border-t border-slate-700/50 pt-6">
-          <h3 className="text-md mb-4 font-semibold text-gray-200">
+        <div className="mt-6 border-t border-border pt-6">
+          <h3 className="text-md mb-4 font-semibold text-foreground">
             Existing Text Knowledge (
             {
               knowledgeData.filter((k: KnowledgeSource) => k.type === "text")
@@ -135,52 +139,53 @@ export const TextKnowledgeTab = ({ selectedPage }: TextKnowledgeTabProps) => {
             {knowledgeData
               .filter((k: KnowledgeSource) => k.type === "text")
               .map((knowledge: KnowledgeSource) => (
-                <div
-                  key={knowledge.id}
-                  className="flex items-start justify-between gap-4 rounded-xl border border-slate-700/50 bg-slate-800/50 p-4"
-                >
-                  <div className="min-w-0 flex-1">
-                    <div className="mb-2 flex items-center gap-2">
-                      <FileText className="h-4 w-4 flex-shrink-0 text-blue-400" />
-                      <h4 className="truncate text-sm font-medium text-gray-200">
-                        {knowledge.title}
-                      </h4>
-                      {knowledge.status === "completed" && (
-                        <CheckCircle className="h-4 w-4 flex-shrink-0 text-green-400" />
+                <Card key={knowledge.id} className="p-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-2 flex items-center gap-2">
+                        <FileText className="h-4 w-4 flex-shrink-0 text-primary" />
+                        <h4 className="truncate text-sm font-medium text-foreground">
+                          {knowledge.title}
+                        </h4>
+                        {knowledge.status === "completed" && (
+                          <CheckCircle className="h-4 w-4 flex-shrink-0 text-primary" />
+                        )}
+                        {knowledge.status === "processing" && (
+                          <Loader2 className="h-4 w-4 flex-shrink-0 animate-spin text-primary" />
+                        )}
+                      </div>
+                      {knowledge.content && (
+                        <p className="mb-2 line-clamp-2 text-xs text-muted-foreground">
+                          {knowledge.content.substring(0, 150)}...
+                        </p>
                       )}
-                      {knowledge.status === "processing" && (
-                        <Loader2 className="h-4 w-4 flex-shrink-0 animate-spin text-blue-400" />
-                      )}
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                        <span>{knowledge.vectorIds?.length || 0} chunks</span>
+                        <span>
+                          {new Date(knowledge.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
                     </div>
-                    {knowledge.content && (
-                      <p className="mb-2 line-clamp-2 text-xs text-gray-400">
-                        {knowledge.content.substring(0, 150)}...
-                      </p>
-                    )}
-                    <div className="flex items-center gap-4 text-xs text-gray-500">
-                      <span>{knowledge.vectorIds?.length || 0} chunks</span>
-                      <span>
-                        {new Date(knowledge.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
+                    <Button
+                      onClick={() =>
+                        deleteKnowledgeMutation.mutate({
+                          id: knowledge.id,
+                          pageId: selectedPage,
+                        })
+                      }
+                      variant="ghost"
+                      size="icon"
+                      className="text-destructive hover:text-destructive"
+                      title="Delete knowledge"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
-                  <button
-                    onClick={() =>
-                      deleteKnowledgeMutation.mutate({
-                        id: knowledge.id,
-                        pageId: selectedPage,
-                      })
-                    }
-                    className="rounded-lg p-2 text-red-400 transition-colors hover:bg-red-500/10 hover:text-red-300"
-                    title="Delete knowledge"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
+                </Card>
               ))}
           </div>
         </div>
       )}
-    </div>
+    </Card>
   );
 };

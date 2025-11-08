@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AISuggestions from "./AISuggestions";
@@ -218,17 +219,17 @@ export default function Dashboard() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#020617]">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-4 border-purple-600 border-t-transparent"></div>
-          <p className="text-gray-400">Loading dashboard...</p>
+          <Loader2 className="mx-auto mb-4 h-16 w-16 animate-spin text-primary" />
+          <p className="text-muted-foreground">Loading dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#020617]">
+    <div className="min-h-screen bg-background">
       <DashboardHeader
         isLoadingInsights={isLoadingInsights}
         onRefresh={fetchInsights}
@@ -238,8 +239,9 @@ export default function Dashboard() {
         className="mx-auto min-h-screen max-w-[1400px] px-6 py-8"
         style={{
           backgroundImage:
-            "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)",
+            "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
           backgroundSize: "2rem 2rem",
+          opacity: 0.05,
         }}
       >
         {campaigns.length === 0 ? (

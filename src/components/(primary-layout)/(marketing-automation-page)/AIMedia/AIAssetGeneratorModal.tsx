@@ -1,7 +1,26 @@
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import {
   useGeneratePrompt,
   useUserAds,
 } from "@/hooks/(marketing-automation-page)/useMediaApi";
+import { cn } from "@/lib/utils";
 import { ImageIcon, Loader2, Sparkles, Wand2, X } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
@@ -44,21 +63,18 @@ const TEXT_TO_IMAGE_MODELS = [
     name: "Nano Banana",
     icon: "🍌",
     description: "Fast & efficient image generation",
-    color: "from-yellow-500 to-orange-500",
   },
   {
     id: "flux-1.1-pro-ultra",
     name: "Flux 1.1 Pro Ultra",
     icon: "⚡",
     description: "Ultra high-quality images",
-    color: "from-purple-500 to-pink-500",
   },
   {
     id: "seedream-4",
     name: "SeeDream 4",
     icon: "🎨",
     description: "Creative & artistic generation",
-    color: "from-blue-500 to-cyan-500",
   },
 ];
 
@@ -69,21 +85,18 @@ const IMAGE_TO_IMAGE_MODELS = [
     name: "Nano Banana",
     icon: "🍌",
     description: "Fast image transformation",
-    color: "from-yellow-500 to-orange-500",
   },
   {
     id: "flux-1.1-pro-ultra",
     name: "Flux 1.1 Pro Ultra",
     icon: "⚡",
     description: "High-quality image editing",
-    color: "from-purple-500 to-pink-500",
   },
   {
     id: "seedream-4",
     name: "SeeDream 4",
     icon: "🎨",
     description: "Creative image transformation",
-    color: "from-blue-500 to-cyan-500",
   },
 ];
 
@@ -94,7 +107,6 @@ const TEXT_TO_VIDEO_MODELS = [
     name: "Veo 3.1",
     icon: "🎬",
     description: "High-quality video generation",
-    color: "from-indigo-500 to-purple-500",
     needsFrames: false,
   },
   {
@@ -102,7 +114,6 @@ const TEXT_TO_VIDEO_MODELS = [
     name: "Veo 3.1 Fast",
     icon: "⚡",
     description: "Rapid video creation",
-    color: "from-green-500 to-teal-500",
     needsFrames: false,
   },
   {
@@ -110,7 +121,6 @@ const TEXT_TO_VIDEO_MODELS = [
     name: "Wan 2.5",
     icon: "🎥",
     description: "Balanced quality & speed",
-    color: "from-blue-500 to-indigo-500",
     needsFrames: false,
   },
   {
@@ -118,7 +128,6 @@ const TEXT_TO_VIDEO_MODELS = [
     name: "Sora 2",
     icon: "✨",
     description: "Advanced video synthesis",
-    color: "from-pink-500 to-rose-500",
     needsFrames: false,
   },
   {
@@ -126,7 +135,6 @@ const TEXT_TO_VIDEO_MODELS = [
     name: "Veo 3",
     icon: "📹",
     description: "Professional video quality",
-    color: "from-purple-500 to-pink-500",
     needsFrames: false,
   },
 ];
@@ -138,7 +146,6 @@ const IMAGE_TO_VIDEO_MODELS = [
     name: "Veo 3.1",
     icon: "🎬",
     description: "Animate with precision",
-    color: "from-indigo-500 to-purple-500",
     needsFrames: true,
   },
   {
@@ -146,7 +153,6 @@ const IMAGE_TO_VIDEO_MODELS = [
     name: "Veo 3.1 Fast",
     icon: "⚡",
     description: "Quick animation",
-    color: "from-green-500 to-teal-500",
     needsFrames: true,
   },
   {
@@ -154,7 +160,6 @@ const IMAGE_TO_VIDEO_MODELS = [
     name: "Wan 2.5",
     icon: "🎥",
     description: "Smooth motion generation",
-    color: "from-blue-500 to-indigo-500",
     needsFrames: true,
   },
   {
@@ -162,7 +167,6 @@ const IMAGE_TO_VIDEO_MODELS = [
     name: "Sora 2",
     icon: "✨",
     description: "Cinematic animations",
-    color: "from-pink-500 to-rose-500",
     needsFrames: true,
   },
   {
@@ -170,7 +174,6 @@ const IMAGE_TO_VIDEO_MODELS = [
     name: "Veo 3",
     icon: "📹",
     description: "Professional animations",
-    color: "from-purple-500 to-pink-500",
     needsFrames: true,
   },
 ];
@@ -182,7 +185,6 @@ const REFERENCE_TO_VIDEO_MODELS = [
     name: "Veo 3.1 Reference",
     icon: "🖼️",
     description: "Multiple reference images to video",
-    color: "from-indigo-500 to-purple-500",
   },
 ];
 
@@ -193,7 +195,6 @@ const FIRST_LAST_FRAME_MODELS = [
     name: "Veo 3.1 Fast First-Last",
     icon: "🎞️",
     description: "Precise start & end frame control",
-    color: "from-green-500 to-teal-500",
   },
 ];
 
@@ -267,8 +268,6 @@ export default function AIAssetGeneratorModal({
       setGeneratingPrompt(false);
     }
   };
-
-  if (!isOpen) return null;
 
   const getModelsForType = (type: string) => {
     switch (type) {
@@ -371,128 +370,90 @@ export default function AIAssetGeneratorModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-      <div className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl border border-slate-800 bg-slate-900">
-        {/* Header */}
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-800 bg-slate-900 p-6">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
+        <DialogHeader>
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple-600 to-blue-600">
-              <Sparkles className="h-5 w-5 text-white" />
+            <div className="bg-primary flex h-10 w-10 items-center justify-center rounded-lg">
+              <Sparkles className="text-primary-foreground h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-white">
-                AI Asset Generator
-              </h2>
-              <p className="text-sm text-gray-400">
+              <DialogTitle>AI Asset Generator</DialogTitle>
+              <DialogDescription>
                 Generate images and videos with AI
-              </p>
+              </DialogDescription>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="rounded-lg p-2 transition-colors hover:bg-slate-800"
-          >
-            <X className="h-5 w-5 text-gray-400" />
-          </button>
-        </div>
+        </DialogHeader>
 
-        <div className="space-y-6 p-6">
-          {/* Generate Type Selector - Grouped Dropdown */}
+        <div className="space-y-6">
+          {/* Generate Type Selector */}
           <div>
-            <label className="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
-              <Wand2 className="h-4 w-4 text-purple-400" />
+            <Label className="mb-3 flex items-center gap-2 text-sm font-semibold">
+              <Wand2 className="text-primary h-4 w-4" />
               Generate type
-            </label>
-            <div className="relative">
-              <select
-                value={generateType}
-                onChange={(e) =>
-                  handleModelChange(
-                    e.target.value as
-                      | "text-to-image"
-                      | "image-to-video"
-                      | "text-to-video"
-                      | "image-to-image"
-                      | "reference-to-video"
-                      | "first-last-frame-to-video",
-                  )
-                }
-                className="w-full cursor-pointer appearance-none rounded-xl border border-slate-700 bg-slate-800 px-4 py-3.5 font-medium text-white transition-all hover:border-slate-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-              >
-                <optgroup
-                  label="Video Generator"
-                  className="bg-slate-900 text-gray-300"
-                >
-                  <option value="text-to-video">📹 Text to video</option>
-                  <option value="image-to-video">🎬 Image to video</option>
-                  <option value="reference-to-video">
-                    🖼️ Reference to video
-                  </option>
-                  <option value="first-last-frame-to-video">
-                    🎞️ First-Last frame to video
-                  </option>
-                </optgroup>
-                <optgroup
-                  label="Image Generator"
-                  className="bg-slate-900 text-gray-300"
-                >
-                  <option value="text-to-image">🎨 Text to image</option>
-                  <option value="image-to-image">🖼️ Image to image</option>
-                </optgroup>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4">
-                <svg
-                  className="h-5 w-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
-            </div>
+            </Label>
+            <Select
+              value={generateType}
+              onValueChange={(value) =>
+                handleModelChange(
+                  value as
+                    | "text-to-image"
+                    | "image-to-video"
+                    | "text-to-video"
+                    | "image-to-image"
+                    | "reference-to-video"
+                    | "first-last-frame-to-video",
+                )
+              }
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <div className="text-muted-foreground px-2 py-1.5 text-xs font-semibold">
+                  Video Generator
+                </div>
+                <SelectItem value="text-to-video">📹 Text to video</SelectItem>
+                <SelectItem value="image-to-video">
+                  🎬 Image to video
+                </SelectItem>
+                <SelectItem value="reference-to-video">
+                  🖼️ Reference to video
+                </SelectItem>
+                <SelectItem value="first-last-frame-to-video">
+                  🎞️ First-Last frame to video
+                </SelectItem>
+                <div className="text-muted-foreground px-2 py-1.5 text-xs font-semibold">
+                  Image Generator
+                </div>
+                <SelectItem value="text-to-image">🎨 Text to image</SelectItem>
+                <SelectItem value="image-to-image">
+                  🖼️ Image to image
+                </SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
-          {/* Model Selector - Dropdown */}
+          {/* Model Selector */}
           <div>
-            <label className="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
-              <Sparkles className="h-4 w-4 text-purple-400" />
+            <Label className="mb-3 flex items-center gap-2 text-sm font-semibold">
+              <Sparkles className="text-primary h-4 w-4" />
               Select AI Model
-            </label>
-            <div className="relative">
-              <select
-                value={selectedModel}
-                onChange={(e) => setSelectedModel(e.target.value)}
-                className="w-full cursor-pointer appearance-none rounded-xl border border-slate-700 bg-slate-800 px-4 py-3.5 font-medium text-white transition-all hover:border-slate-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-              >
+            </Label>
+            <Select value={selectedModel} onValueChange={setSelectedModel}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
                 {currentModels.map((model) => (
-                  <option key={model.id} value={model.id}>
+                  <SelectItem key={model.id} value={model.id}>
                     {model.icon} {model.name} - {model.description}
-                  </option>
+                  </SelectItem>
                 ))}
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4">
-                <svg
-                  className="h-5 w-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
-            </div>
-            <p className="mt-2 text-xs text-gray-400">
+              </SelectContent>
+            </Select>
+            <p className="text-muted-foreground mt-2 text-xs">
               {currentModels.find((m) => m.id === selectedModel)?.description}
             </p>
           </div>
@@ -502,19 +463,14 @@ export default function AIAssetGeneratorModal({
           {/* Image to Video - Single Start Frame */}
           {generateType === "image-to-video" && (
             <div className="space-y-4">
-              <label className="block text-sm font-medium text-gray-300">
-                Frame
-              </label>
+              <Label className="block text-sm font-medium">Frame</Label>
               <div>
-                <label className="mb-2 block text-xs text-gray-400">
-                  Start Frame *
-                </label>
+                <Label className="mb-2 block text-xs">Start Frame *</Label>
                 <div
-                  className={`relative overflow-hidden rounded-lg border-2 border-dashed ${
-                    startFrame
-                      ? "border-blue-600"
-                      : "border-slate-700 hover:border-slate-600"
-                  }`}
+                  className={cn(
+                    "relative overflow-hidden rounded-lg border-2 border-dashed",
+                    startFrame ? "border-primary" : "border-border",
+                  )}
                 >
                   {startFrame ? (
                     <div className="relative aspect-video">
@@ -523,26 +479,29 @@ export default function AIAssetGeneratorModal({
                         alt="Start frame"
                         className="h-full w-full object-cover"
                       />
-                      <button
+                      <Button
                         onClick={() => setStartFrame("")}
-                        className="absolute top-2 right-2 rounded-lg bg-red-600 p-1 hover:bg-red-700"
+                        variant="destructive"
+                        size="icon-sm"
+                        className="absolute top-2 right-2"
                       >
-                        <X className="h-4 w-4 text-white" />
-                      </button>
+                        <X className="h-4 w-4" />
+                      </Button>
                     </div>
                   ) : (
-                    <button
+                    <Button
                       onClick={() => {
                         setAssetSelectorMode("start");
                         setShowAssetSelector(true);
                       }}
-                      className="flex aspect-video h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg bg-slate-800 transition-colors hover:bg-slate-700"
+                      variant="outline"
+                      className="flex aspect-video h-full w-full cursor-pointer flex-col items-center justify-center"
                     >
-                      <ImageIcon className="mb-2 h-8 w-8 text-gray-400" />
-                      <span className="text-sm text-gray-400">
+                      <ImageIcon className="text-muted-foreground mb-2 h-8 w-8" />
+                      <span className="text-muted-foreground text-sm">
                         Select Start Frame
                       </span>
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
@@ -552,19 +511,16 @@ export default function AIAssetGeneratorModal({
           {/* Image to Image - Single Reference Image */}
           {generateType === "image-to-image" && (
             <div className="space-y-4">
-              <label className="block text-sm font-medium text-gray-300">
+              <Label className="block text-sm font-medium">
                 Reference Image
-              </label>
+              </Label>
               <div>
-                <label className="mb-2 block text-xs text-gray-400">
-                  Reference Image *
-                </label>
+                <Label className="mb-2 block text-xs">Reference Image *</Label>
                 <div
-                  className={`relative overflow-hidden rounded-lg border-2 border-dashed ${
-                    startFrame
-                      ? "border-blue-600"
-                      : "border-slate-700 hover:border-slate-600"
-                  }`}
+                  className={cn(
+                    "relative overflow-hidden rounded-lg border-2 border-dashed",
+                    startFrame ? "border-primary" : "border-border",
+                  )}
                 >
                   {startFrame ? (
                     <div className="relative aspect-video">
@@ -573,26 +529,29 @@ export default function AIAssetGeneratorModal({
                         alt="Reference image"
                         className="h-full w-full object-cover"
                       />
-                      <button
+                      <Button
                         onClick={() => setStartFrame("")}
-                        className="absolute top-2 right-2 rounded-lg bg-red-600 p-1 hover:bg-red-700"
+                        variant="destructive"
+                        size="icon-sm"
+                        className="absolute top-2 right-2"
                       >
-                        <X className="h-4 w-4 text-white" />
-                      </button>
+                        <X className="h-4 w-4" />
+                      </Button>
                     </div>
                   ) : (
-                    <button
+                    <Button
                       onClick={() => {
                         setAssetSelectorMode("start");
                         setShowAssetSelector(true);
                       }}
-                      className="flex aspect-video h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg bg-slate-800 transition-colors hover:bg-slate-700"
+                      variant="outline"
+                      className="flex aspect-video h-full w-full cursor-pointer flex-col items-center justify-center"
                     >
-                      <ImageIcon className="mb-2 h-8 w-8 text-gray-400" />
-                      <span className="text-sm text-gray-400">
+                      <ImageIcon className="text-muted-foreground mb-2 h-8 w-8" />
+                      <span className="text-muted-foreground text-sm">
                         Select Reference Image
                       </span>
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
@@ -602,20 +561,15 @@ export default function AIAssetGeneratorModal({
           {/* First-Last Frame to Video - First & Last Frames */}
           {generateType === "first-last-frame-to-video" && (
             <div className="space-y-4">
-              <label className="block text-sm font-medium text-gray-300">
-                Frames
-              </label>
+              <Label className="block text-sm font-medium">Frames</Label>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="mb-2 block text-xs text-gray-400">
-                    First Frame *
-                  </label>
+                  <Label className="mb-2 block text-xs">First Frame *</Label>
                   <div
-                    className={`relative overflow-hidden rounded-lg border-2 border-dashed ${
-                      startFrame
-                        ? "border-blue-600"
-                        : "border-slate-700 hover:border-slate-600"
-                    }`}
+                    className={cn(
+                      "relative overflow-hidden rounded-lg border-2 border-dashed",
+                      startFrame ? "border-primary" : "border-border",
+                    )}
                   >
                     {startFrame ? (
                       <div className="relative aspect-video">
@@ -624,39 +578,39 @@ export default function AIAssetGeneratorModal({
                           alt="First frame"
                           className="h-full w-full object-cover"
                         />
-                        <button
+                        <Button
                           onClick={() => setStartFrame("")}
-                          className="absolute top-2 right-2 rounded-lg bg-red-600 p-1 hover:bg-red-700"
+                          variant="destructive"
+                          size="icon-sm"
+                          className="absolute top-2 right-2"
                         >
-                          <X className="h-4 w-4 text-white" />
-                        </button>
+                          <X className="h-4 w-4" />
+                        </Button>
                       </div>
                     ) : (
-                      <button
+                      <Button
                         onClick={() => {
                           setAssetSelectorMode("start");
                           setShowAssetSelector(true);
                         }}
-                        className="flex aspect-video h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg bg-slate-800 transition-colors hover:bg-slate-700"
+                        variant="outline"
+                        className="flex aspect-video h-full w-full cursor-pointer flex-col items-center justify-center"
                       >
-                        <ImageIcon className="mb-2 h-8 w-8 text-gray-400" />
-                        <span className="text-sm text-gray-400">
+                        <ImageIcon className="text-muted-foreground mb-2 h-8 w-8" />
+                        <span className="text-muted-foreground text-sm">
                           Select First Frame
                         </span>
-                      </button>
+                      </Button>
                     )}
                   </div>
                 </div>
                 <div>
-                  <label className="mb-2 block text-xs text-gray-400">
-                    Last Frame *
-                  </label>
+                  <Label className="mb-2 block text-xs">Last Frame *</Label>
                   <div
-                    className={`relative overflow-hidden rounded-lg border-2 border-dashed ${
-                      endFrame
-                        ? "border-blue-600"
-                        : "border-slate-700 hover:border-slate-600"
-                    }`}
+                    className={cn(
+                      "relative overflow-hidden rounded-lg border-2 border-dashed",
+                      endFrame ? "border-primary" : "border-border",
+                    )}
                   >
                     {endFrame ? (
                       <div className="relative aspect-video">
@@ -665,26 +619,29 @@ export default function AIAssetGeneratorModal({
                           alt="Last frame"
                           className="h-full w-full object-cover"
                         />
-                        <button
+                        <Button
                           onClick={() => setEndFrame("")}
-                          className="absolute top-2 right-2 rounded-lg bg-red-600 p-1 hover:bg-red-700"
+                          variant="destructive"
+                          size="icon-sm"
+                          className="absolute top-2 right-2"
                         >
-                          <X className="h-4 w-4 text-white" />
-                        </button>
+                          <X className="h-4 w-4" />
+                        </Button>
                       </div>
                     ) : (
-                      <button
+                      <Button
                         onClick={() => {
                           setAssetSelectorMode("end");
                           setShowAssetSelector(true);
                         }}
-                        className="flex aspect-video h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg bg-slate-800 transition-colors hover:bg-slate-700"
+                        variant="outline"
+                        className="flex aspect-video h-full w-full cursor-pointer flex-col items-center justify-center"
                       >
-                        <ImageIcon className="mb-2 h-8 w-8 text-gray-400" />
-                        <span className="text-sm text-gray-400">
+                        <ImageIcon className="text-muted-foreground mb-2 h-8 w-8" />
+                        <span className="text-muted-foreground text-sm">
                           Select Last Frame
                         </span>
-                      </button>
+                      </Button>
                     )}
                   </div>
                 </div>
@@ -695,107 +652,86 @@ export default function AIAssetGeneratorModal({
           {/* Reference to Video - Multiple Reference Images */}
           {generateType === "reference-to-video" && (
             <div className="space-y-4">
-              <label className="block text-sm font-medium text-gray-300">
+              <Label className="block text-sm font-medium">
                 Reference Images
-              </label>
+              </Label>
               <div>
-                <label className="mb-2 block text-xs text-gray-400">
+                <Label className="mb-2 block text-xs">
                   Select Multiple Images *
-                </label>
-                {referenceImages.length > 0 ? (
+                </Label>
+                {referenceImages.length > 0 && (
                   <div className="mb-2 grid grid-cols-3 gap-2">
                     {referenceImages.map((url, index) => (
                       <div
                         key={index}
-                        className="relative aspect-video overflow-hidden rounded-lg border-2 border-blue-600"
+                        className="border-primary relative aspect-video overflow-hidden rounded-lg border-2"
                       >
                         <img
                           src={url}
                           alt={`Reference ${index + 1}`}
                           className="h-full w-full object-cover"
                         />
-                        <button
+                        <Button
                           onClick={() =>
                             setReferenceImages(
                               referenceImages.filter((_, i) => i !== index),
                             )
                           }
-                          className="absolute top-1 right-1 rounded-lg bg-red-600 p-1 hover:bg-red-700"
+                          variant="destructive"
+                          size="icon-sm"
+                          className="absolute top-1 right-1"
                         >
-                          <X className="h-3 w-3 text-white" />
-                        </button>
+                          <X className="h-3 w-3" />
+                        </Button>
                       </div>
                     ))}
                   </div>
-                ) : null}
-                <button
+                )}
+                <Button
                   onClick={() => {
                     setAssetSelectorMode("reference");
                     setShowAssetSelector(true);
                   }}
-                  className="flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-700 bg-slate-800 py-8 transition-colors hover:border-slate-600 hover:bg-slate-700"
+                  variant="outline"
+                  className="flex w-full cursor-pointer flex-col items-center justify-center border-2 border-dashed py-8"
                 >
-                  <ImageIcon className="mb-2 h-8 w-8 text-gray-400" />
-                  <span className="text-sm text-gray-400">
+                  <ImageIcon className="text-muted-foreground mb-2 h-8 w-8" />
+                  <span className="text-muted-foreground text-sm">
                     {referenceImages.length > 0
                       ? "Add More Images"
                       : "Select Reference Images"}
                   </span>
-                </button>
+                </Button>
               </div>
             </div>
           )}
 
           {/* Ad Selection (Optional) */}
           <div>
-            <label className="mb-3 block text-sm font-medium text-gray-300">
+            <Label className="mb-3 block text-sm font-medium">
               Select Ad{" "}
-              <span className="text-xs text-gray-500">(Optional)</span>
-            </label>
-            <div className="relative">
-              <select
-                value={selectedAd}
-                onChange={(e) => setSelectedAd(e.target.value)}
-                disabled={loadingAds}
-                className="w-full appearance-none rounded-lg border border-slate-700 bg-slate-800 py-3 pr-10 pl-10 text-sm font-medium transition-colors hover:bg-slate-700 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <option value="">No ad selected</option>
+              <span className="text-muted-foreground text-xs">(Optional)</span>
+            </Label>
+            <Select
+              value={selectedAd}
+              onValueChange={setSelectedAd}
+              disabled={loadingAds}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="No ad selected" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">No ad selected</SelectItem>
                 {projectAds.map((ad: any) => (
-                  <option key={ad.id} value={ad.id} className="bg-slate-800">
+                  <SelectItem key={ad.id} value={ad.id}>
                     {ad.headline?.slice(0, 50)}
                     {ad.headline?.length > 50 ? "..." : ""}
-                  </option>
+                  </SelectItem>
                 ))}
-              </select>
-              <svg
-                className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-              <svg
-                className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
+              </SelectContent>
+            </Select>
             {selectedAd && (
-              <p className="mt-2 text-xs text-gray-500">
+              <p className="text-muted-foreground mt-2 text-xs">
                 Selected ad will be used as context for generation
               </p>
             )}
@@ -804,14 +740,13 @@ export default function AIAssetGeneratorModal({
           {/* Prompt */}
           <div>
             <div className="mb-3 flex items-center justify-between">
-              <label className="text-sm font-medium text-gray-300">
-                Prompt
-              </label>
+              <Label className="text-sm font-medium">Prompt</Label>
               {selectedAd && (
-                <button
+                <Button
                   onClick={handleGeneratePrompt}
                   disabled={generatingPrompt}
-                  className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 px-3 py-1.5 text-xs font-medium transition-all hover:from-purple-700 hover:to-blue-700 disabled:cursor-not-allowed disabled:from-gray-700 disabled:to-gray-800"
+                  size="sm"
+                  className="flex items-center gap-2"
                   title="Generate AI prompt from selected ad"
                 >
                   {generatingPrompt ? (
@@ -825,10 +760,10 @@ export default function AIAssetGeneratorModal({
                       AI Generate
                     </>
                   )}
-                </button>
+                </Button>
               )}
             </div>
-            <textarea
+            <Textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               placeholder={
@@ -837,44 +772,43 @@ export default function AIAssetGeneratorModal({
                   : "Describe how the image should animate..."
               }
               rows={4}
-              className="w-full resize-none rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
             <div className="mt-2 flex items-center justify-between">
-              <span className="text-xs text-gray-400">
+              <span className="text-muted-foreground text-xs">
                 {prompt.length} / 1000 characters
               </span>
             </div>
           </div>
 
           {/* Advanced Settings Toggle */}
-          <button
+          <Button
             onClick={() => setShowAdvanced(!showAdvanced)}
-            className="text-sm text-blue-400 transition-colors hover:text-blue-300"
+            variant="link"
+            className="text-sm"
           >
             {showAdvanced ? "Hide" : "Show"} Advanced Settings
-          </button>
+          </Button>
 
           {/* Advanced Settings */}
           {showAdvanced && (
-            <div className="space-y-4 rounded-lg border border-slate-700 bg-slate-800/50 p-4">
+            <div className="border-border bg-muted/50 space-y-4 rounded-lg border p-4">
               {/* Aspect Ratio */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-300">
+                <Label className="mb-2 block text-sm font-medium">
                   Aspect Ratio
-                </label>
+                </Label>
                 <div className="grid grid-cols-3 gap-2">
                   {ASPECT_RATIOS.map((ratio) => (
-                    <button
+                    <Button
                       key={ratio.value}
                       onClick={() => setAspectRatio(ratio.value)}
-                      className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
-                        aspectRatio === ratio.value
-                          ? "bg-blue-600 text-white"
-                          : "bg-slate-700 text-gray-300 hover:bg-slate-600"
-                      }`}
+                      variant={
+                        aspectRatio === ratio.value ? "default" : "outline"
+                      }
+                      className="text-sm"
                     >
                       {ratio.label}
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </div>
@@ -882,10 +816,10 @@ export default function AIAssetGeneratorModal({
               {/* Output Count (Text to Image only) */}
               {generateType === "text-to-image" && (
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-300">
+                  <Label className="mb-2 block text-sm font-medium">
                     Number of Outputs: {outputCount}
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     type="range"
                     min="1"
                     max="4"
@@ -893,7 +827,7 @@ export default function AIAssetGeneratorModal({
                     onChange={(e) => setOutputCount(Number(e.target.value))}
                     className="w-full"
                   />
-                  <div className="mt-1 flex justify-between text-xs text-gray-400">
+                  <div className="text-muted-foreground mt-1 flex justify-between text-xs">
                     <span>1</span>
                     <span>2</span>
                     <span>3</span>
@@ -906,17 +840,18 @@ export default function AIAssetGeneratorModal({
 
           {/* Generate Button */}
           <div className="flex gap-3 pt-4">
-            <button
+            <Button
               onClick={onClose}
               disabled={isGenerating}
-              className="flex-1 rounded-lg bg-slate-800 px-6 py-3 font-medium text-white transition-colors hover:bg-slate-700 disabled:bg-slate-800 disabled:opacity-50"
+              variant="outline"
+              className="flex-1"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleGenerate}
               disabled={isGenerating || !prompt.trim()}
-              className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 px-6 py-3 font-medium text-white transition-all hover:from-purple-700 hover:to-blue-700 disabled:cursor-not-allowed disabled:from-slate-700 disabled:to-slate-700"
+              className="flex flex-1 items-center justify-center gap-2"
             >
               {isGenerating ? (
                 <>
@@ -929,10 +864,10 @@ export default function AIAssetGeneratorModal({
                   Generate
                 </>
               )}
-            </button>
+            </Button>
           </div>
         </div>
-      </div>
+      </DialogContent>
 
       {/* Asset Selector Modal */}
       <AssetSelectorModal
@@ -968,6 +903,6 @@ export default function AIAssetGeneratorModal({
               : referenceImages
         }
       />
-    </div>
+    </Dialog>
   );
 }

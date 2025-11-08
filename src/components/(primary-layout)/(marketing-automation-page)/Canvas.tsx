@@ -6,6 +6,9 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { useCampaignData, useInitialSuggestions } from "@/hooks/(marketing-automation-page)/useCampaignsApi";
 import { useProject } from "@/hooks/(marketing-automation-page)/useProjectsApi";
 import useResponsive from "@/hooks/ui/useResponsive";
@@ -248,10 +251,10 @@ Would you like me to explain the personas, show you the ad concepts, or help you
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#020617]">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
-          <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-purple-500" />
-          <p className="text-lg text-gray-400">Loading project...</p>
+          <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-primary" />
+          <p className="text-lg text-muted-foreground">Loading project...</p>
         </div>
       </div>
     );
@@ -259,57 +262,58 @@ Would you like me to explain the personas, show you the ad concepts, or help you
 
   if (!analysis) {
     return (
-      <div className="flex flex-1 items-center justify-center bg-[#020617] p-6">
-        <div className="rounded-2xl border border-slate-800/50 bg-slate-800/60 p-8 text-center">
-          <h2 className="mb-4 text-2xl font-bold text-white">
+      <div className="flex flex-1 items-center justify-center bg-background p-6">
+        <Card className="p-8 text-center">
+          <h2 className="mb-4 text-2xl font-bold text-foreground">
             No Analysis Data
           </h2>
-          <p className="mb-6 text-gray-400">
+          <p className="mb-6 text-muted-foreground">
             Please complete a URL analysis first.
           </p>
-          <button
+          <Button
             onClick={() => router.push("/")}
-            className="inline-flex items-center gap-2 rounded-xl bg-purple-600 px-6 py-3 font-medium text-white transition-all hover:bg-purple-700"
+            className="inline-flex items-center gap-2"
           >
             <ArrowLeft className="h-5 w-5" />
             Back to Analysis
-          </button>
-        </div>
+          </Button>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-1 flex-col bg-[#020617]">
+    <div className="flex flex-1 flex-col bg-background">
       {/* Header */}
-      <div className="sticky top-0 z-10 flex h-12 items-center justify-center border-b border-slate-900/50 bg-[#020617]/80 backdrop-blur-sm md:h-16">
+      <div className="sticky top-0 z-10 flex h-12 items-center justify-center border-b border-border bg-background/80 backdrop-blur-sm md:h-16">
         <div className="w-full px-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <button
+              <Button
                 onClick={() => router.push("/marketing-automation/analysis")}
-                className="rounded-lg p-2 transition-all hover:bg-slate-800"
+                variant="ghost"
+                size="icon"
                 aria-label="Back to analysis"
               >
-                <ArrowLeft className="h-5 w-5 text-gray-400" />
-              </button>
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
               <div>
-                <h1 className="flex items-center gap-2 text-base font-bold text-white">
-                  <Sparkles className="h-5 w-5 text-teal-400" />
+                <h1 className="flex items-center gap-2 text-base font-bold text-foreground">
+                  <Sparkles className="h-5 w-5 text-primary" />
                   Campaign Canvas
                 </h1>
-                <p className="hidden text-xs text-gray-400 lg:block">
+                <p className="hidden text-xs text-muted-foreground lg:block">
                   {analysis.product.title}
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-emerald-400">
+              <Badge variant="secondary" className="px-4 py-2">
                 <p className="text-sm font-medium">✓ Analysis Ready</p>
-              </div>
-              <div className="flex items-center gap-2 rounded-lg border border-slate-800/50 bg-slate-800/60 px-4 py-2">
-                <Save className="h-4 w-4 text-gray-400" />
-                <p className="text-sm font-medium text-gray-300">Saved</p>
+              </Badge>
+              <div className="flex items-center gap-2 rounded-lg border border-border bg-muted px-4 py-2">
+                <Save className="h-4 w-4 text-muted-foreground" />
+                <p className="text-sm font-medium text-foreground">Saved</p>
               </div>
             </div>
           </div>
@@ -344,18 +348,19 @@ Would you like me to explain the personas, show you the ad concepts, or help you
       </div>
 
       {/* Mobile Chat Button - Floating action button */}
-      <button
+      <Button
         onClick={() => setIsChatSheetOpen(true)}
-        className="fixed right-6 bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-purple-600 text-white shadow-lg shadow-purple-500/50 transition-all hover:scale-110 hover:bg-purple-700 active:scale-95 md:hidden"
+        size="icon-lg"
+        className="fixed right-6 bottom-6 z-50 h-14 w-14 rounded-full shadow-lg transition-all hover:scale-110 active:scale-95 md:hidden"
         aria-label="Open chat"
       >
         <MessageCircle className="h-6 w-6" />
         {chatMessages.length > 0 && (
-          <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+          <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-xs font-bold text-destructive-foreground">
             {chatMessages.length}
           </span>
         )}
-      </button>
+      </Button>
 
       {/* Mobile Chat Sheet */}
       <Sheet open={isChatSheetOpen} onOpenChange={setIsChatSheetOpen}>

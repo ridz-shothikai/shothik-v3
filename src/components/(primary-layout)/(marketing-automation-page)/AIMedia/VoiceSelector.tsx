@@ -1,5 +1,14 @@
-import { Loader2, Pause, Play, Settings, Volume2 } from "lucide-react";
+import { Loader2, Pause, Play, Settings, Volume2, X } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 
 interface Voice {
   voice_id: string;
@@ -43,29 +52,34 @@ export default function VoiceSelector({
   const [showVoiceEmotion, setShowVoiceEmotion] = useState(false);
 
   return (
-    <div className="rounded-xl bg-slate-800 p-4">
+    <Card className="rounded-xl p-4">
       <div className="mb-3 flex items-center justify-between">
-        <span className="text-sm text-gray-400">Voice</span>
-        {loadingVoices && <Loader2 className="h-4 w-4 animate-spin" />}
+        <span className="text-sm text-muted-foreground">Voice</span>
+        {loadingVoices && (
+          <Loader2 className="h-4 w-4 animate-spin text-primary" />
+        )}
       </div>
 
-      <button
+      <Button
         onClick={() => setShowVoiceSelection(!showVoiceSelection)}
-        className="mb-3 flex w-full items-center justify-between rounded-lg bg-slate-700 px-3 py-2 text-sm transition-colors hover:bg-slate-600"
+        variant="outline"
+        className="mb-3 flex w-full items-center justify-between"
       >
         <span className="truncate">{getSelectedVoiceName()}</span>
         <Settings className="ml-2 h-4 w-4 flex-shrink-0" />
-      </button>
+      </Button>
 
-      <button
+      <Button
         onClick={() => setShowVoiceEmotion(!showVoiceEmotion)}
-        className="flex w-full items-center justify-between rounded-lg bg-slate-700 px-3 py-2 text-sm transition-colors hover:bg-slate-600"
+        variant="outline"
+        className="flex w-full items-center justify-between"
       >
         <span>Voice emotion</span>
         <svg
-          className={`h-4 w-4 transition-transform ${
-            showVoiceEmotion ? "rotate-180" : ""
-          }`}
+          className={cn(
+            "h-4 w-4 transition-transform",
+            showVoiceEmotion && "rotate-180"
+          )}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -77,143 +91,129 @@ export default function VoiceSelector({
             d="M19 9l-7 7-7-7"
           />
         </svg>
-      </button>
+      </Button>
 
       {showVoiceEmotion && (
-        <div className="mt-3 rounded-lg bg-slate-700 p-3 text-sm text-gray-300">
+        <Card className="mt-3 bg-muted/50 p-3 text-sm text-foreground">
           <p>
             Use tags like [cheerfully], [awe], [EXCITED] in your script to add
             emotions.
           </p>
-        </div>
+        </Card>
       )}
 
       {/* Voice Selection Modal */}
-      {showVoiceSelection && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="flex max-h-[80vh] w-full max-w-4xl flex-col overflow-hidden rounded-xl bg-slate-900">
-            <div className="border-b border-slate-700 p-6">
-              <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-xl font-semibold">Select Voice</h3>
-                <button
-                  onClick={() => setShowVoiceSelection(false)}
-                  className="rounded-lg p-2 transition-colors hover:bg-slate-800"
-                >
-                  <svg
-                    className="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
+      <Dialog open={showVoiceSelection} onOpenChange={setShowVoiceSelection}>
+        <DialogContent className="flex max-h-[80vh] max-w-4xl flex-col overflow-hidden">
+          <DialogHeader>
+            <div className="mb-4 flex items-center justify-between">
+              <DialogTitle>Select Voice</DialogTitle>
+              <Button
+                onClick={() => setShowVoiceSelection(false)}
+                variant="ghost"
+                size="icon"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
 
-              <div className="flex gap-2">
-                {["male", "female", "non_binary"].map((gender) => (
-                  <button
-                    key={gender}
-                    onClick={() =>
-                      onGenderFilterChange(
-                        gender as "male" | "female" | "non_binary",
-                      )
-                    }
-                    className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-                      genderFilter === gender
-                        ? "bg-blue-600 text-white"
-                        : "bg-slate-800 text-gray-400 hover:bg-slate-700"
-                    }`}
+            <div className="flex gap-2">
+              {["male", "female", "non_binary"].map((gender) => (
+                <Button
+                  key={gender}
+                  onClick={() =>
+                    onGenderFilterChange(
+                      gender as "male" | "female" | "non_binary",
+                    )
+                  }
+                  variant={genderFilter === gender ? "default" : "outline"}
+                  className="text-sm"
+                >
+                  {gender === "non_binary"
+                    ? "Non-Binary"
+                    : gender.charAt(0).toUpperCase() + gender.slice(1)}
+                </Button>
+              ))}
+            </div>
+          </DialogHeader>
+
+          <div className="flex-1 overflow-y-auto p-6">
+            {loadingVoices ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            ) : !groupedVoices ||
+              !groupedVoices[genderFilter] ||
+              groupedVoices[genderFilter].length === 0 ? (
+              <div className="flex items-center justify-center py-12 text-muted-foreground">
+                <p>No voices available for {genderFilter} category</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {groupedVoices[genderFilter].map((voice) => (
+                  <Card
+                    key={voice.voice_id}
+                    className={cn(
+                      "cursor-pointer border-2 p-4 transition-all",
+                      selectedVoice === voice.voice_id
+                        ? "border-primary bg-primary/10"
+                        : "border-border bg-card hover:border-primary/50"
+                    )}
+                    onClick={() => {
+                      onVoiceSelect(voice.voice_id);
+                      setShowVoiceSelection(false);
+                    }}
                   >
-                    {gender === "non_binary"
-                      ? "Non-Binary"
-                      : gender.charAt(0).toUpperCase() + gender.slice(1)}
-                  </button>
+                    <div className="mb-2 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Volume2 className="h-4 w-4 text-primary" />
+                        <span className="font-medium text-foreground">
+                          {voice.voice_name}
+                        </span>
+                      </div>
+                      {voice.preview_audio_url && (
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (playingAudio === voice.voice_id) {
+                              onStopAudio();
+                            } else {
+                              onPlayAudio(
+                                voice.voice_id,
+                                voice.preview_audio_url!,
+                              );
+                            }
+                          }}
+                          variant="ghost"
+                          size="icon-sm"
+                        >
+                          {playingAudio === voice.voice_id ? (
+                            <Pause className="h-4 w-4" />
+                          ) : (
+                            <Play className="h-4 w-4" />
+                          )}
+                        </Button>
+                      )}
+                    </div>
+                    <div className="flex gap-2 text-xs text-muted-foreground">
+                      {voice.age && (
+                        <span className="rounded bg-muted px-2 py-1">
+                          {voice.age}
+                        </span>
+                      )}
+                      {voice.accent && (
+                        <span className="rounded bg-muted px-2 py-1">
+                          {voice.accent}
+                        </span>
+                      )}
+                    </div>
+                  </Card>
                 ))}
               </div>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-6">
-              {loadingVoices ? (
-                <div className="flex items-center justify-center py-12">
-                  <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
-                </div>
-              ) : !groupedVoices ||
-                !groupedVoices[genderFilter] ||
-                groupedVoices[genderFilter].length === 0 ? (
-                <div className="flex items-center justify-center py-12 text-gray-400">
-                  <p>No voices available for {genderFilter} category</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  {groupedVoices[genderFilter].map((voice) => (
-                    <div
-                      key={voice.voice_id}
-                      className={`cursor-pointer rounded-lg border-2 p-4 transition-all ${
-                        selectedVoice === voice.voice_id
-                          ? "border-blue-500 bg-blue-500/10"
-                          : "border-slate-700 bg-slate-800 hover:border-slate-600"
-                      }`}
-                      onClick={() => {
-                        onVoiceSelect(voice.voice_id);
-                        setShowVoiceSelection(false);
-                      }}
-                    >
-                      <div className="mb-2 flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Volume2 className="h-4 w-4 text-blue-400" />
-                          <span className="font-medium">
-                            {voice.voice_name}
-                          </span>
-                        </div>
-                        {voice.preview_audio_url && (
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              if (playingAudio === voice.voice_id) {
-                                onStopAudio();
-                              } else {
-                                onPlayAudio(
-                                  voice.voice_id,
-                                  voice.preview_audio_url!,
-                                );
-                              }
-                            }}
-                            className="rounded-lg p-2 transition-colors hover:bg-slate-700"
-                          >
-                            {playingAudio === voice.voice_id ? (
-                              <Pause className="h-4 w-4" />
-                            ) : (
-                              <Play className="h-4 w-4" />
-                            )}
-                          </button>
-                        )}
-                      </div>
-                      <div className="flex gap-2 text-xs text-gray-400">
-                        {voice.age && (
-                          <span className="rounded bg-slate-700 px-2 py-1">
-                            {voice.age}
-                          </span>
-                        )}
-                        {voice.accent && (
-                          <span className="rounded bg-slate-700 px-2 py-1">
-                            {voice.accent}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+            )}
           </div>
-        </div>
-      )}
-    </div>
+        </DialogContent>
+      </Dialog>
+    </Card>
   );
 }

@@ -1,4 +1,14 @@
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import api from "@/lib/api";
+import { cn } from "@/lib/utils";
 import { Loader2, Sparkles } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CreatorStylesModal from "./CreatorStylesModal";
@@ -63,13 +73,14 @@ function CreatorCard({
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
     >
-      <div className="relative mb-3 aspect-[3/4] overflow-hidden rounded-xl bg-slate-800/60 shadow-lg shadow-black/20">
+      <Card className="relative mb-3 aspect-[3/4] overflow-hidden shadow-lg">
         <img
           src={creator.preview_image}
           alt={creator.creator_name}
-          className={`h-full w-full object-cover transition-all duration-300 ${
-            isHovered ? "opacity-0" : "opacity-100 group-hover:scale-105"
-          }`}
+          className={cn(
+            "h-full w-full object-cover transition-all duration-300",
+            isHovered ? "opacity-0" : "opacity-100 group-hover:scale-105",
+          )}
         />
         <video
           ref={videoRef}
@@ -78,21 +89,22 @@ function CreatorCard({
           muted
           playsInline
           preload="metadata"
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
-            isHovered ? "opacity-100" : "opacity-0"
-          }`}
+          className={cn(
+            "absolute inset-0 h-full w-full object-cover transition-opacity duration-300",
+            isHovered ? "opacity-100" : "opacity-0",
+          )}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
 
         {/* Style count badge */}
-        <div className="absolute top-3 right-3 rounded-full bg-orange-500 px-2 py-1 text-xs font-bold text-white">
+        <div className="bg-primary text-primary-foreground absolute top-3 right-3 rounded-full px-2 py-1 text-xs font-bold">
           {creator.style_count} {creator.style_count === 1 ? "style" : "styles"}
         </div>
-      </div>
+      </Card>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-orange-500"></span>
-          <span className="text-sm font-medium capitalize">
+          <span className="bg-primary h-2 w-2 rounded-full"></span>
+          <span className="text-foreground text-sm font-medium capitalize">
             {creator.creator_name}
           </span>
         </div>
@@ -110,9 +122,9 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
     "realistic",
   );
   const [filters, setFilters] = useState({
-    age_range: "",
-    gender: "",
-    location: "",
+    age_range: "all",
+    gender: "all",
+    location: "all",
   });
   const [hoveredCreator, setHoveredCreator] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -129,9 +141,12 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
         setLoading(true);
 
         const params = new URLSearchParams();
-        if (filters.age_range) params.append("age_range", filters.age_range);
-        if (filters.gender) params.append("gender", filters.gender);
-        if (filters.location) params.append("location", filters.location);
+        if (filters.age_range && filters.age_range !== "all")
+          params.append("age_range", filters.age_range);
+        if (filters.gender && filters.gender !== "all")
+          params.append("gender", filters.gender);
+        if (filters.location && filters.location !== "all")
+          params.append("location", filters.location);
 
         // Add type filter based on active tab
         params.append("type", activeTab);
@@ -197,131 +212,155 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
 
   return (
     <div>
-      <h2 className="mb-8 text-3xl font-bold">Avatars</h2>
+      <h2 className="text-foreground mb-8 text-3xl font-bold">Avatars</h2>
 
       {/* Custom Avatar */}
       <div className="mb-8">
-        <h3 className="mb-4 text-lg font-semibold">Custom Avatar</h3>
-        <div
+        <h3 className="text-foreground mb-4 text-lg font-semibold">
+          Custom Avatar
+        </h3>
+        <Card
           onClick={() => onToolClick("create-avatar")}
-          className="group flex w-full max-w-xs cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-600/50 bg-slate-800/60 p-12 shadow-lg shadow-black/20 transition-all hover:border-slate-500/50 hover:bg-slate-800"
+          className="group hover:border-primary flex w-full max-w-xs cursor-pointer flex-col items-center justify-center border-2 border-dashed p-12 transition-all"
         >
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-700 transition-colors group-hover:bg-slate-600">
-            <span className="text-3xl text-gray-400 group-hover:text-gray-300">
+          <div className="bg-muted group-hover:bg-muted/80 mb-4 flex h-16 w-16 items-center justify-center rounded-full transition-colors">
+            <span className="text-muted-foreground group-hover:text-foreground text-3xl">
               +
             </span>
           </div>
-          <p className="font-medium text-gray-400 group-hover:text-gray-300">
+          <p className="text-muted-foreground group-hover:text-foreground font-medium">
             Create avatar
           </p>
-        </div>
+        </Card>
       </div>
 
       {/* Avatar Tabs */}
       <div className="mb-6">
-        <div className="flex items-center gap-4 border-b border-gray-700">
-          <button
+        <div className="border-border flex items-center gap-4 border-b">
+          <Button
             onClick={() => setActiveTab("realistic")}
-            className={`px-4 py-3 font-medium transition-colors ${
+            variant="ghost"
+            className={cn(
+              "px-4 py-3 font-medium transition-colors",
               activeTab === "realistic"
-                ? "border-b-2 border-white text-white"
-                : "text-gray-400 hover:text-white"
-            }`}
+                ? "border-primary text-foreground border-b-2"
+                : "text-muted-foreground hover:text-foreground",
+            )}
           >
             Realistic Avatars
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => setActiveTab("styled")}
-            className={`px-4 py-3 font-medium transition-colors ${
+            variant="ghost"
+            className={cn(
+              "px-4 py-3 font-medium transition-colors",
               activeTab === "styled"
-                ? "border-b-2 border-white text-white"
-                : "text-gray-400 hover:text-white"
-            }`}
+                ? "border-primary text-foreground border-b-2"
+                : "text-muted-foreground hover:text-foreground",
+            )}
           >
             Styled Avatar
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Filters */}
       <div className="mb-6 flex items-center justify-between">
         <div className="flex flex-wrap items-center gap-3">
-          <select
+          <Select
             value={filters.gender}
-            onChange={(e) => setFilters({ ...filters, gender: e.target.value })}
-            className="rounded-lg border border-slate-700/50 bg-slate-800/60 px-4 py-2 text-sm font-medium transition-colors hover:bg-slate-700"
+            onValueChange={(value) => setFilters({ ...filters, gender: value })}
           >
-            <option value="">All Genders</option>
-            <option value="m">Male</option>
-            <option value="f">Female</option>
-            <option value="nb">Non-Binary</option>
-          </select>
-          <select
+            <SelectTrigger className="w-[150px]">
+              <SelectValue placeholder="All Genders" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Genders</SelectItem>
+              <SelectItem value="m">Male</SelectItem>
+              <SelectItem value="f">Female</SelectItem>
+              <SelectItem value="nb">Non-Binary</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select
             value={filters.age_range}
-            onChange={(e) =>
-              setFilters({ ...filters, age_range: e.target.value })
+            onValueChange={(value) =>
+              setFilters({ ...filters, age_range: value })
             }
-            className="rounded-lg border border-slate-700/50 bg-slate-800/60 px-4 py-2 text-sm font-medium transition-colors hover:bg-slate-700"
           >
-            <option value="">All Ages</option>
-            <option value="child">Child</option>
-            <option value="teen">Teen</option>
-            <option value="adult">Adult</option>
-            <option value="senior">Senior</option>
-          </select>
-          <select
+            <SelectTrigger className="w-[150px]">
+              <SelectValue placeholder="All Ages" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Ages</SelectItem>
+              <SelectItem value="child">Child</SelectItem>
+              <SelectItem value="teen">Teen</SelectItem>
+              <SelectItem value="adult">Adult</SelectItem>
+              <SelectItem value="senior">Senior</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select
             value={filters.location}
-            onChange={(e) =>
-              setFilters({ ...filters, location: e.target.value })
+            onValueChange={(value) =>
+              setFilters({ ...filters, location: value })
             }
-            className="rounded-lg border border-slate-700/50 bg-slate-800/60 px-4 py-2 text-sm font-medium transition-colors hover:bg-slate-700"
           >
-            <option value="">All Locations</option>
-            <option value="outdoor">Outdoor</option>
-            <option value="fantasy">Fantasy</option>
-            <option value="indoor">Indoor</option>
-            <option value="other">Other</option>
-          </select>
-          {(filters.gender || filters.age_range || filters.location) && (
-            <button
+            <SelectTrigger className="w-[150px]">
+              <SelectValue placeholder="All Locations" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Locations</SelectItem>
+              <SelectItem value="outdoor">Outdoor</SelectItem>
+              <SelectItem value="fantasy">Fantasy</SelectItem>
+              <SelectItem value="indoor">Indoor</SelectItem>
+              <SelectItem value="other">Other</SelectItem>
+            </SelectContent>
+          </Select>
+          {(filters.gender !== "all" ||
+            filters.age_range !== "all" ||
+            filters.location !== "all") && (
+            <Button
               onClick={() =>
-                setFilters({ age_range: "", gender: "", location: "" })
+                setFilters({ age_range: "all", gender: "all", location: "all" })
               }
-              className="rounded-lg border border-red-500/50 bg-red-500/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-red-500/30"
+              variant="outline"
+              className="border-destructive/50 bg-destructive/20 text-destructive hover:bg-destructive/30"
             >
               Clear Filters
-            </button>
+            </Button>
           )}
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 rounded-lg border border-slate-700/50 bg-slate-800/60 px-4 py-2 text-sm font-medium transition-colors hover:bg-slate-700">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2"
+          >
             <Sparkles className="h-4 w-4" />
             New Arrival
-          </button>
-          <button className="flex items-center gap-2 rounded-lg border border-slate-700/50 bg-slate-800/60 px-4 py-2 text-sm font-medium transition-colors hover:bg-slate-700">
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2"
+          >
             <span>📑</span>
             Saved
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Loading State */}
       {loading && (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+          <Loader2 className="text-primary h-8 w-8 animate-spin" />
         </div>
       )}
 
       {/* Error State */}
       {error && (
         <div className="py-12 text-center">
-          <p className="mb-4 text-red-400">{error}</p>
-          <button
-            onClick={() => fetchCreators(1, false)}
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium transition-colors hover:bg-blue-700"
-          >
-            Try Again
-          </button>
+          <p className="text-destructive mb-4">{error}</p>
+          <Button onClick={() => fetchCreators(1, false)}>Try Again</Button>
         </div>
       )}
 
@@ -344,22 +383,22 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
       {/* Empty State */}
       {!loading && !error && creators.length === 0 && (
         <div className="py-12 text-center">
-          <p className="text-gray-400">No creators found</p>
+          <p className="text-muted-foreground">No creators found</p>
         </div>
       )}
 
       {/* Load More / Results */}
       {!loading && !error && creators.length > 0 && (
         <div className="mt-8 text-center">
-          <p className="mb-4 text-sm text-gray-400">
+          <p className="text-muted-foreground mb-4 text-sm">
             Showing {creators.length} of {totalCount} creator
             {totalCount !== 1 ? "s" : ""}
           </p>
           {hasMore && (
-            <button
+            <Button
               onClick={loadMore}
               disabled={loadingMore}
-              className="mx-auto flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-800"
+              className="mx-auto flex items-center gap-2"
             >
               {loadingMore ? (
                 <>
@@ -369,7 +408,7 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
               ) : (
                 `Load More (${totalCount - creators.length} remaining)`
               )}
-            </button>
+            </Button>
           )}
         </div>
       )}

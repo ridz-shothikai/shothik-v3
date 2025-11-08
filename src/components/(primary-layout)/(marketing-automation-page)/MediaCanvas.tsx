@@ -228,6 +228,7 @@ export default function MediaCanvas() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
+                title="Back to Campaign"
                 onClick={() =>
                   router.push(`/marketing-automation/canvas/${projectId}`)
                 }
