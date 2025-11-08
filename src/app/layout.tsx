@@ -5,6 +5,7 @@ import { LoginModal, RegisterModal } from "@/components/auth/AuthModal";
 import { Login } from "@/components/auth/components/Login";
 import { Register } from "@/components/auth/components/Register";
 import Providers from "@/providers";
+import LandingPageRedirectProvider from "@/providers/RedirectProvider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
@@ -88,7 +89,7 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           ></iframe>
         </noscript>
-        <>
+        <LandingPageRedirectProvider>
           <Providers>
             {/* Appliers */}
             <SettingApplier />
@@ -104,8 +105,8 @@ export default function RootLayout({
 
             <div>{children}</div>
           </Providers>
-        </>
-        <Analytics />
+          <Analytics />
+        </LandingPageRedirectProvider>
       </body>
     </html>
   );
