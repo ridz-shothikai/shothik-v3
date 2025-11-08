@@ -190,8 +190,8 @@ export default function InputArea({
 
   return (
     <>
-      <div className="bg-secondary p-2">
-        <div className="border-border bg-secondary relative rounded-2xl border p-3 shadow-sm">
+      <div className="bg-muted/40 p-3 sm:p-4">
+        <div className="border-border/80 bg-card relative rounded-2xl border p-3 shadow-sm">
           {/* uploaded files preview STARTS */}
           {uploadedFiles?.length > 0 && (
             <div className="grid grid-cols-1 gap-1 pt-1 sm:grid-cols-2 md:grid-cols-1 md:pt-2 xl:pt-3">
@@ -262,7 +262,7 @@ export default function InputArea({
                 }
               }}
               disabled={disabled}
-              className="text-foreground placeholder:text-muted-foreground max-h-[120px] min-h-[60px] resize-none border-none bg-transparent text-base shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="text-foreground placeholder:text-muted-foreground border-border/70 bg-muted/60 focus-visible:ring-primary/30 focus-visible:ring-offset-card max-h-[120px] min-h-[60px] resize-none rounded-xl border px-4 py-3 text-base shadow-none transition focus-visible:ring-2 focus-visible:ring-offset-2"
             />
           </div>
 

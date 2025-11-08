@@ -127,7 +127,7 @@ const Contend = ({
   return (
     <div
       className={cn(
-        "bg-background flex flex-row flex-wrap items-center justify-between gap-2 px-4 py-2",
+        "bg-background flex flex-row flex-wrap items-center justify-between gap-2 px-4 py-2 dark:bg-[var(--muted)]",
         typeof sx === "string" ? sx : "",
       )}
     >

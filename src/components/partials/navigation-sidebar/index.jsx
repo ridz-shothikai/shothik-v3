@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/sidebar";
 import { NAV_ITEMS } from "@/config/navigation";
 import { cn } from "@/lib/utils";
-import { Dot } from "lucide-react";
 import Image from "next/image";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -63,7 +62,7 @@ export default function NavigationSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              <div className="flex flex-col py-4">
+              <div className={`flex flex-col ${isCompact ? "py-0" : "py-4"}`}>
                 {NAV_ITEMS?.map((group) => {
                   if (group?.roles && !group?.roles?.includes(user?.role)) {
                     return null;
@@ -72,18 +71,10 @@ export default function NavigationSidebar() {
                   return (
                     <div key={key} className="flex flex-col gap-4">
                       <div className="px-2">
-                        {group?.subheader && (
-                          <>
-                            {isCompact ? (
-                              <div className="flex h-6 items-center justify-center">
-                                <Dot className="size-6" />
-                              </div>
-                            ) : (
-                              <div className="text-muted-foreground flex h-6 items-center text-sm font-medium uppercase">
-                                {group?.subheader}
-                              </div>
-                            )}
-                          </>
+                        {group?.subheader && !isCompact && (
+                          <div className="text-muted-foreground flex h-6 items-center text-sm font-medium uppercase">
+                            {group?.subheader}
+                          </div>
                         )}
                       </div>
 

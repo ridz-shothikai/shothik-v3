@@ -1,4 +1,32 @@
 /* Remove default margins from the editor container */
+:root {
+  --paraphrase-freeze-bg: #e3f2fd;
+  --paraphrase-freeze-color: #2196f3;
+  --paraphrase-protected-bg: #ffebee;
+  --paraphrase-protected-color: #f44336;
+  --paraphrase-frozen-phrase-bg: #e8f5e8;
+  --paraphrase-frozen-phrase-color: #4caf50;
+  --paraphrase-duplicate-bg: #fff3e0;
+  --paraphrase-duplicate-color: #ff9800;
+  --paraphrase-highlight-yellow-bg: #f9f4e2;
+  --paraphrase-highlight-sentence-bg: #faf5e5;
+  --paraphrase-active-sentence-bg: rgba(33, 150, 243, 0.1);
+}
+
+.dark {
+  --paraphrase-freeze-bg: rgba(56, 113, 193, 0.22);
+  --paraphrase-freeze-color: #9fc3ff;
+  --paraphrase-protected-bg: rgba(244, 67, 54, 0.18);
+  --paraphrase-protected-color: #ff9c8f;
+  --paraphrase-frozen-phrase-bg: rgba(62, 143, 76, 0.22);
+  --paraphrase-frozen-phrase-color: #9de5aa;
+  --paraphrase-duplicate-bg: rgba(255, 152, 0, 0.18);
+  --paraphrase-duplicate-color: #ffc98f;
+  --paraphrase-highlight-yellow-bg: rgba(249, 244, 226, 0.18);
+  --paraphrase-highlight-sentence-bg: rgba(255, 227, 173, 0.18);
+  --paraphrase-active-sentence-bg: rgba(33, 150, 243, 0.22);
+}
+
 .ProseMirror {
   margin: 0; /* Remove margin from editor */
   outline: none;
@@ -69,54 +97,56 @@
 .frozen-word,
 .frozen-word[data-frozen-phrase="true"] {
   border-radius: 3px;
-  background-color: #e3f2fd;
+  background-color: var(--paraphrase-freeze-bg);
   padding: 1px 2px;
-  color: #2196f3;
+  color: var(--paraphrase-freeze-color);
   text-decoration: none;
 }
 
 .protected-word {
   border-radius: 3px;
-  background-color: #ffebee;
+  background-color: var(--paraphrase-protected-bg);
   padding: 1px 2px;
-  color: #f44336;
+  color: var(--paraphrase-protected-color);
   text-decoration: none;
 }
 
 /* New phrase styles */
 .frozen-phrase {
   border-radius: 3px;
-  background-color: #e8f5e8;
+  background-color: var(--paraphrase-frozen-phrase-bg);
   padding: 1px 2px;
-  color: #4caf50;
+  color: var(--paraphrase-frozen-phrase-color);
   text-decoration: none;
 }
 
 /* editor.css */
 .duplicate-sentence {
-  background-color: #fff3e0;
-  color: #ff9800;
+  background-color: var(--paraphrase-duplicate-bg);
+  color: var(--paraphrase-duplicate-color);
 }
 
 .sentence-span.active-sentence {
   transition: background-color 0.2s ease;
-  background-color: #f6ffe0;
+  background-color: var(--paraphrase-highlight-sentence-bg);
 }
 
 /* New style for yellow highlight */
 .yellow-highlight {
-  background-color: #f9f4e2; /*Light background color*/
+  background-color: var(
+    --paraphrase-highlight-yellow-bg
+  ); /*Light background color*/
 }
 
 /* For highlighting sentences */
 .highlighted-sentence {
   transition: background-color 0.2s ease;
   border-radius: 4px;
-  background-color: #faf5e5 !important;
+  background-color: var(--paraphrase-highlight-sentence-bg) !important;
   padding: 2px 0;
 }
 
 .active-sentence {
   border-radius: 4px;
-  background-color: rgba(33, 150, 243, 0.1);
+  background-color: var(--paraphrase-active-sentence-bg);
 }

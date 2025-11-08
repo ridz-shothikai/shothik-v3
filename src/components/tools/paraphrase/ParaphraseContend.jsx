@@ -1751,6 +1751,7 @@ const ParaphraseContend = () => {
                   "relative flex flex-col pb-1",
                   "border-b lg:border-r lg:border-b-0",
                   "border-border",
+                  "bg-card dark:bg-[var(--muted)]",
                   "h-[400px] md:h-[450px] lg:h-[530px]",
                 )}
               >
@@ -1837,6 +1838,7 @@ const ParaphraseContend = () => {
                   "h-[480px] sm:h-[450px] lg:h-[530px]",
                   "overflow-hidden",
                   "border-border border-t md:border-t-0",
+                  "bg-card dark:bg-[var(--muted)]",
                 )}
               >
                 <div className="border-border block border-b lg:hidden">
