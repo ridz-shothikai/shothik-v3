@@ -210,6 +210,7 @@ export default function ClaritySection() {
           <div className="flex w-full justify-center">
             <Button
               data-umami-event="Get early access"
+              data-rybbit-event="Get early access"
               size="lg"
               onClick={() => {
                 setShowModal(true);

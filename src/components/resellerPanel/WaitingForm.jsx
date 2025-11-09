@@ -14,9 +14,7 @@ export default function WaitlistForm({ userType }) {
 
   const schema = z.object({
     name: z.string().min(1, "Name is required"),
-    email: z.string()
-      .min(1, "Email is required")
-      .email("Enter a valid email"),
+    email: z.string().min(1, "Email is required").email("Enter a valid email"),
   });
 
   const defaultValues = {
@@ -86,6 +84,7 @@ export default function WaitlistForm({ userType }) {
           />
           <Button
             data-umami-event="Form: Join the waitlist"
+            data-rybbit-event="Form: Join the waitlist"
             variant="default"
             size="lg"
             type="submit"

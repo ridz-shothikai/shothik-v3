@@ -125,6 +125,7 @@ export default function AccountPopover() {
           {!user?.email && (
             <button
               data-umami-event="Nav: Login / Sign up"
+              data-rybbit-event="Nav: Login / Sign up"
               onClick={() => {
                 setOpen(false);
                 dispatch(setShowRegisterModal(false));
@@ -144,8 +145,11 @@ export default function AccountPopover() {
                 <span>Help Center</span>
               </div>
             </Link>
-
-            <Link href="/contact-us" className="no-underline">
+            <Link
+              href="/contact-us"
+              data-rybbit-event="Contact us"
+              className="no-underline"
+            >
               <div className="hover:bg-primary/10 flex w-full items-center gap-3 px-3 py-2 text-sm">
                 <Mail className="h-5 w-5" />
                 <span>Contact us</span>

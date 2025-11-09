@@ -132,6 +132,7 @@ export const FooterCta = ({ isMobile, showModal, setShowModal }) => {
             >
               <Button
                 data-umami-event="Modal: Join the waitlist"
+                data-rybbit-event="Modal: Join the waitlist"
                 onClick={() => {
                   setShowModal(true);
                 }}

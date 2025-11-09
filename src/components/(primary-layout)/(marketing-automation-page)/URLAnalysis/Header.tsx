@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   BookOpen,
   Building2,
@@ -12,8 +14,6 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface MetaUserData {
   user: {
@@ -80,12 +80,12 @@ export default function Header({
           {metaConnected ? (
             <>
               <div
-                className="relative flex items-center gap-2 rounded-xl border border-border bg-card/60 px-4 py-2.5 backdrop-blur-md transition-all hover:border-primary/50"
+                className="border-border bg-card/60 hover:border-primary/50 relative flex items-center gap-2 rounded-xl border px-4 py-2.5 backdrop-blur-md transition-all"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={() => setShowTooltip(false)}
               >
-                <Facebook className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium text-foreground">
+                <Facebook className="text-primary h-4 w-4" />
+                <span className="text-foreground text-sm font-medium">
                   Meta Connected
                 </span>
                 <Button
@@ -93,13 +93,13 @@ export default function Header({
                   disabled={metaLoading}
                   variant="ghost"
                   size="icon-sm"
-                  className="ml-2 h-6 w-6 hover:bg-destructive/20"
+                  className="hover:bg-destructive/20 ml-2 h-6 w-6"
                   title="Disconnect Meta account"
                 >
                   {metaLoading ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin text-destructive" />
+                    <Loader2 className="text-destructive h-3.5 w-3.5 animate-spin" />
                   ) : (
-                    <LogOut className="h-3.5 w-3.5 text-destructive" />
+                    <LogOut className="text-destructive h-3.5 w-3.5" />
                   )}
                 </Button>
               </div>
@@ -148,7 +148,10 @@ export default function Header({
               ) : (
                 <Facebook className="h-4 w-4" />
               )}
-              <span className="hidden text-sm sm:inline">
+              <span
+                className="hidden text-sm sm:inline"
+                data-rybbit-event="connect_meta_clicked"
+              >
                 {metaConnecting ? "Connecting..." : "Connect Meta"}
               </span>
             </Button>
@@ -172,16 +175,16 @@ export default function Header({
             onMouseLeave={() => setShowTooltip(false)}
           >
             {/* Header with gradient */}
-            <CardHeader className="border-b border-border bg-primary/10">
+            <CardHeader className="border-border bg-primary/10 border-b">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/20">
-                  <Facebook className="h-4 w-4 text-primary" />
+                <div className="bg-primary/20 flex h-8 w-8 items-center justify-center rounded-lg">
+                  <Facebook className="text-primary h-4 w-4" />
                 </div>
                 <div>
-                  <CardTitle className="text-sm font-semibold text-foreground">
+                  <CardTitle className="text-foreground text-sm font-semibold">
                     Meta Account Details
                   </CardTitle>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-muted-foreground text-xs">
                     Connected & Active
                   </p>
                 </div>
@@ -192,17 +195,17 @@ export default function Header({
               {/* User Info */}
               <Card className="border-border bg-muted/30 p-3">
                 <div className="mb-2 flex items-center gap-2">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-primary/20">
-                    <UserIcon className="h-3.5 w-3.5 text-primary" />
+                  <div className="bg-primary/20 flex h-6 w-6 items-center justify-center rounded-lg">
+                    <UserIcon className="text-primary h-3.5 w-3.5" />
                   </div>
-                  <h3 className="text-xs font-semibold uppercase tracking-wide text-foreground">
+                  <h3 className="text-foreground text-xs font-semibold tracking-wide uppercase">
                     Account Owner
                   </h3>
                 </div>
-                <p className="mb-0.5 text-sm font-semibold text-foreground">
+                <p className="text-foreground mb-0.5 text-sm font-semibold">
                   {metaUserData.user.name}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   {metaUserData.user.email}
                 </p>
               </Card>
@@ -212,14 +215,14 @@ export default function Header({
                 <div>
                   <div className="mb-3 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-primary/20">
-                        <Facebook className="h-3.5 w-3.5 text-primary" />
+                      <div className="bg-primary/20 flex h-6 w-6 items-center justify-center rounded-lg">
+                        <Facebook className="text-primary h-3.5 w-3.5" />
                       </div>
-                      <h3 className="text-xs font-semibold uppercase tracking-wide text-foreground">
+                      <h3 className="text-foreground text-xs font-semibold tracking-wide uppercase">
                         Facebook Pages
                       </h3>
                     </div>
-                    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
+                    <span className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs font-semibold">
                       {metaUserData.pages.length}
                     </span>
                   </div>
@@ -227,19 +230,19 @@ export default function Header({
                     {metaUserData.pages.slice(0, 3).map((page) => (
                       <Card
                         key={page.id}
-                        className="group border-border bg-muted/40 p-3 transition-all hover:border-primary/50 hover:bg-muted/60"
+                        className="group border-border bg-muted/40 hover:border-primary/50 hover:bg-muted/60 p-3 transition-all"
                       >
-                        <p className="text-sm font-medium text-foreground transition-colors group-hover:text-primary">
+                        <p className="text-foreground group-hover:text-primary text-sm font-medium transition-colors">
                           {page.name}
                         </p>
-                        <p className="mt-0.5 text-xs text-muted-foreground">
+                        <p className="text-muted-foreground mt-0.5 text-xs">
                           {page.category}
                         </p>
                       </Card>
                     ))}
                     {metaUserData.pages.length > 3 && (
                       <div className="py-1 text-center">
-                        <span className="rounded-full bg-muted/50 px-3 py-1 text-xs text-muted-foreground">
+                        <span className="bg-muted/50 text-muted-foreground rounded-full px-3 py-1 text-xs">
                           +{metaUserData.pages.length - 3} more pages
                         </span>
                       </div>
@@ -254,14 +257,14 @@ export default function Header({
                   <div>
                     <div className="mb-3 flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-primary/20">
-                          <Building2 className="h-3.5 w-3.5 text-primary" />
+                        <div className="bg-primary/20 flex h-6 w-6 items-center justify-center rounded-lg">
+                          <Building2 className="text-primary h-3.5 w-3.5" />
                         </div>
-                        <h3 className="text-xs font-semibold uppercase tracking-wide text-foreground">
+                        <h3 className="text-foreground text-xs font-semibold tracking-wide uppercase">
                           Business Accounts
                         </h3>
                       </div>
-                      <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
+                      <span className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs font-semibold">
                         {metaUserData.businessAccounts.length}
                       </span>
                     </div>
@@ -271,28 +274,28 @@ export default function Header({
                           key={business.id}
                           className="border-border bg-muted/40 p-3"
                         >
-                          <p className="mb-2 text-sm font-semibold text-foreground">
+                          <p className="text-foreground mb-2 text-sm font-semibold">
                             {business.name}
                           </p>
                           {business.adsAccounts &&
                             business.adsAccounts.length > 0 && (
                               <div className="space-y-2">
                                 <div className="mb-2 flex items-center gap-1.5">
-                                  <CreditCard className="h-3 w-3 text-primary" />
-                                  <p className="text-xs font-medium text-muted-foreground">
+                                  <CreditCard className="text-primary h-3 w-3" />
+                                  <p className="text-muted-foreground text-xs font-medium">
                                     Ads Accounts ({business.adsAccounts.length})
                                   </p>
                                 </div>
                                 {business.adsAccounts.slice(0, 2).map((ads) => (
                                   <Card
                                     key={ads.id}
-                                    className="border-border bg-background/50 p-2.5 transition-all hover:border-primary/40 hover:bg-background/70"
+                                    className="border-border bg-background/50 hover:border-primary/40 hover:bg-background/70 p-2.5 transition-all"
                                   >
-                                    <p className="mb-1 text-xs font-medium text-foreground">
+                                    <p className="text-foreground mb-1 text-xs font-medium">
                                       {ads.name}
                                     </p>
                                     <div className="flex items-center gap-2">
-                                      <span className="rounded bg-muted/50 px-2 py-0.5 text-xs text-muted-foreground">
+                                      <span className="bg-muted/50 text-muted-foreground rounded px-2 py-0.5 text-xs">
                                         {ads.currency}
                                       </span>
                                       <span
@@ -311,7 +314,7 @@ export default function Header({
                                 ))}
                                 {business.adsAccounts.length > 2 && (
                                   <div className="py-1 text-center">
-                                    <span className="rounded-full bg-muted/50 px-3 py-1 text-xs text-muted-foreground">
+                                    <span className="bg-muted/50 text-muted-foreground rounded-full px-3 py-1 text-xs">
                                       +{business.adsAccounts.length - 2} more
                                       accounts
                                     </span>
@@ -330,30 +333,30 @@ export default function Header({
                 metaUserData.selectedBusinessAccountId ||
                 metaUserData.selectedAdsAccountId) && (
                 <Card className="border-primary/20 bg-primary/10 p-3">
-                  <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
+                  <h3 className="text-primary mb-2 text-xs font-semibold tracking-wide uppercase">
                     Active Selections
                   </h3>
                   <div className="space-y-1.5">
                     {metaUserData.selectedPageIds?.length > 0 && (
                       <div className="flex items-center gap-2">
-                        <div className="h-1.5 w-1.5 rounded-full bg-primary"></div>
-                        <p className="text-xs text-foreground">
+                        <div className="bg-primary h-1.5 w-1.5 rounded-full"></div>
+                        <p className="text-foreground text-xs">
                           {metaUserData.selectedPageIds.length} page(s) selected
                         </p>
                       </div>
                     )}
                     {metaUserData.selectedBusinessAccountId && (
                       <div className="flex items-center gap-2">
-                        <div className="h-1.5 w-1.5 rounded-full bg-primary"></div>
-                        <p className="text-xs text-foreground">
+                        <div className="bg-primary h-1.5 w-1.5 rounded-full"></div>
+                        <p className="text-foreground text-xs">
                           Business account selected
                         </p>
                       </div>
                     )}
                     {metaUserData.selectedAdsAccountId && (
                       <div className="flex items-center gap-2">
-                        <div className="h-1.5 w-1.5 rounded-full bg-primary"></div>
-                        <p className="text-xs text-foreground">
+                        <div className="bg-primary h-1.5 w-1.5 rounded-full"></div>
+                        <p className="text-foreground text-xs">
                           Ads account selected
                         </p>
                       </div>
