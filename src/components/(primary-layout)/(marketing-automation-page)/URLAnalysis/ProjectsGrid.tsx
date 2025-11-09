@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Clock,
   Folder,
@@ -12,8 +14,6 @@ import {
   Trash2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 
 interface Project {
   _id: string;
@@ -49,34 +49,34 @@ export default function ProjectsGrid({
     <div className="mt-16">
       <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary shadow-lg">
-            <Folder className="h-6 w-6 text-primary-foreground" />
+          <div className="bg-primary flex h-12 w-12 items-center justify-center rounded-xl shadow-lg">
+            <Folder className="text-primary-foreground h-6 w-6" />
           </div>
           <div>
-            <h2 className="text-3xl font-bold tracking-tight text-foreground">
+            <h2 className="text-foreground text-3xl font-bold tracking-tight">
               Your Projects
             </h2>
-            <p className="mt-0.5 text-sm text-muted-foreground">
+            <p className="text-muted-foreground mt-0.5 text-sm">
               Manage and track your campaigns
             </p>
           </div>
         </div>
-        <span className="rounded-full border border-border bg-card/60 px-5 py-2.5 text-sm font-medium text-foreground backdrop-blur-md">
+        <span className="border-border bg-card/60 text-foreground rounded-full border px-5 py-2.5 text-sm font-medium backdrop-blur-md">
           {projects.length} {projects.length !== 1 ? "projects" : "project"}
         </span>
       </div>
 
       {loadingProjects ? (
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <Loader2 className="text-primary h-8 w-8 animate-spin" />
         </div>
       ) : projects.length === 0 ? (
         <Card className="p-12 text-center">
-          <Folder className="mx-auto mb-4 h-16 w-16 text-primary opacity-50" />
-          <h3 className="mb-2 text-lg font-semibold text-foreground">
+          <Folder className="text-primary mx-auto mb-4 h-16 w-16 opacity-50" />
+          <h3 className="text-foreground mb-2 text-lg font-semibold">
             No Projects Yet
           </h3>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Analyze a URL above to create your first project
           </p>
         </Card>
@@ -85,44 +85,44 @@ export default function ProjectsGrid({
           {projects.map((project) => (
             <div key={project._id} className="group relative">
               {/* Glow effect */}
-              <div className="absolute -inset-0.5 rounded-2xl bg-primary/20 opacity-0 blur-lg transition-opacity duration-500 group-hover:opacity-100"></div>
+              <div className="bg-primary/20 absolute -inset-0.5 rounded-2xl opacity-0 blur-lg transition-opacity duration-500 group-hover:opacity-100"></div>
 
-              <Card className="relative h-full transition-all duration-300 hover:translate-y-[-4px] hover:border-primary/50">
-                <Button
-                  onClick={(e) => onDeleteProject(project._id, e)}
-                  disabled={deletingProject === project._id}
-                  variant="ghost"
-                  size="icon-sm"
-                  className="absolute top-4 right-4 z-10 opacity-0 transition-all group-hover:opacity-100 disabled:opacity-50"
-                >
-                  {deletingProject === project._id ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <Trash2 className="h-4 w-4 text-destructive" />
-                  )}
-                </Button>
-
-                <CardContent className="p-6">
-                  <div className="mb-4">
-                    <span className="rounded-lg border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary capitalize">
-                      {project.product.category}
-                    </span>
+              <Card className="hover:border-primary/50 relative h-full transition-all duration-300 hover:translate-y-[-4px]">
+                <CardContent className="px-4">
+                  <div className="mb-4 flex items-center justify-between gap-4">
+                    <div>
+                      <span className="border-primary/30 bg-primary/10 text-primary rounded-lg border px-2 py-1 text-xs font-medium capitalize">
+                        {project.product.category}
+                      </span>
+                    </div>
+                    <Button
+                      onClick={(e) => onDeleteProject(project._id, e)}
+                      disabled={deletingProject === project._id}
+                      variant="ghost"
+                      size="icon-sm"
+                    >
+                      {deletingProject === project._id ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="text-destructive h-4 w-4" />
+                      )}
+                    </Button>
                   </div>
 
-                  <h3 className="mb-2 text-lg font-bold text-foreground transition-colors group-hover:text-primary">
+                  <h3 className="text-foreground group-hover:text-primary mb-2 text-lg font-bold transition-colors">
                     {project.product.title}
                   </h3>
 
-                  <p className="mb-3 text-sm text-muted-foreground">
+                  <p className="text-muted-foreground mb-3 text-sm">
                     by {project.product.brand}
                   </p>
 
-                  <div className="mb-4 flex items-center gap-2 text-xs text-muted-foreground">
+                  <div className="text-muted-foreground mb-4 flex items-center gap-2 text-xs">
                     <Link2 className="h-3 w-3" />
                     <span className="truncate">{project.url}</span>
                   </div>
 
-                  <div className="flex items-center gap-2 border-t border-border pt-4 text-xs text-muted-foreground">
+                  <div className="border-border text-muted-foreground flex items-center gap-2 border-t pt-4 text-xs">
                     <Clock className="h-3 w-3" />
                     <span>
                       {new Date(project.createdAt).toLocaleDateString("en-US", {
@@ -133,7 +133,7 @@ export default function ProjectsGrid({
                     </span>
                   </div>
 
-                  <div className="mt-4 flex flex-wrap items-center justify-center gap-2 opacity-0 transition-all group-hover:opacity-100">
+                  <div className="mt-4 flex flex-wrap items-center justify-center gap-2 transition-all group-hover:opacity-100">
                     <Button
                       onClick={() => onProjectClick(project)}
                       variant="outline"
@@ -180,7 +180,9 @@ export default function ProjectsGrid({
                     </Button>
                     <Button
                       onClick={() =>
-                        router.push(`/marketing-automation/media/${project._id}`)
+                        router.push(
+                          `/marketing-automation/media/${project._id}`,
+                        )
                       }
                       variant="outline"
                       size="sm"

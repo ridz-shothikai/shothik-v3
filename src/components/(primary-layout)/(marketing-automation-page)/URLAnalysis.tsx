@@ -259,10 +259,10 @@ export default function URLAnalysis() {
   return (
     <div className="bg-background relative min-h-screen overflow-hidden">
       {/* Background pattern */}
-      <div className="border-border/20 absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] bg-size-[4rem_4rem] opacity-20"></div>
+      <div className="border-border/50 absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] bg-size-[4rem_4rem] opacity-20"></div>
 
       {/* Main Content */}
-      <div className="relative mx-auto max-w-7xl px-6 py-10">
+      <div className="relative mx-auto max-w-7xl px-4 py-6">
         {/* Header */}
         <Header
           metaConnected={!!metaUserData}

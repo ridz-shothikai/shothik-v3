@@ -74,7 +74,7 @@ export default function Header({
 
   return (
     <>
-      <div className="mb-12 flex items-center justify-between">
+      <div className="mb-6 flex items-center justify-end">
         <div className="flex items-center gap-4">
           {/* Meta Connection Status */}
           {metaConnected ? (
