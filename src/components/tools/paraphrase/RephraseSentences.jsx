@@ -96,7 +96,10 @@ export default function RephraseSentences(props) {
                               Access premium modes by upgrading your plan.
                             </p>
                             <Link href="/pricing" className={cn("block")}>
-                              <Button className={cn("w-full")}>
+                              <Button
+                                className={cn("w-full")}
+                                data-rybbit-event="clicked_upgrade_plan"
+                              >
                                 <Diamond className="mr-2 h-4 w-4" />
                                 Upgrade Plan
                               </Button>

@@ -567,6 +567,7 @@ function RephraseSentences(props) {
                               <Button
                                 variant="default"
                                 className={cn("mt-2 w-full")}
+                                data-rybbit-event="clicked_upgrade_plan"
                               >
                                 <Gem className={cn("mr-1 h-4 w-4")} />
                                 Upgrade Plan

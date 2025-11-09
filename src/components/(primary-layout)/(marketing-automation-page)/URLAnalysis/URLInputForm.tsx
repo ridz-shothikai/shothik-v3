@@ -1,8 +1,8 @@
-import { Link2, Loader2, ArrowRight, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRight, Facebook, Link2, Loader2 } from "lucide-react";
 
 interface URLInputFormProps {
   url: string;
@@ -30,34 +30,34 @@ export default function URLInputForm({
   return (
     <div className="relative mb-12">
       {/* Glow effect */}
-      <div className="absolute -inset-1 rounded-3xl bg-primary/20 blur-xl opacity-50"></div>
+      <div className="bg-primary/20 absolute -inset-1 rounded-3xl opacity-50 blur-xl"></div>
 
-      <Card className="relative bg-card/80 backdrop-blur-2xl p-8 sm:p-10 border-border shadow-2xl">
+      <Card className="bg-card/80 border-border relative p-8 shadow-2xl backdrop-blur-2xl sm:p-10">
         <form onSubmit={onSubmit} className="space-y-6">
           {/* URL Input */}
           <div>
             <Label
               htmlFor="url"
-              className="mb-3 block text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+              className="text-muted-foreground mb-3 block text-xs font-semibold tracking-wider uppercase"
             >
               Product URL
             </Label>
-            <div className="relative group">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-5 pointer-events-none">
-                <Link2 className="h-5 w-5 text-muted-foreground transition-colors duration-200 group-focus-within:text-primary" />
+            <div className="group relative">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
+                <Link2 className="text-muted-foreground group-focus-within:text-primary h-5 w-5 transition-colors duration-200" />
               </div>
               <Input
                 id="url"
                 type="url"
                 value={url}
                 onChange={(e) => onUrlChange(e.target.value)}
-                className="pl-14 pr-5 py-5 text-base bg-background/80 border-border rounded-2xl text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200 hover:border-primary/30"
+                className="bg-background/80 border-border text-foreground placeholder:text-muted-foreground focus:ring-primary/50 focus:border-primary/50 hover:border-primary/30 rounded-2xl py-5 pr-5 pl-14 text-base transition-all duration-200 focus:ring-2"
                 placeholder="https://example.com/product"
                 required
                 disabled={isAnalyzing}
               />
             </div>
-            <p className="mt-3 text-xs font-light text-muted-foreground">
+            <p className="text-muted-foreground mt-3 text-xs font-light">
               Paste any product link and watch our AI analyze your competitors,
               extract market insights, and generate detailed buyer personas
             </p>
@@ -65,16 +65,16 @@ export default function URLInputForm({
 
           {/* Error Messages */}
           {error && (
-            <Card className="border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive animate-shake">
+            <Card className="border-destructive/30 bg-destructive/10 text-destructive animate-shake p-4 text-sm">
               {error}
             </Card>
           )}
 
           {/* Meta Connection Error */}
           {metaError && (
-            <Card className="border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive animate-shake">
+            <Card className="border-destructive/30 bg-destructive/10 text-destructive animate-shake p-4 text-sm">
               <div className="flex items-center gap-2">
-                <Facebook className="w-4 h-4" />
+                <Facebook className="h-4 w-4" />
                 <span className="font-medium">Meta Connection Error:</span>
               </div>
               <p className="mt-1">{metaError}</p>
@@ -85,10 +85,10 @@ export default function URLInputForm({
           {isAnalyzing && statusMessage && (
             <Card className="border-primary/30 bg-primary/10 p-4">
               <div className="flex items-center gap-3">
-                <Loader2 className="w-5 h-5 text-primary animate-spin" />
+                <Loader2 className="text-primary h-5 w-5 animate-spin" />
                 <div className="flex-1">
                   <p className="text-primary font-medium">{statusMessage}</p>
-                  <p className="text-primary/70 text-xs mt-1">
+                  <p className="text-primary/70 mt-1 text-xs">
                     Step: {currentStep}
                   </p>
 
@@ -99,15 +99,12 @@ export default function URLInputForm({
                         🔍 Web searches performed:
                       </p>
                       {searchQueries.slice(0, 3).map((query, idx) => (
-                        <p
-                          key={idx}
-                          className="text-primary/80 text-xs pl-4"
-                        >
+                        <p key={idx} className="text-primary/80 pl-4 text-xs">
                           • {query}
                         </p>
                       ))}
                       {searchQueries.length > 3 && (
-                        <p className="text-primary/70 text-xs pl-4">
+                        <p className="text-primary/70 pl-4 text-xs">
                           + {searchQueries.length - 3} more searches...
                         </p>
                       )}
@@ -122,17 +119,20 @@ export default function URLInputForm({
           <Button
             type="submit"
             disabled={isAnalyzing}
-            className="relative w-full py-5 px-6 rounded-2xl text-base font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.01] active:scale-[0.99] group overflow-hidden"
+            className="group relative w-full transform overflow-hidden rounded-2xl px-6 py-5 text-base font-semibold transition-all hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isAnalyzing ? (
               <span className="flex items-center justify-center gap-3">
-                <Loader2 className="animate-spin h-5 w-5" />
+                <Loader2 className="h-5 w-5 animate-spin" />
                 Analyzing your URL...
               </span>
             ) : (
-              <span className="flex items-center justify-center gap-3">
+              <span
+                className="flex items-center justify-center gap-3"
+                data-rybbit-event="analyze_product_button"
+              >
                 Analyze Product
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </span>
             )}
           </Button>

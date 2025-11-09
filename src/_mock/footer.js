@@ -21,7 +21,6 @@ export const LINKS = [
       { name: "Payment policy", href: PATH_PAGE.paymentPolicy },
     ],
   },
-
   {
     headline: "For Business",
     children: [

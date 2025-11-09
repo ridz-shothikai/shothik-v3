@@ -523,6 +523,7 @@ export default function InteractiveAgentDemo() {
 
                       <Button
                         data-umami-event={`Try New Agent: ${selectedAgent?.name || ""}`}
+                        data-rybbit-event={`Try New Agent: ${selectedAgent?.name || ""}`}
                         className="bg-primary text-primary-foreground hover:bg-primary/90 w-full rounded-xl text-sm font-medium transition-colors sm:px-6 sm:py-2 sm:text-base"
                         onClick={() => handleSubmit()}
                         disabled={!userInput.trim() || isProcessing}
@@ -618,6 +619,7 @@ export default function InteractiveAgentDemo() {
           <div className="flex w-full justify-center pt-5 sm:pt-7 md:pt-10 lg:pt-11 xl:pt-12">
             <Button
               data-umami-event="Get early access"
+              data-rybbit-event="Get early access"
               size="lg"
               onClick={() => {
                 setShowModal(true);

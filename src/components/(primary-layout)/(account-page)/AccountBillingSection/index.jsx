@@ -28,7 +28,10 @@ export default function AccountBillingSection({ user }) {
                 </h3>
                 {user?.package !== "unlimited" ? (
                   <Link href="/pricing">
-                    <Button className="gap-2">
+                    <Button
+                      className="gap-2"
+                      data-rybbit-event="clicked_upgrade_plan"
+                    >
                       <Diamond className="h-4 w-4 md:h-5 md:w-5" />
                       Upgrade Plan
                     </Button>

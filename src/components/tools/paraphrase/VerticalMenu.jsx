@@ -209,6 +209,7 @@ const VerticalMenu = ({
               mobile={mobile}
               showTooltip={true}
               tooltipText={"Paraphrase text to see plagiarism."}
+              data-rybbit-event="clicked_upgrade_plan"
             />
           </div>
           <div id="paraphrase_history" className="w-full">

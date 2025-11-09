@@ -33,6 +33,8 @@ export default function MenuColumn({
           return (
             <Button
               key={item.label}
+              data-rybbit-event="Feature Menu Item"
+              data-rybbit-prop-feature_menu={item.label}
               variant="ghost"
               asChild
               className="text-muted-foreground hover:bg-muted hover:text-primary justify-start rounded px-3 py-2 text-sm font-medium"

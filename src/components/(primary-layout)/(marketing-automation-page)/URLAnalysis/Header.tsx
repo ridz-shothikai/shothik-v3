@@ -148,7 +148,10 @@ export default function Header({
               ) : (
                 <Facebook className="h-4 w-4" />
               )}
-              <span className="hidden text-sm sm:inline">
+              <span
+                className="hidden text-sm sm:inline"
+                data-rybbit-event="connect_meta_clicked"
+              >
                 {metaConnecting ? "Connecting..." : "Connect Meta"}
               </span>
             </Button>

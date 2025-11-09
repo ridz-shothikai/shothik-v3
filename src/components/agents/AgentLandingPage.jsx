@@ -687,6 +687,8 @@ export default function AgentLandingPage() {
               variant={selectedNavItem === item.id ? "default" : "outline"}
               onClick={() => handleNavItemClick(item.id)}
               disabled={item.isDisabled}
+              data-rybbit-event="Agent"
+              data-rybbit-prop-agent={item.label}
               className={cn(
                 "relative rounded-full px-6 py-2",
                 selectedNavItem === item.id
@@ -727,6 +729,8 @@ export default function AgentLandingPage() {
                   key={template.id}
                   className="cursor-pointer border transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
                   onClick={() => handleTemplateSelect(template)}
+                  data-rybbit-event="Quick Start Templates"
+                  data-rybbit-prop-quick_start_templates={template.title}
                 >
                   <CardContent className="flex flex-col items-center p-4 text-center">
                     <div className={cn("mb-2", template.colorClass)}>
@@ -802,6 +806,7 @@ export default function AgentLandingPage() {
                     variant="ghost"
                     onClick={handleClick}
                     className="text-muted-foreground hover:text-primary"
+                    data-rybbit-event="File Attach"
                   >
                     <LinkIcon className="mr-2 h-4 w-4" />
                     Attach
@@ -832,6 +837,7 @@ export default function AgentLandingPage() {
                   }
                   size="icon"
                   className="bg-primary hover:bg-primary/90 h-10 w-10 rounded-full"
+                  data-rybbit-event="Agent Start"
                 >
                   {isInitiatingPresentation ||
                   isInitiatingSheet ||
@@ -913,6 +919,8 @@ export default function AgentLandingPage() {
                   variant="outline"
                   onClick={() => setInputValue(prompt)}
                   className="border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 cursor-pointer px-3 py-1.5"
+                  data-rybbit-event="Popular Topics"
+                  data-rybbit-prop-popular_topics={prompt}
                 >
                   {prompt}
                 </Badge>
