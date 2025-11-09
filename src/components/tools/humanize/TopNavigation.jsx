@@ -96,6 +96,7 @@ const TopNavigation = ({
           </p>
           <Button
             data-umami-event="Nav: Upgrade To Premium"
+            data-rybbit-event="Nav: Upgrade To Premium"
             variant="default"
             size="sm"
             className="font-semibold"

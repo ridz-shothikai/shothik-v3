@@ -68,7 +68,12 @@ export default function UserInfo() {
             </div>
 
             {user.package !== "unlimited" && (
-              <Button asChild className="-mt-2" variant="default">
+              <Button
+                asChild
+                className="-mt-2"
+                variant="default"
+                data-rybbit-event="clicked_upgrade_plan"
+              >
                 <Link href="/pricing">Upgrade plan</Link>
               </Button>
             )}
@@ -91,6 +96,7 @@ export default function UserInfo() {
             <div className="flex w-full flex-col gap-1.5">
               <Button
                 data-umami-event="Nav: Sign In"
+                data-rybbit-event="Nav: Sign In"
                 onClick={() => {
                   dispatch(setShowRegisterModal(false));
                   dispatch(setShowLoginModal(true));
@@ -103,6 +109,7 @@ export default function UserInfo() {
 
               <Button
                 data-umami-event="Nav: Sign Up"
+                data-rybbit-event="Nav: Sign Up"
                 onClick={() => {
                   dispatch(setShowLoginModal(false));
                   dispatch(setShowRegisterModal(true));

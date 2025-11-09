@@ -75,6 +75,8 @@ export default function Footer() {
                   key={link.name}
                   href={link.href}
                   className="text-muted-foreground hover:text-foreground text-sm"
+                  data-rybbit-event="Footer Nav"
+                  data-rybbit-prop-foot_event={link.name}
                 >
                   {link.name.split("\n").map((line, index) => (
                     <Fragment key={index}>

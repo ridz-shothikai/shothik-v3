@@ -13,6 +13,8 @@ export default function NavItem({ item, sidebar, className }) {
   return (
     <Link
       data-umami-event={`Nav: ${title}`}
+      data-rybbit-event="Nav Item"
+      data-rybbit-prop-nav_item={`Nav: ${title}`}
       href={path}
       id={item?.id}
       className={cn(

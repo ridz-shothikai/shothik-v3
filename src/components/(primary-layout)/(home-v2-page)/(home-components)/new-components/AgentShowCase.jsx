@@ -287,6 +287,7 @@ export default function AgentShowcase() {
                     </div>
                     <Button
                       data-umami-event={`Watch Agent Work: ${currentAgent.name}`}
+                      data-rybbit-event={`Watch Agent Work: ${currentAgent.name}`}
                       onClick={() => handlePlayDemo(currentAgent.id)}
                       className="border border-white/30 bg-white/20 px-6 py-3 text-white hover:bg-white/30"
                       variant="ghost"
@@ -399,6 +400,7 @@ export default function AgentShowcase() {
                   <div className="mt-8 border-t pt-6">
                     <Button
                       data-umami-event={`Try Now Agent: ${currentAgent.name}`}
+                      data-rybbit-event={`Try Now Agent: ${currentAgent.name}`}
                       className={cn(
                         "w-full py-6 text-base text-white hover:opacity-90",
                         `bg-gradient-to-r ${currentAgent.gradient}`,
@@ -433,6 +435,7 @@ export default function AgentShowcase() {
             </p>
             <Button
               data-umami-event="Command Your AI Writing Team"
+              data-rybbit-event="Command Your AI Writing Team"
               className={cn(
                 "px-8 py-6 text-base text-white hover:opacity-90",
                 "bg-gradient-to-r from-emerald-600 to-teal-600",

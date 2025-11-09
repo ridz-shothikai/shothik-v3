@@ -89,6 +89,7 @@ const ModeModal = ({
                 variant="default"
                 size="default"
                 className="flex items-center gap-2"
+                data-rybbit-event="clicked_upgrade_plan"
               >
                 <SvgColor
                   src="/navbar/diamond.svg"

@@ -225,6 +225,8 @@ export default function Header({ className, layout }) {
                   asChild
                   className="text-muted-foreground hover:text-primary hover:bg-muted/50 px-2 text-sm font-semibold transition-colors"
                   data-testid={`nav-${link.label.toLowerCase()}`}
+                  data-rybbit-event="Top Navbar"
+                  data-rybbit-prop-top_navbar={link.label}
                 >
                   <a href={link.href}>{link.label}</a>
                 </Button>
@@ -249,6 +251,7 @@ export default function Header({ className, layout }) {
                       <Button
                         data-umami-event="Nav: Upgrade To Premium"
                         className={cn("h-9 px-1 text-xs md:text-sm")}
+                        data-rybbit-event="clicked_upgrade_plan"
                       >
                         <Gem className="h-5 w-5" />
                         {user?.email ? "Upgrade" : "Upgrade Plan"}
@@ -378,6 +381,7 @@ export default function Header({ className, layout }) {
                       <Button
                         data-umami-event="Nav: Upgrade To Premium"
                         className={cn("h-9 px-1 text-xs md:text-sm")}
+                        data-rybbit-event="clicked_upgrade_plan"
                       >
                         <Gem className="h-5 w-5" />
                         {user?.email ? "Upgrade" : "Upgrade Plan"}

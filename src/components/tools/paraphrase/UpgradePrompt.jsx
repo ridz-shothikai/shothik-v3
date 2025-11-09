@@ -13,7 +13,7 @@ const UpgradePrompt = ({ onClose }) => {
         history, tone analysis, and comparison tools.
       </div>
       <Link href="/pricing" onClick={onClose}>
-        <Button size="sm">
+        <Button size="sm" data-rybbit-event="clicked_upgrade_plan">
           <SvgColor
             src="/navbar/diamond.svg"
             className="mr-2 h-4 w-4 md:h-5 md:w-5"

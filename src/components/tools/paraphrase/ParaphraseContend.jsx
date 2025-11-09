@@ -1823,7 +1823,12 @@ const ParaphraseContend = () => {
                 {showLanguageDetect && (
                   <div className="border-border bg-background absolute bottom-20 left-5 flex items-center gap-2 rounded-md border p-2">
                     <p className="text-sm">Detected Language:</p>
-                    <Button variant="outline" size="sm">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      data-rybbit-event="Language Choose"
+                      data-rybbit-prop={language}
+                    >
                       {language}
                     </Button>
                   </div>
