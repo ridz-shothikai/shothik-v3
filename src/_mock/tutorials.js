@@ -64,7 +64,7 @@ export const toolsData = {
   },
   grammar: {
     name: "Grammar Fix",
-    icon: NAV_ICONS.grammar,
+    icon: NAV_ICONS.grammar_checker,
     iconColor: "#8AC926",
     videoId: "https://www.youtube.com/embed/r-nVddrU2l8",
     title: "How to use Grammar Fix?",

@@ -12,16 +12,15 @@ const icon = (name: string): ReactElement => (
 
 export const NAV_ICONS = {
   paraphrase: icon("paraphrase"),
-  humanize: icon("bypass-svgrepo-com"),
-  ai_detector: icon("ai_detector_icon"),
+  humanize: icon("humanize"),
+  ai_detector: icon("ai_detector"),
   plagiarism_checker: icon("plagiarism_checker"),
   summarize: icon("summarize"),
-  grammar: icon("grammar"),
+  grammar_checker: icon("grammar_checker"),
   translator: icon("translator"),
   agents: icon("agents"),
   user: icon("user"),
-  agent: icon("ai-brain"),
-  marketing_automation: icon("marketing-automation"),
+  marketing_automation: icon("marketing_automation"),
 };
 
 export const NAV_TOOLS = [
@@ -50,7 +49,7 @@ export const NAV_TOOLS = [
     iconColor: "#f29b18",
   },
   {
-    icon: NAV_ICONS.grammar,
+    icon: NAV_ICONS.grammar_checker,
     title: "Grammar Fix",
     description: "Error correction",
     label: null,
@@ -74,7 +73,7 @@ export const NAV_TOOLS = [
     iconColor: "#A07EFB",
   },
   {
-    icon: NAV_ICONS.agent,
+    icon: NAV_ICONS.agents,
     title: "Agent",
     description: "AI Agent Platform",
     label: null,
@@ -99,7 +98,6 @@ export const NAV_ITEMS = [
         title: "Paraphrase",
         path: PATH_TOOLS.paraphrase,
         icon: NAV_ICONS.paraphrase,
-        id: "paraphrase_nav_item",
         iconColor: "#FF595E",
       },
       {
@@ -122,20 +120,20 @@ export const NAV_ITEMS = [
       },
       {
         title: "Agents",
-        path: "/agents",
-        icon: NAV_ICONS.agent,
+        path: PATH_TOOLS.agents,
+        icon: NAV_ICONS.agents,
         iconColor: "#1976D2",
       },
       {
         title: "Marketing Automation",
-        path: "/marketing-automation",
+        path: PATH_TOOLS.marketing_automation,
         icon: NAV_ICONS.marketing_automation,
         iconColor: "#1877F2",
       },
       {
         title: "Grammar Fix",
-        path: PATH_TOOLS.grammar,
-        icon: NAV_ICONS.grammar,
+        path: PATH_TOOLS.grammar_checker,
+        icon: NAV_ICONS.grammar_checker,
         iconColor: "#8AC926",
       },
       {
