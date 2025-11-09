@@ -2,7 +2,7 @@ import AIMedia from "@/components/(primary-layout)/(marketing-automation-page)/A
 
 const MediaPage = () => {
   return (
-    <div>
+    <div className="flex flex-1 flex-col md:min-h-[calc(100vh-4rem)]">
       <AIMedia />
     </div>
   );

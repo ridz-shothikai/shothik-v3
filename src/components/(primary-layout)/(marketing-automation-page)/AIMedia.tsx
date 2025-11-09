@@ -1,8 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 import type { RootState } from "@/redux/store";
-import { ArrowLeft } from "lucide-react";
+import { AlignCenter, ArrowLeft } from "lucide-react";
 import {
   useParams,
   usePathname,
@@ -14,7 +21,10 @@ import { useSelector } from "react-redux";
 import AIShortsSection from "./AIMedia/AIShortsSection";
 import AvatarsSection from "./AIMedia/AvatarsSection";
 import MediasSection from "./AIMedia/MediasSection";
-import Sidebar from "./AIMedia/Sidebar";
+import Sidebar, {
+  mediaSidebarSections,
+  type MediaSidebarSectionId,
+} from "./AIMedia/Sidebar";
 import SmartAssetsSection from "./AIMedia/SmartAssetsSection";
 import UGCVideoSection from "./AIMedia/UGCVideoSection";
 
@@ -26,13 +36,28 @@ export default function AIMedia() {
   const { user } = useSelector((state: RootState) => state.auth);
 
   // Get section from URL or default to creative-tools
-  const sectionFromUrl = searchParams.get("section") || "avatars";
-  const [activeSidebar, setActiveSidebar] = useState(sectionFromUrl);
+  const DEFAULT_SECTION: MediaSidebarSectionId = "avatars";
+
+  const isValidSection = useCallback(
+    (section: string | null): section is MediaSidebarSectionId =>
+      !!section &&
+      mediaSidebarSections.some(
+        (sidebarSection) => sidebarSection.id === section,
+      ),
+    [],
+  );
+
+  const sectionFromUrl = searchParams.get("section");
+  const [activeSidebar, setActiveSidebar] = useState<MediaSidebarSectionId>(
+    isValidSection(sectionFromUrl) ? sectionFromUrl : DEFAULT_SECTION,
+  );
   const [isInitialMount, setIsInitialMount] = useState(true);
+
+  const [isSidebarSheetOpen, setIsSidebarSheetOpen] = useState(false);
 
   // Update URL when sidebar changes
   const updateURL = useCallback(
-    (section: string) => {
+    (section: MediaSidebarSectionId) => {
       const params = new URLSearchParams(searchParams.toString());
       params.set("section", section);
       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
@@ -43,11 +68,11 @@ export default function AIMedia() {
   // Sync state with URL on mount and when URL changes
   useEffect(() => {
     const urlSection = searchParams.get("section");
-    if (urlSection && urlSection !== activeSidebar) {
+    if (isValidSection(urlSection) && urlSection !== activeSidebar) {
       setActiveSidebar(urlSection);
-    } else if (!urlSection && isInitialMount) {
+    } else if (!isValidSection(urlSection) && isInitialMount) {
       // Set default section in URL on initial mount if not present
-      updateURL("creative-tools");
+      updateURL(DEFAULT_SECTION);
     }
     setIsInitialMount(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -57,11 +82,11 @@ export default function AIMedia() {
   useEffect(() => {
     if (!isInitialMount) {
       const currentSection = searchParams.get("section");
-      if (currentSection !== activeSidebar) {
+      if (!isValidSection(currentSection) || currentSection !== activeSidebar) {
         updateURL(activeSidebar);
       }
     }
-  }, [activeSidebar, isInitialMount, searchParams, updateURL]);
+  }, [activeSidebar, isInitialMount, isValidSection, searchParams, updateURL]);
 
   const handleToolClick = (toolId: string) => {
     // Navigate to specific tool page
@@ -90,38 +115,72 @@ export default function AIMedia() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background text-foreground">
-      {/* Sidebar */}
-      <Sidebar
-        activeSidebar={activeSidebar}
-        setActiveSidebar={setActiveSidebar}
-      />
-
-      {/* Main Content */}
-      <div className="flex h-full flex-1 flex-col">
-        {/* Header */}
-        <div className="flex-shrink-0 border-b border-border bg-background/80 backdrop-blur-sm">
-          <div className="mx-auto max-w-7xl px-6 py-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Button
-                  onClick={() => router.push("/marketing-automation/analysis")}
-                  variant="ghost"
-                  size="icon"
-                  aria-label="Back to analysis"
-                >
-                  <ArrowLeft className="h-5 w-5" />
-                </Button>
-                <h2 className="text-lg font-semibold text-foreground">
-                  AI Media Studio
-                </h2>
-              </div>
+    <div className="bg-background flex flex-1 flex-col">
+      {/* Header */}
+      <div className="border-border bg-background/90 sticky top-0 z-10 flex h-12 items-center justify-center border-b backdrop-blur-sm md:h-16">
+        <div className="mx-auto flex h-full w-full items-center px-6">
+          <div className="flex w-full items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={() => router.push("/marketing-automation/analysis")}
+                variant="ghost"
+                size="icon"
+                aria-label="Back to analysis"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <h2 className="text-foreground text-lg font-semibold">
+                AI Media Studio
+              </h2>
             </div>
+            <div></div>
           </div>
         </div>
+      </div>
 
-        {/* Content Area */}
-        <div className="flex-1 overflow-hidden">
+      {/* Mobile Tabs */}
+      <div className="border-border bg-background/90 sticky top-12 z-10 border-b px-4 py-3 backdrop-blur-sm md:hidden">
+        <nav className="flex items-center gap-1 overflow-x-auto">
+          {mediaSidebarSections.map((section) => {
+            const Icon = section.icon;
+            const isActive = activeSidebar === section.id;
+            return (
+              <Button
+                key={section.id}
+                onClick={() => setActiveSidebar(section.id)}
+                variant={isActive ? "default" : "ghost"}
+                size="sm"
+                className={cn(
+                  "flex shrink-0 items-center gap-2 rounded-full px-2 whitespace-nowrap",
+                  isActive
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                <Icon className="h-3.5 w-3.5" />
+                <span className="text-xs font-medium">{section.label}</span>
+              </Button>
+            );
+          })}
+        </nav>
+      </div>
+
+      {/* Main Content */}
+      <div className="relative grid md:grid-cols-3 xl:grid-cols-4">
+        {/* Desktop ChatBox - Hidden on mobile */}
+        <div
+          className={cn(
+            "bg-background sticky top-16 bottom-0 left-0 hidden overflow-hidden overflow-y-auto md:block md:h-[calc(100vh-8rem)] md:border-e",
+          )}
+        >
+          <Sidebar
+            activeSidebar={activeSidebar}
+            setActiveSidebar={setActiveSidebar}
+          />
+        </div>
+
+        {/* Canvas Body - Full width on mobile, 2/3 on desktop */}
+        <div className="bg-background overflow-hidden md:col-span-2 xl:col-span-3">
           {activeSidebar === "smart-assets" || activeSidebar === "medias" ? (
             activeSidebar === "smart-assets" ? (
               <SmartAssetsSection userId={user?.id || ""} />
@@ -135,6 +194,34 @@ export default function AIMedia() {
           )}
         </div>
       </div>
+
+      {/* Mobile Sidebar Button - Floating action button */}
+      <Button
+        onClick={() => setIsSidebarSheetOpen(true)}
+        size="icon-lg"
+        className="fixed right-6 bottom-6 z-50 h-14 w-14 rounded-full shadow-lg transition-all hover:scale-110 active:scale-95 md:hidden"
+        aria-label="Open chat"
+      >
+        <AlignCenter className="h-6 w-6" />
+      </Button>
+
+      {/* Mobile Sidebar Sheet */}
+      <Sheet open={isSidebarSheetOpen} onOpenChange={setIsSidebarSheetOpen}>
+        <SheetContent
+          side="left"
+          className="w-[85vw] max-w-sm overflow-hidden p-0"
+        >
+          <SheetHeader className="sr-only">
+            <SheetTitle>AI Assistant</SheetTitle>
+          </SheetHeader>
+          <div className="h-full">
+            <Sidebar
+              activeSidebar={activeSidebar}
+              setActiveSidebar={setActiveSidebar}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

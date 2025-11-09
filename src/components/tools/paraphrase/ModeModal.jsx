@@ -79,7 +79,7 @@ const ModeModal = ({
             "fixed top-auto right-0 bottom-0 left-0 w-full max-w-none translate-x-0 translate-y-0 rounded-t-lg rounded-b-none p-0",
             "data-[state=open]:animate-in data-[state=closed]:animate-out",
             "data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom",
-            "bg-background/80 backdrop-blur-md",
+            "bg-background/90 backdrop-blur-md",
           )}
           showCloseButton={false}
         >

@@ -19,6 +19,14 @@ import { Lightbulb, Save, Users, Wand2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 // Import extracted components
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { useParams, useRouter } from "next/navigation";
 import AdPreviewModal from "./AdPreviewModal";
 import AdSetsTab from "./AdSetsTab";
@@ -33,14 +41,6 @@ import {
   SuggestionsLoadingSkeleton,
 } from "./LoadingSkeletons";
 import PersonasTab from "./PersonasTab";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 
 interface CanvasBodyProps {
   analysis: ProductAnalysis;
@@ -399,25 +399,25 @@ export default function CanvasBody({
 
   return (
     <div className="flex-1 overflow-y-auto">
-      <div className="p-8">
+      <div className="p-6">
         {/* Page Header */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="mb-2 text-3xl font-bold text-foreground">
+            <h1 className="text-foreground mb-2 text-xl font-bold md:text-3xl">
               Meta Campaign Builder
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-xs md:text-sm">
               Create and manage your Facebook & Instagram campaigns
             </p>
           </div>
           {saving && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="text-muted-foreground flex items-center gap-2 text-sm">
               <Save className="h-4 w-4 animate-pulse" />
               Saving...
             </div>
           )}
           {!saving && dataLoaded && (
-            <div className="flex items-center gap-2 text-sm text-primary">
+            <div className="text-primary flex items-center gap-2 text-sm">
               <Save className="h-4 w-4" />
               Saved
             </div>
@@ -557,7 +557,7 @@ export default function CanvasBody({
               <label className="mb-2 block text-sm font-medium">
                 Objective
               </label>
-              <select className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none">
+              <select className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-[3px] focus-visible:outline-none">
                 <option value="outcome_sales">Sales (Conversions)</option>
                 <option value="outcome_leads">Leads</option>
                 <option value="outcome_traffic">Traffic</option>
@@ -571,10 +571,7 @@ export default function CanvasBody({
               <label className="mb-2 block text-sm font-medium">
                 Daily Budget (USD)
               </label>
-              <Input
-                type="number"
-                defaultValue={100}
-              />
+              <Input type="number" defaultValue={100} />
             </div>
           </div>
 
@@ -586,10 +583,7 @@ export default function CanvasBody({
             >
               Cancel
             </Button>
-            <Button
-              onClick={createCampaign}
-              className="flex-1"
-            >
+            <Button onClick={createCampaign} className="flex-1">
               Create Campaign
             </Button>
           </div>

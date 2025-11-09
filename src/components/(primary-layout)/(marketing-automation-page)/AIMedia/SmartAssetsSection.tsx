@@ -257,152 +257,152 @@ export default function SmartAssetsSection({
 
   return (
     <div className="bg-background flex h-full flex-col">
-      {/* Header */}
-      <div className="border-border border-b p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <div>
-            <h2 className="from-primary to-primary bg-gradient-to-r bg-clip-text text-2xl font-bold text-transparent">
-              Smart Assets
-            </h2>
-            <p className="text-muted-foreground mt-1 text-sm">
-              {projectTitle} - Manage images, videos, and logos
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <Button
-              onClick={() => setShowAIGeneratorModal(true)}
-              disabled={!projectId}
-              className="flex items-center gap-2"
-            >
-              <Wand2 className="h-4 w-4" />
-              AI Generate
-            </Button>
-            <Button
-              onClick={() => setShowUploadModal(true)}
-              disabled={!projectId}
-              variant="outline"
-              className="flex items-center gap-2"
-            >
-              <Plus className="h-4 w-4" />
-              Upload
-            </Button>
-          </div>
-        </div>
-
-        {/* Type Filter */}
-        <div>
-          <Label className="mb-2 block text-xs font-medium">Asset Type</Label>
-          <div className="flex gap-2">
-            {["all", "image", "video", "logo"].map((type) => (
+      <div className="flex flex-1 flex-col p-6">
+        {/* Header */}
+        <div className="border-border border-b pb-6">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <h2 className="from-primary to-primary bg-gradient-to-r bg-clip-text text-2xl font-bold text-transparent">
+                Smart Assets
+              </h2>
+              <p className="text-muted-foreground mt-1 text-sm">
+                {projectTitle} - Manage images, videos, and logos
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
               <Button
-                key={type}
-                onClick={() =>
-                  setSelectedType(type as "all" | "image" | "video" | "logo")
-                }
-                variant={selectedType === type ? "default" : "outline"}
-                className="flex-1"
+                onClick={() => setShowAIGeneratorModal(true)}
+                disabled={!projectId}
+                className="flex items-center gap-2"
               >
-                {type.charAt(0).toUpperCase() + type.slice(1)}
+                <Wand2 className="h-4 w-4" />
+                AI Generate
               </Button>
-            ))}
+              <Button
+                onClick={() => setShowUploadModal(true)}
+                disabled={!projectId}
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                <Plus className="h-4 w-4" />
+                Upload
+              </Button>
+            </div>
+          </div>
+
+          {/* Type Filter */}
+          <div>
+            <div className="flex gap-2">
+              {["all", "image", "video", "logo"].map((type) => (
+                <Button
+                  key={type}
+                  onClick={() =>
+                    setSelectedType(type as "all" | "image" | "video" | "logo")
+                  }
+                  variant={selectedType === type ? "default" : "outline"}
+                  className="flex-1"
+                >
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* Assets Grid */}
-      <div className="flex-1 overflow-y-auto p-6">
-        {loadingAssets ? (
-          <div className="flex h-64 items-center justify-center">
-            <Loader2 className="text-primary h-8 w-8 animate-spin" />
-          </div>
-        ) : !projectId ? (
-          <div className="text-muted-foreground flex h-64 flex-col items-center justify-center">
-            <Sparkles className="mb-4 h-12 w-12 opacity-50" />
-            <p>No project selected</p>
-          </div>
-        ) : assets.length === 0 ? (
-          <div className="text-muted-foreground flex h-64 flex-col items-center justify-center">
-            <Upload className="mb-4 h-12 w-12 opacity-50" />
-            <p className="mb-2">No assets uploaded yet</p>
-            <Button
-              onClick={() => setShowUploadModal(true)}
-              variant="link"
-              className="text-sm"
-            >
-              Upload your first asset
-            </Button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-            {assets.map((asset) => (
-              <Card
-                key={asset._id}
-                className="group hover:border-primary relative cursor-pointer overflow-hidden transition-all"
-                onClick={() => setSelectedAsset(asset)}
+        {/* Assets Grid */}
+        <div className="flex-1 overflow-y-auto py-6">
+          {loadingAssets ? (
+            <div className="flex h-64 items-center justify-center">
+              <Loader2 className="text-primary h-8 w-8 animate-spin" />
+            </div>
+          ) : !projectId ? (
+            <div className="text-muted-foreground flex h-64 flex-col items-center justify-center">
+              <Sparkles className="mb-4 h-12 w-12 opacity-50" />
+              <p>No project selected</p>
+            </div>
+          ) : assets.length === 0 ? (
+            <div className="text-muted-foreground flex h-64 flex-col items-center justify-center">
+              <Upload className="mb-4 h-12 w-12 opacity-50" />
+              <p className="mb-2">No assets uploaded yet</p>
+              <Button
+                onClick={() => setShowUploadModal(true)}
+                variant="link"
+                className="text-sm"
               >
-                {/* Thumbnail */}
-                <div className="bg-muted flex aspect-square items-center justify-center overflow-hidden">
-                  {asset.type === "video" ? (
-                    <div className="relative h-full w-full">
-                      <video
+                Upload your first asset
+              </Button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              {assets.map((asset) => (
+                <Card
+                  key={asset._id}
+                  className="group hover:border-primary relative cursor-pointer overflow-hidden transition-all"
+                  onClick={() => setSelectedAsset(asset)}
+                >
+                  {/* Thumbnail */}
+                  <div className="bg-muted flex aspect-square items-center justify-center overflow-hidden">
+                    {asset.type === "video" ? (
+                      <div className="relative h-full w-full">
+                        <video
+                          src={asset.imagekitUrl}
+                          className="h-full w-full object-cover"
+                          muted
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                          <FileVideo className="text-foreground h-8 w-8" />
+                        </div>
+                      </div>
+                    ) : (
+                      <img
                         src={asset.imagekitUrl}
-                        className="h-full w-full object-cover"
-                        muted
+                        alt={asset.name}
+                        className={cn(
+                          "h-full w-full",
+                          asset.type === "logo"
+                            ? "object-contain p-4"
+                            : "object-cover",
+                        )}
                       />
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                        <FileVideo className="text-foreground h-8 w-8" />
+                    )}
+                  </div>
+
+                  {/* Info */}
+                  <CardContent className="p-3">
+                    <div className="mb-2 flex items-start gap-2">
+                      <div className="text-primary mt-0.5">
+                        {getAssetIcon(asset.type)}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-foreground truncate text-sm font-medium">
+                          {asset.name}
+                        </p>
+                        <p className="text-muted-foreground text-xs">
+                          {formatFileSize(asset.fileSize)}
+                        </p>
                       </div>
                     </div>
-                  ) : (
-                    <img
-                      src={asset.imagekitUrl}
-                      alt={asset.name}
-                      className={cn(
-                        "h-full w-full",
-                        asset.type === "logo"
-                          ? "object-contain p-4"
-                          : "object-cover",
-                      )}
-                    />
-                  )}
-                </div>
+                    <span className="bg-muted text-foreground inline-block rounded px-2 py-1 text-xs font-medium">
+                      {asset.type}
+                    </span>
+                  </CardContent>
 
-                {/* Info */}
-                <CardContent className="p-3">
-                  <div className="mb-2 flex items-start gap-2">
-                    <div className="text-primary mt-0.5">
-                      {getAssetIcon(asset.type)}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-foreground truncate text-sm font-medium">
-                        {asset.name}
-                      </p>
-                      <p className="text-muted-foreground text-xs">
-                        {formatFileSize(asset.fileSize)}
-                      </p>
-                    </div>
-                  </div>
-                  <span className="bg-muted text-foreground inline-block rounded px-2 py-1 text-xs font-medium">
-                    {asset.type}
-                  </span>
-                </CardContent>
-
-                {/* Delete Button */}
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDelete(asset);
-                  }}
-                  variant="destructive"
-                  size="icon-sm"
-                  className="absolute top-2 right-2 opacity-0 transition-opacity group-hover:opacity-100"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </Card>
-            ))}
-          </div>
-        )}
+                  {/* Delete Button */}
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(asset);
+                    }}
+                    variant="destructive"
+                    size="icon-sm"
+                    className="absolute top-2 right-2 opacity-0 transition-opacity group-hover:opacity-100"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Upload Modal */}

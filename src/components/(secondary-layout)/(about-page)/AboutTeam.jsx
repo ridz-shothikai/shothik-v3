@@ -66,12 +66,12 @@ export default function AboutTeam() {
           </CarouselContent>
 
           {/* Left Arrow */}
-          <CarouselPrevious className="bg-background/80 hover:bg-accent/90 absolute top-1/2 left-6 z-10 -translate-y-1/2 rounded-full p-2 shadow-md">
+          <CarouselPrevious className="bg-background/90 hover:bg-accent/90 absolute top-1/2 left-6 z-10 -translate-y-1/2 rounded-full p-2 shadow-md">
             <ChevronLeft className="text-foreground h-5 w-5" />
           </CarouselPrevious>
 
           {/* Right Arrow */}
-          <CarouselNext className="bg-background/80 hover:bg-accent/90 absolute top-1/2 right-6 z-10 -translate-y-1/2 rounded-full p-2 shadow-md">
+          <CarouselNext className="bg-background/90 hover:bg-accent/90 absolute top-1/2 right-6 z-10 -translate-y-1/2 rounded-full p-2 shadow-md">
             <ChevronRight className="text-foreground h-5 w-5" />
           </CarouselNext>
         </Carousel>

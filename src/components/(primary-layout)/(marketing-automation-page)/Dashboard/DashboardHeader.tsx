@@ -16,7 +16,7 @@ export default function DashboardHeader({
   const router = useRouter();
 
   return (
-    <div className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-sm">
+    <div className="border-border bg-background/90 sticky top-0 z-10 border-b backdrop-blur-sm">
       <div className="mx-auto max-w-[1400px] px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -28,10 +28,10 @@ export default function DashboardHeader({
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">
+              <h1 className="text-foreground text-2xl font-bold">
                 Campaign Dashboard
               </h1>
-              <p className="mt-0.5 text-sm text-muted-foreground">
+              <p className="text-muted-foreground mt-0.5 text-sm">
                 Performance insights and AI recommendations
               </p>
             </div>
