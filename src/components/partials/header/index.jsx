@@ -53,24 +53,32 @@ const featuresMenuContent = {
   writing: {
     title: "Writing",
     items: [
-      { label: "Paraphraser", icon: Edit, href: "/paraphrase" },
-      { label: "AI Detector", icon: Brain, href: "/ai-detector" },
-      { label: "Humanizer", icon: Sparkles, href: "/humanize-gpt" },
-      { label: "Grammar Checker", icon: CheckCheck, href: "/grammar-checker" },
-      { label: "Summarizer", icon: CheckCheck, href: "/summarize" },
-      { label: "Translator", icon: Languages, href: "/translator" },
-      { label: "Plagiarism", icon: FileText, href: "/plagiarism-checker" },
+      { label: "Paraphraser", icon: Edit, href: "/features/#paraphrase" },
+      { label: "AI Detector", icon: Brain, href: "/features/#ai-detector" },
+      { label: "Humanizer", icon: Sparkles, href: "/features/#humanize-gpt" },
+      {
+        label: "Grammar Checker",
+        icon: CheckCheck,
+        href: "/features/#grammar-checker",
+      },
+      { label: "Summarizer", icon: CheckCheck, href: "/features/#summarize" },
+      { label: "Translator", icon: Languages, href: "/features/#translator" },
+      {
+        label: "Plagiarism",
+        icon: FileText,
+        href: "/features/#plagiarism-checker",
+      },
     ],
   },
   agents: {
     title: "Agents",
     items: [
-      { label: "AI Slides", icon: Presentation, href: "/agents" },
-      { label: "Deep Research", icon: Beaker, href: "/agents" },
+      { label: "AI Slides", icon: Presentation, href: "/features/#ai-slides" },
+      { label: "Deep Research", icon: Beaker, href: "/features/#deep-research" },
       {
         label: "Data Analysis",
         icon: BarChart3,
-        href: "/agents",
+        href: "/features/#data-analysis",
       },
     ],
   },
@@ -80,44 +88,44 @@ const featuresMenuContent = {
       {
         label: "Product / Service Analysis",
         icon: FileText,
-        href: "/marketing-automation",
+        href: "/features/#marketing-automation",
       },
       {
         label: "AI Strategy Generation",
         icon: Lightbulb,
-        href: "/marketing-automation",
+        href: "/features/#marketing-automation",
       },
-      { label: "AI Ad Sets", icon: Images, href: "/marketing-automation" },
+      { label: "AI Ad Sets", icon: Images, href: "/features/#marketing-automation" },
       {
         label: "AI Ad Creatives",
         icon: Palette,
-        href: "/marketing-automation",
+        href: "/features/#marketing-automation",
       },
       {
         label: "AI Ad Copies & Ads",
         icon: FileText,
-        href: "/marketing-automation",
+        href: "/features/#marketing-automation",
       },
       {
         label: "AI-Powered Editing",
         icon: Brush,
-        href: "/marketing-automation",
+        href: "/features/#marketing-automation",
       },
-      { label: "AI Media Canvas", icon: Image, href: "/marketing-automation" },
+      { label: "AI Media Canvas", icon: Image, href: "/features/#marketing-automation" },
       {
         label: "Ad Launch & Campaigns",
         icon: Rocket,
-        href: "/marketing-automation",
+        href: "/features/#marketing-automation",
       },
       {
         label: "Mindmap & Reports",
         icon: GitBranch,
-        href: "/marketing-automation",
+        href: "/features/#marketing-automation",
       },
       {
         label: "AI Optimization",
         icon: TrendingUp,
-        href: "/marketing-automation",
+        href: "/features/#marketing-automation",
       },
     ],
   },
@@ -195,7 +203,7 @@ export default function Header({ className, layout }) {
                     onMouseEnter={() => setFeaturesOpen(true)}
                     data-testid="nav-features"
                   >
-                    Features
+                    <a href="/features">Features</a>
                     <ChevronDown className="h-4 w-4" />
                   </Button>
                 </PopoverTrigger>

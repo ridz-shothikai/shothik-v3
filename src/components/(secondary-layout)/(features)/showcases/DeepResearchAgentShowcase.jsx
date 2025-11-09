@@ -1468,7 +1468,7 @@ This demonstrates the power of AI-driven multi-step investigation.`;
   }
 
   return (
-    <div className="relative w-full bg-white">
+    <div className="relative w-full">
       <div
         className="flex origin-top scale-90 rounded-xl border border-gray-200 bg-white shadow-2xl"
         style={{
@@ -1479,8 +1479,8 @@ This demonstrates the power of AI-driven multi-step investigation.`;
         }}
       >
         {/* Left sidebar - Process overview */}
-        <div className="w-80 border-r border-gray-200 bg-white">
-          <div className="border-b border-gray-200 bg-white px-4 py-3">
+        <div className="w-80 rounded-xl border-r border-gray-200 bg-white">
+          <div className="rounded-xl border-b border-gray-200 bg-white px-4 py-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="h-3 w-3 rounded-full bg-gray-400"></div>
@@ -1677,9 +1677,9 @@ This demonstrates the power of AI-driven multi-step investigation.`;
         </div>
 
         {/* Right side - Main content */}
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 flex-col rounded-xl">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-gray-200 bg-white px-6 py-4">
+          <div className="flex items-center justify-between rounded-xl border-b border-gray-200 bg-white px-6 py-4">
             <h2 className="text-lg font-semibold text-gray-900">
               {researchPhases[currentPhase].name}
             </h2>
@@ -1697,7 +1697,7 @@ This demonstrates the power of AI-driven multi-step investigation.`;
           </div>
 
           {/* Footer input area */}
-          <div className="no-drag border-t border-gray-200 bg-white p-4">
+          <div className="no-drag rounded-xl border-t border-gray-200 bg-white p-4">
             <div className="flex items-center space-x-3">
               <input
                 type="text"
