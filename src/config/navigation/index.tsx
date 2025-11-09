@@ -12,16 +12,15 @@ const icon = (name: string): ReactElement => (
 
 export const NAV_ICONS = {
   paraphrase: icon("paraphrase"),
-  humanize: icon("bypass-svgrepo-com"),
-  ai_detector: icon("ai_detector_icon"),
+  humanize: icon("humanize"),
+  ai_detector: icon("ai_detector"),
   plagiarism_checker: icon("plagiarism_checker"),
   summarize: icon("summarize"),
   grammar: icon("grammar"),
   translator: icon("translator"),
   agents: icon("agents"),
   user: icon("user"),
-  agent: icon("ai-brain"),
-  marketing_automation: icon("marketing-automation"),
+  marketing_automation: icon("marketing_automation"),
 };
 
 export const NAV_TOOLS = [
@@ -74,7 +73,7 @@ export const NAV_TOOLS = [
     iconColor: "#A07EFB",
   },
   {
-    icon: NAV_ICONS.agent,
+    icon: NAV_ICONS.agents,
     title: "Agent",
     description: "AI Agent Platform",
     label: null,
@@ -123,7 +122,7 @@ export const NAV_ITEMS = [
       {
         title: "Agents",
         path: "/agents",
-        icon: NAV_ICONS.agent,
+        icon: NAV_ICONS.agents,
         iconColor: "#1976D2",
       },
       {

@@ -98,13 +98,13 @@ const featuresMenuContent = {
         href: "#ai-ad-copies",
       },
       {
-        label: "AI-Powered Editing (Meta Vibe Canvas)",
+        label: "AI-Powered Editing",
         icon: Brush,
         href: "#vibe-canvas",
       },
       { label: "AI Media Canvas", icon: Image, href: "#media-canvas" },
       {
-        label: "Ad Launch & Campaign Execution",
+        label: "Ad Launch & Campaigns",
         icon: Rocket,
         href: "#ad-launch",
       },

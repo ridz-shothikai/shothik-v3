@@ -62,10 +62,7 @@ const Navigations = ({
           {isLoading ? (
             <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
           ) : (
-            <SvgColor
-              src="/navbar/bypass-svgrepo-com.svg"
-              className="mr-2 h-5 w-5"
-            />
+            <SvgColor src="/navbar/humanize.svg" className="mr-2 h-5 w-5" />
           )}
           {!hasOutput ? "Humanize" : "Re humanize"}
         </Button>
