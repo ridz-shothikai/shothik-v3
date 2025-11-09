@@ -8,7 +8,15 @@ export const authApiSlice = createApi({
     let result = await baseQuery(args, api, extraOptions);
     if (result?.error?.status === 401) {
       api.dispatch(logout());
-      localStorage.clear();
+      if (typeof window !== "undefined") {
+        ["accessToken", "sheetai-token", "research-token"].forEach((key) => {
+          try {
+            localStorage.removeItem(key);
+          } catch (error) {
+            console.error(`Failed to remove ${key} from localStorage`, error);
+          }
+        });
+      }
     }
     return result;
   },

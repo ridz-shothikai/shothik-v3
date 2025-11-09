@@ -1,3 +1,5 @@
+"use client";
+
 import AuthApplier from "@/components/appliers/AuthApplier";
 import AuthSuccessPopup from "@/components/auth/AuthSuccessPopoup";
 import VerifyEmailAlert from "@/components/auth/VerifyEmailAlert";

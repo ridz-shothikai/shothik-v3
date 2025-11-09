@@ -39,6 +39,7 @@ const authSlice = createSlice({
       state.user = {};
       localStorage.removeItem("accessToken");
       localStorage.removeItem("sheetai-token");
+      localStorage.removeItem("research-token");
     },
     getUser: (state, action) => {
       state.user = action.payload;
