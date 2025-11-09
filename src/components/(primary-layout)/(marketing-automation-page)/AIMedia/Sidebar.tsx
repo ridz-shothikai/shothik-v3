@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import {
   FileVideo,
   Film,
@@ -5,8 +7,6 @@ import {
   Users as UsersIcon,
   Video,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 interface SidebarProps {
   activeSidebar: string;
@@ -51,28 +51,15 @@ export default function Sidebar({
   ];
 
   return (
-    <div className="flex h-full w-64 flex-col border-r border-border bg-card/50">
-      {/* Logo */}
-      <div className="flex-shrink-0 border-b border-border p-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-20 w-20 items-center justify-center rounded-lg">
-            <img
-              src="/Logo.png"
-              alt="Shothik AI Logo"
-              className="h-full w-full object-contain"
-            />
-          </div>
-        </div>
-      </div>
-
+    <div className="border-border bg-card/50 flex h-full w-full flex-col border-r">
       {/* User Info */}
-      <div className="flex-shrink-0 border-b border-border p-3">
+      <div className="border-border flex-shrink-0 border-b p-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground">
+          <div className="bg-primary text-primary-foreground flex h-10 w-10 items-center justify-center rounded-full font-bold">
             R
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium text-foreground">
+            <p className="text-foreground truncate text-sm font-medium">
               Rashaduzamman Rian's...
             </p>
           </div>
@@ -90,10 +77,10 @@ export default function Sidebar({
                 onClick={() => setActiveSidebar(section.id)}
                 variant={activeSidebar === section.id ? "default" : "ghost"}
                 className={cn(
-                  "flex w-full items-center gap-3 justify-start",
+                  "flex w-full items-center justify-start gap-3",
                   activeSidebar === section.id
                     ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 <Icon className="h-5 w-5" />

@@ -64,135 +64,137 @@ export default function MediasSection({ userId }: MediasSectionProps) {
   return (
     <div className="bg-background flex h-full flex-col">
       {/* Header */}
-      <div className="border-border border-b p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-foreground mb-2 text-2xl font-bold">
-              AI Generated Medias
-            </h1>
-            <p className="text-muted-foreground text-sm">
-              View all AI-generated videos for this project
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-muted-foreground text-sm">
-              {medias.length} {medias.length === 1 ? "video" : "videos"}
-            </span>
+      <div className="p-6">
+        <div className="border-border border-b pb-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-foreground mb-2 text-2xl font-bold">
+                AI Generated Medias
+              </h1>
+              <p className="text-muted-foreground text-sm">
+                View all AI-generated videos for this project
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground text-sm">
+                {medias.length} {medias.length === 1 ? "video" : "videos"}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Content */}
-      <div className="flex-1 overflow-y-auto p-6">
-        {loading ? (
-          <div className="flex h-64 items-center justify-center">
-            <Loader2 className="text-primary h-8 w-8 animate-spin" />
-          </div>
-        ) : !projectId ? (
-          <div className="text-muted-foreground flex h-64 flex-col items-center justify-center">
-            <FileVideo className="mb-4 h-12 w-12 opacity-50" />
-            <p>No project selected</p>
-          </div>
-        ) : medias.length === 0 ? (
-          <div className="text-muted-foreground flex h-64 flex-col items-center justify-center">
-            <FileVideo className="mb-4 h-12 w-12 opacity-50" />
-            <p className="mb-2">No videos generated yet</p>
-            <p className="text-sm">
-              Generate videos from the Creative Tools section
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {medias.map((media) => (
-              <Card
-                key={media._id}
-                className="group hover:border-primary relative cursor-pointer overflow-hidden transition-all"
-                onClick={() => setSelectedMedia(media)}
-              >
-                {/* Thumbnail */}
-                <div className="bg-muted relative flex aspect-video items-center justify-center overflow-hidden">
-                  {media.status === "completed" && media.url ? (
-                    <>
-                      {media.thumbnail ? (
-                        <img
-                          src={media.thumbnail}
-                          alt="Video thumbnail"
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <video
-                          src={media.url}
-                          className="h-full w-full object-cover"
-                          muted
-                        />
-                      )}
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity group-hover:opacity-100">
-                        <Play className="text-foreground h-12 w-12" />
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto py-6">
+          {loading ? (
+            <div className="flex h-64 items-center justify-center">
+              <Loader2 className="text-primary h-8 w-8 animate-spin" />
+            </div>
+          ) : !projectId ? (
+            <div className="text-muted-foreground flex h-64 flex-col items-center justify-center">
+              <FileVideo className="mb-4 h-12 w-12 opacity-50" />
+              <p>No project selected</p>
+            </div>
+          ) : medias.length === 0 ? (
+            <div className="text-muted-foreground flex h-64 flex-col items-center justify-center">
+              <FileVideo className="mb-4 h-12 w-12 opacity-50" />
+              <p className="mb-2">No videos generated yet</p>
+              <p className="text-sm">
+                Generate videos from the Creative Tools section
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {medias.map((media) => (
+                <Card
+                  key={media._id}
+                  className="group hover:border-primary relative cursor-pointer overflow-hidden transition-all"
+                  onClick={() => setSelectedMedia(media)}
+                >
+                  {/* Thumbnail */}
+                  <div className="bg-muted relative flex aspect-video items-center justify-center overflow-hidden">
+                    {media.status === "completed" && media.url ? (
+                      <>
+                        {media.thumbnail ? (
+                          <img
+                            src={media.thumbnail}
+                            alt="Video thumbnail"
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <video
+                            src={media.url}
+                            className="h-full w-full object-cover"
+                            muted
+                          />
+                        )}
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity group-hover:opacity-100">
+                          <Play className="text-foreground h-12 w-12" />
+                        </div>
+                      </>
+                    ) : media.status === "pending" ? (
+                      <div className="flex flex-col items-center gap-2">
+                        <Loader2 className="text-primary h-8 w-8 animate-spin" />
+                        <p className="text-muted-foreground text-xs">
+                          Processing...
+                        </p>
                       </div>
-                    </>
-                  ) : media.status === "pending" ? (
-                    <div className="flex flex-col items-center gap-2">
-                      <Loader2 className="text-primary h-8 w-8 animate-spin" />
-                      <p className="text-muted-foreground text-xs">
-                        Processing...
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center gap-2">
-                      <FileVideo className="text-destructive h-8 w-8" />
-                      <p className="text-destructive text-xs">Failed</p>
-                    </div>
-                  )}
-                </div>
-
-                {/* Info */}
-                <CardContent className="p-3">
-                  <div className="mb-2 flex items-start justify-between gap-2">
-                    <div className="min-w-0 flex-1">
-                      <p className="text-foreground truncate text-sm font-medium">
-                        {getTypeLabel(media.type)}
-                      </p>
-                      <p className="text-muted-foreground text-xs">
-                        {new Date(media.createdAt).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <span
-                      className={cn(
-                        "inline-block rounded border px-2 py-1 text-xs font-medium",
-                        getStatusColor(media.status),
-                      )}
-                    >
-                      {media.status}
-                    </span>
+                    ) : (
+                      <div className="flex flex-col items-center gap-2">
+                        <FileVideo className="text-destructive h-8 w-8" />
+                        <p className="text-destructive text-xs">Failed</p>
+                      </div>
+                    )}
                   </div>
-                  <p className="text-muted-foreground truncate text-xs">
-                    Request ID: {media.requestId}
-                  </p>
-                </CardContent>
 
-                {/* Delete Button */}
-                {media.status === "completed" && (
-                  <Button
-                    onClick={async (e) => {
-                      e.stopPropagation();
-                      if (
-                        confirm("Are you sure you want to delete this video?")
-                      ) {
-                        await deleteMediaMutation.mutateAsync(media._id);
-                        refetchMedias();
-                      }
-                    }}
-                    variant="destructive"
-                    size="icon-sm"
-                    className="absolute top-2 right-2 opacity-0 transition-opacity group-hover:opacity-100"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                )}
-              </Card>
-            ))}
-          </div>
-        )}
+                  {/* Info */}
+                  <CardContent className="p-3">
+                    <div className="mb-2 flex items-start justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <p className="text-foreground truncate text-sm font-medium">
+                          {getTypeLabel(media.type)}
+                        </p>
+                        <p className="text-muted-foreground text-xs">
+                          {new Date(media.createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <span
+                        className={cn(
+                          "inline-block rounded border px-2 py-1 text-xs font-medium",
+                          getStatusColor(media.status),
+                        )}
+                      >
+                        {media.status}
+                      </span>
+                    </div>
+                    <p className="text-muted-foreground truncate text-xs">
+                      Request ID: {media.requestId}
+                    </p>
+                  </CardContent>
+
+                  {/* Delete Button */}
+                  {media.status === "completed" && (
+                    <Button
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        if (
+                          confirm("Are you sure you want to delete this video?")
+                        ) {
+                          await deleteMediaMutation.mutateAsync(media._id);
+                          refetchMedias();
+                        }
+                      }}
+                      variant="destructive"
+                      size="icon-sm"
+                      className="absolute top-2 right-2 opacity-0 transition-opacity group-hover:opacity-100"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  )}
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Media Detail Modal */}

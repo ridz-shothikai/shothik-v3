@@ -399,9 +399,9 @@ export default function CanvasBody({
 
   return (
     <div className="flex-1 overflow-y-auto">
-      <div className="p-8">
+      <div className="p-6">
         {/* Page Header */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-6 flex items-center justify-between">
           <div>
             <h1 className="text-foreground mb-2 text-xl font-bold md:text-3xl">
               Meta Campaign Builder

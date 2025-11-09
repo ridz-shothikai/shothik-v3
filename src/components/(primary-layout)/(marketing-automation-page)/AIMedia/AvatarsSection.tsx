@@ -211,7 +211,7 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
   }
 
   return (
-    <div>
+    <div className="p-6">
       <h2 className="text-foreground mb-8 text-3xl font-bold">Avatars</h2>
 
       {/* Custom Avatar */}
@@ -241,7 +241,7 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
             onClick={() => setActiveTab("realistic")}
             variant="ghost"
             className={cn(
-              "px-4 py-3 font-medium transition-colors",
+              "rounded-b-none px-4 py-3 font-medium transition-colors",
               activeTab === "realistic"
                 ? "border-primary text-foreground border-b-2"
                 : "text-muted-foreground hover:text-foreground",
@@ -253,7 +253,7 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
             onClick={() => setActiveTab("styled")}
             variant="ghost"
             className={cn(
-              "px-4 py-3 font-medium transition-colors",
+              "rounded-b-none px-4 py-3 font-medium transition-colors",
               activeTab === "styled"
                 ? "border-primary text-foreground border-b-2"
                 : "text-muted-foreground hover:text-foreground",

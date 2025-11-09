@@ -207,26 +207,24 @@ export default function AIShortsPage() {
   };
 
   return (
-    <div className="bg-background text-foreground min-h-screen">
+    <div className="bg-background text-foreground min-h-screen p-6">
       {/* Header */}
-      <div className="border-border bg-background/80 sticky top-0 z-10 border-b backdrop-blur-sm">
-        <div className="mx-auto max-w-7xl px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-foreground text-2xl font-bold">
-                AI Shorts Generator
-              </h1>
-              <p className="text-muted-foreground mt-1 text-sm">
-                Create engaging short-form videos for TikTok, Instagram Reels &
-                YouTube Shorts
-              </p>
-            </div>
+      <div className="border-border border-b pb-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-foreground text-2xl font-bold">
+              AI Shorts Generator
+            </h1>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Create engaging short-form videos for TikTok, Instagram Reels &
+              YouTube Shorts
+            </p>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="mx-auto max-w-7xl px-6 py-6">
+      <div className="mx-auto py-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Left Column - Settings */}
           <div className="space-y-6">
@@ -248,7 +246,7 @@ export default function AIShortsPage() {
                       key={p.id}
                       onClick={() => setAspectRatio(p.id as any)}
                       variant={aspectRatio === p.id ? "default" : "outline"}
-                      className="flex flex-col"
+                      className="flex h-auto flex-col gap-0.5 self-stretch py-1"
                     >
                       <div>{p.label}</div>
                       <div className="text-xs opacity-75">{p.desc}</div>

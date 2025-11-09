@@ -280,7 +280,7 @@ Would you like me to explain the personas, show you the ad concepts, or help you
             Please complete a URL analysis first.
           </p>
           <Button
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/marketing-automation/analysis")}
             className="inline-flex items-center gap-2"
           >
             <ArrowLeft className="h-5 w-5" />
