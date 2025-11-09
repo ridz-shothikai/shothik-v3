@@ -1,12 +1,25 @@
-import type { Ad } from "@/types/campaign";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Card, CardContent } from "@/components/ui/card";
+import type { Ad } from "@/types/campaign";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Facebook,
+  Globe,
+  Heart,
+  Instagram,
+  MessageCircle,
+  MoreHorizontal,
+  Play,
+  Send,
+  Smartphone,
+} from "lucide-react";
 
 interface AdPreviewModalProps {
   previewAd: Ad | null;
@@ -21,7 +34,7 @@ export default function AdPreviewModal({
 
   return (
     <Dialog open={!!previewAd} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-[90vh] w-full overflow-y-auto md:max-w-6xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">
             Ad Preview: {previewAd.headline}
@@ -29,17 +42,17 @@ export default function AdPreviewModal({
         </DialogHeader>
 
         {/* Format and Placement Info */}
-        <Card className="mb-6 p-4">
-          <CardContent className="flex flex-wrap gap-4 text-sm p-0">
+        <Card className="mb-2 p-4">
+          <CardContent className="flex flex-wrap gap-4 p-0 text-sm">
             <div>
               <span className="text-muted-foreground">Format: </span>
-              <span className="font-semibold text-foreground">
+              <span className="text-foreground font-semibold">
                 {previewAd.format}
               </span>
             </div>
             <div>
               <span className="text-muted-foreground">Placements: </span>
-              <span className="font-semibold text-foreground">
+              <span className="text-foreground font-semibold">
                 {previewAd.recommended_placements?.join(", ") || "Automatic"}
               </span>
             </div>
@@ -47,64 +60,69 @@ export default function AdPreviewModal({
         </Card>
 
         {/* Preview Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[60vh] overflow-y-auto pr-2">
+        <div className="grid max-h-[59vh] grid-cols-1 gap-6 overflow-y-auto md:grid-cols-2 lg:grid-cols-3">
           {/* Facebook Feed Preview */}
           {(previewAd.recommended_placements?.includes("FACEBOOK_FEED") ||
             previewAd.recommended_placements?.includes("AUTOMATIC") ||
             !previewAd.recommended_placements) && (
-            <div className="space-y-2">
-              <h3 className="text-foreground font-semibold text-sm flex items-center gap-2">
-                <span className="text-primary">📘</span> Facebook Feed
+            <div className="flex flex-col space-y-2 self-stretch py-2">
+              <h3 className="text-foreground flex items-center gap-2 text-sm font-semibold">
+                <span className="text-primary">
+                  <Facebook size={20} />
+                </span>
+                Facebook Feed
               </h3>
-              <Card className="overflow-hidden shadow-xl">
+              <Card className="flex flex-2 flex-col gap-0 overflow-hidden py-0 shadow-xl">
                 {/* Facebook Header */}
-                <CardContent className="p-3 border-b">
+                <CardContent className="border-b px-2 py-2">
                   <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                      <span className="text-primary-foreground text-sm font-bold">A</span>
+                    <div className="bg-primary flex h-10 w-10 items-center justify-center rounded-full">
+                      <span className="text-primary-foreground text-sm font-bold">
+                        A
+                      </span>
                     </div>
                     <div>
-                      <div className="font-semibold text-sm text-foreground">
+                      <div className="text-foreground text-sm font-semibold">
                         Sponsored
                       </div>
-                      <div className="text-xs text-muted-foreground">
-                        Sponsored · 🌍
+                      <div className="text-muted-foreground flex items-center gap-1 text-xs">
+                        Sponsored · <Globe size={12} />
                       </div>
                     </div>
                   </div>
                 </CardContent>
 
                 {/* Primary Text */}
-                <CardContent className="p-3 text-sm text-foreground">
+                <CardContent className="text-foreground px-2 py-2 text-sm">
                   {previewAd.primary_text}
                 </CardContent>
 
                 {/* Image/Video Placeholder */}
                 <div
-                  className={`bg-primary flex items-center justify-center text-primary-foreground font-bold ${
+                  className={`bg-primary text-primary-foreground flex flex-1 items-center justify-center font-bold ${
                     previewAd.format === "SHORT_VIDEO" ||
                     previewAd.format === "VIDEO"
                       ? "h-96"
                       : previewAd.format === "STORY"
-                      ? "h-[500px]"
-                      : "h-80"
+                        ? "h-[500px]"
+                        : "h-80"
                   }`}
                 >
                   {previewAd.format === "CAROUSEL" ? (
-                    <div className="flex items-center gap-2">
-                      <span>◀</span>
+                    <div className="flex items-center gap-4">
+                      <ChevronLeft size={32} />
                       <span>CAROUSEL</span>
-                      <span>▶</span>
+                      <ChevronRight size={32} />
                     </div>
                   ) : previewAd.format === "VIDEO" ||
                     previewAd.format === "LONG_VIDEO" ? (
                     <div className="text-center">
-                      <div className="text-4xl mb-2">▶</div>
+                      <Play size={48} className="mx-auto mb-2" />
                       <div>VIDEO</div>
                     </div>
                   ) : previewAd.format === "SHORT_VIDEO" ? (
                     <div className="text-center">
-                      <div className="text-4xl mb-2">▶</div>
+                      <Play size={48} className="mx-auto mb-2" />
                       <div>SHORT VIDEO</div>
                     </div>
                   ) : (
@@ -113,14 +131,14 @@ export default function AdPreviewModal({
                 </div>
 
                 {/* Headline and CTA */}
-                <CardContent className="p-3 border-t">
-                  <div className="font-semibold text-sm mb-1">
+                <CardContent className="border-t p-3">
+                  <div className="mb-1 text-sm font-semibold">
                     {previewAd.headline}
                   </div>
-                  <div className="text-xs text-muted-foreground mb-2">
+                  <div className="text-muted-foreground mb-2 text-xs">
                     {previewAd.description}
                   </div>
-                  <Button variant="secondary" className="w-full">
+                  <Button className="w-full">
                     {previewAd.cta?.replace(/_/g, " ") || "Learn More"}
                   </Button>
                 </CardContent>
@@ -132,32 +150,37 @@ export default function AdPreviewModal({
           {(previewAd.recommended_placements?.includes("INSTAGRAM_FEED") ||
             previewAd.recommended_placements?.includes("AUTOMATIC") ||
             !previewAd.recommended_placements) && (
-            <div className="space-y-2">
-              <h3 className="text-foreground font-semibold text-sm flex items-center gap-2">
-                <span className="bg-primary rounded-lg p-1">
-                  📷
-                </span>{" "}
+            <div className="flex flex-col space-y-2 self-stretch py-2">
+              <h3 className="text-foreground flex items-center gap-2 text-sm font-semibold">
+                <span className="text-primary">
+                  <Instagram size={20} />
+                </span>
                 Instagram Feed
               </h3>
-              <Card className="overflow-hidden shadow-xl">
+              <Card className="flex flex-2 flex-col gap-0 overflow-hidden py-0 shadow-xl">
                 {/* Instagram Header */}
-                <CardContent className="p-3 border-b flex items-center justify-between">
+                <CardContent className="flex items-center justify-between border-b px-2 py-2">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                      <span className="text-primary-foreground text-xs">📷</span>
+                    <div className="bg-primary flex h-10 w-10 items-center justify-center rounded-full">
+                      <span className="text-primary-foreground text-xs">A</span>
                     </div>
                     <div>
-                      <div className="font-semibold text-sm text-foreground">
+                      <div className="text-foreground text-sm font-semibold">
                         Sponsored
+                      </div>
+                      <div className="text-muted-foreground flex items-center gap-1 text-xs">
+                        Sponsored · <Globe size={12} />
                       </div>
                     </div>
                   </div>
-                  <div className="text-xl text-muted-foreground">⋯</div>
+                  <div className="text-muted-foreground">
+                    <MoreHorizontal size={20} />
+                  </div>
                 </CardContent>
 
                 {/* Image/Video Placeholder */}
                 <div
-                  className={`bg-primary flex items-center justify-center text-primary-foreground font-bold ${
+                  className={`bg-primary text-primary-foreground flex flex-1 items-center justify-center font-bold ${
                     previewAd.format === "SHORT_VIDEO" ||
                     previewAd.format === "VIDEO"
                       ? "h-96"
@@ -170,7 +193,7 @@ export default function AdPreviewModal({
                     previewAd.format === "LONG_VIDEO" ||
                     previewAd.format === "SHORT_VIDEO" ? (
                     <div className="text-center">
-                      <div className="text-4xl mb-2">▶</div>
+                      <Play size={48} className="mx-auto mb-2" />
                       <div>VIDEO</div>
                     </div>
                   ) : (
@@ -180,15 +203,15 @@ export default function AdPreviewModal({
 
                 {/* Instagram Actions */}
                 <CardContent className="p-3">
-                  <div className="flex gap-4 mb-2 text-2xl">
-                    <span>♥</span>
-                    <span>💬</span>
-                    <span>✈</span>
+                  <div className="mb-2 flex gap-4">
+                    <Heart size={24} />
+                    <MessageCircle size={24} />
+                    <Send size={24} />
                   </div>
-                  <div className="font-semibold text-sm mb-1">
+                  <div className="mb-1 text-sm font-semibold">
                     {previewAd.headline}
                   </div>
-                  <div className="text-sm mb-2">
+                  <div className="mb-2 text-sm">
                     {previewAd.primary_text?.substring(0, 100)}
                     {(previewAd.primary_text?.length || 0) > 100 && "... more"}
                   </div>
@@ -206,35 +229,47 @@ export default function AdPreviewModal({
             previewAd.format === "STORY" ||
             previewAd.recommended_placements?.includes("AUTOMATIC") ||
             !previewAd.recommended_placements) && (
-            <div className="space-y-2">
-              <h3 className="text-foreground font-semibold text-sm flex items-center gap-2">
-                <span>📱</span> Stories
+            <div className="flex flex-col space-y-2 self-stretch py-2">
+              <h3 className="text-foreground flex items-center gap-2 text-sm font-semibold">
+                <span className="text-primary">
+                  <Smartphone size={20} />
+                </span>
+                Stories
               </h3>
-              <div className="bg-primary rounded-2xl overflow-hidden shadow-xl h-[600px] relative">
+              <div className="bg-primary relative h-[600px] overflow-hidden rounded-2xl shadow-xl">
                 {/* Story Content */}
-                <div className="absolute inset-0 flex flex-col justify-between p-4 text-primary-foreground">
+                <div className="text-primary-foreground absolute inset-0 flex flex-col justify-between p-4">
                   {/* Top Bar */}
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-primary/80 rounded-full flex items-center justify-center">
+                    <div className="bg-primary/80 flex h-10 w-10 items-center justify-center rounded-full border">
                       <span className="text-primary-foreground text-xs">A</span>
                     </div>
-                    <div className="text-sm font-semibold">Sponsored</div>
-                    <div className="ml-auto text-primary-foreground/70">⋯</div>
+                    <div className="text-primary-foreground">
+                      <div className="text-sm font-semibold text-current">
+                        Sponsored
+                      </div>
+                      <div className="flex items-center gap-1 text-xs text-current">
+                        Sponsored · <Globe size={12} />
+                      </div>
+                    </div>
+                    <div className="text-primary-foreground/70 ml-auto">
+                      <MoreHorizontal size={20} />
+                    </div>
                   </div>
 
                   {/* Middle Content */}
-                  <div className="flex-1 flex items-center justify-center">
+                  <div className="flex flex-1 items-center justify-center">
                     <div className="text-center">
                       {previewAd.format === "VIDEO" ||
                       previewAd.format === "SHORT_VIDEO" ? (
                         <>
-                          <div className="text-6xl mb-4">▶</div>
-                          <div className="text-2xl font-bold">
+                          <Play size={64} className="mx-auto mb-4" />
+                          <div className="text-base font-bold md:text-xl">
                             {previewAd.headline}
                           </div>
                         </>
                       ) : (
-                        <div className="text-2xl font-bold px-4">
+                        <div className="px-4 text-lg font-bold md:text-xl">
                           {previewAd.headline}
                         </div>
                       )}
@@ -243,11 +278,12 @@ export default function AdPreviewModal({
 
                   {/* Bottom CTA */}
                   <div className="space-y-2">
-                    <div className="text-sm px-2 text-center">
+                    <div className="px-2 text-center text-sm">
                       {previewAd.primary_text?.substring(0, 80)}...
                     </div>
-                    <Button variant="secondary" className="w-full">
-                      {previewAd.cta?.replace(/_/g, " ") || "Learn More"} →
+                    <Button className="flex w-full items-center justify-center gap-2 border">
+                      {previewAd.cta?.replace(/_/g, " ") || "Learn More"}
+                      <ChevronRight size={16} />
                     </Button>
                   </div>
                 </div>
@@ -257,10 +293,8 @@ export default function AdPreviewModal({
         </div>
 
         {/* Close Button */}
-        <div className="mt-6 flex justify-end">
-          <Button onClick={onClose}>
-            Close Preview
-          </Button>
+        <div className="mt-2 flex justify-end">
+          <Button onClick={onClose}>Close Preview</Button>
         </div>
       </DialogContent>
     </Dialog>
