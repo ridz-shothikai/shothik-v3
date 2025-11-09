@@ -624,7 +624,7 @@ const MetaAutomationAgent = () => {
   }
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full" id="marketing-automation1">
       <div
         ref={windowRef}
         className="z-10 flex rounded-xl border border-gray-200 bg-white shadow-2xl"

@@ -60,11 +60,9 @@ const SlideGenAgent = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const windowRef = useRef(null);
-
   const [agentStage, setAgentStage] = useState(0);
   const [showModal, setShowModal] = useState(true);
   const [userPrompt, setUserPrompt] = useState("");
-
   const PHASE_DELAY_MS = 6000; // 6 seconds per phase
 
   const stages = [
@@ -505,7 +503,7 @@ const SlideGenAgent = () => {
   }
 
   return (
-    <div className="h-70vw relative w-full">
+    <div className="h-70vw relative w-full" id="ai-slides">
       <div
         ref={windowRef}
         className="flex rounded-xl border border-gray-200 bg-white shadow-2xl"

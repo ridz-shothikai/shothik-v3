@@ -575,7 +575,10 @@ const WritingToolsShowcase = () => {
 
   if (!showModal) {
     return (
-      <div className="flex h-screen items-center justify-center bg-white">
+      <div
+        className="flex h-screen items-center justify-center bg-white"
+        id="writing"
+      >
         <button
           onClick={() => setShowModal(true)}
           className="rounded-lg bg-black px-6 py-3 text-white shadow-lg transition-all hover:bg-gray-800"

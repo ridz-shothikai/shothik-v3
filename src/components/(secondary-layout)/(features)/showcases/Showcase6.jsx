@@ -715,7 +715,10 @@ const CampaignStrategyAgent = ({ isVisible = false }) => {
   }
 
   return (
-    <div className="relative h-full min-h-[600px] w-full">
+    <div
+      className="relative h-full min-h-[600px] w-full"
+      id="marketing-automation2"
+    >
       <div className="mx-auto max-w-6xl rounded-xl border border-gray-200 bg-white shadow-2xl">
         <div className="flex h-full min-h-[600px] rounded-xl bg-white">
           {/* Left sidebar - Campaign Structure */}

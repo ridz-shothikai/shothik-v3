@@ -603,7 +603,7 @@ const DataAnalysisAgent = () => {
   }
 
   return (
-    <div className="h-80vw relative w-full">
+    <div className="h-80vw relative w-full" id="data-analysis">
       <div
         ref={windowRef}
         className="z-10 flex rounded-xl border border-gray-200 bg-white shadow-2xl"
@@ -724,7 +724,7 @@ const DataAnalysisAgent = () => {
             )}
           </div>
 
-          <div className="rounded-xl no-drag space-y-3 border-t border-gray-200 bg-white p-4">
+          <div className="no-drag space-y-3 rounded-xl border-t border-gray-200 bg-white p-4">
             {userQuery && agentStage === 4 && (
               <div className="px-4 text-xs text-gray-600">
                 Try another query to extract more data
