@@ -1,15 +1,18 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { useCampaignData, useInitialSuggestions } from "@/hooks/(marketing-automation-page)/useCampaignsApi";
+import {
+  useCampaignData,
+  useInitialSuggestions,
+} from "@/hooks/(marketing-automation-page)/useCampaignsApi";
 import { useProject } from "@/hooks/(marketing-automation-page)/useProjectsApi";
 import useResponsive from "@/hooks/ui/useResponsive";
 import { cn } from "@/lib/utils";
@@ -51,33 +54,36 @@ export default function Canvas() {
   );
 
   // Check if campaign data already exists in the database
-  const { data: existingCampaignData, isLoading: isLoadingCampaignData } = useCampaignData(
-    projectId || "",
-  );
+  const { data: existingCampaignData, isLoading: isLoadingCampaignData } =
+    useCampaignData(projectId || "");
 
   // Fetch initial suggestions only when we have analysis
   const hasAnalysis = hasAnalysisInState || !!projectData?.data;
-  
+
   // Check if campaign data exists (has campaigns, adSets, ads, or personas)
-  const hasCampaignData = existingCampaignData?.data && (
-    (existingCampaignData.data.campaigns?.length ?? 0) > 0 ||
-    (existingCampaignData.data.adSets?.length ?? 0) > 0 ||
-    (existingCampaignData.data.ads?.length ?? 0) > 0 ||
-    (existingCampaignData.data.personas?.length ?? 0) > 0
-  );
+  const hasCampaignData =
+    existingCampaignData?.data &&
+    ((existingCampaignData.data.campaigns?.length ?? 0) > 0 ||
+      (existingCampaignData.data.adSets?.length ?? 0) > 0 ||
+      (existingCampaignData.data.ads?.length ?? 0) > 0 ||
+      (existingCampaignData.data.personas?.length ?? 0) > 0);
 
   console.log("hasAnalysis--->", hasAnalysis);
   console.log("hasCampaignData--->", hasCampaignData);
   console.log("isLoadingCampaignData--->", isLoadingCampaignData);
 
   // Only generate initial suggestions if we have analysis but NO existing campaign data
-  const shouldGenerateSuggestions = hasAnalysis && !hasCampaignData && !isLoadingCampaignData;
-  
+  const shouldGenerateSuggestions =
+    hasAnalysis && !hasCampaignData && !isLoadingCampaignData;
+
   console.log("shouldGenerateSuggestions--->", shouldGenerateSuggestions);
 
-  const { data: suggestionsResponse, isLoading: isLoadingSuggestions, error: suggestionsError } =
-    useInitialSuggestions(projectId || "", shouldGenerateSuggestions);
-  
+  const {
+    data: suggestionsResponse,
+    isLoading: isLoadingSuggestions,
+    error: suggestionsError,
+  } = useInitialSuggestions(projectId || "", shouldGenerateSuggestions);
+
   console.log("isLoadingSuggestions--->", isLoadingSuggestions);
   console.log("suggestionsError--->", suggestionsError);
 
@@ -109,20 +115,23 @@ export default function Canvas() {
   const initialSuggestions = useMemo((): CampaignSuggestion | null => {
     console.log("suggestionsResponse--->", suggestionsResponse);
     console.log("suggestionsResponse?.data--->", suggestionsResponse?.data);
-    
+
     // If we have suggestions from the API, use them
     if (suggestionsResponse?.data) {
       return suggestionsResponse.data;
     }
-    
+
     // If we have existing campaign data but no suggestions, reconstruct from campaign data
     if (hasCampaignData && existingCampaignData?.data) {
       const data = existingCampaignData.data;
-      console.log("Reconstructing suggestions from existing campaign data:", data);
-      
+      console.log(
+        "Reconstructing suggestions from existing campaign data:",
+        data,
+      );
+
       const firstCampaign = data.campaigns?.[0];
       if (!firstCampaign) return null;
-      
+
       // Reconstruct the suggestions object from saved campaign data
       return {
         campaign: {
@@ -140,7 +149,7 @@ export default function Canvas() {
         strategy_notes: (firstCampaign as any).strategy_notes || [],
       } as CampaignSuggestion;
     }
-    
+
     return null;
   }, [suggestionsResponse, hasCampaignData, existingCampaignData]);
 
@@ -251,10 +260,10 @@ Would you like me to explain the personas, show you the ad concepts, or help you
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
+      <div className="bg-background flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-primary" />
-          <p className="text-lg text-muted-foreground">Loading project...</p>
+          <Loader2 className="text-primary mx-auto mb-4 h-12 w-12 animate-spin" />
+          <p className="text-muted-foreground text-lg">Loading project...</p>
         </div>
       </div>
     );
@@ -262,12 +271,12 @@ Would you like me to explain the personas, show you the ad concepts, or help you
 
   if (!analysis) {
     return (
-      <div className="flex flex-1 items-center justify-center bg-background p-6">
+      <div className="bg-background flex flex-1 items-center justify-center p-6">
         <Card className="p-8 text-center">
-          <h2 className="mb-4 text-2xl font-bold text-foreground">
+          <h2 className="text-foreground mb-4 text-2xl font-bold">
             No Analysis Data
           </h2>
-          <p className="mb-6 text-muted-foreground">
+          <p className="text-muted-foreground mb-6">
             Please complete a URL analysis first.
           </p>
           <Button
@@ -283,9 +292,9 @@ Would you like me to explain the personas, show you the ad concepts, or help you
   }
 
   return (
-    <div className="flex flex-1 flex-col bg-background">
+    <div className="bg-background flex flex-1 flex-col">
       {/* Header */}
-      <div className="sticky top-0 z-10 flex h-12 items-center justify-center border-b border-border bg-background/80 backdrop-blur-sm md:h-16">
+      <div className="border-border bg-background/80 sticky top-0 z-10 flex h-12 items-center justify-center border-b backdrop-blur-sm md:h-16">
         <div className="w-full px-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -298,22 +307,22 @@ Would you like me to explain the personas, show you the ad concepts, or help you
                 <ArrowLeft className="h-5 w-5" />
               </Button>
               <div>
-                <h1 className="flex items-center gap-2 text-base font-bold text-foreground">
-                  <Sparkles className="h-5 w-5 text-primary" />
+                <h1 className="text-foreground flex items-center gap-2 text-base font-bold">
+                  <Sparkles className="text-primary h-5 w-5" />
                   Campaign Canvas
                 </h1>
-                <p className="hidden text-xs text-muted-foreground lg:block">
+                <p className="text-muted-foreground hidden text-xs lg:block">
                   {analysis.product.title}
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Badge variant="secondary" className="px-4 py-2">
+              <Badge className="px-4 py-2">
                 <p className="text-sm font-medium">✓ Analysis Ready</p>
               </Badge>
-              <div className="flex items-center gap-2 rounded-lg border border-border bg-muted px-4 py-2">
-                <Save className="h-4 w-4 text-muted-foreground" />
-                <p className="text-sm font-medium text-foreground">Saved</p>
+              <div className="border-border bg-muted flex items-center gap-2 rounded-lg border px-4 py-2">
+                <Save className="text-muted-foreground h-4 w-4" />
+                <p className="text-foreground text-sm font-medium">Saved</p>
               </div>
             </div>
           </div>
@@ -325,7 +334,7 @@ Would you like me to explain the personas, show you the ad concepts, or help you
         {/* Desktop ChatBox - Hidden on mobile */}
         <div
           className={cn(
-            "bg-background sticky top-16 bottom-0 left-0 hidden overflow-hidden overflow-y-auto md:block md:h-[calc(100vh-8rem)]",
+            "bg-background sticky top-16 bottom-0 left-0 hidden overflow-hidden overflow-y-auto md:block md:h-[calc(100vh-8rem)] md:border-e",
           )}
         >
           <ChatBox
@@ -356,7 +365,7 @@ Would you like me to explain the personas, show you the ad concepts, or help you
       >
         <MessageCircle className="h-6 w-6" />
         {chatMessages.length > 0 && (
-          <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-xs font-bold text-destructive-foreground">
+          <span className="bg-destructive text-destructive-foreground absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold">
             {chatMessages.length}
           </span>
         )}
