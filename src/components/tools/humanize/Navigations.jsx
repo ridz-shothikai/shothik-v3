@@ -58,6 +58,8 @@ const Navigations = ({
             (!/pro_plan|unlimited/.test(userPackage) && model === "Raven")
           }
           className="h-10 px-4"
+          data-rybbit-event="Humanize"
+          data-rybbit-prop-action={!hasOutput ? "humanize" : "rehumanize"}
         >
           {isLoading ? (
             <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
@@ -70,7 +72,11 @@ const Navigations = ({
         {((model === "Raven" && !/pro_plan|unlimited/.test(userPackage)) ||
           wordCount > wordLimit) && (
           <Link href="/pricing">
-            <Button className="h-10">
+            <Button
+              className="h-10"
+              data-rybbit-event="Humanize"
+              data-rybbit-prop-action="upgrade"
+            >
               <SvgColor src="/navbar/diamond.svg" className="mr-2 h-5 w-5" />
               Upgrade
             </Button>

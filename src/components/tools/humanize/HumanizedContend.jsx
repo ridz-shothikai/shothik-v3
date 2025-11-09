@@ -282,6 +282,8 @@ const HumanizedContend = () => {
                 isLoading={isLoading}
                 setLanguage={setLanguage}
                 language={language}
+                data-rybbit-event="Humanize"
+                data-rybbit-prop-language_choose={language}
               />
             </div>
 
@@ -292,6 +294,8 @@ const HumanizedContend = () => {
                     variant="ghost"
                     size="icon"
                     onClick={() => setMobileMenuOpen((prev) => !prev)}
+                    data-rybbit-event="Humanize"
+                    data-rybbit-prop-action="open_mobile_menu"
                   >
                     <MoreVertical className="h-4 w-4" />
                   </Button>
@@ -330,6 +334,8 @@ const HumanizedContend = () => {
                     isMobile={isMobile}
                     sampleText={sampleText}
                     disableTrySample={!hasSampleText}
+                    data-rybbit-event="Humanize"
+                    data-rybbit-prop-action="try_sample_paste_upload"
                   />
                 ) : (
                   <InputBottom
@@ -340,6 +346,9 @@ const HumanizedContend = () => {
                     userInput={userInput}
                     userPackage={user?.package}
                     setWordCount={setWordCount}
+                    // forward tracking props for clear button
+                    clearBtnEvent="Humanize"
+                    clearBtnPropAction="clear_input"
                   />
                 )}
               </Card>

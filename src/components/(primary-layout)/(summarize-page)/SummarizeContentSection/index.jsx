@@ -277,7 +277,8 @@ const SummarizeContentSection = () => {
 
       try {
         setIsKeywordsLoading(true);
-        const url = process.env.NEXT_PUBLIC_API_URL_WITH_PREFIX + "/summarize-keywords";
+        const url =
+          process.env.NEXT_PUBLIC_API_URL_WITH_PREFIX + "/summarize-keywords";
         const response = await fetch(url, {
           method: "POST",
           headers: {
@@ -492,6 +493,8 @@ const SummarizeContentSection = () => {
                         showSample={true}
                         showPaste={true}
                         showInsertDocument={false}
+                        data-rybbit-event="Summarize"
+                        data-rybbit-prop-action="initial_input_action"
                       />
                       <ButtonInsertDocumentText
                         key="insert-document"
@@ -551,6 +554,9 @@ const SummarizeContentSection = () => {
                                     : "hover:border-primary/50 border-muted-foreground"
                                 }`}
                                 onClick={() => handleKeywordToggle(kw)}
+                                data-rybbit-event="Summarize"
+                                data-rybbit-prop-action="keyword_toggle"
+                                data-rybbit-prop-keyword={kw}
                               >
                                 <span className="capitalize">{kw}</span>
                               </button>

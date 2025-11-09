@@ -386,12 +386,16 @@ const AiDetectorContentSection = () => {
               <button
                 className="cursor-pointer"
                 onClick={() => dispatch(setIsSectionbarOpen(true))}
+                data-rybbit-event="AI Detector"
+                data-rybbit-prop-action="open_sectionbar"
               >
                 <BookIcon className="size-5" />
               </button>
               <button
                 className="cursor-pointer"
                 onClick={() => handleNewSection()}
+                data-rybbit-event="AI Detector"
+                data-rybbit-prop-action="new_section"
               >
                 <Plus className="size-6" />
               </button>
@@ -408,12 +412,16 @@ const AiDetectorContentSection = () => {
                     <button
                       className="cursor-pointer"
                       onClick={() => dispatch(setIsSectionbarOpen(true))}
+                      data-rybbit-event="AI Detector"
+                      data-rybbit-prop-action="open_sectionbar"
                     >
                       <BookIcon className="size-5" />
                     </button>
                     <button
                       className="cursor-pointer"
                       onClick={() => handleNewSection()}
+                      data-rybbit-event="AI Detector"
+                      data-rybbit-prop-action="new_section"
                     >
                       <Plus className="size-6" />
                     </button>
@@ -460,6 +468,8 @@ const AiDetectorContentSection = () => {
                             <button
                               className="bg-background flex h-8 items-center gap-2 rounded-md border px-2 hover:cursor-pointer"
                               onClick={() => setOpenSampleDrawer(true)}
+                              data-rybbit-event="AI Detector"
+                              data-rybbit-prop-action="open_sample_drawer"
                             >
                               <Image
                                 width={20}
@@ -479,6 +489,8 @@ const AiDetectorContentSection = () => {
                           }}
                           showPaste={true}
                           showInsertDocument={true}
+                          data-rybbit-event="AI Detector"
+                          data-rybbit-prop-action="initial_input_action"
                         />
                       </div>
                     </div>
@@ -497,6 +509,9 @@ const AiDetectorContentSection = () => {
                       label={enableEdit ? "Scan" : "Edit"}
                       onClear={handleClear}
                       onSubmit={() => handleSubmit(text)}
+                      // tracking props forwarded for child to attach to DOM
+                      data-rybbit-event="AI Detector"
+                      data-rybbit-prop-action={enableEdit ? "Scan" : "Edit"}
                     />
                   </div>
                 )}
@@ -523,12 +538,16 @@ const AiDetectorContentSection = () => {
                       handleOpen={() => setShowShareModal(true)}
                       result={result}
                       history={history}
+                      data-rybbit-event="AI Detector"
+                      data-rybbit-prop-action="open_share_report"
                     />
                   ) : (
                     <SampleText
                       handleSampleText={handleSampleText}
                       setOpen={setOpenSampleDrawer}
                       isOpen={openSampleDrawer}
+                      data-rybbit-event="AI Detector"
+                      data-rybbit-prop-action="sample_text"
                     />
                   )}
                 </div>
@@ -538,6 +557,8 @@ const AiDetectorContentSection = () => {
                 handleSampleText={handleSampleText}
                 setOpen={setOpenSampleDrawer}
                 isOpen={openSampleDrawer}
+                data-rybbit-event="AI Detector"
+                data-rybbit-prop-action="sample_text"
               />
             )}
           </div>

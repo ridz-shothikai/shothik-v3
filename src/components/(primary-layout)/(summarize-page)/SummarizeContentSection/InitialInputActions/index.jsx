@@ -13,6 +13,8 @@ const InitialInputActions = ({
   showPaste = false,
   showInsertDocument = false,
   className,
+  // tracking props forwarded to child buttons
+  ...props
 }) => {
   const buttons = [];
 
@@ -22,13 +24,18 @@ const InitialInputActions = ({
         key="sample"
         sample={sample}
         onApply={(value) => setInput(value)}
+        {...props}
       />,
     );
   }
 
   if (showPaste) {
     buttons.push(
-      <ButtonPasteText key="paste" onApply={(value) => setInput(value)} />,
+      <ButtonPasteText
+        key="paste"
+        onApply={(value) => setInput(value)}
+        {...props}
+      />,
     );
   }
 
@@ -37,6 +44,7 @@ const InitialInputActions = ({
       <ButtonInsertDocumentText
         key="insert-document"
         onApply={(value) => setInput(value)}
+        {...props}
       />,
     );
   }

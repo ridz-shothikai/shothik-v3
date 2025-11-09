@@ -343,6 +343,9 @@ const ModeNavigation = ({
                           "cursor-pointer py-3 data-[state=active]:bg-transparent data-[state=active]:text-[#00AB55] data-[state=active]:shadow-none",
                         )}
                         disabled={isLoading}
+                        // analytics attributes
+                        data-rybbit-event="Paraphrase Mode"
+                        data-rybbit-prop-mode={mode.value}
                       >
                         <span
                           className={`inline-flex items-center gap-1 ${mode.value === selectedMode ? "text-[#00AB55]" : "text-[#637381]"}`}
@@ -375,6 +378,8 @@ const ModeNavigation = ({
                 <Button
                   variant="ghost"
                   className="text-muted-foreground cursor-pointer"
+                  data-rybbit-event="Paraphrase Mode"
+                  data-rybbit-prop-action="more"
                 >
                   More
                   <ChevronDown className="ml-1 h-4 w-4" />
@@ -387,6 +392,8 @@ const ModeNavigation = ({
                     onClick={() =>
                       changeMode(mode.value, mode.isCustom, mode.id)
                     }
+                    data-rybbit-event="Paraphrase Mode"
+                    data-rybbit-prop-mode={mode.value}
                   >
                     <span className="inline-flex items-center gap-2">
                       {!mode.package.includes(userPackage || "free") && (
@@ -408,6 +415,8 @@ const ModeNavigation = ({
                 <DropdownMenuItem
                   onClick={handleOpenCustomModeModal}
                   disabled={!canCreateCustomModes}
+                  data-rybbit-event="Paraphrase Mode"
+                  data-rybbit-prop-action="create_custom_mode"
                 >
                   <span className="inline-flex items-center gap-2">
                     <Plus className="h-4 w-4" />

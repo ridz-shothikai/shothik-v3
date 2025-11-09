@@ -1678,6 +1678,8 @@ const ParaphraseContend = () => {
             isLoading={isLoading || processing.loading}
             setLanguage={setLanguage}
             language={language}
+            data-rybbit-event="Parapharse"
+            data-rybbit-prop-language_choose={language}
           />
           <div className="ml-auto hidden items-center gap-2 md:flex lg:gap-4">
             <AutoFreezeSettings />

@@ -11,6 +11,11 @@ const OutputActions = ({
   showDownload = false,
   showCopy = false,
   className,
+  // tracking props for download/copy
+  downloadBtnEvent = undefined,
+  downloadBtnPropAction = undefined,
+  copyBtnEvent = undefined,
+  copyBtnPropAction = undefined,
 }) => {
   const countSentence = (text) => {
     return text.split(/[.।]/).length - 1;
@@ -29,12 +34,25 @@ const OutputActions = ({
 
   if (showDownload) {
     buttons.push(
-      <ButtonDownloadText key="download" name="summary" text={input} />,
+      <ButtonDownloadText
+        key="download"
+        name="summary"
+        text={input}
+        data-rybbit-event={downloadBtnEvent}
+        data-rybbit-prop-action={downloadBtnPropAction}
+      />,
     );
   }
 
   if (showCopy) {
-    buttons.push(<ButtonCopyText key="copy" text={input} />);
+    buttons.push(
+      <ButtonCopyText
+        key="copy"
+        text={input}
+        data-rybbit-event={copyBtnEvent}
+        data-rybbit-prop-action={copyBtnPropAction}
+      />,
+    );
   }
 
   return (

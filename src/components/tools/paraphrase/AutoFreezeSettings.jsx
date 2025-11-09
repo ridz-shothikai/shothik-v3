@@ -26,7 +26,8 @@ export default function AutoFreezeSettings() {
           checked={paraphraseOptions.autoFreeze}
           onCheckedChange={handleAutoFreezeToggle}
           aria-label="auto freeze"
-          data-rybbit-event="Auto Freeze"
+          data-rybbit-event="Parapharse"
+          data-rybbit-prop-Freeze="Auto Freeze"
         />
       </div>
     </div>

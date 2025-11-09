@@ -10,6 +10,9 @@ const InputBottom = ({
   isLoading,
   handleClear,
   setWordCount,
+  // optional tracking props
+  clearBtnEvent = undefined,
+  clearBtnPropAction = undefined,
 }) => {
   const { wordLimit } = useWordLimit("bypass");
   const [userInputInfo, setUserInputInfo] = useState({
@@ -56,6 +59,8 @@ const InputBottom = ({
         className="h-9"
         disabled={isLoading}
         onClick={handleClear}
+        data-rybbit-event={clearBtnEvent}
+        data-rybbit-prop-action={clearBtnPropAction}
       >
         <Trash2 className="text-muted-foreground h-4 w-4" />
       </Button>

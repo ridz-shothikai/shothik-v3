@@ -39,6 +39,8 @@ const OutputNavigation = ({
             size={isMobile ? "icon" : "default"}
             disabled={!showIndex}
             onClick={() => setShowIndex((prev) => prev - 1)}
+            data-rybbit-event="Humanize"
+            data-rybbit-prop-action="previous"
           >
             {isMobile ? <ChevronLeft className="h-4 w-4" /> : "Previous"}
           </Button>
@@ -52,6 +54,8 @@ const OutputNavigation = ({
             size={isMobile ? "icon" : "default"}
             disabled={showIndex === outputs - 1}
             onClick={() => setShowIndex((prev) => prev + 1)}
+            data-rybbit-event="Humanize"
+            data-rybbit-prop-action="next"
           >
             {isMobile ? <ChevronRight className="h-4 w-4" /> : "Next"}
           </Button>
@@ -65,6 +69,8 @@ const OutputNavigation = ({
                 size="icon"
                 onClick={handleDownload}
                 aria-label="download"
+                data-rybbit-event="Humanize"
+                data-rybbit-prop-action="download"
               >
                 <Download className="h-4 w-4" />
               </Button>
@@ -74,7 +80,13 @@ const OutputNavigation = ({
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        <Button variant="ghost" onClick={handleCopy} className="min-w-0">
+        <Button
+          variant="ghost"
+          onClick={handleCopy}
+          className="min-w-0"
+          data-rybbit-event="Humanize"
+          data-rybbit-prop-action="copy"
+        >
           <Copy className="mr-1 h-4 w-4" />
           {!isMobile && <span>Copy</span>}
         </Button>
@@ -84,6 +96,8 @@ const OutputNavigation = ({
         onClick={() => handleAiDetectors(selectedContend)}
         disabled={loadingAi}
         className="mt-2 h-10 border-2 sm:border-0"
+        data-rybbit-event="Humanize"
+        data-rybbit-prop-action="detect_ai"
       >
         {loadingAi && (
           <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />

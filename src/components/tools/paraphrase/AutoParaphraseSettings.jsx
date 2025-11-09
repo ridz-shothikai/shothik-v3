@@ -27,7 +27,8 @@ export default function AutoParaphraseSettings() {
           checked={paraphraseOptions.automaticStartParaphrasing}
           onCheckedChange={handleAutoParaphraseToggle}
           aria-label="auto paraphrase"
-          data-rybbit-event="Auto Paraphrase"
+          data-rybbit-event="Parapharse"
+          data-rybbit-prop-Parapharse="Auto Parapharse"
         />
       </div>
     </div>

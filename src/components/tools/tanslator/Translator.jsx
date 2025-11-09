@@ -148,6 +148,8 @@ const Translator = () => {
         reverseText={reverseText}
         translateLang={translateLang}
         setTranslateLang={handleLanguageChange}
+        data-rybbit-event="Translator"
+        data-rybbit-prop-language_choose={translateLang}
       />
 
       <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-2">

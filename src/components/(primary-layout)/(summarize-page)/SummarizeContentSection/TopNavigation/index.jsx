@@ -33,6 +33,8 @@ const TopNavigation = ({
                 ? "text-primary"
                 : "text-muted-foreground",
             )}
+            data-rybbit-event="Summarize Mode"
+            data-rybbit-prop-mode={tab.name}
           >
             {tab?.icon && (
               <span className="text-base leading-none md:text-xl">

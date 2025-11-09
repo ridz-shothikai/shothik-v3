@@ -29,6 +29,11 @@ const InputActions = ({
   disabled = false,
   onClear,
   onSubmit,
+  // tracking props
+  clearBtnEvent = undefined,
+  clearBtnPropAction = undefined,
+  submitBtnEvent = undefined,
+  submitBtnPropAction = undefined,
 }) => {
   const [wordCount, setWordCount] = useState(0);
   const { wordLimit } = useWordLimit(toolName);
@@ -78,6 +83,8 @@ const InputActions = ({
                 disabled={isLoading}
                 onClick={onClear}
                 aria-label="delete"
+                data-rybbit-event={clearBtnEvent}
+                data-rybbit-prop-action={clearBtnPropAction}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -104,6 +111,8 @@ const InputActions = ({
           variant="default"
           disabled={!enabled ? wordCount > wordLimit : disabled || false}
           className="h-8 px-4 whitespace-nowrap md:h-10 md:px-4"
+          data-rybbit-event={submitBtnEvent}
+          data-rybbit-prop-action={submitBtnPropAction}
         >
           {icon && <span className="mr-2">{icon}</span>}
           {label}

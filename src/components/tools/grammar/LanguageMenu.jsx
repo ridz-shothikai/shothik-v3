@@ -52,6 +52,8 @@ const LanguageMenu = ({ language, setLanguage, isLoading }) => {
           open={showMenu}
           handleClose={handleClose}
           handleLanguageMenu={handleSelect}
+          data-rybbit-event="Grammer"
+          data-rybbit-prop-language_choose={language}
         />
       </>
     );
@@ -101,6 +103,8 @@ const LanguageMenu = ({ language, setLanguage, isLoading }) => {
         open={showMenu}
         handleClose={handleClose}
         handleLanguageMenu={handleSelect}
+        data-rybbit-event="Grammer"
+        data-rybbit-prop-language_choose={language}
       />
     </div>
   );
