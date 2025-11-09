@@ -1,0 +1,465 @@
+{
+	"info": {
+		"_postman_id": "c5a025a5-d814-4303-b4b2-fa913669d18e",
+		"name": "Shothik Plagiarism Detection API v2.0 (JWT Auth + LangGraph) Copy",
+		"description": "Complete API collection for plagiarism detection system using **JWT authentication** and **LangGraph multi-agent architecture** with **Gemini API** for real web source detection.\n\n🔐 **AUTHENTICATION:**\n- JWT-based authentication using Bearer tokens\n- Generate tokens: `cd backend && node generate-token.js`\n- Add token as: `Authorization: Bearer <your-jwt-token>`\n- **Public routes** (optional auth): Most endpoints work without token\n- **Protected routes** (required auth): DELETE operations and logs require valid JWT\n\n✅ **WORKING & TESTED:**\n- Gemini API: `gemini-2.0-flash-exp` - Connected and operational\n- Direct AI Comparison: No embeddings, uses Gemini's language understanding\n- Real web search via Gemini Grounding API\n- JWT authentication with user tracking\n- All endpoints tested and returning accurate results\n\n🤖 **LangGraph Multi-Agent Architecture:**\n- 7 specialized agents working together\n- State management across workflow\n- Conditional routing and branching\n- Tool calling patterns\n- Workflow visualization\n\n🔍 **Real Source Detection (NO MOCK DATA):**\n- Gemini Grounding API finds ACTUAL sources from the web\n- Fetches content from Wikipedia, IBM, academic sites, and more\n- Scrapes and analyzes REAL webpages\n- Returns AUTHENTIC URLs with titles and snippets\n- Sources include: wikipedia.org, ibm.com, .edu domains, research papers\n\n🧠 **AI-Powered Analysis:**\n- Direct Gemini comparison (no embeddings!)\n- Understands meaning, not just word matching\n- Provides detailed similarity scores (0-1) + explanations\n- Match types: exact/paraphrased/inspired/original\n- Confidence levels: high/medium/low\n- Risk levels: HIGH/MEDIUM/LOW/MINIMAL\n\n📚 **How to Get JWT Token:**\n1. Run: `cd backend && node generate-token.js`\n2. Copy one of the generated tokens\n3. Update the `authToken` variable in this collection\n4. Or add `Authorization: Bearer <token>` header manually",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24142074"
+	},
+	"item": [
+		{
+			"name": "🔐 Authentication Setup",
+			"item": [
+				{
+					"name": "📝 Generate JWT Token (Instructions)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://example.com/generate-token",
+							"protocol": "https",
+							"host": [
+								"example",
+								"com"
+							],
+							"path": [
+								"generate-token"
+							]
+						},
+						"description": "**How to generate JWT token for testing**\n\n🔧 **Steps:**\n1. Open terminal in `backend` folder\n2. Run: `node generate-token.js`\n3. Copy one of the generated tokens\n4. Update `authToken` variable in this collection\n5. Or add header: `Authorization: Bearer <your-token>`\n\n💡 **Token contains:**\n- User ID (`_id`)\n- Email\n- Package (free/premium/admin)\n- Role (user/admin)\n- Expiration (30 days)\n\n⚠️ **Note:** This is a placeholder request. Actually run the command in terminal!"
+					},
+					"response": []
+				}
+			],
+			"description": "🔐 **JWT Authentication Setup**\n\nAll API requests use JWT Bearer token authentication.\n\n✅ **Public Routes** (Optional Auth):\n- POST `/api/plagiarism/analyze` - Works without token, but tracks user if token provided\n- GET `/api/plagiarism/history` - Works without token\n- GET `/api/plagiarism/analysis/:id` - Works without token\n- GET `/api/plagiarism/workflow/*` - Public endpoints\n\n🔒 **Protected Routes** (Required Auth):\n- DELETE `/api/plagiarism/analysis/:id` - Requires valid JWT token\n- GET `/api/plagiarism/logs/:id` - Requires valid JWT token\n\n📝 **To use authentication:**\n1. Generate token: `cd backend && node generate-token.js`\n2. Copy token to `authToken` variable in collection\n3. Token is automatically added to requests with `Authorization: Bearer` header"
+		},
+		{
+			"name": "📎 Analyze - File Upload (.pdf/.docx/.txt/.html)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/plagiarism/analyze-file",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"plagiarism",
+						"analyze-file"
+					]
+				},
+				"description": "Upload a document (.pdf/.docx/.txt/.html). The server extracts text and runs the same analysis."
+			},
+			"response": []
+		},
+		{
+			"name": "🧾 Download Report PDF",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/api/plagiarism/analysis/:id/pdf",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"plagiarism",
+						"analysis",
+						":id",
+						"pdf"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "690c2e552b5d3240d24981aa"
+						}
+					]
+				},
+				"description": "Download the formatted PDF report for a saved analysis."
+			},
+			"response": []
+		},
+		{
+			"name": "🏥 Health Check & API Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/health",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"health"
+					]
+				},
+				"description": "**Verify server health and check Gemini API status**\n\nThis endpoint checks if the backend is operational AND tests if the Gemini API is working. Use this to show anyone whether the system is ready for use.\n\n🔍 **What It Checks:**\n- ✅ Server uptime\n- ✅ Gemini API key configuration\n- ✅ Gemini API accessibility\n- ✅ Database connection\n- ⚠️ Warnings and issues\n- 💡 Recommendations to fix problems\n\n💡 **Use Cases:**\n- Verify system is working before running tests\n- Show API status to others\n- Debug why plagiarism detection isn't working\n- Monitor system health\n\n✅ **Note:** No authentication required - public endpoint"
+			},
+			"response": []
+		},
+		{
+			"name": "📋 Root Endpoint - API Info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						""
+					]
+				},
+				"description": "**Get all available API endpoints**\n\nLearn what endpoints are available and how to use them.\n\n✅ **Note:** No authentication required - public endpoint"
+			},
+			"response": []
+		},
+		{
+			"name": "🔍 Analyze - Simple Text Example",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"description": "JWT Bearer token (optional for this endpoint, but recommended for user tracking)",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"text\": \"Machine learning (ML) is a field of study in artificial intelligence concerned with the development and study of statistical algorithms that can learn from data and generalize to unseen data, and thus perform tasks without explicit instructions.\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/plagiarism/analyze",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"plagiarism",
+						"analyze"
+					]
+				},
+				"description": "**🎯 DEMO: Basic Plagiarism Detection**\n\n✅ **SYSTEM FLOW:**\n1. Takes user's text\n2. Searches REAL web (Wikipedia, IBM, etc.) using Gemini Grounding API\n3. Fetches actual content from found URLs\n4. Compares user text with fetched content using Gemini AI\n5. **Returns MATCHING sources in response** (URLs, titles, snippets, similarity)\n\n🔐 **AUTHENTICATION:**\n- Token is **optional** for this endpoint\n- If provided, user is tracked in database\n- If not provided, uses 'anonymous' as userId\n\n✅ **WORKING WITH GEMINI API** (`gemini-2.0-flash-exp`)\n\n🤖 **LangGraph Workflow (7 Agents):**\n1. **Initialize Agent** - Sets up workflow state\n2. **Chunk Text Agent** - Splits your text into segments\n3. **Search Agent** - Uses Gemini Grounding API to find REAL sources\n4. **Fetch Agent** - Scrapes actual webpages and extracts content\n5. **Analysis Agent** - Uses direct Gemini AI comparison\n6. **Route Decision Agent** - Loops through all chunks\n7. **Report Agent** - Generates final plagiarism report\n\n🌐 **Real Sources Found (NO EXAMPLES):**\n- ✅ Wikipedia articles (en.wikipedia.org)\n- ✅ IBM developer docs (www.ibm.com)\n- ✅ Academic institutions (.edu domains)\n- ✅ Research papers, tech company docs, news articles\n\n💡 **How it detects plagiarism:** \n- Uses **semantic similarity** (AI understands meaning, not just words)\n- Detects **exact copying** (word-for-word matches)\n- Detects **paraphrasing** (rewritten with same meaning)\n- Detects **synonym substitution**\n- Provides **similarity scores** (0-1, where 1 = identical)"
+			},
+			"response": []
+		},
+		{
+			"name": "🎛️ Analyze - With Custom Options",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"text\": \"Artificial intelligence represents one of the most transformative technologies of our era. It enables machines to learn from data, recognize patterns, and make decisions with minimal human intervention. Machine learning, a subset of AI, allows systems to improve their performance through experience. Deep learning, which uses neural networks, has revolutionized fields like computer vision, natural language processing, and speech recognition.\",\n  \"options\": {\n    \"chunkStrategy\": \"sentence\",\n    \"chunkSize\": 500,\n    \"similarityThreshold\": 0.7\n  }\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/plagiarism/analyze",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"plagiarism",
+						"analyze"
+					]
+				},
+				"description": "**Customize plagiarism detection parameters**\n\n⚙️ **Options Explained:**\n\n1. **`chunkStrategy`**: How to split text\n   - `\"sentence\"` - Split by sentences (recommended)\n   - `\"paragraph\"` - Split by paragraphs\n   - `\"fixed\"` - Fixed-size chunks\n\n2. **`chunkSize`**: Maximum characters per chunk (500 recommended)\n\n3. **`similarityThreshold`**: 0-1 threshold for flagging plagiarism\n   - 0.9 = Very strict (90% = plagiarism)\n   - 0.7 = Standard (70% = plagiarism) ⭐ Recommended\n   - 0.5 = Lenient (50% = plagiarism)\n\n🔐 **Token optional** - but recommended for user tracking"
+			},
+			"response": []
+		},
+		{
+			"name": "📝 Analyze - Long Essay Example",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"text\": \"The advent of artificial intelligence has fundamentally altered the landscape of modern technology and society. This revolutionary field encompasses the development of computer systems capable of performing tasks that typically require human intelligence. These tasks include learning, reasoning, problem-solving, perception, and language understanding. Machine learning, a critical component of AI, enables systems to automatically learn and improve from experience without being explicitly programmed. Neural networks, inspired by the structure of the human brain, process information through interconnected nodes that can recognize complex patterns in data. Deep learning, utilizing multiple layers of neural networks, has achieved remarkable breakthroughs in image recognition, natural language processing, and autonomous systems. As AI continues to evolve, it promises to transform industries from healthcare to transportation, enhancing efficiency and opening new possibilities for human advancement.\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/plagiarism/analyze",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"plagiarism",
+						"analyze"
+					]
+				},
+				"description": "**Test with longer academic-style text**\n\n🎯 **Perfect for:**\n- Essays\n- Research papers\n- Academic assignments\n- Articles\n- Reports\n\nThe system automatically:\n1. Splits long text into manageable chunks\n2. Analyzes each chunk independently\n3. Aggregates results\n4. Provides section-by-section similarity scores\n\n🔐 **Token optional** - but recommended for user tracking"
+			},
+			"response": []
+		},
+		{
+			"name": "📊 Get Analysis History",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"description": "Optional - filters results by user if provided",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/api/plagiarism/history?limit=10&skip=0",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"plagiarism",
+						"history"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10",
+							"description": "Number of results per page"
+						},
+						{
+							"key": "skip",
+							"value": "0",
+							"description": "Skip N results (pagination)"
+						}
+					]
+				},
+				"description": "**Retrieve plagiarism analysis history**\n\n📜 **View all past plagiarism checks and their results**\n\n💡 **Useful for:**\n- Tracking analyzed documents\n- Reviewing previous plagiarism reports\n- Monitoring submission history\n- Audit trails for academic integrity\n\n🔐 **AUTHENTICATION:**\n- Token is **optional**\n- If token provided, returns only that user's analyses\n- If no token, returns all analyses (may be empty)\n\n⚠️ **Note:** Requires MongoDB to be set up"
+			},
+			"response": []
+		},
+		{
+			"name": "🔍 Get Specific Analysis",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"description": "Optional",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/api/plagiarism/analysis/:id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"plagiarism",
+						"analysis",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "REPLACE_WITH_ANALYSIS_ID",
+							"description": "Get the analysisId from a previous analyze response"
+						}
+					]
+				},
+				"description": "**Retrieve a specific plagiarism analysis report by ID**\n\n💡 **How to get a report:**\n1. Run any \"Analyze\" request\n2. Copy the `analysisId` from the response\n3. Replace `:id` in this request with the analysisId\n4. Run to retrieve the complete plagiarism report\n\n🔐 **Token optional** - public endpoint\n\n⚠️ **Note:** Requires MongoDB"
+			},
+			"response": []
+		},
+		{
+			"name": "🗑️ Delete Analysis",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"description": "REQUIRED - Valid JWT token needed to delete",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/api/plagiarism/analysis/:id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"plagiarism",
+						"analysis",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "REPLACE_WITH_ANALYSIS_ID"
+						}
+					]
+				},
+				"description": "**Delete a saved plagiarism analysis report**\n\n🗑️ **Use this to:**\n- Remove old analysis records\n- Clean up test submissions\n- Manage storage space\n- Remove sensitive data\n\n🔐 **AUTHENTICATION REQUIRED:**\n- ✅ **Valid JWT token is REQUIRED**\n- Token must be provided in `Authorization: Bearer <token>` header\n- Returns 401 Unauthorized if token is missing or invalid\n\n⚠️ **Requires MongoDB**\n\n❌ **Error if no token:**\n```json\n{\n  \"success\": false,\n  \"message\": \"Authorization Bearer token is required!\",\n  \"hint\": \"Add 'Authorization: Bearer <your-jwt-token>' header\"\n}\n```"
+			},
+			"response": []
+		},
+		{
+			"name": "📋 Get System Logs",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"description": "REQUIRED - Valid JWT token needed",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/api/plagiarism/logs/:id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"plagiarism",
+						"logs",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "REPLACE_WITH_ANALYSIS_ID",
+							"description": "Analysis ID to get logs for"
+						}
+					]
+				},
+				"description": "**Get system logs for a specific analysis**\n\n📊 **Returns:**\n- All agent execution logs\n- Timing information\n- Error logs if any\n- Agent activity tracking\n\n🔐 **AUTHENTICATION REQUIRED:**\n- ✅ **Valid JWT token is REQUIRED**\n- Token must be provided in `Authorization: Bearer <token>` header\n- Returns 401 Unauthorized if token is missing or invalid\n\n⚠️ **Requires MongoDB**\n\n✅ **Expected Response:**\n```json\n{\n  \"analysisId\": \"69070e378ee189c87d4d728e\",\n  \"logs\": [\n    {\n      \"agent\": \"initialize\",\n      \"status\": \"completed\",\n      \"message\": \"Workflow initialized\",\n      \"duration\": 45,\n      \"timestamp\": \"2025-11-02T07:54:31.072Z\"\n    }\n  ],\n  \"total\": 15\n}\n```"
+			},
+			"response": []
+		},
+		{
+			"name": "🔷 LangGraph - Workflow Visualization",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/plagiarism/workflow/graph",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"plagiarism",
+						"workflow",
+						"graph"
+					]
+				},
+				"description": "**Get LangGraph workflow visualization**\n\n🎯 **What this returns:**\nA Mermaid diagram showing the multi-agent workflow structure with all 7 agents and their connections.\n\n✅ **Public endpoint** - No authentication required"
+			},
+			"response": []
+		},
+		{
+			"name": "📊 LangGraph - Agent Statistics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/plagiarism/workflow/stats",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"plagiarism",
+						"workflow",
+						"stats"
+					]
+				},
+				"description": "**Get detailed information about all LangGraph agents**\n\n🤖 **What this returns:**\nDetailed information about each of the 7 agents, their purposes, and what they output.\n\n✅ **Public endpoint** - No authentication required"
+			},
+			"response": []
+		},
+		{
+			"name": "⚖️ LangGraph - Compare Approaches",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/plagiarism/workflow/compare",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"plagiarism",
+						"workflow",
+						"compare"
+					]
+				},
+				"description": "**Compare LangGraph multi-agent vs traditional sequential approach**\n\n🔍 **What this returns:**\nDetailed comparison showing benefits of LangGraph architecture over traditional approach.\n\n✅ **Public endpoint** - No authentication required"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:6000",
+			"type": "string"
+		},
+		{
+			"key": "authToken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTAxMjM0NTY3ODkwYWJjZGVmMTIzNDUiLCJlbWFpbCI6InRlc3R1c2VyQHNob3RoaWsuY29tIiwicGFja2FnZSI6ImZyZWUiLCJpc192ZXJpZmllZCI6dHJ1ZSwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjIwNzk2MjgsImV4cCI6MTc2NDY3MTYyOH0.5p808cvcsSTsjF2_l5tIXJp7R-NEKsWHGmlkGqcpL2c",
+			"type": "string",
+			"description": "JWT Bearer token. Generate with: cd backend && node generate-token.js"
+		}
+	]
+}
