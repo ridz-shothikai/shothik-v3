@@ -225,7 +225,9 @@ export const metaAPI = {
   },
 
   getWebhookStatus: async (pageId: string) => {
-    const response = await api.get(`/marketing/connect/webhook/status/${pageId}`);
+    const response = await api.get(
+      `/marketing/connect/webhook/status/${pageId}`,
+    );
     return response.data;
   },
 
