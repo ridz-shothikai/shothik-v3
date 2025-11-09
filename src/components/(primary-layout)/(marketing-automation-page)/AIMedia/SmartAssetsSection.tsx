@@ -257,8 +257,8 @@ export default function SmartAssetsSection({
 
   return (
     <div className="bg-background flex h-full flex-col">
-      {/* Header */}
-      <div className="p-6">
+      <div className="flex flex-1 flex-col p-6">
+        {/* Header */}
         <div className="border-border border-b pb-6">
           <div className="mb-4 flex items-center justify-between">
             <div>

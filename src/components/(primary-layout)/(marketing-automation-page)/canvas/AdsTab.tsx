@@ -78,10 +78,10 @@ export default function AdsTab({
                 alt={ad.headline}
                 className="h-full w-full object-cover"
               />
-              <div className="bg-background/80 text-foreground absolute top-2 right-2 rounded px-2 py-1 text-xs">
+              <div className="bg-background/90 text-foreground absolute top-2 right-2 rounded px-2 py-1 text-xs">
                 {ad.imageUrls.length} images
               </div>
-              <div className="bg-background/80 text-foreground absolute bottom-2 left-2 rounded px-2 py-1 text-xs">
+              <div className="bg-background/90 text-foreground absolute bottom-2 left-2 rounded px-2 py-1 text-xs">
                 📸 CAROUSEL
               </div>
             </div>

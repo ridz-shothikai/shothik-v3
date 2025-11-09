@@ -40,20 +40,11 @@ export default function NavItem({ item, sidebar, className }) {
 
       <span
         className={cn(
-          "grow",
-          isCompact
-            ? "whitespace-wrap text-center text-xs"
-            : "text-start text-base whitespace-nowrap",
+          "grow text-start text-base whitespace-nowrap",
+          isCompact ? "lg:text-center lg:text-xs lg:whitespace-normal" : "",
         )}
       >
-        {title === "AI Detector" ? (
-          <>
-            AI
-            <br className={isCompact ? "block" : "hidden"} /> Detector
-          </>
-        ) : (
-          title
-        )}
+        {title}
       </span>
     </Link>
   );

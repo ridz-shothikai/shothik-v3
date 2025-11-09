@@ -51,7 +51,7 @@ export default function URLInputForm({
                 type="url"
                 value={url}
                 onChange={(e) => onUrlChange(e.target.value)}
-                className="bg-background/80 border-border text-foreground placeholder:text-muted-foreground focus:ring-primary/50 focus:border-primary/50 hover:border-primary/30 rounded-2xl py-5 pr-5 pl-14 text-base transition-all duration-200 focus:ring-2"
+                className="bg-background/90 border-border text-foreground placeholder:text-muted-foreground focus:ring-primary/50 focus:border-primary/50 hover:border-primary/30 rounded-2xl py-5 pr-5 pl-14 text-base transition-all duration-200 focus:ring-2"
                 placeholder="https://example.com/product"
                 required
                 disabled={isAnalyzing}

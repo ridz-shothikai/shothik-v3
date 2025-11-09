@@ -12,6 +12,7 @@ import { Loader2, Sparkles } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import AssetSelectorModal from "./AssetSelectorModal";
 import ScriptEditor from "./ScriptEditor";
 import VoiceSelector from "./VoiceSelector";
@@ -65,8 +66,6 @@ export default function AIShortsPage() {
   const [playingAudio, setPlayingAudio] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [selectedAd, setSelectedAd] = useState<string>("");
-  const [showNotification, setShowNotification] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState("");
 
   // AI Shorts API settings
   const [aspectRatio, setAspectRatio] = useState<"9x16" | "16x9" | "1x1">(
@@ -153,14 +152,9 @@ export default function AIShortsPage() {
 
       console.log("AI Short generation result:", result);
 
-      setNotificationMessage(
+      toast.success(
         "✨ AI Short generation started! Check the Medias section for updates.",
       );
-      setShowNotification(true);
-
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 5000);
     } catch (error) {
       console.error("Short generation error:", error);
       alert("Failed to generate short");
@@ -207,7 +201,7 @@ export default function AIShortsPage() {
   };
 
   return (
-    <div className="bg-background text-foreground min-h-screen p-6">
+    <div className="bg-background text-foreground flex min-h-screen flex-1 flex-col p-6">
       {/* Header */}
       <div className="border-border border-b pb-6">
         <div className="flex items-center justify-between">
@@ -224,7 +218,7 @@ export default function AIShortsPage() {
       </div>
 
       {/* Main Content */}
-      <div className="mx-auto py-6">
+      <div className="mx-auto pt-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Left Column - Settings */}
           <div className="space-y-6">
@@ -428,12 +422,6 @@ export default function AIShortsPage() {
       )}
 
       {/* Notification */}
-      {showNotification && (
-        <div className="animate-slide-up bg-primary text-primary-foreground fixed right-6 bottom-6 z-50 rounded-lg px-6 py-4 shadow-lg">
-          {notificationMessage}
-        </div>
-      )}
-
       {/* Hidden Audio Element */}
       <audio ref={audioRef} className="hidden" />
     </div>

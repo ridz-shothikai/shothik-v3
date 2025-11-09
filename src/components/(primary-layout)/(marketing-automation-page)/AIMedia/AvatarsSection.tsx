@@ -211,11 +211,11 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
   }
 
   return (
-    <div className="p-6">
-      <h2 className="text-foreground mb-8 text-3xl font-bold">Avatars</h2>
+    <div className="flex flex-1 flex-col p-6">
+      <h2 className="text-foreground mb-6 text-3xl font-bold">Avatars</h2>
 
       {/* Custom Avatar */}
-      <div className="mb-8">
+      <div className="mb-6">
         <h3 className="text-foreground mb-4 text-lg font-semibold">
           Custom Avatar
         </h3>

@@ -294,7 +294,7 @@ Would you like me to explain the personas, show you the ad concepts, or help you
   return (
     <div className="bg-background flex flex-1 flex-col">
       {/* Header */}
-      <div className="border-border bg-background/80 sticky top-0 z-10 flex h-12 items-center justify-center border-b backdrop-blur-sm md:h-16">
+      <div className="border-border bg-background/90 sticky top-0 z-10 flex h-12 items-center justify-center border-b backdrop-blur-sm md:h-16">
         <div className="w-full px-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">

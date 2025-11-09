@@ -100,7 +100,7 @@ export default function SpecExtractorLog({ log }) {
                     key={index}
                     variant="outline"
                     className={cn(
-                      "text-foreground/80 border-border/60 bg-background/80 text-xs font-normal",
+                      "text-foreground/80 border-border/60 bg-background/90 text-xs font-normal",
                       "hover:bg-muted/50 hover:border-border transition-all duration-200",
                       "cursor-default px-3 py-1.5",
                     )}

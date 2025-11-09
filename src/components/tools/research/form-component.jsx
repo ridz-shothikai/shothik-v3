@@ -386,7 +386,7 @@ const FormComponent = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="bg-background/80 absolute inset-0 z-50 m-2 flex items-center justify-center rounded-xl border border-dashed backdrop-blur-sm"
+          className="bg-background/90 absolute inset-0 z-50 m-2 flex items-center justify-center rounded-xl border border-dashed backdrop-blur-sm"
         >
           <div className="flex items-center gap-8 px-3 py-4">
             <div className="bg-muted flex h-12 w-12 items-center justify-center rounded-full shadow-lg">

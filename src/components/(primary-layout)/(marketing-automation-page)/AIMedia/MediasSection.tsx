@@ -64,7 +64,7 @@ export default function MediasSection({ userId }: MediasSectionProps) {
   return (
     <div className="bg-background flex h-full flex-col">
       {/* Header */}
-      <div className="p-6">
+      <div className="flex flex-1 flex-col p-6">
         <div className="border-border border-b pb-6">
           <div className="flex items-center justify-between">
             <div>
@@ -84,7 +84,7 @@ export default function MediasSection({ userId }: MediasSectionProps) {
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto py-6">
+        <div className="flex-1 overflow-y-auto pt-6">
           {loading ? (
             <div className="flex h-64 items-center justify-center">
               <Loader2 className="text-primary h-8 w-8 animate-spin" />
