@@ -1,0 +1,121 @@
+{
+    "overallSimilarity": 0.8,
+    "paraphrasedSections": [
+        {
+            "text": "True innovation emerges not just from technology, but from the human desire to solve meaningful problems. Every breakthrough begins with curiosity, followed by persistence and collaboration. The greatest inventors and thinkers understood that failure is not an endpoint but a crucial part of discovery. In a world driven by rapid change, adaptability has become a core skill. Communities and organizations that embrace lifelong learning thrive amid uncertainty.",
+            "similarity": 0.8,
+            "sources": [
+                {
+                    "url": "https://www.tictactoeinnovation.com/the-crucial-role-of-curiosity-in-driving-innovation/",
+                    "title": "The Crucial Role of Curiosity in Driving Innovation",
+                    "snippet": "How our Brain Works – Episode 1mayo 15, 2024Innovation under pressure: How constraints spark better propositions.agosto 27, 2025 How our Brain Works – Episode 1mayo 15, 2024Innovation under pressure: ",
+                    "reason": "The user's text heavily paraphrases and condenses multiple core ideas and specific phrases from the source text without attribution. Key concepts such as innovation emerging from a desire to solve problems, curiosity as the starting point for breakthroughs, the importance of collaboration, adaptability in a world of rapid change, and the value of lifelong learning for organizations to thrive amidst uncertainty are all directly echoed from the source. While the user's text includes one unique point about 'failure' not being an endpoint, the overwhelming semantic and conceptual overlap, combined with similar phrasing for several key arguments, indicates extensive uncredited borrowing and rephrasing of the source material.",
+                    "matchType": "paraphrased",
+                    "confidence": "high",
+                    "isPlagiarism": true,
+                    "similarity": 0.8
+                },
+                {
+                    "url": "https://medium.com/@lukedylan2233/innovation-and-adaptability-twin-engines-of-success-c50476dd2745",
+                    "title": "Innovation and Adaptability: Twin Engines of Success",
+                    "snippet": "Innovation and Adaptability: Twin Engines of SuccessLukedylan3 min read·Oct 22, 2023--ListenShareIn an ever-changing world, where the only constant is change itself, the ability to innovate and adapt ",
+                    "reason": "The user's text is highly similar to the source text, demonstrating significant semantic overlap and paraphrasing of key concepts, along with several direct word matches. While not an exact copy, the user's text condenses and rephrases core arguments presented in the source. \n\nSpecific points of similarity include:\n*   **Innovation's Drivers:** The user's text mentions innovation emerging from 'human desire to solve meaningful problems' and 'curiosity, followed by persistence'. The source states innovation is 'fueled by curiosity, creativity, and the desire to challenge the status quo' and adaptable individuals 'can persist through these hurdles'.\n*   **Adaptability in a Changing World:** The user's phrase 'In a world driven by rapid change, adaptability has become a core skill' closely mirrors the source's 'In an ever-changing world... the ability to innovate and adapt is... a necessity' and 'adaptability is a highly sought-after skill'.\n*   **Learning and Thriving:** The user's 'Communities and organizations that embrace lifelong learning thrive amid uncertainty' aligns with the source's 'Those who are adaptable are more open to learning and experimentation' and the idea of individuals/organizations being 'better prepared to thrive in a rapidly evolving environment' and 'navigate through uncertainty'.\n\nDirect word matches for key concepts include 'curiosity', 'persistence', 'world', 'change', 'adaptability', 'skill', 'organizations', 'thrive', and 'uncertainty'. While the user introduces the concept of 'failure as a crucial part of discovery' and 'collaboration', the majority of the text's core message and structure of arguments are derived directly from the source's content.",
+                    "matchType": "paraphrased",
+                    "confidence": "high",
+                    "isPlagiarism": true,
+                    "similarity": 0.75
+                }
+            ],
+            "startChar": 0,
+            "endChar": 461
+        },
+        {
+            "text": "Technology should empower creativity, amplify empathy, and connect humanity beyond boundaries. Progress, at its best, is not about replacing people—it’s about enhancing our collective potential to build a smarter, more compassionate future.",
+            "similarity": 0.8,
+            "sources": [
+                {
+                    "url": "https://theidealisticworld.medium.com/how-technology-can-amplify-human-creativity-and-innovation-ai-as-your-co-pilot-69ff6772df49",
+                    "title": "How Technology Can Amplify Human Creativity and Innovation, AI as your co-pilot",
+                    "snippet": "How Technology Can Amplify Human Creativity and Innovation, AI as your co-pilotThe Idealistic World4 min read·Feb 2, 2024--ListenSharePress enter or click to view image in full sizeimage by the ideali",
+                    "reason": "The user's text strongly condenses the main optimistic arguments and specific concepts from the source. While not a direct copy of full sentences, it rephrases and synthesizes key ideas using very similar terminology. \n\nSpecifically:\n- The phrase 'amplify creativity' is directly used, echoing the source's title 'How Technology Can Amplify Human Creativity' and phrases like 'power to amplify and elevate the human imagination'.\n- 'Amplify empathy' closely aligns with the source's 'express our deepest wisdom, empathy and soul' and the general theme of human connection and awareness.\n- 'Connect humanity beyond boundaries' captures the essence of the source's points about 'collaborate on a global scale', 'break down barriers', and 'forge human connections'.\n- The opening of the second sentence, 'Progress, at its best, is not about replacing people', mirrors the source's 'At its best, technology serves human development, not the other way around' and 'prioritize people over products'.\n- 'Enhancing our collective potential' reflects the source's 'enhance our human experience', 'unlock new creative potential', and 'unleash their innovations'.\n- The overall optimistic vision of 'a smarter, more compassionate future' is consistent with the source's aim to 'elevate society through technology' and express 'wisdom, empathy and soul'.\n\nMany of these ideas are presented sequentially and directly in the user's text, aligning with the core message and even specific phrasing found in various parts of the longer source text.",
+                    "matchType": "paraphrased",
+                    "confidence": "high",
+                    "isPlagiarism": true,
+                    "similarity": 0.8
+                }
+            ],
+            "startChar": 462,
+            "endChar": 702
+        }
+    ],
+    "exactMatches": [],
+    "summary": {
+        "totalChunks": 2,
+        "paraphrasedCount": 2,
+        "exactMatchCount": 0,
+        "riskLevel": "MEDIUM"
+    },
+    "timestamp": "2025-11-09T04:48:08.343Z",
+    "paraphrasedPercentage": 100,
+    "exactPlagiarismPercentage": 0,
+    "hasPlagiarism": true,
+    "needsReview": true,
+    "sources": [
+        {
+            "url": "https://www.tictactoeinnovation.com/the-crucial-role-of-curiosity-in-driving-innovation/",
+            "title": "The Crucial Role of Curiosity in Driving Innovation",
+            "snippet": "How our Brain Works – Episode 1mayo 15, 2024Innovation under pressure: How constraints spark better propositions.agosto 27, 2025 How our Brain Works – Episode 1mayo 15, 2024Innovation under pressure: ",
+            "reason": "The user's text heavily paraphrases and condenses multiple core ideas and specific phrases from the source text without attribution. Key concepts such as innovation emerging from a desire to solve problems, curiosity as the starting point for breakthroughs, the importance of collaboration, adaptability in a world of rapid change, and the value of lifelong learning for organizations to thrive amidst uncertainty are all directly echoed from the source. While the user's text includes one unique point about 'failure' not being an endpoint, the overwhelming semantic and conceptual overlap, combined with similar phrasing for several key arguments, indicates extensive uncredited borrowing and rephrasing of the source material.",
+            "matchType": "paraphrased",
+            "confidence": "high",
+            "isPlagiarism": true,
+            "similarity": 0.8
+        },
+        {
+            "url": "https://medium.com/@lukedylan2233/innovation-and-adaptability-twin-engines-of-success-c50476dd2745",
+            "title": "Innovation and Adaptability: Twin Engines of Success",
+            "snippet": "Innovation and Adaptability: Twin Engines of SuccessLukedylan3 min read·Oct 22, 2023--ListenShareIn an ever-changing world, where the only constant is change itself, the ability to innovate and adapt ",
+            "reason": "The user's text is highly similar to the source text, demonstrating significant semantic overlap and paraphrasing of key concepts, along with several direct word matches. While not an exact copy, the user's text condenses and rephrases core arguments presented in the source. \n\nSpecific points of similarity include:\n*   **Innovation's Drivers:** The user's text mentions innovation emerging from 'human desire to solve meaningful problems' and 'curiosity, followed by persistence'. The source states innovation is 'fueled by curiosity, creativity, and the desire to challenge the status quo' and adaptable individuals 'can persist through these hurdles'.\n*   **Adaptability in a Changing World:** The user's phrase 'In a world driven by rapid change, adaptability has become a core skill' closely mirrors the source's 'In an ever-changing world... the ability to innovate and adapt is... a necessity' and 'adaptability is a highly sought-after skill'.\n*   **Learning and Thriving:** The user's 'Communities and organizations that embrace lifelong learning thrive amid uncertainty' aligns with the source's 'Those who are adaptable are more open to learning and experimentation' and the idea of individuals/organizations being 'better prepared to thrive in a rapidly evolving environment' and 'navigate through uncertainty'.\n\nDirect word matches for key concepts include 'curiosity', 'persistence', 'world', 'change', 'adaptability', 'skill', 'organizations', 'thrive', and 'uncertainty'. While the user introduces the concept of 'failure as a crucial part of discovery' and 'collaboration', the majority of the text's core message and structure of arguments are derived directly from the source's content.",
+            "matchType": "paraphrased",
+            "confidence": "high",
+            "isPlagiarism": true,
+            "similarity": 0.75
+        },
+        {
+            "url": "https://theidealisticworld.medium.com/how-technology-can-amplify-human-creativity-and-innovation-ai-as-your-co-pilot-69ff6772df49",
+            "title": "How Technology Can Amplify Human Creativity and Innovation, AI as your co-pilot",
+            "snippet": "How Technology Can Amplify Human Creativity and Innovation, AI as your co-pilotThe Idealistic World4 min read·Feb 2, 2024--ListenSharePress enter or click to view image in full sizeimage by the ideali",
+            "reason": "The user's text strongly condenses the main optimistic arguments and specific concepts from the source. While not a direct copy of full sentences, it rephrases and synthesizes key ideas using very similar terminology. \n\nSpecifically:\n- The phrase 'amplify creativity' is directly used, echoing the source's title 'How Technology Can Amplify Human Creativity' and phrases like 'power to amplify and elevate the human imagination'.\n- 'Amplify empathy' closely aligns with the source's 'express our deepest wisdom, empathy and soul' and the general theme of human connection and awareness.\n- 'Connect humanity beyond boundaries' captures the essence of the source's points about 'collaborate on a global scale', 'break down barriers', and 'forge human connections'.\n- The opening of the second sentence, 'Progress, at its best, is not about replacing people', mirrors the source's 'At its best, technology serves human development, not the other way around' and 'prioritize people over products'.\n- 'Enhancing our collective potential' reflects the source's 'enhance our human experience', 'unlock new creative potential', and 'unleash their innovations'.\n- The overall optimistic vision of 'a smarter, more compassionate future' is consistent with the source's aim to 'elevate society through technology' and express 'wisdom, empathy and soul'.\n\nMany of these ideas are presented sequentially and directly in the user's text, aligning with the core message and even specific phrasing found in various parts of the longer source text.",
+            "matchType": "paraphrased",
+            "confidence": "high",
+            "isPlagiarism": true,
+            "similarity": 0.8
+        }
+    ],
+    "language": {
+        "code": "eng",
+        "name": "Unknown",
+        "confidence": 1
+    },
+    "citations": [
+        {
+            "url": "https://www.tictactoeinnovation.com/the-crucial-role-of-curiosity-in-driving-innovation/",
+            "apa": "The Crucial Role of Curiosity in Driving Innovation. https://www.tictactoeinnovation.com/the-crucial-role-of-curiosity-in-driving-innovation/",
+            "mla": "\"The Crucial Role of Curiosity in Driving Innovation.\" https://www.tictactoeinnovation.com/the-crucial-role-of-curiosity-in-driving-innovation/",
+            "chicago": "\"The Crucial Role of Curiosity in Driving Innovation.\" https://www.tictactoeinnovation.com/the-crucial-role-of-curiosity-in-driving-innovation/"
+        },
+        {
+            "url": "https://medium.com/@lukedylan2233/innovation-and-adaptability-twin-engines-of-success-c50476dd2745",
+            "apa": "Innovation and Adaptability: Twin Engines of Success. https://medium.com/@lukedylan2233/innovation-and-adaptability-twin-engines-of-success-c50476dd2745",
+            "mla": "\"Innovation and Adaptability: Twin Engines of Success.\" https://medium.com/@lukedylan2233/innovation-and-adaptability-twin-engines-of-success-c50476dd2745",
+            "chicago": "\"Innovation and Adaptability: Twin Engines of Success.\" https://medium.com/@lukedylan2233/innovation-and-adaptability-twin-engines-of-success-c50476dd2745"
+        },
+        {
+            "url": "https://theidealisticworld.medium.com/how-technology-can-amplify-human-creativity-and-innovation-ai-as-your-co-pilot-69ff6772df49",
+            "apa": "How Technology Can Amplify Human Creativity and Innovation, AI as your co-pilot. https://theidealisticworld.medium.com/how-technology-can-amplify-human-creativity-and-innovation-ai-as-your-co-pilot-69ff6772df49",
+            "mla": "\"How Technology Can Amplify Human Creativity and Innovation, AI as your co-pilot.\" https://theidealisticworld.medium.com/how-technology-can-amplify-human-creativity-and-innovation-ai-as-your-co-pilot-69ff6772df49",
+            "chicago": "\"How Technology Can Amplify Human Creativity and Innovation, AI as your co-pilot.\" https://theidealisticworld.medium.com/how-technology-can-amplify-human-creativity-and-innovation-ai-as-your-co-pilot-69ff6772df49"
+        }
+    ],
+    "analysisId": "69101d08932e5f3239ec9105"
+}
