@@ -6,6 +6,8 @@ import ToolsCTA from "@/components/tools/common/ToolsCTA";
 import ToolsSepecigFaq from "@/components/tools/common/ToolsSepecigFaq";
 import { Suspense } from "react";
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata() {
   return {
     title: "AI Detector || Shothik AI",

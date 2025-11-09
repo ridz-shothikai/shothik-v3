@@ -6,6 +6,8 @@ import ToolsCTA from "@/components/tools/common/ToolsCTA";
 import ToolsSepecigFaq from "@/components/tools/common/ToolsSepecigFaq";
 import { cn } from "@/lib/utils";
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata() {
   return {
     title: "Summarize || Shothik AI",

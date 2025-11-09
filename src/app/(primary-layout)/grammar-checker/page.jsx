@@ -1,6 +1,8 @@
 import GrammarCheckerContentSection from "@/components/(primary-layout)/(grammar-checker-page)/GrammarCheckerContentSection";
 import ErrorBoundary from "@/components/common/ErrorBoundary";
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata() {
   return {
     title: "Grammar || Shothik AI",
