@@ -1,0 +1,43 @@
+.plagiarism-editor {
+  position: relative;
+  height: 100%;
+}
+
+.plagiarism-editor .tiptap.ProseMirror {
+  outline: none;
+  padding: 0;
+  height: 100%;
+  white-space: pre-wrap;
+}
+
+.plagiarism-editor .tiptap.ProseMirror p {
+  margin: 0;
+}
+
+.plagiarism-editor .plagiarism-highlight {
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  border-radius: 0.25rem;
+  padding: 0 0.05em;
+}
+
+.plagiarism-editor .plagiarism-highlight--high {
+  background-color: rgba(244, 63, 94, 0.3);
+}
+
+.plagiarism-editor .plagiarism-highlight--medium {
+  background-color: rgba(245, 158, 11, 0.3);
+}
+
+.plagiarism-editor .plagiarism-highlight--low {
+  background-color: rgba(34, 197, 94, 0.3);
+}
+
+.plagiarism-editor .plagiarism-highlight[data-selected="true"] {
+  background-color: rgba(59, 130, 246, 0.35);
+}
+
+.plagiarism-editor.is-disabled .tiptap.ProseMirror {
+  opacity: 0.7;
+  pointer-events: none;
+}

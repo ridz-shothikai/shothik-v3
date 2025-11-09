@@ -1,72 +1,88 @@
 "use client";
-import { trackEvent } from "@/analysers/eventTracker";
-import UserActionInput from "@/components/tools/common/UserActionInput";
-import WordCounter from "@/components/tools/common/WordCounter";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
-import { Textarea } from "@/components/ui/textarea";
-import useResponsive from "@/hooks/ui/useResponsive";
-import useGlobalPlagiarismCheck from "@/hooks/useGlobalPlagiarismCheck";
-import useLoadingText from "@/hooks/useLoadingText";
-import useSnackbar from "@/hooks/useSnackbar";
-import { cn } from "@/lib/utils";
-import { setShowLoginModal } from "@/redux/slices/auth";
-import { setAlertMessage, setShowAlert } from "@/redux/slices/tools";
 import { RefreshCw } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+
+import { trackEvent } from "@/analysers/eventTracker";
+import EmptyReportState from "@/components/plagiarism/EmptyReportState";
+import ErrorStateCard from "@/components/plagiarism/ErrorStateCard";
+import PlagiarismInputEditor from "@/components/plagiarism/PlagiarismInputEditor";
+import ReportSectionList from "@/components/plagiarism/ReportSectionList";
+import ReportSummary from "@/components/plagiarism/ReportSummary";
+import UserActionInput from "@/components/tools/common/UserActionInput";
+import WordCounter from "@/components/tools/common/WordCounter";
+import { Button } from "@/components/ui/button";
+import useResponsive from "@/hooks/ui/useResponsive";
+import useGlobalPlagiarismCheck from "@/hooks/useGlobalPlagiarismCheck";
+import { cn } from "@/lib/utils";
 
 const PlagiarismCheckerContentSection = () => {
   const { user } = useSelector((state) => state.auth);
   const [enableScan, setEnableScan] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
   const [inputText, setInputText] = useState("");
   const isMobile = useResponsive("down", "sm");
-  const enqueueSnackbar = useSnackbar();
   const params = useSearchParams();
   const share_id = params.get("share_id");
-  const dispatch = useDispatch();
 
-  const { loading, score, results, error, triggerCheck, manualRefresh } =
-    useGlobalPlagiarismCheck(inputText);
+  const {
+    loading,
+    report,
+    error,
+    fromCache,
+    triggerCheck,
+    manualRefresh,
+    reset,
+  } = useGlobalPlagiarismCheck(inputText);
 
-  const loadingText = useLoadingText(isLoading);
+  const hasInput = Boolean(inputText.trim());
+  const hasReport = Boolean(report);
+  const highlightRanges = useMemo(() => {
+    if (!report?.sections?.length) return [];
+    return report.sections
+      .filter(
+        (section) =>
+          typeof section?.span?.start === "number" &&
+          typeof section?.span?.end === "number",
+      )
+      .map((section) => ({
+        start: section.span.start,
+        end: section.span.end,
+        similarity: section.similarity ?? 0,
+      }));
+  }, [report]);
 
-  function handleClear() {
+  useEffect(() => {
+    if (!hasInput) {
+      setEnableScan(true);
+      reset();
+    }
+  }, [hasInput, reset]);
+
+  const handleInputChange = (nextValue) => {
+    setInputText(nextValue);
+    setEnableScan(true);
+    if (hasReport) {
+      reset();
+    }
+  };
+
+  const handleClear = () => {
     setInputText("");
     setEnableScan(true);
-  }
+    reset();
+  };
 
-  async function handleSubmit() {
-    try {
-      if (!enableScan) return;
+  const handleSubmit = async () => {
+    if (!enableScan) return;
+    trackEvent("click", "ai-detector", "ai-detector_click", 1);
+    setEnableScan(false);
+    await triggerCheck();
+  };
 
-      trackEvent("click", "ai-detector", "ai-detector_click", 1);
-
-      setIsLoading(true);
-      triggerCheck(false);
-      setEnableScan(false);
-    } catch (err) {
-      const error = err?.data;
-      if (/LIMIT_REQUEST|PACAKGE_EXPIRED/.test(error?.error)) {
-        dispatch(setShowAlert(true));
-        dispatch(setAlertMessage(error?.message));
-      } else if (error?.error === "UNAUTHORIZED") {
-        dispatch(setShowLoginModal(true));
-      } else {
-        enqueueSnackbar(error?.message, { variant: "error" });
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  const handleRefresh = async () => {
+    await manualRefresh();
+  };
 
   return (
     <div className="flex flex-col items-center justify-center md:min-h-[calc(100vh-100px)]">
@@ -75,18 +91,11 @@ const PlagiarismCheckerContentSection = () => {
         <div className="md:w-full md:flex-1">
           <div className="bg-card relative flex h-[400px] flex-col rounded-xl border shadow-sm md:h-[600px]">
             <div className="flex-1 p-3">
-              <Textarea
-                name="input"
-                placeholder="Enter your text here..."
-                value={loadingText ? loadingText : inputText}
-                onChange={(e) => {
-                  setInputText(e.target.value);
-                  !enableScan && setEnableScan(true);
-                }}
-                className={cn(
-                  "h-full resize-none border-0 bg-transparent p-0 shadow-none focus-visible:ring-0",
-                )}
-                rows={isMobile ? 13 : 18}
+              <PlagiarismInputEditor
+                value={inputText}
+                onChange={handleInputChange}
+                highlights={highlightRanges}
+                disabled={loading}
               />
             </div>
 
@@ -102,11 +111,11 @@ const PlagiarismCheckerContentSection = () => {
               {inputText && (
                 <div className="border-t px-3 py-2">
                   <WordCounter
-                    btnDisabled={!enableScan}
-                    btnText={"Scan"}
+                    btnDisabled={!enableScan || loading}
+                    btnText="Scan"
                     toolName="ai-detector"
                     userInput={inputText}
-                    isLoading={isLoading}
+                    isLoading={loading}
                     handleClearInput={handleClear}
                     handleSubmit={handleSubmit}
                     userPackage={user?.package}
@@ -118,108 +127,72 @@ const PlagiarismCheckerContentSection = () => {
           </div>
         </div>
 
-        {/* Results Section - Always Visible */}
+        {/* Results Section */}
         <div className="flex-1 px-3 py-2">
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Plagiarism Checker</h2>
+          <div className="mb-4 flex items-start justify-between gap-3">
+            <div>
+              <h2 className="text-lg font-semibold">Plagiarism Checker</h2>
+              <p className="text-muted-foreground text-sm">
+                Get similarity insights, matched sources, and actionable next
+                steps.
+              </p>
+            </div>
             <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={manualRefresh}
-              disabled={loading || !inputText?.trim()}
+              variant="outline"
+              size="icon"
+              onClick={handleRefresh}
+              disabled={loading || !hasReport}
               title="Refresh check"
             >
-              <RefreshCw className="size-4" />
+              <RefreshCw className={cn("size-4", loading && "animate-spin")} />
             </Button>
           </div>
 
-          {/* Status / Score Box */}
-          <div
-            className={cn(
-              "mb-3 flex min-h-[100px] flex-col items-center justify-center rounded-md border p-4 text-center",
-              loading
-                ? "bg-muted"
-                : error
-                  ? "bg-destructive/20"
-                  : results?.length || score
-                    ? "bg-success/20"
-                    : "bg-muted/30",
-            )}
-          >
-            {loading ? (
-              <div className="flex flex-col items-center gap-1">
-                <Spinner className="mb-1 size-6" />
-                <span className="text-muted-foreground text-xs">
-                  Checking plagiarism...
-                </span>
+          <div className="space-y-4">
+            {error ? (
+              <ErrorStateCard
+                message="We couldn't complete the scan."
+                description={error}
+                onRetry={handleRefresh}
+              />
+            ) : null}
+
+            <ReportSummary
+              report={report}
+              loading={loading}
+              fromCache={fromCache}
+            />
+
+            {hasReport ? (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-2">
+                  <h3 className="text-base font-semibold">Matched sections</h3>
+                  <span className="text-muted-foreground text-xs">
+                    {report.sections.length}{" "}
+                    {report.sections.length === 1 ? "section" : "sections"}
+                  </span>
+                </div>
+                <ReportSectionList
+                  sections={report.sections}
+                  loading={loading}
+                />
               </div>
-            ) : error ? (
-              <>
-                <p className="text-destructive text-2xl font-bold">Error</p>
-                <p className="text-destructive text-xs">{error}</p>
-                <Button
-                  size="sm"
-                  onClick={manualRefresh}
-                  variant="outline"
-                  className="mt-2"
-                >
-                  Retry
-                </Button>
-              </>
-            ) : results?.length || score ? (
-              <>
-                <p className="text-4xl font-bold">
-                  {score != null ? `${score}%` : "--"}
-                </p>
-                <span className="text-muted-foreground text-xs">
-                  Plagiarism
-                </span>
-              </>
-            ) : (
-              <span className="text-muted-foreground text-sm">
-                No scan performed yet. Enter text and click <b>Scan</b> to see
-                results.
-              </span>
-            )}
-          </div>
+            ) : null}
 
-          {/* Results List */}
-          <div>
-            <p className="text-muted-foreground mb-2 text-sm">
-              Results ({results?.length || 0})
-            </p>
-
-            {results?.length > 0 && (
-              <Accordion type="single" collapsible className="space-y-2">
-                {results.map((r, i) => (
-                  <AccordionItem
-                    key={i}
-                    value={`item-${i}`}
-                    className="rounded border shadow-sm"
-                  >
-                    <AccordionTrigger className="px-4 py-3">
-                      <div className="flex w-full items-center gap-2">
-                        <span className="w-1/5 text-sm">{r?.percent}%</span>
-                        <span className="flex-1 text-center text-sm">
-                          {r?.source}
-                        </span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="px-4 pb-4">
-                      <p className="text-sm">{r?.chunkText}</p>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            )}
-
-            {!loading && !error && results?.length === 0 && (
-              <p className="text-muted-foreground text-sm">
-                {inputText
-                  ? "No matches found."
-                  : "Results will appear here after you scan your text."}
-              </p>
-            )}
+            {!loading && !hasReport ? (
+              <EmptyReportState
+                title={
+                  hasInput ? "Ready when you are" : "Start a plagiarism scan"
+                }
+                description={
+                  hasInput
+                    ? "Run the scan to see similarity score, risk levels, and matched sources."
+                    : "Paste or write content in the editor to begin checking for plagiarism."
+                }
+                actionLabel={hasInput && enableScan ? "Scan now" : undefined}
+                onAction={hasInput && enableScan ? handleSubmit : undefined}
+              />
+            ) : null}
           </div>
         </div>
       </div>
