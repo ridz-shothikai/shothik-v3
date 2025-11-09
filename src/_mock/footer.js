@@ -7,7 +7,7 @@ export const LINKS = [
       { name: "Paraphrasing", href: PATH_TOOLS.paraphrase },
       { name: "Humanize GPT", href: PATH_TOOLS.humanize },
       { name: "Summarizer", href: PATH_TOOLS.summarize },
-      { name: "Grammar Fix", href: PATH_TOOLS.grammar },
+      { name: "Grammar Fix", href: PATH_TOOLS.grammar_checker },
       { name: "Translator", href: PATH_TOOLS.translator },
     ],
   },
