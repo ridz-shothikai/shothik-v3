@@ -79,7 +79,7 @@ export default function PublishAdsScreen() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#020617]">
+      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-[#020617]">
         <div className="text-center">
           <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-purple-500" />
           <p className="text-lg text-gray-400">Loading ads...</p>
@@ -89,7 +89,7 @@ export default function PublishAdsScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-[#020617]">
+    <div className="min-h-[calc(100vh-4rem)] bg-[#020617]">
       {/* Header */}
       <div className="sticky top-0 z-10 border-b border-slate-900/50 bg-[#020617]/80 backdrop-blur-sm">
         <div className="mx-auto max-w-[1920px] px-6 py-4">

@@ -268,11 +268,11 @@ export default function MindMapView() {
               layoutNode.node.type,
             )} flex h-full flex-col justify-center rounded-lg border px-4 py-3 shadow-md`}
           >
-            <div className="text-sm font-semibold leading-tight break-words">
+            <div className="text-sm leading-tight font-semibold break-words">
               {layoutNode.node.label}
             </div>
             {layoutNode.node.data && (
-              <div className="mt-1 text-xs text-primary-foreground/80">
+              <div className="text-primary-foreground/80 mt-1 text-xs">
                 {layoutNode.node.data.count && (
                   <div>Count: {String(layoutNode.node.data.count)}</div>
                 )}
@@ -333,9 +333,9 @@ export default function MindMapView() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
+      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <div className="text-center">
-          <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-primary" />
+          <Loader2 className="text-primary mx-auto mb-4 h-12 w-12 animate-spin" />
           <p className="text-muted-foreground">
             Generating AI-powered mind map...
           </p>
@@ -361,9 +361,9 @@ export default function MindMapView() {
 
   return (
     <div className="bg-background min-h-[calc(100vh-4rem)]">
-      <div className="border-border/50 bg-background/80 sticky top-0 z-20 border-b px-6 py-3 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <div className="flex items-center gap-3">
+      <div className="border-border bg-background/90 sticky top-0 z-20 h-12 border-b px-6 backdrop-blur-sm md:h-16">
+        <div className="flex h-full items-center justify-between">
+          <div className="flex items-center gap-2">
             <Button
               variant="ghost"
               size="icon"
@@ -386,7 +386,7 @@ export default function MindMapView() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl space-y-8 px-6 py-8">
+      <div className="container mx-auto space-y-6 px-6 py-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <Card className="lg:col-span-2">
             <CardHeader className="flex flex-row items-center gap-2">
@@ -447,15 +447,17 @@ export default function MindMapView() {
           <CardContent className="space-y-4">
             {mindMapData.metaFlow.map((step, index) => (
               <div key={index} className="flex items-start gap-4">
-                <div className="shrink-0">
+                <div className="mt-0.5 shrink-0">
                   {step.status === "completed" ? (
-                    <CheckCircle2 className="text-secondary size-6" />
+                    <CheckCircle2 className="text-primary size-6" />
                   ) : (
                     <Circle className="text-muted-foreground size-6" />
                   )}
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-foreground font-semibold">{step.step}</h3>
+                  <h3 className="text-foreground text-base font-semibold">
+                    {step.step}
+                  </h3>
                   <p className="text-muted-foreground text-sm">
                     {step.description}
                   </p>
@@ -466,7 +468,7 @@ export default function MindMapView() {
         </Card>
 
         {mindMapData.insights.recommendations.length > 0 && (
-          <Card className="border-primary/30 from-primary/10 to-secondary/10 bg-gradient-to-br">
+          <Card>
             <CardHeader className="flex flex-row items-center gap-2">
               <Sparkles className="text-primary size-5" />
               <CardTitle className="text-lg font-bold">
@@ -488,7 +490,7 @@ export default function MindMapView() {
 
         <div
           ref={containerRef}
-          className="border-border/60 bg-card relative overflow-hidden rounded-xl border shadow-lg"
+          className="border-border bg-card relative overflow-hidden rounded-xl border shadow-lg"
         >
           <div className="absolute top-4 right-4 z-10 flex gap-2">
             <Button
@@ -568,7 +570,7 @@ export default function MindMapView() {
             </svg>
           </div>
 
-          <div className="border-border/60 bg-card/80 text-muted-foreground absolute bottom-4 left-4 rounded-lg border px-3 py-2 text-sm backdrop-blur-sm">
+          <div className="border-border/60 bg-card/80 text-muted-foreground absolute bottom-4 left-4 rounded-lg border px-2 py-2 text-sm backdrop-blur-sm">
             <p>💡 Drag to pan • Scroll or use buttons to zoom</p>
           </div>
         </div>

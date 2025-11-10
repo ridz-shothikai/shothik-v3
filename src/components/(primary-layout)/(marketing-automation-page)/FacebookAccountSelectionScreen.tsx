@@ -436,10 +436,10 @@ export default function FacebookAccountSelectionScreen() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
+      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <div className="text-center">
-          <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-primary" />
-          <p className="text-lg text-muted-foreground">
+          <Loader2 className="text-primary mx-auto mb-4 h-12 w-12 animate-spin" />
+          <p className="text-muted-foreground text-lg">
             Loading Facebook accounts...
           </p>
         </div>
@@ -449,13 +449,13 @@ export default function FacebookAccountSelectionScreen() {
 
   if (!facebookData) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
+      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <div className="text-center">
-          <Globe className="mx-auto mb-4 h-16 w-16 text-muted-foreground" />
-          <h3 className="mb-2 text-lg font-semibold text-foreground">
+          <Globe className="text-muted-foreground mx-auto mb-4 h-16 w-16" />
+          <h3 className="text-foreground mb-2 text-lg font-semibold">
             No Facebook Account Connected
           </h3>
-          <p className="mb-6 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mb-6 text-sm">
             Please connect your Facebook account first
           </p>
           <Button
@@ -472,68 +472,62 @@ export default function FacebookAccountSelectionScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="sticky top-0 z-10 border-b border-border/60 bg-background/80 backdrop-blur-sm">
-        <div className="mx-auto max-w-[1920px] px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                title="Back to Campaign"
-                onClick={() =>
-                  router.push(
-                    `/marketing-automation/canvas/${projectId}/publish`,
-                  )
-                }
-              >
-                <ArrowLeft className="h-5 w-5 text-muted-foreground" />
-              </Button>
-              <div>
-                <h1 className="flex items-center gap-2 text-xl font-bold text-foreground">
-                  <Globe className="h-5 w-5 text-primary" />
-                  Select Facebook Accounts
-                </h1>
-                <p className="text-sm text-muted-foreground">
-                  Choose which pages, business account, and ad account to use
-                  for publishing
-                </p>
-              </div>
+    <div className="bg-background min-h-[calc(100vh-4rem)]">
+      <div className="border-border bg-background/90 sticky top-0 z-10 h-12 border-b backdrop-blur-sm md:h-16">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Back to Campaign"
+              onClick={() =>
+                router.push(`/marketing-automation/canvas/${projectId}/publish`)
+              }
+            >
+              <ArrowLeft className="text-muted-foreground h-5 w-5" />
+            </Button>
+            <div>
+              <h1 className="text-foreground flex items-center gap-2 text-xl font-bold">
+                <Globe className="text-primary h-5 w-5" />
+                Select Facebook Accounts
+              </h1>
+              <p className="text-muted-foreground text-sm">
+                Choose which pages, business account, and ad account to use for
+                publishing
+              </p>
             </div>
-            <div className="flex items-center gap-3">
-              <Badge
-                variant="secondary"
-                className="rounded-lg px-4 py-2 text-sm font-medium"
-              >
-                {selectedAdIds.length} ads selected
-              </Badge>
-              <Badge
-                variant="secondary"
-                className="rounded-lg px-4 py-2 text-sm font-medium"
-              >
-                {facebookData.user.name}
-              </Badge>
-            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <Badge
+              variant="secondary"
+              className="rounded-lg px-4 py-2 text-sm font-medium"
+            >
+              {selectedAdIds.length} ads selected
+            </Badge>
+            <Badge
+              variant="secondary"
+              className="rounded-lg px-4 py-2 text-sm font-medium"
+            >
+              {facebookData.user.name}
+            </Badge>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="mx-auto max-w-[1920px] px-6 py-6">
+      <div className="mx-auto p-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
           {/* Facebook Pages Selection */}
           <Card className="rounded-2xl p-6">
             <CardHeader className="mb-6 flex flex-row items-center gap-3 px-0">
-              <div className="rounded-lg border border-primary/30 bg-primary/10 p-2">
-                <Globe className="h-5 w-5 text-primary" />
+              <div className="border-primary/30 bg-primary/10 rounded-lg border p-2">
+                <Globe className="text-primary h-5 w-5" />
               </div>
               <div>
                 <CardTitle className="text-lg font-bold">
                   Facebook Pages
                 </CardTitle>
-                <CardDescription>
-                  Select pages to publish to
-                </CardDescription>
+                <CardDescription>Select pages to publish to</CardDescription>
               </div>
             </CardHeader>
 
@@ -562,10 +556,10 @@ export default function FacebookAccountSelectionScreen() {
                         {isSelected && <Check className="h-3 w-3" />}
                       </div>
                       <div>
-                        <h4 className="font-medium text-foreground">
+                        <h4 className="text-foreground font-medium">
                           {page.name}
                         </h4>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-muted-foreground text-sm">
                           {page.category}
                         </p>
                       </div>
@@ -579,7 +573,7 @@ export default function FacebookAccountSelectionScreen() {
               <CardContent className="px-0">
                 <Badge
                   variant="secondary"
-                  className="rounded-lg px-3 py-2 text-sm text-primary"
+                  className="text-primary rounded-lg px-3 py-2 text-sm"
                 >
                   {selectedPageIds.length} page
                   {selectedPageIds.length > 1 ? "s" : ""} selected
@@ -591,8 +585,8 @@ export default function FacebookAccountSelectionScreen() {
           {/* Business Accounts Selection */}
           <Card className="rounded-2xl p-6">
             <CardHeader className="mb-6 flex flex-row items-center gap-3 px-0">
-              <div className="rounded-lg border border-secondary/30 bg-secondary/10 p-2">
-                <Building2 className="h-5 w-5 text-secondary" />
+              <div className="border-secondary/30 bg-secondary/10 rounded-lg border p-2">
+                <Building2 className="text-secondary h-5 w-5" />
               </div>
               <div>
                 <CardTitle className="text-lg font-bold">
@@ -610,7 +604,9 @@ export default function FacebookAccountSelectionScreen() {
                   <button
                     key={businessAccount.id}
                     type="button"
-                    onClick={() => handleBusinessAccountSelect(businessAccount.id)}
+                    onClick={() =>
+                      handleBusinessAccountSelect(businessAccount.id)
+                    }
                     className={`w-full rounded-lg border-2 p-4 text-left transition-all ${
                       isSelected
                         ? "border-secondary bg-secondary/10"
@@ -628,10 +624,10 @@ export default function FacebookAccountSelectionScreen() {
                         {isSelected && <Check className="h-3 w-3" />}
                       </div>
                       <div>
-                        <h4 className="font-medium text-foreground">
+                        <h4 className="text-foreground font-medium">
                           {businessAccount.name}
                         </h4>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-muted-foreground text-sm">
                           {businessAccount.adsAccounts.length} ad account
                           {businessAccount.adsAccounts.length > 1 ? "s" : ""}
                         </p>
@@ -646,8 +642,8 @@ export default function FacebookAccountSelectionScreen() {
           {/* Ad Accounts Selection */}
           <Card className="rounded-2xl p-6">
             <CardHeader className="mb-6 flex flex-row items-center gap-3 px-0">
-              <div className="rounded-lg border border-accent/30 bg-accent/10 p-2">
-                <CreditCard className="h-5 w-5 text-accent" />
+              <div className="border-accent/30 bg-accent/10 rounded-lg border p-2">
+                <CreditCard className="text-accent h-5 w-5" />
               </div>
               <div>
                 <CardTitle className="text-lg font-bold">Ad Account</CardTitle>
@@ -658,55 +654,59 @@ export default function FacebookAccountSelectionScreen() {
             <CardContent className="px-0">
               {selectedBusinessAccountId ? (
                 <div className="space-y-3">
-                  {getSelectedBusinessAccount()?.adsAccounts.map((adAccount) => {
-                    const isSelected = selectedAdsAccountId === adAccount.id;
-                    return (
-                      <button
-                        key={adAccount.id}
-                        type="button"
-                        onClick={() => handleAdAccountSelect(adAccount.id)}
-                        className={`w-full rounded-lg border-2 p-4 text-left transition-all ${
-                          isSelected
-                            ? "border-accent bg-accent/10"
-                            : "border-border/60 hover:border-accent/50"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div
-                            className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${
-                              isSelected
-                                ? "border-accent bg-accent text-accent-foreground"
-                                : "border-border/70"
-                            }`}
-                          >
-                            {isSelected && <Check className="h-3 w-3" />}
-                          </div>
-                          <div>
-                            <h4 className="font-medium text-foreground">
-                              {adAccount.name}
-                            </h4>
-                            <div className="mt-1 flex items-center gap-2">
-                              <span
-                                className={`rounded px-2 py-1 text-xs font-medium ${getAccountStatusColor(
-                                  adAccount.account_status,
-                                )}`}
-                              >
-                                {getAccountStatusText(adAccount.account_status)}
-                              </span>
-                              <span className="text-xs text-muted-foreground">
-                                {adAccount.currency}
-                              </span>
+                  {getSelectedBusinessAccount()?.adsAccounts.map(
+                    (adAccount) => {
+                      const isSelected = selectedAdsAccountId === adAccount.id;
+                      return (
+                        <button
+                          key={adAccount.id}
+                          type="button"
+                          onClick={() => handleAdAccountSelect(adAccount.id)}
+                          className={`w-full rounded-lg border-2 p-4 text-left transition-all ${
+                            isSelected
+                              ? "border-accent bg-accent/10"
+                              : "border-border/60 hover:border-accent/50"
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div
+                              className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${
+                                isSelected
+                                  ? "border-accent bg-accent text-accent-foreground"
+                                  : "border-border/70"
+                              }`}
+                            >
+                              {isSelected && <Check className="h-3 w-3" />}
+                            </div>
+                            <div>
+                              <h4 className="text-foreground font-medium">
+                                {adAccount.name}
+                              </h4>
+                              <div className="mt-1 flex items-center gap-2">
+                                <span
+                                  className={`rounded px-2 py-1 text-xs font-medium ${getAccountStatusColor(
+                                    adAccount.account_status,
+                                  )}`}
+                                >
+                                  {getAccountStatusText(
+                                    adAccount.account_status,
+                                  )}
+                                </span>
+                                <span className="text-muted-foreground text-xs">
+                                  {adAccount.currency}
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </button>
-                    );
-                  })}
+                        </button>
+                      );
+                    },
+                  )}
                 </div>
               ) : (
                 <div className="py-8 text-center">
-                  <Users className="mx-auto mb-3 h-12 w-12 text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground">
+                  <Users className="text-muted-foreground mx-auto mb-3 h-12 w-12" />
+                  <p className="text-muted-foreground text-sm">
                     Select a business account first to view ad accounts
                   </p>
                 </div>
@@ -717,8 +717,8 @@ export default function FacebookAccountSelectionScreen() {
           {/* Pixels Section */}
           <Card className="rounded-2xl p-6">
             <CardHeader className="mb-6 flex flex-row items-center gap-3 px-0">
-              <div className="rounded-lg border border-primary/30 bg-primary/10 p-2">
-                <Activity className="h-5 w-5 text-primary" />
+              <div className="border-primary/30 bg-primary/10 rounded-lg border p-2">
+                <Activity className="text-primary h-5 w-5" />
               </div>
               <div>
                 <CardTitle className="text-lg font-bold">Meta Pixels</CardTitle>
@@ -733,19 +733,21 @@ export default function FacebookAccountSelectionScreen() {
                 <div className="space-y-3">
                   {isLoadingPixels ? (
                     <div className="py-8 text-center">
-                      <Loader2 className="mx-auto mb-3 h-8 w-8 animate-spin text-primary" />
-                      <p className="text-sm text-muted-foreground">
+                      <Loader2 className="text-primary mx-auto mb-3 h-8 w-8 animate-spin" />
+                      <p className="text-muted-foreground text-sm">
                         Loading pixels...
                       </p>
                     </div>
                   ) : (
                     <>
                       {pixelsWarning && (
-                        <div className="rounded-lg border border-accent/30 bg-accent/10 p-4 text-sm text-accent-foreground">
+                        <div className="border-accent/30 bg-accent/10 text-accent-foreground rounded-lg border p-4 text-sm">
                           <div className="flex items-start gap-3">
-                            <div className="mt-1 h-2 w-2 rounded-full bg-accent"></div>
+                            <div className="bg-accent mt-1 h-2 w-2 rounded-full"></div>
                             <div>
-                              <p className="font-medium">Permissions Required</p>
+                              <p className="font-medium">
+                                Permissions Required
+                              </p>
                               <p className="mt-1 text-xs">{pixelsWarning}</p>
                             </div>
                           </div>
@@ -776,14 +778,14 @@ export default function FacebookAccountSelectionScreen() {
                                   {isSelected && <Check className="h-3 w-3" />}
                                 </div>
                                 <div className="flex-1">
-                                  <h4 className="font-medium text-foreground">
+                                  <h4 className="text-foreground font-medium">
                                     {pixel.name}
                                   </h4>
-                                  <p className="mt-1 text-xs text-muted-foreground">
+                                  <p className="text-muted-foreground mt-1 text-xs">
                                     ID: {pixel.id}
                                   </p>
                                   {pixel.last_fired_time && (
-                                    <p className="mt-1 text-xs text-secondary">
+                                    <p className="text-secondary mt-1 text-xs">
                                       Last fired:{" "}
                                       {new Date(
                                         parseInt(pixel.last_fired_time) * 1000,
@@ -797,8 +799,8 @@ export default function FacebookAccountSelectionScreen() {
                         })
                       ) : !pixelsWarning ? (
                         <div className="py-8 text-center">
-                          <Activity className="mx-auto mb-3 h-12 w-12 text-muted-foreground" />
-                          <p className="text-sm text-muted-foreground">
+                          <Activity className="text-muted-foreground mx-auto mb-3 h-12 w-12" />
+                          <p className="text-muted-foreground text-sm">
                             No pixels found for this business account
                           </p>
                         </div>
@@ -808,8 +810,8 @@ export default function FacebookAccountSelectionScreen() {
                 </div>
               ) : (
                 <div className="py-8 text-center">
-                  <Activity className="mx-auto mb-3 h-12 w-12 text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground">
+                  <Activity className="text-muted-foreground mx-auto mb-3 h-12 w-12" />
+                  <p className="text-muted-foreground text-sm">
                     Select a business account first to view pixels
                   </p>
                 </div>
@@ -819,7 +821,7 @@ export default function FacebookAccountSelectionScreen() {
                 <div className="mt-4">
                   <Badge
                     variant="secondary"
-                    className="rounded-lg px-3 py-2 text-sm text-primary"
+                    className="text-primary rounded-lg px-3 py-2 text-sm"
                   >
                     ✓ Pixel selected for tracking
                   </Badge>
@@ -833,8 +835,8 @@ export default function FacebookAccountSelectionScreen() {
         {uniqueCTAs.length > 0 && (
           <Card className="mt-6 rounded-2xl p-6">
             <CardHeader className="mb-6 flex flex-row items-center gap-3 px-0">
-              <div className="rounded-lg border border-accent/30 bg-accent/10 p-2">
-                <MousePointerClick className="h-5 w-5 text-accent" />
+              <div className="border-accent/30 bg-accent/10 rounded-lg border p-2">
+                <MousePointerClick className="text-accent h-5 w-5" />
               </div>
               <div>
                 <CardTitle className="text-lg font-bold">
@@ -853,7 +855,7 @@ export default function FacebookAccountSelectionScreen() {
                 return (
                   <div
                     key={cta}
-                    className="rounded-lg border-2 border-border/60 bg-card/80 p-4"
+                    className="border-border/60 bg-card/80 rounded-lg border-2 p-4"
                   >
                     <div className="flex items-start gap-3">
                       <Badge
@@ -864,7 +866,7 @@ export default function FacebookAccountSelectionScreen() {
                       </Badge>
                       <div className="flex-1 space-y-2">
                         <div className="flex items-center gap-2">
-                          <h4 className="text-lg font-bold text-foreground">
+                          <h4 className="text-foreground text-lg font-bold">
                             {cta.replace(/_/g, " ")}
                           </h4>
                           <Badge
@@ -904,12 +906,12 @@ export default function FacebookAccountSelectionScreen() {
                           </div>
                         ) : (
                           <div className="flex items-center gap-2">
-                            <ExternalLink className="h-4 w-4 shrink-0 text-primary" />
+                            <ExternalLink className="text-primary h-4 w-4 shrink-0" />
                             <a
                               href={ctaUrls.get(cta) || projectUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex-1 truncate text-sm font-medium text-primary hover:text-primary/80 hover:underline"
+                              className="text-primary hover:text-primary/80 flex-1 truncate text-sm font-medium hover:underline"
                             >
                               {ctaUrls.get(cta) || projectUrl || "No URL set"}
                             </a>
@@ -919,7 +921,7 @@ export default function FacebookAccountSelectionScreen() {
                               onClick={() => handleEditCTA(cta)}
                               title="Edit URL"
                             >
-                              <Edit2 className="h-4 w-4 text-muted-foreground" />
+                              <Edit2 className="text-muted-foreground h-4 w-4" />
                             </Button>
                           </div>
                         )}
@@ -932,7 +934,7 @@ export default function FacebookAccountSelectionScreen() {
 
             {!projectUrl && (
               <CardContent className="px-0">
-                <div className="rounded-lg border border-accent/30 bg-accent/10 p-3 text-sm text-accent-foreground">
+                <div className="border-accent/30 bg-accent/10 text-accent-foreground rounded-lg border p-3 text-sm">
                   ⚠️ No action URL found in project. CTAs will not have a
                   destination URL.
                 </div>
@@ -948,7 +950,7 @@ export default function FacebookAccountSelectionScreen() {
           selectedPixelId) && (
           <Card className="mt-6 rounded-2xl p-6">
             <CardHeader className="flex flex-row items-center gap-2 px-0">
-              <Check className="h-5 w-5 text-secondary" />
+              <Check className="text-secondary h-5 w-5" />
               <CardTitle className="text-lg font-bold">
                 Selection Summary
               </CardTitle>
@@ -956,31 +958,31 @@ export default function FacebookAccountSelectionScreen() {
             <CardContent className="space-y-4 px-0">
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
                 {selectedPageIds.length > 0 && (
-                  <div className="rounded-lg border border-primary/30 bg-card/80 p-3">
-                    <p className="mb-1 text-xs text-muted-foreground">
+                  <div className="border-primary/30 bg-card/80 rounded-lg border p-3">
+                    <p className="text-muted-foreground mb-1 text-xs">
                       Facebook Page(s)
                     </p>
-                    <p className="text-sm font-semibold text-foreground">
+                    <p className="text-foreground text-sm font-semibold">
                       {selectedPageIds.length} selected
                     </p>
                   </div>
                 )}
                 {selectedBusinessAccountId && (
-                  <div className="rounded-lg border border-secondary/30 bg-card/80 p-3">
-                    <p className="mb-1 text-xs text-muted-foreground">
+                  <div className="border-secondary/30 bg-card/80 rounded-lg border p-3">
+                    <p className="text-muted-foreground mb-1 text-xs">
                       Business Account
                     </p>
-                    <p className="text-sm font-semibold text-foreground">
+                    <p className="text-foreground text-sm font-semibold">
                       {getSelectedBusinessAccount()?.name}
                     </p>
                   </div>
                 )}
                 {selectedAdsAccountId && (
-                  <div className="rounded-lg border border-accent/30 bg-card/80 p-3">
-                    <p className="mb-1 text-xs text-muted-foreground">
+                  <div className="border-accent/30 bg-card/80 rounded-lg border p-3">
+                    <p className="text-muted-foreground mb-1 text-xs">
                       Ad Account
                     </p>
-                    <p className="text-sm font-semibold text-foreground">
+                    <p className="text-foreground text-sm font-semibold">
                       {
                         getSelectedBusinessAccount()?.adsAccounts.find(
                           (acc) => acc.id === selectedAdsAccountId,
@@ -990,28 +992,28 @@ export default function FacebookAccountSelectionScreen() {
                   </div>
                 )}
                 {selectedPixelId && (
-                  <div className="rounded-lg border border-primary/30 bg-card/80 p-3">
-                    <p className="mb-1 text-xs text-muted-foreground">
+                  <div className="border-primary/30 bg-card/80 rounded-lg border p-3">
+                    <p className="text-muted-foreground mb-1 text-xs">
                       Meta Pixel
                     </p>
-                    <p className="text-sm font-semibold text-foreground">
+                    <p className="text-foreground text-sm font-semibold">
                       {pixels.find((p) => p.id === selectedPixelId)?.name}
                     </p>
                   </div>
                 )}
               </div>
               {uniqueCTAs.length > 0 && (
-                <div className="rounded-lg border border-accent/30 bg-card/80 p-3">
-                  <p className="mb-2 text-xs text-muted-foreground">
+                <div className="border-accent/30 bg-card/80 rounded-lg border p-3">
+                  <p className="text-muted-foreground mb-2 text-xs">
                     Call-to-Actions with URLs
                   </p>
                   <div className="space-y-1 text-xs">
                     {uniqueCTAs.map(({ cta }) => (
                       <div key={cta} className="flex items-center gap-2">
-                        <span className="font-semibold text-accent">
+                        <span className="text-accent font-semibold">
                           {cta.replace(/_/g, " ")}:
                         </span>
-                        <span className="truncate text-muted-foreground">
+                        <span className="text-muted-foreground truncate">
                           {ctaUrls.get(cta) || projectUrl || "No URL"}
                         </span>
                       </div>
@@ -1047,4 +1049,3 @@ export default function FacebookAccountSelectionScreen() {
     </div>
   );
 }
-

@@ -260,7 +260,7 @@ Would you like me to explain the personas, show you the ad concepts, or help you
 
   if (loading) {
     return (
-      <div className="bg-background flex min-h-screen items-center justify-center">
+      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <div className="text-center">
           <Loader2 className="text-primary mx-auto mb-4 h-12 w-12 animate-spin" />
           <p className="text-muted-foreground text-lg">Loading project...</p>

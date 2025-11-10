@@ -219,9 +219,9 @@ export default function Dashboard() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
+      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <div className="text-center">
-          <Loader2 className="mx-auto mb-4 h-16 w-16 animate-spin text-primary" />
+          <Loader2 className="text-primary mx-auto mb-4 h-16 w-16 animate-spin" />
           <p className="text-muted-foreground">Loading dashboard...</p>
         </div>
       </div>
@@ -229,14 +229,14 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background min-h-[calc(100vh-4rem)]">
       <DashboardHeader
         isLoadingInsights={isLoadingInsights}
         onRefresh={fetchInsights}
       />
 
       <div
-        className="mx-auto min-h-screen max-w-[1400px] px-6 py-8"
+        className="mx-auto min-h-[calc(100vh-4rem)] px-6 py-8"
         style={{
           backgroundImage:
             "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",

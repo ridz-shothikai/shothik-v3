@@ -20,7 +20,7 @@ export const WebhookSettings = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-background flex min-h-screen items-center justify-center">
+      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <div className="flex items-center gap-3">
           <Loader2 className="text-primary h-6 w-6 animate-spin" />
           <span className="text-foreground">Loading messenger settings...</span>
@@ -31,11 +31,11 @@ export const WebhookSettings = () => {
 
   if (!metaData) {
     return (
-      <div className="bg-background relative min-h-screen overflow-hidden">
+      <div className="bg-background relative overflow-hidden">
         {/* Background pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] bg-[size:4rem_4rem] opacity-20"></div>
 
-        <div className="relative flex min-h-screen items-center justify-center p-4">
+        <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center p-4">
           <Card className="w-full max-w-md p-8">
             <div className="mb-4 flex items-center gap-3">
               <div className="bg-destructive/20 flex h-12 w-12 items-center justify-center rounded-xl">
@@ -50,7 +50,9 @@ export const WebhookSettings = () => {
               Messenger webhooks.
             </p>
             <Button asChild className="w-full">
-              <Link href="/analysis">Connect Meta Account</Link>
+              <Link href="/marketing-automation/analysis">
+                Connect Meta Account
+              </Link>
             </Button>
           </Card>
         </div>
@@ -61,14 +63,14 @@ export const WebhookSettings = () => {
   const pages = metaData.pages || [];
 
   return (
-    <div className="bg-background relative min-h-screen overflow-hidden">
+    <div className="bg-background relative min-h-[calc(100vh-4rem)] overflow-hidden">
       {/* Background pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] bg-[size:4rem_4rem] opacity-20"></div>
 
       <div className="relative mx-auto max-w-6xl px-6 py-10">
         {/* Back Button */}
         <Button
-          onClick={() => router.push("/analysis")}
+          onClick={() => router.push("/marketing-automation/analysis")}
           variant="ghost"
           className="mb-8"
         >

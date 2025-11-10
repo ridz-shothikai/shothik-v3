@@ -35,7 +35,7 @@ export const Knowledge = () => {
 
   if (metaLoading) {
     return (
-      <div className="bg-background flex min-h-screen items-center justify-center">
+      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <Loader2 className="text-primary h-8 w-8 animate-spin" />
       </div>
     );
@@ -43,9 +43,9 @@ export const Knowledge = () => {
 
   if (!metaData || !metaData.pages || metaData.pages.length === 0) {
     return (
-      <div className="bg-background relative min-h-screen overflow-hidden">
+      <div className="bg-background relative overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] bg-[size:4rem_4rem] opacity-20"></div>
-        <div className="relative flex min-h-screen items-center justify-center p-4">
+        <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center p-4">
           <Card className="w-full max-w-md p-8 text-center">
             <BookOpen className="text-muted-foreground mx-auto mb-4 h-16 w-16" />
             <h2 className="text-foreground mb-2 text-xl font-semibold">
@@ -54,7 +54,9 @@ export const Knowledge = () => {
             <p className="text-muted-foreground mb-6">
               Connect your Facebook account to start building knowledge base.
             </p>
-            <Button onClick={() => router.push("/analysis")}>
+            <Button
+              onClick={() => router.push("/marketing-automation/analysis")}
+            >
               Connect Meta Account
             </Button>
           </Card>
@@ -64,18 +66,18 @@ export const Knowledge = () => {
   }
 
   return (
-    <div className="bg-background relative min-h-screen overflow-hidden">
+    <div className="bg-background relative overflow-hidden">
       {/* Background pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] bg-[size:4rem_4rem] opacity-20"></div>
 
-      <div className="relative flex min-h-screen flex-col">
+      <div className="relative flex min-h-[calc(100vh-4rem)] flex-col">
         {/* Header */}
         <div className="border-border bg-card/60 border-b px-6 py-4 backdrop-blur-xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Button
                 title="Back to Campaign"
-                onClick={() => router.push("/analysis")}
+                onClick={() => router.push("/marketing-automation/analysis")}
                 variant="ghost"
                 size="icon"
               >

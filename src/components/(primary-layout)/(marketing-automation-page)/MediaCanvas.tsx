@@ -209,10 +209,10 @@ export default function MediaCanvas() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
+      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <div className="text-center">
-          <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-primary" />
-          <p className="text-lg text-foreground">Loading ad data...</p>
+          <Loader2 className="text-primary mx-auto mb-4 h-12 w-12 animate-spin" />
+          <p className="text-foreground text-lg">Loading ad data...</p>
         </div>
       </div>
     );
@@ -220,9 +220,9 @@ export default function MediaCanvas() {
 
   if (!ad) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
+      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <div className="text-center">
-          <p className="mb-4 text-lg text-foreground">Ad not found</p>
+          <p className="text-foreground mb-4 text-lg">Ad not found</p>
           <Button
             onClick={() =>
               router.push(`/marketing-automation/canvas/${projectId}`)
@@ -236,59 +236,57 @@ export default function MediaCanvas() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="sticky top-0 z-10 border-b border-border bg-card">
-        <div className="mx-auto max-w-[1920px] px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                title="Back to Campaign"
-                onClick={() =>
-                  router.push(`/marketing-automation/canvas/${projectId}`)
-                }
-              >
-                <ArrowLeft className="h-6 w-6 text-muted-foreground" />
-              </Button>
-              <div className="flex items-center gap-3">
-                <div className="rounded-lg bg-primary p-2">
-                  <Wand2 className="h-6 w-6 text-primary-foreground" />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold text-foreground">
-                    AI Media Canvas
-                  </h1>
-                  <p className="text-sm text-muted-foreground">
-                    {ad.headline} • {ad.format}
-                  </p>
-                </div>
+    <div className="bg-background min-h-[calc(100vh-4rem)]">
+      <div className="border-border bg-background/90 sticky top-0 z-10 h-12 border-b backdrop-blur-lg md:h-16">
+        <div className="flex h-full items-center justify-between px-6">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Back to Campaign"
+              onClick={() =>
+                router.push(`/marketing-automation/canvas/${projectId}`)
+              }
+            >
+              <ArrowLeft className="text-muted-foreground h-6 w-6" />
+            </Button>
+            <div className="flex items-center gap-3">
+              <div className="bg-primary rounded-lg p-2">
+                <Wand2 className="text-primary-foreground h-6 w-6" />
+              </div>
+              <div>
+                <h1 className="text-foreground text-2xl font-bold">
+                  AI Media Canvas
+                </h1>
+                <p className="text-muted-foreground text-sm">
+                  {ad.headline} • {ad.format}
+                </p>
               </div>
             </div>
+          </div>
 
-            <div className="flex items-center gap-3">
-              {generatedMedia.length > 0 && (
-                <>
-                  <Button
-                    variant="outline"
-                    onClick={handleDownload}
-                    className="gap-2"
-                  >
-                    <Download className="h-4 w-4" />
-                    Download
-                  </Button>
-                  <Button onClick={handleSaveAndApply} className="shadow-lg">
-                    Save & Apply
-                  </Button>
-                </>
-              )}
-            </div>
+          <div className="flex items-center gap-3">
+            {generatedMedia.length > 0 && (
+              <>
+                <Button
+                  variant="outline"
+                  onClick={handleDownload}
+                  className="gap-2"
+                >
+                  <Download className="h-4 w-4" />
+                  Download
+                </Button>
+                <Button onClick={handleSaveAndApply} className="shadow-lg">
+                  Save & Apply
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="mx-auto max-w-[1920px] p-6">
+      <div className="p-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
           {/* Left Sidebar - Controls */}
           <div className="space-y-6 lg:col-span-1">
@@ -314,7 +312,7 @@ export default function MediaCanvas() {
             {/* Prompt Input */}
             <Card>
               <CardHeader className="flex flex-row items-center gap-2">
-                <Film className="h-4 w-4 text-primary" />
+                <Film className="text-primary h-4 w-4" />
                 <CardTitle className="text-base font-semibold">
                   Creative Direction
                 </CardTitle>
@@ -334,30 +332,30 @@ export default function MediaCanvas() {
             <Card>
               <CardContent className="space-y-3">
                 <div>
-                  <span className="text-xs font-medium text-muted-foreground">
+                  <span className="text-muted-foreground text-xs font-medium">
                     Format:
                   </span>
-                  <p className="font-semibold text-foreground">{ad.format}</p>
+                  <p className="text-foreground font-semibold">{ad.format}</p>
                 </div>
                 <div>
-                  <span className="text-xs font-medium text-muted-foreground">
+                  <span className="text-muted-foreground text-xs font-medium">
                     Hook:
                   </span>
-                  <p className="text-sm text-muted-foreground">{ad.hook}</p>
+                  <p className="text-muted-foreground text-sm">{ad.hook}</p>
                 </div>
                 <div>
-                  <span className="text-xs font-medium text-muted-foreground">
+                  <span className="text-muted-foreground text-xs font-medium">
                     Persona:
                   </span>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-muted-foreground text-sm">
                     {ad.persona || "N/A"}
                   </p>
                 </div>
                 <div>
-                  <span className="text-xs font-medium text-muted-foreground">
+                  <span className="text-muted-foreground text-xs font-medium">
                     Awareness Stage:
                   </span>
-                  <p className="text-sm capitalize text-muted-foreground">
+                  <p className="text-muted-foreground text-sm capitalize">
                     {ad.awareness_stage?.replace("_", " ") || "N/A"}
                   </p>
                 </div>
@@ -387,7 +385,7 @@ export default function MediaCanvas() {
             {/* AI Generation Info */}
             <Card className="border-primary/30 bg-primary/10">
               <CardHeader>
-                <CardTitle className="text-sm font-semibold text-primary">
+                <CardTitle className="text-primary text-sm font-semibold">
                   AI Generation Info
                 </CardTitle>
                 <CardDescription>
@@ -395,7 +393,7 @@ export default function MediaCanvas() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-1 text-sm text-muted-foreground">
+                <ul className="text-muted-foreground space-y-1 text-sm">
                   <li>• Uses creative direction as context</li>
                   <li>• Optimized for {ad.format} format</li>
                   <li>• Matches persona: {ad.persona}</li>

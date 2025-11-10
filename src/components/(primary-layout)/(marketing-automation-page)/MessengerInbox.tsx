@@ -307,7 +307,7 @@ export const MessengerInbox = () => {
 
   if (metaLoading) {
     return (
-      <div className="bg-background flex min-h-screen items-center justify-center">
+      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <Loader2 className="text-primary h-8 w-8 animate-spin" />
       </div>
     );
@@ -328,7 +328,7 @@ export const MessengerInbox = () => {
           </CardHeader>
           <CardContent className="flex justify-center">
             <Button
-              onClick={() => router.push("/analysis")}
+              onClick={() => router.push("/marketing-automation/analysis")}
               className="rounded-xl px-6 py-3"
             >
               Connect Meta Account
@@ -350,7 +350,7 @@ export const MessengerInbox = () => {
               variant="ghost"
               size="icon"
               title="Back to Campaign"
-              onClick={() => router.push("/analysis")}
+              onClick={() => router.push("/marketing-automation/analysis")}
             >
               <ArrowLeft className="text-muted-foreground h-5 w-5" />
             </Button>
