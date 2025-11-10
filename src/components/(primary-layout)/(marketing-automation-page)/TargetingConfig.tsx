@@ -192,24 +192,24 @@ const TargetingConfig: React.FC<TargetingConfigProps> = ({
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div>
-        <h3 className="mb-2 text-lg font-semibold text-foreground">
+        <h3 className="text-foreground mb-2 font-semibold">
           Targeting Configuration
         </h3>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           Configure who will see your ads based on demographics and location
         </p>
       </div>
 
       {/* Age Targeting */}
       <div className="space-y-4">
-        <h4 className="text-md font-medium text-foreground">Age Range</h4>
+        <h4 className="text-md text-foreground font-medium">Age Range</h4>
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-3">
             <Label
               htmlFor="age-min"
-              className="min-w-[40px] text-sm font-medium text-muted-foreground"
+              className="text-muted-foreground min-w-[40px] text-sm font-medium"
             >
               Min:
             </Label>
@@ -227,7 +227,7 @@ const TargetingConfig: React.FC<TargetingConfigProps> = ({
           <div className="flex items-center space-x-3">
             <Label
               htmlFor="age-max"
-              className="min-w-[40px] text-sm font-medium text-muted-foreground"
+              className="text-muted-foreground min-w-[40px] text-sm font-medium"
             >
               Max:
             </Label>
@@ -243,19 +243,19 @@ const TargetingConfig: React.FC<TargetingConfigProps> = ({
             />
           </div>
         </div>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-muted-foreground text-xs">
           Target people between {ageMin} and {ageMax} years old
         </p>
       </div>
 
       {/* Geographic Targeting */}
       <div className="space-y-6">
-        <h4 className="text-md font-medium text-foreground">
+        <h4 className="text-md text-foreground font-medium">
           Geographic Targeting
         </h4>
 
         <div className="space-y-3">
-          <Label className="text-sm font-medium text-muted-foreground">
+          <Label className="text-muted-foreground text-sm font-medium">
             Countries
           </Label>
           <div className="flex flex-wrap items-center gap-2">
@@ -295,7 +295,7 @@ const TargetingConfig: React.FC<TargetingConfigProps> = ({
         </div>
 
         <div className="space-y-3">
-          <Label className="text-sm font-medium text-muted-foreground">
+          <Label className="text-muted-foreground text-sm font-medium">
             Cities
           </Label>
 
@@ -309,19 +309,19 @@ const TargetingConfig: React.FC<TargetingConfigProps> = ({
             />
 
             {searchResults.length > 0 && (
-              <div className="absolute z-10 mt-2 max-h-60 w-full overflow-y-auto rounded-lg border border-border bg-popover shadow-lg">
+              <div className="border-border bg-popover absolute z-10 mt-2 max-h-60 w-full overflow-y-auto rounded-lg border shadow-lg">
                 {searchResults.map((city) => (
                   <Button
                     key={city.key}
                     type="button"
                     variant="ghost"
                     onClick={() => addCity(city)}
-                    className="flex w-full flex-col items-start gap-1 rounded-none border-b border-border/60 px-4 py-3 text-left last:border-b-0"
+                    className="border-border/60 flex w-full flex-col items-start gap-1 rounded-none border-b px-4 py-3 text-left last:border-b-0"
                   >
-                    <span className="text-sm font-medium text-foreground">
+                    <span className="text-foreground text-sm font-medium">
                       {city.name}
                     </span>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-muted-foreground text-xs">
                       {city.country_code}
                     </span>
                   </Button>
@@ -330,7 +330,7 @@ const TargetingConfig: React.FC<TargetingConfigProps> = ({
             )}
 
             {isSearching && (
-              <Loader2 className="absolute top-3.5 right-3.5 size-4 animate-spin text-muted-foreground" />
+              <Loader2 className="text-muted-foreground absolute top-3.5 right-3.5 size-4 animate-spin" />
             )}
           </div>
 
@@ -360,8 +360,10 @@ const TargetingConfig: React.FC<TargetingConfigProps> = ({
 
       {/* Advantage+ Audience */}
       <div className="space-y-4">
-        <h4 className="text-md font-medium text-foreground">Audience Options</h4>
-        <div className="rounded-lg border border-primary/30 bg-primary/10 p-4">
+        <h4 className="text-md text-foreground font-medium">
+          Audience Options
+        </h4>
+        <div className="border-primary/30 bg-primary/10 rounded-lg border p-4">
           <div className="flex items-start gap-3">
             <Checkbox
               id="advantage-audience"
@@ -373,11 +375,11 @@ const TargetingConfig: React.FC<TargetingConfigProps> = ({
             <div>
               <Label
                 htmlFor="advantage-audience"
-                className="text-sm font-medium text-foreground"
+                className="text-foreground text-sm font-medium"
               >
                 Use Advantage+ Audience (Recommended for Meta 2025)
               </Label>
-              <p className="mt-1 text-xs text-muted-foreground">
+              <p className="text-muted-foreground mt-1 text-xs">
                 Let Meta&apos;s AI find the best audience based on your creative
                 content. This is the recommended approach for modern Meta
                 advertising.
@@ -388,22 +390,22 @@ const TargetingConfig: React.FC<TargetingConfigProps> = ({
       </div>
 
       {/* Targeting Summary */}
-      <div className="rounded-lg border border-border bg-muted p-6">
-        <h5 className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
-          <span className="h-2 w-2 rounded-full bg-primary"></span>
+      <div className="border-border bg-muted rounded-lg border p-6">
+        <h5 className="text-foreground mb-3 flex items-center gap-2 text-sm font-semibold">
+          <span className="bg-primary h-2 w-2 rounded-full"></span>
           Targeting Summary
         </h5>
         <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-2">
           <div className="space-y-2">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Age Range:</span>
-              <span className="font-medium text-foreground">
+              <span className="text-foreground font-medium">
                 {ageMin} - {ageMax}
               </span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Countries:</span>
-              <span className="font-medium text-foreground">
+              <span className="text-foreground font-medium">
                 {countries
                   .map((c) => (c === "BD" ? "Bangladesh" : c))
                   .join(", ")}
@@ -414,18 +416,18 @@ const TargetingConfig: React.FC<TargetingConfigProps> = ({
             {cities.length > 0 && (
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Cities:</span>
-                <span className="font-medium text-foreground">
+                <span className="text-foreground font-medium">
                   {cities.map((c) => c.name).join(", ")}
                 </span>
               </div>
             )}
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Advantage+ Audience:</span>
+              <span className="text-muted-foreground">
+                Advantage+ Audience:
+              </span>
               <span
                 className={`font-medium ${
-                  advantageAudience
-                    ? "text-secondary"
-                    : "text-muted-foreground"
+                  advantageAudience ? "text-secondary" : "text-muted-foreground"
                 }`}
               >
                 {advantageAudience ? "Yes" : "No"}

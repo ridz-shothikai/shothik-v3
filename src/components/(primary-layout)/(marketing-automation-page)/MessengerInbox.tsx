@@ -315,10 +315,10 @@ export const MessengerInbox = () => {
 
   if (!metaData || !metaData.pages || metaData.pages.length === 0) {
     return (
-      <div className="bg-background flex min-h-screen items-center justify-center p-4">
+      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center p-4">
         <Card className="w-full max-w-md text-center">
           <CardHeader className="items-center gap-3">
-            <MessageSquare className="text-muted-foreground h-16 w-16" />
+            <MessageSquare className="text-muted-foreground mx-auto h-16 w-16" />
             <CardTitle className="text-xl font-semibold">
               No Pages Connected
             </CardTitle>
@@ -342,9 +342,9 @@ export const MessengerInbox = () => {
   const selectedPageData = metaData.pages.find((p) => p.id === selectedPage);
 
   return (
-    <div className="bg-background flex min-h-screen flex-col">
-      <div className="border-border/60 bg-card/80 border-b px-6 py-4 backdrop-blur-xl">
-        <div className="flex items-center justify-between">
+    <div className="bg-background flex min-h-[calc(100vh-4rem)] flex-col">
+      <div className="border-border bg-background/80 h-12 border-b px-6 backdrop-blur-xl md:h-16">
+        <div className="flex h-full items-center justify-between">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
@@ -395,7 +395,7 @@ export const MessengerInbox = () => {
       {/* Main Content */}
       <div className="flex flex-1 overflow-hidden">
         {/* Conversations List */}
-        <div className="border-border/60 bg-card/60 w-80 overflow-y-auto border-r backdrop-blur-md">
+        <div className="border-border bg-background/60 w-80 overflow-y-auto border-r backdrop-blur-md">
           <div className="p-4">
             <h2 className="text-muted-foreground mb-4 px-2 text-xs font-bold tracking-wider uppercase">
               Messages
@@ -546,8 +546,8 @@ export const MessengerInbox = () => {
               </div>
 
               {/* Message Input */}
-              <div className="border-border/60 bg-card/80 border-t p-5 backdrop-blur-xl">
-                <div className="flex items-end gap-3">
+              <div className="border-border/60 bg-background/80 h-12 border-t px-6 backdrop-blur-xl md:h-16">
+                <div className="flex h-full items-center gap-2">
                   <div className="relative flex-1">
                     <Input
                       type="text"
