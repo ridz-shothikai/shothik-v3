@@ -1,17 +1,6 @@
-import {
-  useGenerateScript,
-  useGenerateVideo,
-  useUserAds,
-  useVoices,
-} from "@/hooks/(marketing-automation-page)/useMediaApi";
-import { useSmartAssetsByProject } from "@/hooks/(marketing-automation-page)/useSmartAssetsApi";
-import { RootState } from "@/redux/store";
-import { ArrowLeft, Loader2 } from "lucide-react";
-import { useParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -19,8 +8,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
+import {
+  useGenerateScript,
+  useGenerateVideo,
+  useUserAds,
+  useVoices,
+} from "@/hooks/(marketing-automation-page)/useMediaApi";
+import { useSmartAssetsByProject } from "@/hooks/(marketing-automation-page)/useSmartAssetsApi";
 import { cn } from "@/lib/utils";
+import { RootState } from "@/redux/store";
+import { ArrowLeft, Loader2 } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import AdvancedSettings from "./AdvancedSettings";
 import AssetSelectorModal from "./AssetSelectorModal";
 import AvatarPreview from "./AvatarPreview";
@@ -495,66 +495,66 @@ export default function VideoGenerationPage({
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto max-w-7xl p-6 lg:p-8">
-        {/* Header with breadcrumb */}
-        <div className="mb-8">
-          <Button
-            onClick={onBack}
-            variant="ghost"
-            className="group mb-4 flex items-center gap-2"
-          >
-            <ArrowLeft className="h-5 w-5" />
-            <span className="font-medium">Back to Avatars</span>
-          </Button>
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="bg-gradient-to-r from-primary to-primary bg-clip-text text-3xl font-bold text-transparent">
-                Create Your Video
-              </h1>
-              <p className="mt-2 text-muted-foreground">
-                Customize your AI-powered video with script, voice, and advanced
-                settings
-              </p>
-            </div>
+    <div className="bg-background text-foreground flex min-h-[calc(100vh-4rem)] flex-col">
+      {/* Header with breadcrumb */}
+      <div className="bg-background/90 sticky top-0 h-12 w-full border-b px-6 backdrop-blur-sm md:h-16">
+        <Button
+          onClick={onBack}
+          variant="ghost"
+          className="group flex items-center gap-2"
+        >
+          <ArrowLeft className="h-5 w-5" />
+          <span className="font-medium">Back to Avatars</span>
+        </Button>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="from-primary to-primary bg-gradient-to-r bg-clip-text text-xl font-bold text-transparent">
+              Create Your Video
+            </h1>
+            <p className="text-muted-foreground mt-2 text-sm">
+              Customize your AI-powered video with script, voice, and advanced
+              settings
+            </p>
           </div>
         </div>
+      </div>
 
+      <div className="container mx-auto flex-1 p-6">
         {/* Main Content Card */}
         <Card className="overflow-hidden shadow-2xl">
           {/* Progress Steps Indicator */}
-          <CardHeader className="border-b border-border bg-muted/50 px-8 py-4">
+          <CardHeader className="border-border bg-muted/50 border-b px-8 py-4">
             <div className="mx-auto flex max-w-2xl items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                <div className="bg-primary text-primary-foreground flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold">
                   1
                 </div>
-                <span className="text-sm font-medium text-foreground">
+                <span className="text-foreground text-sm font-medium">
                   Script
                 </span>
               </div>
-              <div className="mx-4 h-0.5 flex-1 bg-border"></div>
+              <div className="bg-border mx-4 h-0.5 flex-1"></div>
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                <div className="bg-primary text-primary-foreground flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold">
                   2
                 </div>
-                <span className="text-sm font-medium text-foreground">
+                <span className="text-foreground text-sm font-medium">
                   Voice & Avatar
                 </span>
               </div>
-              <div className="mx-4 h-0.5 flex-1 bg-border"></div>
+              <div className="bg-border mx-4 h-0.5 flex-1"></div>
               <div className="flex items-center gap-2">
                 <div
                   className={cn(
                     "flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold",
                     showAdvancedSettings
                       ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground"
+                      : "bg-muted text-muted-foreground",
                   )}
                 >
                   3
                 </div>
-                <span className="text-sm font-medium text-foreground">
+                <span className="text-foreground text-sm font-medium">
                   Settings
                 </span>
               </div>
@@ -565,14 +565,14 @@ export default function VideoGenerationPage({
             {/* Script Section */}
             <div className="mb-10">
               <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/20">
+                <div className="bg-primary/20 flex h-10 w-10 items-center justify-center rounded-lg">
                   <span className="text-xl">📝</span>
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold text-foreground">
+                  <h2 className="text-foreground text-xl font-semibold">
                     Script
                   </h2>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-muted-foreground text-sm">
                     Write or generate your video script
                   </p>
                 </div>
@@ -592,19 +592,19 @@ export default function VideoGenerationPage({
             </div>
 
             {/* Divider */}
-            <div className="my-10 border-t border-border"></div>
+            <div className="border-border my-10 border-t"></div>
 
             {/* Avatar and Voice Section */}
             <div className="mb-10">
               <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/20">
+                <div className="bg-primary/20 flex h-10 w-10 items-center justify-center rounded-lg">
                   <span className="text-xl">🎭</span>
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold text-foreground">
+                  <h2 className="text-foreground text-xl font-semibold">
                     Avatar & Voice
                   </h2>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-muted-foreground text-sm">
                     Select your avatar and voice settings
                   </p>
                 </div>
@@ -632,7 +632,7 @@ export default function VideoGenerationPage({
             </div>
 
             {/* Divider */}
-            <div className="my-10 border-t border-border"></div>
+            <div className="border-border my-10 border-t"></div>
 
             {/* Advanced Settings */}
             <AdvancedSettings
@@ -718,15 +718,15 @@ export default function VideoGenerationPage({
             />
 
             {/* Bottom Controls */}
-            <div className="mt-10 border-t border-border pt-8">
+            <div className="border-border mt-10 border-t pt-8">
               <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
                 <div className="flex w-full flex-col items-start gap-4 sm:w-auto sm:flex-row sm:items-end">
                   <div>
                     <Label className="mb-2 block text-xs font-medium">
                       Avatar
                     </Label>
-                    <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-4 py-2.5">
-                      <span className="text-sm font-semibold text-foreground">
+                    <div className="border-border bg-muted/50 flex items-center gap-2 rounded-lg border px-4 py-2.5">
+                      <span className="text-foreground text-sm font-semibold">
                         {personaName || "Selected Avatar"}
                       </span>
                     </div>
@@ -788,7 +788,7 @@ export default function VideoGenerationPage({
 
               {/* Validation Messages */}
               {!script.trim() && (
-                <p className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+                <p className="text-muted-foreground mt-4 flex items-center gap-2 text-sm">
                   <svg
                     className="h-4 w-4"
                     fill="currentColor"
@@ -804,7 +804,7 @@ export default function VideoGenerationPage({
                 </p>
               )}
               {!selectedVoice && script.trim() && (
-                <p className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+                <p className="text-muted-foreground mt-4 flex items-center gap-2 text-sm">
                   <svg
                     className="h-4 w-4"
                     fill="currentColor"
@@ -831,7 +831,7 @@ export default function VideoGenerationPage({
             <CardContent className="p-4">
               <div className="flex items-start gap-3">
                 <div className="flex-1">
-                  <p className="whitespace-pre-line text-sm text-foreground">
+                  <p className="text-foreground text-sm whitespace-pre-line">
                     {notificationMessage}
                   </p>
                 </div>

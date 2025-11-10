@@ -201,7 +201,7 @@ export default function AIShortsPage() {
   };
 
   return (
-    <div className="bg-background text-foreground flex min-h-screen flex-1 flex-col p-6">
+    <div className="bg-background text-foreground flex min-h-[calc(100vh-4rem)] flex-1 flex-col p-6">
       {/* Header */}
       <div className="border-border border-b pb-6">
         <div className="flex items-center justify-between">
