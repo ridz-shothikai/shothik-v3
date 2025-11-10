@@ -39,6 +39,14 @@ export const team = [
     social: ["#", "#", "#", "#", "#"],
   },
   {
+    order: 4,
+    designation: "AI Automation Engineer",
+    id: "4",
+    name: "MD. Rahmat Ullah",
+    image: "/team/rahmat.jpg",
+    social: ["https://www.linkedin.com/in/devrahmat/", "#", "#", "#", "#"],
+  },
+  {
     order: 5,
     id: "5",
     social: ["#", "#", "#", "#", "#"],

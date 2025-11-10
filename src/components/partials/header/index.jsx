@@ -202,7 +202,7 @@ export default function Header({ className, layout }) {
 
             <div className="hidden items-center gap-1 lg:flex">
               {/* Features Popover */}
-              <Popover open={featuresOpen} onOpenChange={setFeaturesOpen}>
+              {/* <Popover open={featuresOpen} onOpenChange={setFeaturesOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="ghost"
@@ -236,10 +236,10 @@ export default function Header({ className, layout }) {
                     ))}
                   </div>
                 </PopoverContent>
-              </Popover>
+              </Popover> */}
 
               {/* Other Links */}
-              {navLinks.map((link) => (
+              {/* {navLinks.map((link) => (
                 <Button
                   key={link.label}
                   variant="ghost"
@@ -251,7 +251,7 @@ export default function Header({ className, layout }) {
                 >
                   <a href={link.href}>{link.label}</a>
                 </Button>
-              ))}
+              ))} */}
             </div>
           </div>
 

@@ -19,6 +19,7 @@ export const PATH_PAGE = {
   pricing: "/pricing",
   payment: "/payment",
   about: "/about-us",
+  features: "/features",
   contact: "/contact-us",
   career: "career",
   faqs: "/faqs",
@@ -60,6 +61,20 @@ export const PATH_TOOLS = {
   translator: "/translator",
   agents: "/agents",
   marketing_automation: "/marketing-automation",
+  slide_generator: "/slide-generator",
+  deep_research: "/deep-research",
+  data_analysis: "/data-analysis",
+  product_service_analysis: "/product-service-analysis",
+  ai_strategy_generation: "/ai-strategy-generation",
+  ai_ad_sets: "/ai-ad-sets",
+  ai_ad_creatives: "/ai-ad-creatives",
+  ai_ad_copies_ads: "/ai-ad-copies-ads",
+  ai_powered_editing: "/ai-powered-editing",
+  ai_media_canvas: "/ai-media-canvas",
+  ad_launch_campaigns: "/ad-launch-campaigns",
+  mindmap_reports: "/mindmap-reports",
+  ai_optimization: "/ai-optimization",
+
   get: (name) => `/${name.toLowerCase().replaceAll(" ", "-")}`,
 };
 

@@ -5,10 +5,35 @@ export const LINKS = [
     headline: "AI Writing Tools",
     children: [
       { name: "Paraphrasing", href: PATH_TOOLS.paraphrase },
+      { name: "AI Detector", href: PATH_TOOLS.ai_detector },
       { name: "Humanize GPT", href: PATH_TOOLS.humanize },
+      { name: "Plagiarism Checker", href: PATH_TOOLS.plagiarism_checker },
       { name: "Summarizer", href: PATH_TOOLS.summarize },
       { name: "Grammar Fix", href: PATH_TOOLS.grammar_checker },
       { name: "Translator", href: PATH_TOOLS.translator },
+    ],
+  },
+  {
+    headline: "AI Agents",
+    children: [
+      { name: "Slide Generation", href: PATH_TOOLS.slide_generator },
+      { name: "Deep Research", href: PATH_TOOLS.deep_research },
+      { name: "Data Analysis", href: PATH_TOOLS.data_analysis },
+    ],
+  },
+  {
+    headline: "Vibe Meta Automation",
+    children: [
+      { name: "Product / Service Analysis", href: PATH_TOOLS.product_service_analysis },
+      { name: "AI Strategy Generation", href: PATH_TOOLS.ai_strategy_generation },
+      { name: "AI Ad Sets", href: PATH_TOOLS.ai_ad_sets },
+      { name: "AI Ad Creatives", href: PATH_TOOLS.ai_ad_creatives },
+      { name: "AI Ad Copies & Ads", href: PATH_TOOLS.ai_ad_copies_ads },
+      { name: "AI-Powered Editing", href: PATH_TOOLS.ai_powered_editing },
+      { name: "AI Media Canvas", href: PATH_TOOLS.ai_media_canvas },
+      { name: "Ad Launch & Campaigns", href: PATH_TOOLS.ad_launch_campaigns },
+      { name: "Mindmap & Reports", href: PATH_TOOLS.mindmap_reports },
+      { name: "AI Optimization", href: PATH_TOOLS.ai_optimization },
     ],
   },
   {
@@ -35,14 +60,15 @@ export const LINKS = [
       { name: "About us", href: PATH_PAGE.about },
       { name: "Our Team", href: PATH_PAGE.about },
       { name: "Career", href: PATH_PAGE.career },
+      { name: "Our Features", href: PATH_PAGE.features },
       { name: "Blogs", href: PATH_PAGE.community },
       { name: "Contact us", href: PATH_PAGE.contact },
     ],
   },
-  {
-    headline: "Content Analysis",
-    children: [{ name: "AI Detector", href: PATH_TOOLS.ai_detector }],
-  },
+  // {
+  //   headline: "Content Analysis",
+  //   children: [{ name: "AI Detector", href: PATH_TOOLS.ai_detector }],
+  // },
 
   {
     headline: "Support",

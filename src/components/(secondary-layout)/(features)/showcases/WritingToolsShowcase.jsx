@@ -590,7 +590,7 @@ const WritingToolsShowcase = () => {
   }
 
   return (
-    <div className="relative h-auto w-full ">
+    <div className="relative h-auto w-full">
       <div
         className="flex rounded-xl border border-gray-200 bg-white shadow-2xl"
         style={{ width: "1000px", maxWidth: "calc(100vw - 40px)" }}
