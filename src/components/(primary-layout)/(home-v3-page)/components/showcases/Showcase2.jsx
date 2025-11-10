@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const X = () => (
   <svg
@@ -398,7 +398,7 @@ const SlideGenAgent = () => {
                     key={i}
                     className="flex items-start space-x-3 rounded border border-gray-200 bg-gray-50 p-2"
                   >
-                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-black text-xs font-semibold text-white">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-black text-xs font-semibold text-white">
                       {slide.slide}
                     </div>
                     <div className="flex-1">
@@ -576,7 +576,7 @@ const SlideGenAgent = () => {
             {agentStage === 3 && (
               <div className="mt-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
                 <div className="flex items-start space-x-3">
-                  <Sparkles className="mt-0.5 h-5 w-5 flex-shrink-0 text-gray-900" />
+                  <Sparkles className="mt-0.5 h-5 w-5 shrink-0 text-gray-900" />
                   <div>
                     <p className="text-sm font-semibold text-gray-900">
                       Presentation Ready!

@@ -33,7 +33,7 @@ export default function InfoSnackbar({ open, onClose, message }) {
           )}
           role="alert"
         >
-          <InfoIcon className="text-primary mt-0.5 h-5 w-5 flex-shrink-0" />
+          <InfoIcon className="text-primary mt-0.5 h-5 w-5 shrink-0" />
           <div className="flex-1 pr-6 text-sm">{message}</div>
           <button
             onClick={(e) => handleClose(e, "close")}

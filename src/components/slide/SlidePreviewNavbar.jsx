@@ -374,20 +374,20 @@ export default function SlidePreviewNavbar({
         >
           <div className="flex min-w-0 flex-1 items-center gap-2">
             <div className="flex min-w-0 flex-1 items-center gap-1 sm:gap-2">
-              <FileText className="text-muted-foreground h-5 w-5 flex-shrink-0" />
+              <FileText className="text-muted-foreground h-5 w-5 shrink-0" />
               <h1 className="text-foreground min-w-0 overflow-hidden text-sm font-medium text-ellipsis whitespace-nowrap sm:text-base md:text-lg">
                 {slidesData?.title || PresentationTitle || "Generating..."}
               </h1>
 
               {!isMobile && slidesData?.slides && (
-                <Badge variant="outline" className="h-6 flex-shrink-0 text-xs">
+                <Badge variant="outline" className="h-6 shrink-0 text-xs">
                   {slidesData.slides.length} slides
                 </Badge>
               )}
             </div>
           </div>
 
-          <div className="flex flex-shrink-0 items-center gap-1 sm:gap-2">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             <Button
               variant="default"
               onClick={openPresentation}

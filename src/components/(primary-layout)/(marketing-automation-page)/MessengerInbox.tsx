@@ -155,7 +155,7 @@ const ConversationItem = ({
       }`}
     >
       <div className="flex items-start gap-3">
-        <div className="relative flex-shrink-0">
+        <div className="relative shrink-0">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-md">
             <User className="h-6 w-6 text-white" />
           </div>
@@ -172,7 +172,7 @@ const ConversationItem = ({
             <span className="truncate pr-2 text-sm font-semibold text-gray-100">
               {displayName}
             </span>
-            <span className="flex-shrink-0 text-xs text-gray-500">
+            <span className="shrink-0 text-xs text-gray-500">
               {formatTime(conv.lastMessageTime)}
             </span>
           </div>
@@ -465,7 +465,7 @@ export const MessengerInbox = () => {
                               className={`flex items-end gap-2 ${isFromPage ? "justify-end" : "justify-start"}`}
                             >
                               {!isFromPage && (
-                                <div className="mb-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600">
+                                <div className="mb-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600">
                                   <User className="h-4 w-4 text-white" />
                                 </div>
                               )}

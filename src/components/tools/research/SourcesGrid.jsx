@@ -58,7 +58,7 @@ const SourcesGrid = ({ sources }) => {
           >
             <CardContent className="flex-grow p-2">
               <div className="flex items-start gap-1.5">
-                <Avatar className="h-6 w-6 flex-shrink-0">
+                <Avatar className="h-6 w-6 shrink-0">
                   <AvatarImage src={getFaviconUrl(source.url)} />
                   <AvatarFallback className="bg-muted text-foreground text-[0.7rem]">
                     {getDomainAbbr(source.url)}

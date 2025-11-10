@@ -1,7 +1,8 @@
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -10,8 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Textarea } from "@/components/ui/textarea";
 import {
   useCreateCustomTool,
   useCustomTools,
@@ -164,10 +164,10 @@ export const CustomToolsTab = ({ selectedPage }: CustomToolsTabProps) => {
 
   return (
     <Card className="p-6">
-      <h2 className="mb-4 text-lg font-semibold text-foreground">
+      <h2 className="text-foreground mb-4 text-lg font-semibold">
         Create Custom AI Tool
       </h2>
-      <p className="mb-6 text-sm text-muted-foreground">
+      <p className="text-muted-foreground mb-6 text-sm">
         Create custom AI tools with API integrations using LangGraph and Gemini.
       </p>
 
@@ -206,7 +206,7 @@ export const CustomToolsTab = ({ selectedPage }: CustomToolsTabProps) => {
             placeholder={getEndpointPlaceholder()}
             className="mt-2"
           />
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-xs">
             {toolMethod === "GET"
               ? "Base URL only - query params will be added automatically"
               : toolMethod === "POST"
@@ -224,7 +224,9 @@ export const CustomToolsTab = ({ selectedPage }: CustomToolsTabProps) => {
             <SelectContent>
               <SelectItem value="GET">GET - Retrieve data</SelectItem>
               <SelectItem value="POST">POST - Create new resource</SelectItem>
-              <SelectItem value="PUT">PUT - Update existing resource</SelectItem>
+              <SelectItem value="PUT">
+                PUT - Update existing resource
+              </SelectItem>
               <SelectItem value="DELETE">DELETE - Remove resource</SelectItem>
             </SelectContent>
           </Select>
@@ -240,7 +242,7 @@ export const CustomToolsTab = ({ selectedPage }: CustomToolsTabProps) => {
             placeholder="your-api-token-here (will be added as Bearer token)"
             className="mt-2"
           />
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-xs">
             If provided, will be added as "Authorization: Bearer token" header
           </p>
         </div>
@@ -255,7 +257,7 @@ export const CustomToolsTab = ({ selectedPage }: CustomToolsTabProps) => {
             rows={3}
             className="mt-2 font-mono text-sm"
           />
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-xs">
             Additional headers (auth token will be auto-added if provided above)
           </p>
         </div>
@@ -270,7 +272,7 @@ export const CustomToolsTab = ({ selectedPage }: CustomToolsTabProps) => {
             rows={3}
             className="mt-2 font-mono text-sm"
           />
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-xs">
             {getParametersHelpText()}
           </p>
         </div>
@@ -309,8 +311,8 @@ export const CustomToolsTab = ({ selectedPage }: CustomToolsTabProps) => {
 
       {/* Display existing custom tools */}
       {selectedPage && customToolsData && customToolsData.length > 0 && (
-        <div className="mt-6 border-t border-border pt-6">
-          <h3 className="text-md mb-4 font-semibold text-foreground">
+        <div className="border-border mt-6 border-t pt-6">
+          <h3 className="text-md text-foreground mb-4 font-semibold">
             Existing Tools ({customToolsData.length})
           </h3>
           <div className="space-y-3">
@@ -319,15 +321,15 @@ export const CustomToolsTab = ({ selectedPage }: CustomToolsTabProps) => {
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
                     <div className="mb-2 flex items-center gap-2">
-                      <Wrench className="h-4 w-4 flex-shrink-0 text-primary" />
-                      <h4 className="truncate text-sm font-medium text-foreground">
+                      <Wrench className="text-primary h-4 w-4 shrink-0" />
+                      <h4 className="text-foreground truncate text-sm font-medium">
                         {tool.name}
                       </h4>
                     </div>
-                    <p className="mb-2 text-xs text-muted-foreground">
+                    <p className="text-muted-foreground mb-2 text-xs">
                       {tool.description}
                     </p>
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                    <div className="text-muted-foreground flex items-center gap-4 text-xs">
                       <Badge variant="secondary" className="px-2 py-1">
                         {tool.method}
                       </Badge>

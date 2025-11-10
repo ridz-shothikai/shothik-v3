@@ -178,7 +178,7 @@ export default function ClaritSectionV2({ onCTAClick = () => {} }) {
                               <div
                                 className={cn(
                                   "h-11 w-11 rounded-lg",
-                                  "bg-primary/10 flex flex-shrink-0 items-center justify-center",
+                                  "bg-primary/10 flex shrink-0 items-center justify-center",
                                 )}
                               >
                                 <div className="text-primary">{svc.icon}</div>

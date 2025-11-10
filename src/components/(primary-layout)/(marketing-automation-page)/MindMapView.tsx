@@ -432,7 +432,7 @@ export default function MindMapView() {
           <div className="space-y-4">
             {mindMapData.metaFlow.map((step, index) => (
               <div key={index} className="flex items-start gap-4">
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   {step.status === "completed" ? (
                     <CheckCircle2 className="h-6 w-6 text-emerald-400" />
                   ) : (

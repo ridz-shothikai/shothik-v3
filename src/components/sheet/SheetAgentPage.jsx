@@ -121,7 +121,7 @@ export const FooterCta = ({ isMobile, showModal, setShowModal }) => {
           >
             {/* Left side - Icon and text */}
             <div className="flex flex-1 items-center gap-3">
-              <CheckCircle className="text-primary h-5 w-5 flex-shrink-0" />
+              <CheckCircle className="text-primary h-5 w-5 shrink-0" />
               <p className="text-foreground text-sm leading-tight font-medium">
                 Shothik task replay completed.
               </p>

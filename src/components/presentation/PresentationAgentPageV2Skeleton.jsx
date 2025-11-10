@@ -39,7 +39,7 @@ export default function PresentationAgentPageV2Skeleton() {
             </div>
 
             {/* Input area skeleton */}
-            <div className="border-border bg-card flex-shrink-0 border-t p-3">
+            <div className="border-border bg-card shrink-0 border-t p-3">
               <div className="flex items-center gap-2">
                 <Skeleton className="h-9 w-full" />
                 <Skeleton className="h-9 w-20" />

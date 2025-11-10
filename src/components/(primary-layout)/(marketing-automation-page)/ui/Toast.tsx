@@ -39,9 +39,9 @@ export default function Toast({
         }`}
       >
         {type === "success" ? (
-          <CheckCircle className="h-5 w-5 flex-shrink-0" />
+          <CheckCircle className="h-5 w-5 shrink-0" />
         ) : (
-          <XCircle className="h-5 w-5 flex-shrink-0" />
+          <XCircle className="h-5 w-5 shrink-0" />
         )}
         <p className="text-sm font-medium">{message}</p>
         <button

@@ -43,7 +43,7 @@ const MessageBubble = ({
             <span className="text-muted-foreground text-xs font-medium">
               You
             </span>
-            <div className="bg-primary flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full">
+            <div className="bg-primary flex h-5 w-5 shrink-0 items-center justify-center rounded-full">
               <User className="text-primary-foreground h-3 w-3" />
             </div>
           </div>
@@ -55,7 +55,7 @@ const MessageBubble = ({
         // AI message styling
         <div>
           <div className="mb-3 flex items-center gap-2 opacity-70">
-            <div className="bg-primary text-primary-foreground flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-[8px] font-bold">
+            <div className="bg-primary text-primary-foreground flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[8px] font-bold">
               AI
             </div>
             <span className="text-muted-foreground text-xs font-medium">
@@ -1291,7 +1291,7 @@ export default function SheetChatArea({
             </div>
           )}
           {!isSimulationMode && (
-            <div className="border-border bg-background w-full flex-shrink-0 border-t">
+            <div className="border-border bg-background w-full shrink-0 border-t">
               <InputArea
                 currentAgentType={currentAgentType}
                 inputValue={inputValue}

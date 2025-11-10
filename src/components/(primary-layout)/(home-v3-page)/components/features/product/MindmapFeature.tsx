@@ -118,7 +118,7 @@ export default function MindmapFeature() {
 
             <div className="flex flex-col gap-6">
               <div className="flex gap-4">
-                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border border-[rgba(24,119,242,0.3)] bg-[rgba(24,119,242,0.15)]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-[rgba(24,119,242,0.3)] bg-[rgba(24,119,242,0.15)]">
                   <Network size={24} color="#1877F2" />
                 </div>
                 <div>
@@ -133,7 +133,7 @@ export default function MindmapFeature() {
               </div>
 
               <div className="flex gap-4">
-                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border border-[rgba(0,167,111,0.3)] bg-[rgba(0,167,111,0.15)]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-[rgba(0,167,111,0.3)] bg-[rgba(0,167,111,0.15)]">
                   <MessageCircle size={24} color="#00A76F" />
                 </div>
                 <div>
@@ -148,7 +148,7 @@ export default function MindmapFeature() {
               </div>
 
               <div className="flex gap-4">
-                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border border-[rgba(24,119,242,0.3)] bg-[rgba(24,119,242,0.15)]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-[rgba(24,119,242,0.3)] bg-[rgba(24,119,242,0.15)]">
                   <TrendingUp size={24} color="#1877F2" />
                 </div>
                 <div>

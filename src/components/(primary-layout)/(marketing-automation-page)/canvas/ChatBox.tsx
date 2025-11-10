@@ -169,7 +169,7 @@ export default function ChatBox({
             }`}
           >
             {message.role === "assistant" && (
-              <div className="border-primary/30 bg-primary/20 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg border">
+              <div className="border-primary/30 bg-primary/20 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border">
                 <Sparkles className="text-primary h-4 w-4" />
               </div>
             )}
@@ -265,7 +265,7 @@ export default function ChatBox({
               )}
             </div>
             {message.role === "user" && (
-              <div className="bg-muted flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg">
+              <div className="bg-muted flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
                 <User className="text-muted-foreground h-4 w-4" />
               </div>
             )}

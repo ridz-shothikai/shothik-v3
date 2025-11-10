@@ -36,7 +36,7 @@ export const HeroSection = () => {
         <CarouselContent>
           {carousels.map((item, index) => (
             <CarouselItem key={index} className="basis-full">
-              <div className="relative flex h-[500px] flex-shrink-0 items-center py-2 sm:py-3 md:py-0">
+              <div className="relative flex h-[500px] shrink-0 items-center py-2 sm:py-3 md:py-0">
                 {/* Background image */}
                 <img
                   src={item?.image}

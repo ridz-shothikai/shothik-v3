@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const X = () => (
   <svg
@@ -674,7 +674,7 @@ const DataAnalysisAgent = () => {
             {agentStage === 4 && (
               <div className="mt-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
                 <div className="flex items-start space-x-3">
-                  <Database className="mt-0.5 h-5 w-5 flex-shrink-0 text-gray-900" />
+                  <Database className="mt-0.5 h-5 w-5 shrink-0 text-gray-900" />
                   <div>
                     <p className="text-sm font-semibold text-gray-900">
                       Spreadsheet Ready!

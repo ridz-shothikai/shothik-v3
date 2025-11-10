@@ -60,7 +60,7 @@ export default function Sidebar({
   return (
     <div className="border-border bg-card/50 flex h-full w-full flex-col border-r">
       {/* User Info */}
-      <div className="border-border flex-shrink-0 border-b p-3">
+      <div className="border-border shrink-0 border-b p-3">
         <div className="flex items-center gap-3">
           <div
             className={cn(

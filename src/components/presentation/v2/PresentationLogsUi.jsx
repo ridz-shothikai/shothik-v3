@@ -185,7 +185,7 @@ export default function PresentationLogsUi({
       )}
 
       {/* Input area pinned to bottom */}
-      <div className="border-border bg-card flex-shrink-0 border-t">
+      <div className="border-border bg-card shrink-0 border-t">
         <InputArea
           currentAgentType={"presentation"}
           inputValue={inputValue}

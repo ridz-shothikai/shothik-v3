@@ -52,7 +52,7 @@ const SideBar = ({ onCategoryClick, selectedCategory }) => {
               >
                 <div className="flex h-full flex-col overflow-hidden">
                   {/* Header with close button */}
-                  <div className="flex flex-shrink-0 items-center justify-between border-b p-4">
+                  <div className="flex shrink-0 items-center justify-between border-b p-4">
                     <h6 className="text-lg font-semibold">All topics</h6>
                     <Button
                       variant="ghost"

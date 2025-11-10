@@ -398,7 +398,7 @@ export default function FounderVideoSection() {
                         className={cn(
                           "h-6 w-6 sm:h-8 sm:w-8",
                           "flex items-center justify-center rounded-full",
-                          "mt-0.5 flex-shrink-0",
+                          "mt-0.5 shrink-0",
                           point.containerClass,
                         )}
                       >

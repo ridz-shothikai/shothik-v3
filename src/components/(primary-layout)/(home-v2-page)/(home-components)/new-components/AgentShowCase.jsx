@@ -387,7 +387,7 @@ export default function AgentShowcase() {
                           key={index}
                           className="text-muted-foreground flex items-center gap-2"
                         >
-                          <CheckCircle className="size-4 flex-shrink-0 text-emerald-600" />
+                          <CheckCircle className="size-4 shrink-0 text-emerald-600" />
                           <p className="text-muted-foreground text-sm">
                             {capability}
                           </p>

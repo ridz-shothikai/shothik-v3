@@ -89,7 +89,7 @@ export default function ShothikHero() {
           <div className="mb-6 flex items-center justify-center gap-4 md:mb-8 md:gap-6">
             <div
               ref={checkmarkRef}
-              className="animate-checkmark-bounce h-14 w-14 flex-shrink-0 motion-reduce:transform-none motion-reduce:animate-none md:h-20 md:w-20"
+              className="animate-checkmark-bounce h-14 w-14 shrink-0 motion-reduce:transform-none motion-reduce:animate-none md:h-20 md:w-20"
               style={getCheckmarkTilt()}
             >
               <Image

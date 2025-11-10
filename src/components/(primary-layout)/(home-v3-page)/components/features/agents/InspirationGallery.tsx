@@ -330,7 +330,7 @@ export default function InspirationGallery() {
                 >
                   <CardContent className="flex-grow p-5 pb-20">
                     <div className="flex items-start gap-3">
-                      <div className="bg-muted text-foreground flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full">
+                      <div className="bg-muted text-foreground flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
                         {card.icon}
                       </div>
 

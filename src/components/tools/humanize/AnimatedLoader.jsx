@@ -100,7 +100,7 @@ const AnimatedChecklist = () => {
                     transition={{ duration: 0.3 }}
                   >
                     <motion.div
-                      className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border-2 transition-colors ${
+                      className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${
                         item.checked
                           ? "border-emerald-500 bg-emerald-500"
                           : isCurrent

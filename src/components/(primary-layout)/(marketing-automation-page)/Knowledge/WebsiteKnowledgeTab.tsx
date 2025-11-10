@@ -1,8 +1,8 @@
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   useDeleteKnowledge,
   useKnowledge,
@@ -59,10 +59,10 @@ export const WebsiteKnowledgeTab = ({
 
   return (
     <Card className="p-6">
-      <h2 className="mb-4 text-lg font-semibold text-foreground">
+      <h2 className="text-foreground mb-4 text-lg font-semibold">
         Scrape Website
       </h2>
-      <p className="mb-6 text-sm text-muted-foreground">
+      <p className="text-muted-foreground mb-6 text-sm">
         Enter a website URL to scrape and store its content in the vector
         database for AI-powered responses.
       </p>
@@ -71,7 +71,7 @@ export const WebsiteKnowledgeTab = ({
         <div>
           <Label htmlFor="website-url">Website URL</Label>
           <div className="relative mt-2">
-            <Globe className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Globe className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
             <Input
               id="website-url"
               type="url"
@@ -113,8 +113,8 @@ export const WebsiteKnowledgeTab = ({
 
       {/* Display existing website knowledge */}
       {selectedPage && knowledgeData && knowledgeData.length > 0 && (
-        <div className="mt-6 border-t border-border pt-6">
-          <h3 className="text-md mb-4 font-semibold text-foreground">
+        <div className="border-border mt-6 border-t pt-6">
+          <h3 className="text-md text-foreground mb-4 font-semibold">
             Existing Knowledge (
             {
               knowledgeData.filter((k: KnowledgeSource) => k.type === "website")
@@ -130,15 +130,15 @@ export const WebsiteKnowledgeTab = ({
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0 flex-1">
                       <div className="mb-2 flex items-center gap-2">
-                        <Globe className="h-4 w-4 flex-shrink-0 text-primary" />
-                        <h4 className="truncate text-sm font-medium text-foreground">
+                        <Globe className="text-primary h-4 w-4 shrink-0" />
+                        <h4 className="text-foreground truncate text-sm font-medium">
                           {knowledge.title}
                         </h4>
                         {knowledge.status === "completed" && (
-                          <CheckCircle className="h-4 w-4 flex-shrink-0 text-primary" />
+                          <CheckCircle className="text-primary h-4 w-4 shrink-0" />
                         )}
                         {knowledge.status === "processing" && (
-                          <Loader2 className="h-4 w-4 flex-shrink-0 animate-spin text-primary" />
+                          <Loader2 className="text-primary h-4 w-4 shrink-0 animate-spin" />
                         )}
                       </div>
                       {knowledge.url && (
@@ -146,13 +146,13 @@ export const WebsiteKnowledgeTab = ({
                           href={knowledge.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="mb-2 flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
+                          className="text-muted-foreground hover:text-primary mb-2 flex items-center gap-1 text-xs"
                         >
                           <ExternalLink className="h-3 w-3" />
                           <span className="truncate">{knowledge.url}</span>
                         </a>
                       )}
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                      <div className="text-muted-foreground flex items-center gap-4 text-xs">
                         <span>{knowledge.vectorIds?.length || 0} chunks</span>
                         <span>
                           {new Date(knowledge.createdAt).toLocaleDateString()}

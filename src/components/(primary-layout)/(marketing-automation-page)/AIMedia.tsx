@@ -7,6 +7,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import useResponsive from "@/hooks/ui/useResponsive";
 import { cn } from "@/lib/utils";
 import type { RootState } from "@/redux/store";
 import { AlignCenter, ArrowLeft } from "lucide-react";
@@ -54,6 +55,14 @@ export default function AIMedia() {
   const [isInitialMount, setIsInitialMount] = useState(true);
 
   const [isSidebarSheetOpen, setIsSidebarSheetOpen] = useState(false);
+  const isMobile = useResponsive("down", "md");
+
+  // Close sheet when screen size changes from mobile to desktop
+  useEffect(() => {
+    if (!isMobile && isSidebarSheetOpen) {
+      setIsSidebarSheetOpen(false);
+    }
+  }, [isMobile, isSidebarSheetOpen]);
 
   // Update URL when sidebar changes
   const updateURL = useCallback(

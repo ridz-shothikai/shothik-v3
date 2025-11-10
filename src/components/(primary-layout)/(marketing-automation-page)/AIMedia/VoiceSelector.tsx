@@ -1,7 +1,5 @@
-import { Loader2, Pause, Play, Settings, Volume2, X } from "lucide-react";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -9,6 +7,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { Loader2, Pause, Play, Settings, Volume2, X } from "lucide-react";
+import { useState } from "react";
 
 interface Voice {
   voice_id: string;
@@ -54,9 +54,9 @@ export default function VoiceSelector({
   return (
     <Card className="rounded-xl p-4">
       <div className="mb-3 flex items-center justify-between">
-        <span className="text-sm text-muted-foreground">Voice</span>
+        <span className="text-muted-foreground text-sm">Voice</span>
         {loadingVoices && (
-          <Loader2 className="h-4 w-4 animate-spin text-primary" />
+          <Loader2 className="text-primary h-4 w-4 animate-spin" />
         )}
       </div>
 
@@ -66,7 +66,7 @@ export default function VoiceSelector({
         className="mb-3 flex w-full items-center justify-between"
       >
         <span className="truncate">{getSelectedVoiceName()}</span>
-        <Settings className="ml-2 h-4 w-4 flex-shrink-0" />
+        <Settings className="ml-2 h-4 w-4 shrink-0" />
       </Button>
 
       <Button
@@ -78,7 +78,7 @@ export default function VoiceSelector({
         <svg
           className={cn(
             "h-4 w-4 transition-transform",
-            showVoiceEmotion && "rotate-180"
+            showVoiceEmotion && "rotate-180",
           )}
           fill="none"
           stroke="currentColor"
@@ -94,7 +94,7 @@ export default function VoiceSelector({
       </Button>
 
       {showVoiceEmotion && (
-        <Card className="mt-3 bg-muted/50 p-3 text-sm text-foreground">
+        <Card className="bg-muted/50 text-foreground mt-3 p-3 text-sm">
           <p>
             Use tags like [cheerfully], [awe], [EXCITED] in your script to add
             emotions.
@@ -140,12 +140,12 @@ export default function VoiceSelector({
           <div className="flex-1 overflow-y-auto p-6">
             {loadingVoices ? (
               <div className="flex items-center justify-center py-12">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <Loader2 className="text-primary h-8 w-8 animate-spin" />
               </div>
             ) : !groupedVoices ||
               !groupedVoices[genderFilter] ||
               groupedVoices[genderFilter].length === 0 ? (
-              <div className="flex items-center justify-center py-12 text-muted-foreground">
+              <div className="text-muted-foreground flex items-center justify-center py-12">
                 <p>No voices available for {genderFilter} category</p>
               </div>
             ) : (
@@ -157,7 +157,7 @@ export default function VoiceSelector({
                       "cursor-pointer border-2 p-4 transition-all",
                       selectedVoice === voice.voice_id
                         ? "border-primary bg-primary/10"
-                        : "border-border bg-card hover:border-primary/50"
+                        : "border-border bg-card hover:border-primary/50",
                     )}
                     onClick={() => {
                       onVoiceSelect(voice.voice_id);
@@ -166,8 +166,8 @@ export default function VoiceSelector({
                   >
                     <div className="mb-2 flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Volume2 className="h-4 w-4 text-primary" />
-                        <span className="font-medium text-foreground">
+                        <Volume2 className="text-primary h-4 w-4" />
+                        <span className="text-foreground font-medium">
                           {voice.voice_name}
                         </span>
                       </div>
@@ -195,14 +195,14 @@ export default function VoiceSelector({
                         </Button>
                       )}
                     </div>
-                    <div className="flex gap-2 text-xs text-muted-foreground">
+                    <div className="text-muted-foreground flex gap-2 text-xs">
                       {voice.age && (
-                        <span className="rounded bg-muted px-2 py-1">
+                        <span className="bg-muted rounded px-2 py-1">
                           {voice.age}
                         </span>
                       )}
                       {voice.accent && (
-                        <span className="rounded bg-muted px-2 py-1">
+                        <span className="bg-muted rounded px-2 py-1">
                           {voice.accent}
                         </span>
                       )}

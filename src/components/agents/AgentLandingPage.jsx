@@ -646,7 +646,7 @@ export default function AgentLandingPage() {
           <div className="my-6 space-y-6">
             {ONBOARDING_STEPS.map((step, index) => (
               <div key={index} className="flex gap-4">
-                <div className="bg-primary/10 text-primary flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full font-semibold">
+                <div className="bg-primary/10 text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-semibold">
                   {index + 1}
                 </div>
                 <div className="flex-1">

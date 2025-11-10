@@ -332,7 +332,7 @@ export default function AgentPage({ specificAgent, presentationId }) {
           {/* Planning Progress - now driven by real data */}
           {currentAgentType === "presentation" &&
             (logsData?.data?.length > 0 || isLoading) && (
-              <div className="bg-muted sticky top-0 z-[100] flex-shrink-0 border-b p-4">
+              <div className="bg-muted sticky top-0 z-[100] shrink-0 border-b p-4">
                 <PlanningProgressIndicator
                   currentPhase={currentPhase}
                   completedPhases={completedPhases}

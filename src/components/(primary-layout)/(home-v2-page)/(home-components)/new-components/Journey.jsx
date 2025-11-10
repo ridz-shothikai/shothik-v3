@@ -167,7 +167,7 @@ const JourneyTimeline = () => {
                       "p-3 lg:p-4 xl:p-5",
                       "bg-background rounded-xl",
                       "shadow-[0_2px_8px_rgba(0,0,0,0.06)]",
-                      "flex-shrink-0",
+                      "shrink-0",
                       "min-w-[52px] lg:min-w-[60px] xl:min-w-[68px]",
                       "min-h-[52px] lg:min-h-[60px] xl:min-h-[68px]",
                       "transition-all duration-300 ease-in-out",

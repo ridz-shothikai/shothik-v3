@@ -331,7 +331,7 @@ const DeepResearchAgent = () => {
             {agentStage === 5 && (
               <div className="mt-6 rounded-xl border border-gray-300 bg-white p-4 shadow-md">
                 <div className="flex items-start space-x-3">
-                  <FileText className="mt-0.5 h-5 w-5 flex-shrink-0 text-black" />
+                  <FileText className="mt-0.5 h-5 w-5 shrink-0 text-black" />
                   <div>
                     <p className="text-sm font-semibold text-black">
                       Research Report Ready!
@@ -416,7 +416,7 @@ const DeepResearchAgent = () => {
                               key={idx}
                               className="flex items-center space-x-2 rounded-lg border border-gray-200 bg-white p-3"
                             >
-                              <Image className="h-4 w-4 flex-shrink-0 text-black" />
+                              <Image className="h-4 w-4 shrink-0 text-black" />
                               <div className="min-w-0 flex-1">
                                 <p className="truncate text-xs font-medium text-black">
                                   {img.title}
@@ -487,7 +487,7 @@ const DeepResearchAgent = () => {
                             key={idx}
                             className="flex items-start space-x-3 text-sm text-gray-700"
                           >
-                            <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-black" />
+                            <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-black" />
                             <span>{finding}</span>
                           </li>
                         ))}
@@ -514,7 +514,7 @@ const DeepResearchAgent = () => {
                     </div>
 
                     <div className="flex items-start space-x-3 rounded-xl border border-gray-300 bg-gray-50 p-4">
-                      <Shield className="mt-0.5 h-5 w-5 flex-shrink-0 text-black" />
+                      <Shield className="mt-0.5 h-5 w-5 shrink-0 text-black" />
                       <div>
                         <p className="text-sm font-semibold text-black">
                           Information Validated

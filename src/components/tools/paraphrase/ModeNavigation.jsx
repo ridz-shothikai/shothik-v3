@@ -369,7 +369,7 @@ const ModeNavigation = ({
           </Tabs>
 
           {/* More */}
-          <div id="mode_more_section" className="flex-shrink-0">
+          <div id="mode_more_section" className="shrink-0">
             <DropdownMenu open={moreOpen} onOpenChange={setMoreOpen}>
               <DropdownMenuTrigger asChild>
                 <Button

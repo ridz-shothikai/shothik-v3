@@ -18,7 +18,7 @@ export const WhyChooseUsSection = () => (
           alt="icon"
           width={56}
           height={56}
-          className="inline-block h-14 w-14 flex-shrink-0 object-cover object-center"
+          className="inline-block h-14 w-14 shrink-0 object-cover object-center"
         />{" "}
         choose us?
       </motion.p>

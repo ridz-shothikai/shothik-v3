@@ -715,7 +715,7 @@ export default function FacebookAccountSelectionScreen() {
                     {pixelsWarning && (
                       <div className="rounded-lg border-l-4 border-yellow-400 bg-yellow-50 p-4">
                         <div className="flex items-start gap-3">
-                          <div className="flex-shrink-0">
+                          <div className="shrink-0">
                             <svg
                               className="h-5 w-5 text-yellow-600"
                               fill="currentColor"
@@ -884,7 +884,7 @@ export default function FacebookAccountSelectionScreen() {
                           </div>
                         ) : (
                           <div className="flex items-center gap-2">
-                            <ExternalLink className="h-4 w-4 flex-shrink-0 text-blue-400" />
+                            <ExternalLink className="h-4 w-4 shrink-0 text-blue-400" />
                             <a
                               href={ctaUrls.get(cta) || projectUrl}
                               target="_blank"
@@ -895,7 +895,7 @@ export default function FacebookAccountSelectionScreen() {
                             </a>
                             <button
                               onClick={() => handleEditCTA(cta)}
-                              className="flex-shrink-0 rounded-lg p-1.5 transition-all hover:bg-slate-700"
+                              className="shrink-0 rounded-lg p-1.5 transition-all hover:bg-slate-700"
                               title="Edit URL"
                             >
                               <Edit2 className="h-4 w-4 text-gray-400" />

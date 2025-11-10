@@ -1,3 +1,7 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useGenerateDialogueAudio } from "@/hooks/(marketing-automation-page)/useAudioApi";
 import {
   useGenerateUGCScript,
@@ -11,11 +15,6 @@ import { Download, Loader2, Music, Sparkles } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
 import AssetSelectorModal from "./AssetSelectorModal";
 import ScriptEditor from "./ScriptEditor";
 
@@ -240,22 +239,22 @@ export default function UGCVideoPage() {
   };
 
   return (
-    <div className="flex flex-1 flex-col overflow-hidden bg-background text-foreground">
+    <div className="bg-background text-foreground flex flex-1 flex-col overflow-hidden">
       {/* Hero Header */}
-      <div className="relative flex-shrink-0 overflow-hidden border-b border-border">
-        <div className="absolute inset-0 bg-primary/10"></div>
+      <div className="border-border relative shrink-0 overflow-hidden border-b">
+        <div className="bg-primary/10 absolute inset-0"></div>
         <div className="relative mx-auto max-w-5xl px-6 py-12">
           <div className="text-center">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2">
-              <Sparkles className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-primary">
+            <div className="border-primary/20 bg-primary/10 mb-4 inline-flex items-center gap-2 rounded-full border px-4 py-2">
+              <Sparkles className="text-primary h-4 w-4" />
+              <span className="text-primary text-sm font-medium">
                 AI-Powered UGC Creation
               </span>
             </div>
-            <h1 className="mb-3 bg-gradient-to-r from-primary via-primary to-primary bg-clip-text text-4xl font-bold text-transparent">
+            <h1 className="from-primary via-primary to-primary mb-3 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent">
               UGC Video Generator
             </h1>
-            <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+            <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
               Transform your scripts into authentic user-generated content with
               AI-powered audio and visuals
             </p>
@@ -268,7 +267,7 @@ export default function UGCVideoPage() {
         <div className="mx-auto max-w-4xl space-y-6 px-6 py-8 pl-16">
           {/* Step 1: Script */}
           <div className="relative">
-            <div className="absolute top-6 -left-12 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-base font-bold text-primary-foreground shadow-lg">
+            <div className="bg-primary text-primary-foreground absolute top-6 -left-12 flex h-10 w-10 items-center justify-center rounded-full text-base font-bold shadow-lg">
               1
             </div>
             <ScriptEditor
@@ -286,7 +285,7 @@ export default function UGCVideoPage() {
 
           {/* Step 2: Audio Generation */}
           <div className="relative">
-            <div className="absolute top-6 -left-12 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-base font-bold text-primary-foreground shadow-lg">
+            <div className="bg-primary text-primary-foreground absolute top-6 -left-12 flex h-10 w-10 items-center justify-center rounded-full text-base font-bold shadow-lg">
               2
             </div>
             <Card className="p-8 shadow-xl">
@@ -294,17 +293,17 @@ export default function UGCVideoPage() {
                 <div className="mb-6 flex items-center justify-between">
                   <div>
                     <CardTitle className="flex items-center gap-2 text-xl font-bold">
-                      <Music className="h-5 w-5 text-primary" />
+                      <Music className="text-primary h-5 w-5" />
                       Generate Audio
                     </CardTitle>
-                    <p className="mt-1 text-sm text-muted-foreground">
+                    <p className="text-muted-foreground mt-1 text-sm">
                       Convert your script into natural-sounding dialogue
                     </p>
                   </div>
                   {generatedAudioUrl && (
-                    <div className="flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5">
-                      <div className="h-2 w-2 animate-pulse rounded-full bg-primary"></div>
-                      <span className="text-xs font-medium text-primary">
+                    <div className="border-primary/20 bg-primary/10 flex items-center gap-2 rounded-full border px-3 py-1.5">
+                      <div className="bg-primary h-2 w-2 animate-pulse rounded-full"></div>
+                      <span className="text-primary text-xs font-medium">
                         Ready
                       </span>
                     </div>
@@ -324,7 +323,9 @@ export default function UGCVideoPage() {
                         key={voice}
                         onClick={() => setSelectedDialogueVoice(voice)}
                         variant={
-                          selectedDialogueVoice === voice ? "default" : "outline"
+                          selectedDialogueVoice === voice
+                            ? "default"
+                            : "outline"
                         }
                         size="sm"
                       >
@@ -354,8 +355,8 @@ export default function UGCVideoPage() {
                 </Button>
 
                 {generatedAudioUrl && (
-                  <Card className="space-y-4 border-border bg-muted/50 p-4">
-                    <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
+                  <Card className="border-border bg-muted/50 space-y-4 p-4">
+                    <div className="text-muted-foreground mb-2 flex items-center gap-2 text-sm">
                       <Music className="h-4 w-4" />
                       <span>Generated Audio</span>
                     </div>
@@ -385,16 +386,16 @@ export default function UGCVideoPage() {
 
           {/* Step 3: Video Settings */}
           <div className="relative">
-            <div className="absolute top-6 -left-12 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-base font-bold text-primary-foreground shadow-lg">
+            <div className="bg-primary text-primary-foreground absolute top-6 -left-12 flex h-10 w-10 items-center justify-center rounded-full text-base font-bold shadow-lg">
               3
             </div>
             <Card className="space-y-6 p-8 shadow-xl">
               <div>
                 <CardTitle className="flex items-center gap-2 text-xl font-bold">
-                  <Sparkles className="h-5 w-5 text-primary" />
+                  <Sparkles className="text-primary h-5 w-5" />
                   Video Settings
                 </CardTitle>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="text-muted-foreground mt-1 text-sm">
                   Customize your video generation
                 </p>
               </div>
@@ -417,7 +418,7 @@ export default function UGCVideoPage() {
                 </Button>
 
                 {backgroundUrl && (
-                  <Card className="mt-4 border-border bg-muted/50 p-2">
+                  <Card className="border-border bg-muted/50 mt-4 p-2">
                     <img
                       src={backgroundUrl}
                       alt="Selected background"
@@ -431,7 +432,7 @@ export default function UGCVideoPage() {
               <div>
                 <Label className="mb-3 block text-sm font-medium">
                   Visual Style Prompt{" "}
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-muted-foreground text-xs">
                     (Optional)
                   </span>
                 </Label>
@@ -463,7 +464,9 @@ export default function UGCVideoPage() {
                   </Button>
                   <Button
                     onClick={() => setModelVersion("aurora_v1")}
-                    variant={modelVersion === "aurora_v1" ? "default" : "outline"}
+                    variant={
+                      modelVersion === "aurora_v1" ? "default" : "outline"
+                    }
                     className="flex flex-col"
                   >
                     <div className="font-semibold">High Quality</div>
@@ -478,12 +481,12 @@ export default function UGCVideoPage() {
 
           {/* Final Step: Generate Video */}
           <div className="relative">
-            <div className="absolute top-6 -left-12 flex h-10 w-10 animate-pulse items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground shadow-lg">
+            <div className="bg-primary text-primary-foreground absolute top-6 -left-12 flex h-10 w-10 animate-pulse items-center justify-center rounded-full text-lg font-bold shadow-lg">
               ✓
             </div>
             <Card className="border-primary/20 bg-primary/10 p-8 shadow-2xl">
               <div className="mb-6 text-center">
-                <h3 className="mb-2 bg-gradient-to-r from-primary to-primary bg-clip-text text-2xl font-bold text-transparent">
+                <h3 className="from-primary to-primary mb-2 bg-gradient-to-r bg-clip-text text-2xl font-bold text-transparent">
                   Ready to Create Magic?
                 </h3>
                 <p className="text-muted-foreground">
@@ -513,7 +516,7 @@ export default function UGCVideoPage() {
               </Button>
 
               {/* Validation Messages */}
-              <div className="mt-4 space-y-1 text-center text-sm text-muted-foreground">
+              <div className="text-muted-foreground mt-4 space-y-1 text-center text-sm">
                 {!script && <p>• Please write or generate a script first</p>}
                 {!generatedAudioUrl && (
                   <p>• Please generate audio from your script</p>
@@ -533,7 +536,7 @@ export default function UGCVideoPage() {
       {/* Notification Toast */}
       {showNotification && (
         <div className="animate-slide-up fixed right-6 bottom-6 z-50">
-          <Card className="bg-primary px-6 py-4 text-primary-foreground shadow-2xl">
+          <Card className="bg-primary text-primary-foreground px-6 py-4 shadow-2xl">
             <p className="font-medium">{notificationMessage}</p>
           </Card>
         </div>
