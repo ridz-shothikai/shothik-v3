@@ -119,14 +119,14 @@ export default function PublishAdsScreen() {
                   router.push(`/marketing-automation/canvas/${projectId}`)
                 }
               >
-                <ArrowLeft className="h-5 w-5" />
+                <ArrowLeft className="size-5" />
               </Button>
               <div>
-                <h1 className="text-foreground flex items-center gap-2 text-xl font-bold">
+                <h1 className="flex items-center gap-2 text-xl font-bold">
                   <Send className="text-primary h-5 w-5" />
                   Publish Ads
                 </h1>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-muted-foreground hidden text-xs md:block">
                   Select ads to publish to Meta platforms
                 </p>
               </div>
@@ -153,7 +153,7 @@ export default function PublishAdsScreen() {
                 }
                 className="mx-auto"
               >
-                <ArrowLeft className="h-4 w-4" />
+                <ArrowLeft className="size-5" />
                 Back to Campaign
               </Button>
             </CardContent>

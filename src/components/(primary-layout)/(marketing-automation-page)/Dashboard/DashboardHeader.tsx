@@ -17,7 +17,7 @@ export default function DashboardHeader({
 
   return (
     <div className="border-border bg-background/90 sticky top-0 z-10 border-b backdrop-blur-sm">
-      <div className="mx-auto max-w-[1400px] px-6 py-4">
+      <div className="px-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button
@@ -25,13 +25,11 @@ export default function DashboardHeader({
               variant="ghost"
               size="icon"
             >
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeft className="size-5" />
             </Button>
             <div>
-              <h1 className="text-foreground text-2xl font-bold">
-                Campaign Dashboard
-              </h1>
-              <p className="text-muted-foreground mt-0.5 text-sm">
+              <h1 className="text-xl font-bold">Campaign Dashboard</h1>
+              <p className="text-muted-foreground mt-1 hidden text-xs md:block">
                 Performance insights and AI recommendations
               </p>
             </div>

@@ -503,15 +503,13 @@ export default function VideoGenerationPage({
           variant="ghost"
           className="group flex items-center gap-2"
         >
-          <ArrowLeft className="h-5 w-5" />
+          <ArrowLeft className="size-5" />
           <span className="font-medium">Back to Avatars</span>
         </Button>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="from-primary to-primary bg-gradient-to-r bg-clip-text text-xl font-bold text-transparent">
-              Create Your Video
-            </h1>
-            <p className="text-muted-foreground mt-2 text-sm">
+            <h1 className="text-xl font-bold">Create Your Video</h1>
+            <p className="text-muted-foreground mt-1 hidden text-xs md:block">
               Customize your AI-powered video with script, voice, and advanced
               settings
             </p>

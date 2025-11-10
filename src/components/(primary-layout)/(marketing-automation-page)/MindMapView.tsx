@@ -372,13 +372,11 @@ export default function MindMapView() {
                 router.push(`/marketing-automation/insights/${analysisId}`)
               }
             >
-              <ArrowLeft className="text-muted-foreground size-5" />
+              <ArrowLeft className="size-5" />
             </Button>
             <div>
-              <h1 className="text-foreground text-xl font-bold">
-                Campaign Mind Map
-              </h1>
-              <p className="text-muted-foreground text-xs">
+              <h1 className="text-xl font-bold">Campaign Mind Map</h1>
+              <p className="text-muted-foreground hidden text-xs md:block">
                 AI-generated visualization of your Meta campaign structure
               </p>
             </div>

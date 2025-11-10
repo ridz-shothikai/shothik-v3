@@ -7,9 +7,11 @@ import Link from "next/link";
 
 export default function HomeAdvertisement() {
   return (
-    <div className="from-primary to-primary/80 mb-20 flex flex-col items-center justify-between rounded-3xl bg-gradient-to-br px-8 py-16 md:flex-row md:px-16 md:py-24">
-      <Content />
-      <Description />
+    <div className="p-6">
+      <div className="from-primary to-primary/80 mb-20 flex flex-col items-center justify-between rounded-3xl bg-gradient-to-br px-8 py-16 md:flex-row md:px-16 md:py-24">
+        <Content />
+        <Description />
+      </div>
     </div>
   );
 }

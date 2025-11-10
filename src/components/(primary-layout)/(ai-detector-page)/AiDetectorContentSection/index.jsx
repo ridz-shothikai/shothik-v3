@@ -378,7 +378,7 @@ const AiDetectorContentSection = () => {
 
   return (
     <>
-      <div className="py-6">
+      <div className="p-6">
         <div className="flex flex-col gap-4 lg:flex-row">
           {/* Section Bar */}
           <div className="bg-card hidden h-fit rounded-lg border p-4 px-3 lg:block">

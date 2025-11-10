@@ -12,26 +12,28 @@ export default function ToolsCTA({ toolType }) {
   }
 
   return (
-    <div className="from-primary/5 to-primary/10 w-full rounded-3xl bg-gradient-to-br px-6 py-16 md:px-12 md:py-24">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 md:grid-cols-2">
-        <div className="w-full">
-          <Description config={toolConfig} />
-        </div>
+    <div className="p-6">
+      <div className="from-primary/5 to-primary/10 w-full rounded-3xl bg-gradient-to-br px-6 py-16 md:px-12 md:py-24">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 md:grid-cols-2">
+          <div className="w-full">
+            <Description config={toolConfig} />
+          </div>
 
-        <div className="flex w-full justify-center">
-          <CTAImages
-            title={toolConfig.title}
-            lightImage={toolConfig.image.light}
-            darkImage={toolConfig.image.dark}
-            sx={{
-              img: {
-                borderRadius: { xs: "8px", md: "0px" },
-                width: { xs: "100%", md: "auto" },
-                height: { xs: "auto", md: "auto" },
-                aspectRatio: { xs: "1 / 1", md: "unset" },
-              },
-            }}
-          />
+          <div className="flex w-full justify-center">
+            <CTAImages
+              title={toolConfig.title}
+              lightImage={toolConfig.image.light}
+              darkImage={toolConfig.image.dark}
+              sx={{
+                img: {
+                  borderRadius: { xs: "8px", md: "0px" },
+                  width: { xs: "100%", md: "auto" },
+                  height: { xs: "auto", md: "auto" },
+                  aspectRatio: { xs: "1 / 1", md: "unset" },
+                },
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>

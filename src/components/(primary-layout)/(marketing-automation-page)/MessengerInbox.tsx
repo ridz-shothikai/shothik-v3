@@ -343,7 +343,7 @@ export const MessengerInbox = () => {
 
   return (
     <div className="bg-background flex min-h-[calc(100vh-4rem)] flex-col">
-      <div className="border-border bg-background/80 h-12 border-b px-6 backdrop-blur-xl md:h-16">
+      <div className="border-border bg-background/80 min-h-12 border-b px-6 py-2 backdrop-blur-xl md:min-h-16">
         <div className="flex h-full items-center justify-between">
           <div className="flex items-center gap-4">
             <Button
@@ -352,17 +352,15 @@ export const MessengerInbox = () => {
               title="Back to Campaign"
               onClick={() => router.push("/marketing-automation/analysis")}
             >
-              <ArrowLeft className="text-muted-foreground h-5 w-5" />
+              <ArrowLeft className="size-5" />
             </Button>
             <div className="flex items-center gap-3">
               <div className="border-primary/30 bg-primary/10 flex h-10 w-10 items-center justify-center rounded-xl border">
                 <MessageSquare className="text-primary h-5 w-5" />
               </div>
               <div>
-                <h1 className="text-foreground text-xl font-bold">
-                  Messenger Inbox
-                </h1>
-                <p className="text-muted-foreground text-sm">
+                <h1 className="text-xl font-bold">Messenger Inbox</h1>
+                <p className="text-muted-foreground text-xs">
                   {selectedPageData?.name}
                 </p>
               </div>

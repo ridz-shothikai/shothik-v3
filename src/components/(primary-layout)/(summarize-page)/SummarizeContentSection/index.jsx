@@ -277,7 +277,8 @@ const SummarizeContentSection = () => {
 
       try {
         setIsKeywordsLoading(true);
-        const url = process.env.NEXT_PUBLIC_API_URL_WITH_PREFIX + "/summarize-keywords";
+        const url =
+          process.env.NEXT_PUBLIC_API_URL_WITH_PREFIX + "/summarize-keywords";
         const response = await fetch(url, {
           method: "POST",
           headers: {
@@ -450,7 +451,7 @@ const SummarizeContentSection = () => {
   }, [outputContent, selectedKeywords, extractTextFromHTML]);
 
   return (
-    <div className="py-6">
+    <div className="p-6">
       <div className="overflow-visible rounded-lg">
         {/* Top Navigation */}
         <div className="bg-card rounded-t-lg border border-b-0">

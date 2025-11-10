@@ -136,11 +136,11 @@ export default function AIMedia() {
                 size="icon"
                 aria-label="Back to analysis"
               >
-                <ArrowLeft className="h-5 w-5" />
+                <ArrowLeft className="size-5" />
               </Button>
-              <h2 className="text-foreground text-lg font-semibold">
+              <h1 className="text-foreground text-xl font-semibold">
                 AI Media Studio
-              </h2>
+              </h1>
             </div>
             <div></div>
           </div>

@@ -484,14 +484,14 @@ export default function FacebookAccountSelectionScreen() {
                 router.push(`/marketing-automation/canvas/${projectId}/publish`)
               }
             >
-              <ArrowLeft className="text-muted-foreground h-5 w-5" />
+              <ArrowLeft className="size-5" />
             </Button>
             <div>
               <h1 className="text-foreground flex items-center gap-2 text-xl font-bold">
-                <Globe className="text-primary h-5 w-5" />
+                <Globe className="text-primary size-5" />
                 Select Facebook Accounts
               </h1>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground hidden text-xs md:block">
                 Choose which pages, business account, and ad account to use for
                 publishing
               </p>

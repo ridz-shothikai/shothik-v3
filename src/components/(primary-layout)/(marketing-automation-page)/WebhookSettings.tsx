@@ -65,30 +65,28 @@ export const WebhookSettings = () => {
   return (
     <div className="bg-background relative min-h-[calc(100vh-4rem)] overflow-hidden">
       {/* Background pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] bg-[size:4rem_4rem] opacity-20"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] bg-[size:4rem_4rem] opacity-5"></div>
 
-      <div className="relative mx-auto max-w-6xl px-6 py-10">
+      <div className="relative mx-auto max-w-6xl px-6 py-6">
         {/* Back Button */}
         <Button
           onClick={() => router.push("/marketing-automation/analysis")}
           variant="ghost"
-          className="mb-8"
+          className="mb-6"
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft className="size-5" />
           <span className="text-sm">Back to Analysis</span>
         </Button>
 
         {/* Header */}
-        <div className="mb-10">
-          <div className="mb-3 flex items-center gap-4">
+        <div className="mb-6 h-12 md:h-16">
+          <div className="flex h-full items-center gap-4">
             <div className="border-border bg-primary/20 flex h-14 w-14 items-center justify-center rounded-2xl border">
               <MessageSquare className="text-primary h-7 w-7" />
             </div>
             <div>
-              <h1 className="text-foreground text-4xl font-bold">
-                Messenger Management
-              </h1>
-              <p className="text-muted-foreground mt-1">
+              <h1 className="text-xl font-bold">Messenger Management</h1>
+              <p className="text-muted-foreground mt-1 hidden text-xs md:block">
                 Manage Facebook Messenger webhooks for real-time notifications
               </p>
             </div>
@@ -96,7 +94,7 @@ export const WebhookSettings = () => {
         </div>
 
         {/* Info Card */}
-        <Card className="border-primary/20 bg-primary/5 mb-8 p-6">
+        <Card className="border-primary/20 bg-primary/5 mb-6 p-6">
           <h3 className="text-primary mb-2 flex items-center gap-2 font-semibold">
             <MessageSquare className="h-5 w-5" />
             What are Messenger Webhooks?

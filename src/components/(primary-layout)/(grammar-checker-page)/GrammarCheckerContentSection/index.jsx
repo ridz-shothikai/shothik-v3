@@ -654,7 +654,7 @@ const GrammarCheckerContentSection = () => {
 
   return (
     <>
-      <div className="py-6">
+      <div className="p-6">
         <div className="relative flex flex-col items-start gap-4 overflow-hidden lg:flex-row">
           <div className="bg-card hidden rounded-lg border p-4 px-3 lg:block">
             <div className="flex flex-col gap-6">

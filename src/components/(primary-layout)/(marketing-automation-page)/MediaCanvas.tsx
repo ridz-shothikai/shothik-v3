@@ -248,17 +248,17 @@ export default function MediaCanvas() {
                 router.push(`/marketing-automation/canvas/${projectId}`)
               }
             >
-              <ArrowLeft className="text-muted-foreground h-6 w-6" />
+              <ArrowLeft className="size-5" />
             </Button>
             <div className="flex items-center gap-3">
               <div className="bg-primary rounded-lg p-2">
                 <Wand2 className="text-primary-foreground h-6 w-6" />
               </div>
               <div>
-                <h1 className="text-foreground text-2xl font-bold">
+                <h1 className="text-foreground text-xl font-bold">
                   AI Media Canvas
                 </h1>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-muted-foreground text-xs">
                   {ad.headline} • {ad.format}
                 </p>
               </div>

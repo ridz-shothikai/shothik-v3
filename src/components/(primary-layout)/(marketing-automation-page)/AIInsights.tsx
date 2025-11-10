@@ -273,17 +273,17 @@ export default function AIInsights() {
                     aria-label="Go back to analysis"
                     title="Go back to analysis"
                   >
-                    <ArrowLeft className="h-5 w-5" />
+                    <ArrowLeft className="size-5" />
                   </Button>
                   <div className="flex items-center gap-2">
                     <div className="bg-primary flex h-9 w-9 items-center justify-center rounded-lg shadow-lg">
                       <Bot className="text-primary-foreground h-5 w-5" />
                     </div>
                     <div>
-                      <h1 className="text-foreground text-lg font-bold">
+                      <h1 className="text-foreground text-xl font-bold">
                         AI Insights Assistant
                       </h1>
-                      <p className="text-muted-foreground text-xs">
+                      <p className="text-muted-foreground hidden text-xs md:block">
                         Powered by advanced AI
                       </p>
                     </div>

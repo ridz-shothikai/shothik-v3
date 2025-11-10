@@ -85,7 +85,7 @@ const PlagiarismCheckerContentSection = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center md:min-h-[calc(100vh-100px)]">
+    <div className="flex flex-col items-center justify-center p-6 md:min-h-[calc(100vh-100px)]">
       <div className="flex w-full flex-col gap-4 px-4 py-4 md:flex-row">
         {/* Input Section */}
         <div className="md:w-full md:flex-1">

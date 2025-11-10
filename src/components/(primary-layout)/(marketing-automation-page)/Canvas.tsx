@@ -283,7 +283,7 @@ Would you like me to explain the personas, show you the ad concepts, or help you
             onClick={() => router.push("/marketing-automation/analysis")}
             className="inline-flex items-center gap-2"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="size-5" />
             Back to Analysis
           </Button>
         </Card>
@@ -304,11 +304,11 @@ Would you like me to explain the personas, show you the ad concepts, or help you
                 size="icon"
                 aria-label="Back to analysis"
               >
-                <ArrowLeft className="h-5 w-5" />
+                <ArrowLeft className="size-5" />
               </Button>
               <div>
-                <h1 className="text-foreground flex items-center gap-2 text-base font-bold">
-                  <Sparkles className="text-primary h-5 w-5" />
+                <h1 className="text-foreground flex items-center gap-2 text-xl font-bold">
+                  <Sparkles className="text-primary size-5" />
                   Campaign Canvas
                 </h1>
                 <p className="text-muted-foreground hidden text-xs lg:block">
