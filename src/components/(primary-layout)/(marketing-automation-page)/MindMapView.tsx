@@ -1,5 +1,13 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   ArrowLeft,
   Bot,
@@ -161,25 +169,25 @@ export default function MindMapView() {
   const getNodeColor = (type: string) => {
     switch (type) {
       case "root":
-        return "bg-gradient-to-br from-indigo-500 to-purple-600 text-white border-indigo-400 shadow-lg shadow-indigo-200";
+        return "bg-primary text-primary-foreground border-primary/70 shadow-lg shadow-primary/20";
       case "competitors-group":
-        return "bg-gradient-to-br from-orange-500 to-red-600 text-white border-orange-400 shadow-lg shadow-orange-200";
+        return "bg-secondary text-secondary-foreground border-secondary/70 shadow-lg shadow-secondary/20";
       case "personas-group":
-        return "bg-gradient-to-br from-emerald-500 to-teal-600 text-white border-emerald-400 shadow-lg shadow-emerald-200";
+        return "bg-accent text-accent-foreground border-accent/70 shadow-lg shadow-accent/20";
       case "project":
-        return "bg-gradient-to-br from-violet-400 to-purple-500 text-white border-violet-300 shadow-lg shadow-purple-200";
+        return "bg-primary/80 text-primary-foreground border-primary/50 shadow";
       case "competitor":
-        return "bg-gradient-to-br from-orange-400 to-amber-500 text-white border-orange-300 shadow-lg shadow-orange-200";
+        return "bg-secondary/80 text-secondary-foreground border-secondary/50 shadow";
       case "persona":
-        return "bg-gradient-to-br from-emerald-400 to-green-500 text-white border-emerald-300 shadow-lg shadow-emerald-200";
+        return "bg-accent/80 text-accent-foreground border-accent/50 shadow";
       case "campaign":
-        return "bg-gradient-to-br from-blue-400 to-indigo-500 text-white border-blue-300 shadow-lg shadow-blue-200";
+        return "bg-primary/70 text-primary-foreground border-primary/40 shadow";
       case "adset":
-        return "bg-gradient-to-br from-cyan-400 to-teal-500 text-white border-cyan-300 shadow-lg shadow-cyan-200";
+        return "bg-secondary/70 text-secondary-foreground border-secondary/40 shadow";
       case "ad":
-        return "bg-gradient-to-br from-rose-400 to-pink-500 text-white border-rose-300 shadow-lg shadow-rose-200";
+        return "bg-accent/70 text-accent-foreground border-accent/40 shadow";
       default:
-        return "bg-gradient-to-br from-gray-400 to-slate-500 text-white border-gray-300 shadow-lg shadow-gray-200";
+        return "bg-card text-card-foreground border-border shadow";
     }
   };
 
@@ -240,7 +248,7 @@ export default function MindMapView() {
                 },
                   ${layoutNode.x - 50} ${layoutNode.y + nodeHeight / 2},
                   ${layoutNode.x} ${layoutNode.y + nodeHeight / 2}`}
-            stroke="#94a3b8"
+            stroke="var(--muted)"
             strokeWidth="2"
             fill="none"
             markerEnd="url(#arrowhead)"
@@ -258,13 +266,13 @@ export default function MindMapView() {
           <div
             className={`${getNodeColor(
               layoutNode.node.type,
-            )} flex h-full flex-col justify-center rounded-lg border-2 px-4 py-3 shadow-md`}
+            )} flex h-full flex-col justify-center rounded-lg border px-4 py-3 shadow-md`}
           >
-            <div className="text-sm leading-tight font-semibold break-words">
+            <div className="text-sm font-semibold leading-tight break-words">
               {layoutNode.node.label}
             </div>
             {layoutNode.node.data && (
-              <div className="mt-1 text-xs opacity-90">
+              <div className="mt-1 text-xs text-primary-foreground/80">
                 {layoutNode.node.data.count && (
                   <div>Count: {String(layoutNode.node.data.count)}</div>
                 )}
@@ -293,19 +301,21 @@ export default function MindMapView() {
             height={30}
             style={{ pointerEvents: "all" }}
           >
-            <button
+            <Button
+              variant="secondary"
+              size="icon-sm"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 console.log("Button clicked for node:", layoutNode.node.id);
                 toggleNodeCollapse(layoutNode.node.id);
               }}
-              className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 border-white bg-blue-500 text-sm font-bold text-white shadow-lg hover:bg-blue-600"
+              className="h-7 w-7 rounded-full text-xs font-bold shadow"
               type="button"
               title={isCollapsed ? "Expand" : "Collapse"}
             >
               {isCollapsed ? "+" : "−"}
-            </button>
+            </Button>
           </foreignObject>
         )}
 
@@ -323,10 +333,12 @@ export default function MindMapView() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#020617]">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
-          <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-indigo-500" />
-          <p className="text-gray-400">Generating AI-powered mind map...</p>
+          <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-primary" />
+          <p className="text-muted-foreground">
+            Generating AI-powered mind map...
+          </p>
         </div>
       </div>
     );
@@ -334,42 +346,39 @@ export default function MindMapView() {
 
   if (error || !mindMapData) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#020617]">
+      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <div className="text-center">
-          <p className="mb-4 text-red-400">
+          <p className="text-destructive mb-4">
             {error || "Failed to load mind map"}
           </p>
-          <button
-            onClick={() => router.push("/marketing-automation/analysis")}
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-white transition-colors hover:bg-indigo-700"
-          >
+          <Button onClick={() => router.push("/marketing-automation/analysis")}>
             Back to Projects
-          </button>
+          </Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#020617]">
-      {/* Header */}
-      <div className="sticky top-0 z-20 border-b border-slate-800/50 bg-[#020617]/80 px-6 py-3 backdrop-blur-sm">
+    <div className="bg-background min-h-[calc(100vh-4rem)]">
+      <div className="border-border/50 bg-background/80 sticky top-0 z-20 border-b px-6 py-3 backdrop-blur-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <div className="flex items-center gap-3">
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               title="Back to Campaign"
               onClick={() =>
                 router.push(`/marketing-automation/insights/${analysisId}`)
               }
-              className="rounded-lg p-2 transition-colors hover:bg-slate-800"
             >
-              <ArrowLeft className="h-5 w-5 text-gray-400" />
-            </button>
+              <ArrowLeft className="text-muted-foreground size-5" />
+            </Button>
             <div>
-              <h1 className="text-xl font-bold text-white">
+              <h1 className="text-foreground text-xl font-bold">
                 Campaign Mind Map
               </h1>
-              <p className="text-xs text-gray-400">
+              <p className="text-muted-foreground text-xs">
                 AI-generated visualization of your Meta campaign structure
               </p>
             </div>
@@ -377,137 +386,149 @@ export default function MindMapView() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 py-8">
-        <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {/* Overview Card */}
-          <div className="rounded-xl border border-slate-700/50 bg-slate-800/60 p-6 shadow-lg shadow-black/20 lg:col-span-2">
-            <h2 className="mb-3 flex items-center gap-2 text-lg font-bold text-white">
-              <Bot className="h-5 w-5 text-indigo-400" />
-              AI Analysis
-            </h2>
-            <p className="leading-relaxed text-gray-300">
-              {mindMapData.overview}
-            </p>
-          </div>
+      <div className="mx-auto max-w-7xl space-y-8 px-6 py-8">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <Card className="lg:col-span-2">
+            <CardHeader className="flex flex-row items-center gap-2">
+              <Bot className="text-primary size-5" />
+              <CardTitle className="text-lg font-bold">AI Analysis</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground leading-relaxed">
+                {mindMapData.overview}
+              </p>
+            </CardContent>
+          </Card>
 
-          {/* Stats Card */}
-          <div className="rounded-xl border border-slate-700/50 bg-slate-800/60 p-6 shadow-lg shadow-black/20">
-            <h2 className="mb-4 text-lg font-bold text-white">
-              Campaign Stats
-            </h2>
-            <div className="space-y-3">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-bold">
+                Campaign Stats
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-gray-400">Campaigns</span>
-                <span className="font-bold text-indigo-400">
+                <span className="text-muted-foreground">Campaigns</span>
+                <span className="text-primary font-bold">
                   {mindMapData.insights.totalCampaigns}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-400">Ad Sets</span>
-                <span className="font-bold text-emerald-400">
+                <span className="text-muted-foreground">Ad Sets</span>
+                <span className="text-secondary font-bold">
                   {mindMapData.insights.totalAdSets}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-400">Ads</span>
-                <span className="font-bold text-orange-400">
+                <span className="text-muted-foreground">Ads</span>
+                <span className="text-accent font-bold">
                   {mindMapData.insights.totalAds}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-400">Personas</span>
-                <span className="font-bold text-purple-400">
+                <span className="text-muted-foreground">Personas</span>
+                <span className="text-primary font-bold">
                   {mindMapData.insights.personas}
                 </span>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Meta Flow */}
-        <div className="mb-8 rounded-xl border border-slate-700/50 bg-slate-800/60 p-6 shadow-lg shadow-black/20">
-          <h2 className="mb-4 text-lg font-bold text-white">
-            Meta Campaign Flow
-          </h2>
-          <div className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg font-bold">
+              Meta Campaign Flow
+            </CardTitle>
+            <CardDescription>
+              Track progress across your campaign lifecycle.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
             {mindMapData.metaFlow.map((step, index) => (
               <div key={index} className="flex items-start gap-4">
                 <div className="shrink-0">
                   {step.status === "completed" ? (
-                    <CheckCircle2 className="h-6 w-6 text-emerald-400" />
+                    <CheckCircle2 className="text-secondary size-6" />
                   ) : (
-                    <Circle className="h-6 w-6 text-gray-600" />
+                    <Circle className="text-muted-foreground size-6" />
                   )}
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-white">{step.step}</h3>
-                  <p className="text-sm text-gray-400">{step.description}</p>
+                  <h3 className="text-foreground font-semibold">{step.step}</h3>
+                  <p className="text-muted-foreground text-sm">
+                    {step.description}
+                  </p>
                 </div>
               </div>
             ))}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        {/* Recommendations */}
         {mindMapData.insights.recommendations.length > 0 && (
-          <div className="mb-8 rounded-xl border border-indigo-500/30 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 p-6 shadow-lg shadow-black/20">
-            <h2 className="mb-4 flex items-center gap-2 text-lg font-bold text-white">
-              <Sparkles className="h-5 w-5 text-indigo-400" />
-              AI Recommendations
-            </h2>
-            <ul className="space-y-2">
-              {mindMapData.insights.recommendations.map((rec, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <span className="font-bold text-indigo-400">•</span>
-                  <span className="text-gray-300">{rec}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <Card className="border-primary/30 from-primary/10 to-secondary/10 bg-gradient-to-br">
+            <CardHeader className="flex flex-row items-center gap-2">
+              <Sparkles className="text-primary size-5" />
+              <CardTitle className="text-lg font-bold">
+                AI Recommendations
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2">
+                {mindMapData.insights.recommendations.map((rec, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span className="text-primary font-bold">•</span>
+                    <span className="text-muted-foreground">{rec}</span>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
         )}
 
-        {/* Mind Map Visualization */}
         <div
           ref={containerRef}
-          className="relative overflow-hidden rounded-xl border border-slate-700/50 bg-slate-900/50 shadow-lg shadow-black/20"
+          className="border-border/60 bg-card relative overflow-hidden rounded-xl border shadow-lg"
         >
-          {/* Toolbar */}
           <div className="absolute top-4 right-4 z-10 flex gap-2">
-            <button
+            <Button
+              variant="outline"
+              size="icon"
               onClick={handleZoomIn}
-              className="rounded-lg border border-slate-700/50 bg-slate-800/80 p-2 text-gray-300 shadow-lg backdrop-blur-sm transition-colors hover:bg-slate-700"
               title="Zoom In"
             >
-              <ZoomIn className="h-5 w-5" />
-            </button>
-            <button
+              <ZoomIn className="size-5" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
               onClick={handleZoomOut}
-              className="rounded-lg border border-slate-700/50 bg-slate-800/80 p-2 text-gray-300 shadow-lg backdrop-blur-sm transition-colors hover:bg-slate-700"
               title="Zoom Out"
             >
-              <ZoomOut className="h-5 w-5" />
-            </button>
-            <button
+              <ZoomOut className="size-5" />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
               onClick={handleResetZoom}
-              className="rounded-lg border border-slate-700/50 bg-slate-800/80 px-3 py-2 text-sm font-medium text-gray-300 shadow-lg backdrop-blur-sm transition-colors hover:bg-slate-700"
               title="Reset View"
             >
               Reset
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
               onClick={toggleFullscreen}
-              className="rounded-lg border border-slate-700/50 bg-slate-800/80 p-2 text-gray-300 shadow-lg backdrop-blur-sm transition-colors hover:bg-slate-700"
               title="Fullscreen"
             >
               {isFullscreen ? (
-                <Minimize2 className="h-5 w-5" />
+                <Minimize2 className="size-5" />
               ) : (
-                <Maximize2 className="h-5 w-5" />
+                <Maximize2 className="size-5" />
               )}
-            </button>
+            </Button>
           </div>
 
-          {/* SVG Canvas */}
           <div
             className="h-[700px] w-full cursor-grab overflow-hidden active:cursor-grabbing"
             onMouseDown={handleMouseDown}
@@ -525,7 +546,6 @@ export default function MindMapView() {
                 transition: isDragging ? "none" : "transform 0.1s ease-out",
               }}
             >
-              {/* Arrow marker definition */}
               <defs>
                 <marker
                   id="arrowhead"
@@ -535,19 +555,20 @@ export default function MindMapView() {
                   refY="3"
                   orient="auto"
                 >
-                  <polygon points="0 0, 10 3, 0 6" fill="#94a3b8" />
+                  <polygon
+                    points="0 0, 10 3, 0 6"
+                    fill="var(--muted-foreground)"
+                  />
                 </marker>
               </defs>
 
-              {/* Render tree starting from center */}
               <g transform="translate(50, 2000)">
                 {renderTree(buildLayout(mindMapData.structure, 0, 0, 0))}
               </g>
             </svg>
           </div>
 
-          {/* Instructions */}
-          <div className="absolute bottom-4 left-4 rounded-lg border border-slate-700/50 bg-slate-800/80 px-3 py-2 text-sm text-gray-400 backdrop-blur-sm">
+          <div className="border-border/60 bg-card/80 text-muted-foreground absolute bottom-4 left-4 rounded-lg border px-3 py-2 text-sm backdrop-blur-sm">
             <p>💡 Drag to pan • Scroll or use buttons to zoom</p>
           </div>
         </div>

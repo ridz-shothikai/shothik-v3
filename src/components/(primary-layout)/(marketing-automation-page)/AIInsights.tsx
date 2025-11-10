@@ -11,7 +11,6 @@ import {
   AlignCenter,
   AlignRight,
   ArrowLeft,
-  BarChart3,
   Bot,
   Brain,
   FileText,
@@ -429,14 +428,14 @@ export default function AIInsights() {
             <div className="border-border h-12 shrink-0 border-b px-4 md:h-16">
               <div className="flex h-full items-center justify-between">
                 <h2 className="text-foreground text-base font-bold">Studio</h2>
-                <Button
+                {/* <Button
                   variant="ghost"
                   size="icon-sm"
                   aria-label="View analytics"
                   title="View analytics"
                 >
                   <BarChart3 className="h-4 w-4" />
-                </Button>
+                </Button> */}
               </div>
             </div>
 
@@ -529,14 +528,14 @@ export default function AIInsights() {
                   <h2 className="text-foreground text-base font-bold">
                     Studio
                   </h2>
-                  <Button
+                  {/* <Button
                     variant="ghost"
                     size="icon-sm"
                     aria-label="View analytics"
                     title="View analytics"
                   >
                     <BarChart3 className="h-4 w-4" />
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
 

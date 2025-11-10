@@ -1,6 +1,12 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { mediaAPI } from "@/services/marketing-automation.service";
+import { Loader2 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
 interface City {
@@ -188,139 +194,165 @@ const TargetingConfig: React.FC<TargetingConfigProps> = ({
   return (
     <div className="space-y-8">
       <div>
-        <h3 className="mb-2 text-lg font-semibold text-gray-900">
+        <h3 className="mb-2 text-lg font-semibold text-foreground">
           Targeting Configuration
         </h3>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted-foreground">
           Configure who will see your ads based on demographics and location
         </p>
       </div>
 
       {/* Age Targeting */}
       <div className="space-y-4">
-        <h4 className="text-md font-medium text-gray-700">Age Range</h4>
+        <h4 className="text-md font-medium text-foreground">Age Range</h4>
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-3">
-            <label className="min-w-[40px] text-sm font-medium text-gray-600">
+            <Label
+              htmlFor="age-min"
+              className="min-w-[40px] text-sm font-medium text-muted-foreground"
+            >
               Min:
-            </label>
-            <input
+            </Label>
+            <Input
+              id="age-min"
               title="Age Range"
               type="number"
-              min="18"
-              max="65"
+              min={18}
+              max={65}
               value={ageMin}
-              onChange={(e) => setAgeMin(parseInt(e.target.value) || 18)}
-              className="w-24 rounded-lg border border-gray-300 px-3 py-2 text-center transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              onChange={(e) => setAgeMin(parseInt(e.target.value, 10) || 18)}
+              className="w-24 text-center"
             />
           </div>
           <div className="flex items-center space-x-3">
-            <label className="min-w-[40px] text-sm font-medium text-gray-600">
+            <Label
+              htmlFor="age-max"
+              className="min-w-[40px] text-sm font-medium text-muted-foreground"
+            >
               Max:
-            </label>
-            <input
+            </Label>
+            <Input
+              id="age-max"
               title="Age Range"
               type="number"
-              min="18"
-              max="65"
+              min={18}
+              max={65}
               value={ageMax}
-              onChange={(e) => setAgeMax(parseInt(e.target.value) || 65)}
-              className="w-24 rounded-lg border border-gray-300 px-3 py-2 text-center transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              onChange={(e) => setAgeMax(parseInt(e.target.value, 10) || 65)}
+              className="w-24 text-center"
             />
           </div>
         </div>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted-foreground">
           Target people between {ageMin} and {ageMax} years old
         </p>
       </div>
 
       {/* Geographic Targeting */}
       <div className="space-y-6">
-        <h4 className="text-md font-medium text-gray-700">
+        <h4 className="text-md font-medium text-foreground">
           Geographic Targeting
         </h4>
 
-        {/* Countries */}
         <div className="space-y-3">
-          <label className="text-sm font-medium text-gray-600">Countries</label>
-          <div className="flex flex-wrap gap-2">
-            {countries.map((country) => (
-              <span
-                key={country}
-                className="inline-flex items-center rounded-lg border border-blue-200 bg-blue-100 px-3 py-2 text-sm text-blue-800"
-              >
-                {country === "BD" ? "Bangladesh" : country}
-                <button
-                  onClick={() => removeCountry(country)}
-                  className="ml-2 rounded-full p-0.5 text-blue-600 transition-all hover:bg-blue-200 hover:text-blue-800"
+          <Label className="text-sm font-medium text-muted-foreground">
+            Countries
+          </Label>
+          <div className="flex flex-wrap items-center gap-2">
+            {countries.map((country) => {
+              const label = country === "BD" ? "Bangladesh" : country;
+              return (
+                <Badge
+                  key={country}
+                  variant="secondary"
+                  className="flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm"
                 >
-                  ×
-                </button>
-              </span>
-            ))}
-            <button
+                  {label}
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon-sm"
+                    className="-mr-1 h-5 w-5 rounded-full"
+                    onClick={() => removeCountry(country)}
+                  >
+                    <span aria-hidden>×</span>
+                    <span className="sr-only">Remove {label}</span>
+                  </Button>
+                </Badge>
+              );
+            })}
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
               onClick={() => addCountry("BD")}
-              className="flex items-center gap-1 rounded-lg border border-gray-300 px-3 py-2 text-sm transition-all hover:bg-gray-50"
+              className="flex items-center gap-2"
             >
-              <span className="text-gray-500">+</span> Add Bangladesh
-            </button>
+              <span className="text-base leading-none">+</span>
+              Add Bangladesh
+            </Button>
           </div>
         </div>
 
-        {/* Cities */}
         <div className="space-y-3">
-          <label className="text-sm font-medium text-gray-600">Cities</label>
+          <Label className="text-sm font-medium text-muted-foreground">
+            Cities
+          </Label>
 
-          {/* City Search */}
           <div className="relative">
-            <input
+            <Input
               type="text"
               placeholder="Search cities (e.g., Dhaka, Chittagong)"
               value={citySearchQuery}
               onChange={handleCitySearchChange}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full py-3"
             />
 
-            {/* Search Results */}
             {searchResults.length > 0 && (
-              <div className="absolute z-10 mt-2 max-h-60 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">
+              <div className="absolute z-10 mt-2 max-h-60 w-full overflow-y-auto rounded-lg border border-border bg-popover shadow-lg">
                 {searchResults.map((city) => (
-                  <button
+                  <Button
                     key={city.key}
+                    type="button"
+                    variant="ghost"
                     onClick={() => addCity(city)}
-                    className="w-full border-b border-gray-100 px-4 py-3 text-left transition-all last:border-b-0 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none"
+                    className="flex w-full flex-col items-start gap-1 rounded-none border-b border-border/60 px-4 py-3 text-left last:border-b-0"
                   >
-                    <div className="font-medium text-gray-900">{city.name}</div>
-                    <div className="text-sm text-gray-500">
+                    <span className="text-sm font-medium text-foreground">
+                      {city.name}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
                       {city.country_code}
-                    </div>
-                  </button>
+                    </span>
+                  </Button>
                 ))}
               </div>
             )}
 
             {isSearching && (
-              <div className="absolute top-4 right-4">
-                <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-blue-500"></div>
-              </div>
+              <Loader2 className="absolute top-3.5 right-3.5 size-4 animate-spin text-muted-foreground" />
             )}
           </div>
 
-          {/* Selected Cities */}
           <div className="flex flex-wrap gap-2">
             {cities.map((city) => (
-              <span
+              <Badge
                 key={city.key}
-                className="inline-flex items-center rounded-lg border border-green-200 bg-green-100 px-3 py-2 text-sm text-green-800"
+                variant="secondary"
+                className="flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm"
               >
                 {city.name}
-                <button
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  className="-mr-1 h-5 w-5 rounded-full"
                   onClick={() => removeCity(city.key)}
-                  className="ml-2 rounded-full p-0.5 text-green-600 transition-all hover:bg-green-200 hover:text-green-800"
                 >
-                  ×
-                </button>
-              </span>
+                  <span aria-hidden>×</span>
+                  <span className="sr-only">Remove {city.name}</span>
+                </Button>
+              </Badge>
             ))}
           </div>
         </div>
@@ -328,46 +360,50 @@ const TargetingConfig: React.FC<TargetingConfigProps> = ({
 
       {/* Advantage+ Audience */}
       <div className="space-y-4">
-        <h4 className="text-md font-medium text-gray-700">Audience Options</h4>
-        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-          <label className="flex cursor-pointer items-start space-x-3">
-            <input
-              type="checkbox"
+        <h4 className="text-md font-medium text-foreground">Audience Options</h4>
+        <div className="rounded-lg border border-primary/30 bg-primary/10 p-4">
+          <div className="flex items-start gap-3">
+            <Checkbox
+              id="advantage-audience"
               checked={advantageAudience}
-              onChange={(e) => setAdvantageAudience(e.target.checked)}
-              className="mt-1 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+              onCheckedChange={(checked) =>
+                setAdvantageAudience(Boolean(checked))
+              }
             />
             <div>
-              <span className="text-sm font-medium text-gray-900">
+              <Label
+                htmlFor="advantage-audience"
+                className="text-sm font-medium text-foreground"
+              >
                 Use Advantage+ Audience (Recommended for Meta 2025)
-              </span>
-              <p className="mt-1 text-xs text-gray-600">
-                Let Meta's AI find the best audience based on your creative
+              </Label>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Let Meta&apos;s AI find the best audience based on your creative
                 content. This is the recommended approach for modern Meta
                 advertising.
               </p>
             </div>
-          </label>
+          </div>
         </div>
       </div>
 
       {/* Targeting Summary */}
-      <div className="rounded-lg border border-gray-200 bg-gray-50 p-6">
-        <h5 className="mb-3 flex items-center gap-2 text-sm font-semibold text-gray-900">
-          <span className="h-2 w-2 rounded-full bg-blue-500"></span>
+      <div className="rounded-lg border border-border bg-muted p-6">
+        <h5 className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
+          <span className="h-2 w-2 rounded-full bg-primary"></span>
           Targeting Summary
         </h5>
         <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-2">
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-gray-600">Age Range:</span>
-              <span className="font-medium text-gray-900">
+              <span className="text-muted-foreground">Age Range:</span>
+              <span className="font-medium text-foreground">
                 {ageMin} - {ageMax}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Countries:</span>
-              <span className="font-medium text-gray-900">
+              <span className="text-muted-foreground">Countries:</span>
+              <span className="font-medium text-foreground">
                 {countries
                   .map((c) => (c === "BD" ? "Bangladesh" : c))
                   .join(", ")}
@@ -377,17 +413,19 @@ const TargetingConfig: React.FC<TargetingConfigProps> = ({
           <div className="space-y-2">
             {cities.length > 0 && (
               <div className="flex justify-between">
-                <span className="text-gray-600">Cities:</span>
-                <span className="font-medium text-gray-900">
+                <span className="text-muted-foreground">Cities:</span>
+                <span className="font-medium text-foreground">
                   {cities.map((c) => c.name).join(", ")}
                 </span>
               </div>
             )}
             <div className="flex justify-between">
-              <span className="text-gray-600">Advantage+ Audience:</span>
+              <span className="text-muted-foreground">Advantage+ Audience:</span>
               <span
                 className={`font-medium ${
-                  advantageAudience ? "text-green-600" : "text-gray-500"
+                  advantageAudience
+                    ? "text-secondary"
+                    : "text-muted-foreground"
                 }`}
               >
                 {advantageAudience ? "Yes" : "No"}
