@@ -11,10 +11,6 @@ export default function GPTsettings({
   allHumanizeHistory,
   refetchHistory,
 }) {
-  console.log(
-    "GPTsettings received handleHistorySelect:",
-    typeof handleHistorySelect,
-  );
   const mobile = useResponsive("down", "lg");
   const [showSidebar, setShowSidebar] = useState(false);
 

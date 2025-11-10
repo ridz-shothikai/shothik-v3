@@ -67,8 +67,6 @@ export default function FileHistorySidebar({ fetchFileHistories }) {
   const { page = 1, limit = 10, total = 0 } = fileHistoriesMeta || {};
   const hasMore = (fileHistories?.length || 0) < total;
 
-  console.log("fileHistories:", fileHistories);
-
   const API_BASE = process.env.NEXT_PUBLIC_API_URL + "/p-v2/api";
 
   // const API_BASE = "http://localhost:3050/api";

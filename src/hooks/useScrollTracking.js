@@ -25,8 +25,6 @@ export const useScrollTracking = () => {
   const analytics = useSelector((state) => state.analytics);
   // ==============
 
-  console.log("scrolling", analytics);
-
   useEffect(() => {
     const handleScroll = () => {
       const scrollPercent = Math.round(

@@ -284,8 +284,6 @@ const ModeNavigation = ({
 
   // Handle tab click for custom modes
   const handleTabClick = (event, mode) => {
-    console.log(mode, selectedMode, "tab clicked");
-
     if (mode.isCustom && mode.value === selectedMode) {
       setPopoverAnchor(event.currentTarget);
       try {
@@ -312,8 +310,6 @@ const ModeNavigation = ({
   };
 
   // console.log(extraModes, "extraModes");
-
-  console.log(editingCustomMode, "editingCustomMode");
 
   return (
     <>

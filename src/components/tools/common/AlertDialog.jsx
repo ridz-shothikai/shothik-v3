@@ -19,8 +19,6 @@ export default function AlertDialog() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  console.log(user, "alert dialog user data");
-
   return (
     <Dialog open={showAlert} onOpenChange={() => dispatch(setShowAlert(false))}>
       <DialogContent className="max-w-xs">
