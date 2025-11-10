@@ -2,18 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import useResponsive from "@/hooks/ui/useResponsive";
 import { cn } from "@/lib/utils";
 import { getRouteState } from "@/utils/getRouteState";
 import {
   AlignCenter,
+  AlignRight,
   ArrowLeft,
   BarChart3,
   Bot,
@@ -263,8 +259,8 @@ export default function AIInsights() {
       {/* Main Content */}
       <div className="relative grid md:grid-cols-3">
         {/* Chat Body - Full width on mobile, 2/3 on desktop */}
-        <div className="bg-background flex h-[calc(100vh-4rem)] flex-col overflow-hidden md:col-span-2">
-          <div className="flex flex-1 flex-col">
+        <div className="bg-background h-[calc(100vh-4rem)] overflow-hidden md:col-span-2">
+          <div className="flex h-full flex-col">
             {/* Header */}
             <div className="border-border bg-background/90 sticky top-0 z-10 flex h-12 items-center justify-center border-b backdrop-blur-sm md:h-16">
               <div className="flex h-full w-full items-center justify-between px-6">
@@ -294,14 +290,17 @@ export default function AIInsights() {
                     </div>
                   </div>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label="AI features"
-                  title="AI features"
-                >
-                  <Sparkles className="h-5 w-5" />
-                </Button>
+                <div>
+                  <Button
+                    onClick={() => setIsChatSheetOpen(true)}
+                    size="icon"
+                    variant="ghost"
+                    className="md:hidden"
+                    aria-label="Open chat"
+                  >
+                    <AlignRight className="h-6 w-6" />
+                  </Button>
+                </div>
               </div>
             </div>
 
@@ -380,7 +379,7 @@ export default function AIInsights() {
             </div>
 
             {/* Input Area */}
-            <div className="border-border bg-muted/50 h-12 shrink-0 border-t px-6 md:h-16">
+            <div className="border-border bg-background/90 h-12 shrink-0 border-t px-6 md:h-16">
               <div className="flex h-full items-center gap-2">
                 <div className="relative flex-1">
                   <Textarea
@@ -391,11 +390,11 @@ export default function AIInsights() {
                     className="w-full resize-none pr-28"
                     rows={1}
                     style={{
-                      minHeight: "42px",
-                      maxHeight: "100px",
+                      minHeight: "38px",
+                      maxHeight: "96px",
                     }}
                   />
-                  <span className="border-border bg-background text-muted-foreground absolute right-2 bottom-2.5 rounded border px-1.5 py-0.5 text-xs">
+                  <span className="border-border bg-background text-muted-foreground absolute right-2 bottom-2 rounded border px-1.5 py-0.5 text-xs uppercase">
                     {dataSource === "meta_api"
                       ? "Meta API"
                       : dataSource === "campaign"
@@ -425,10 +424,10 @@ export default function AIInsights() {
             "bg-background sticky top-16 right-0 bottom-0 hidden overflow-hidden overflow-y-auto md:block md:h-[calc(100vh-4rem)] md:border-s",
           )}
         >
-          <div>
+          <div className="flex h-full flex-col">
             {/* Studio Header */}
-            <div className="border-border shrink-0 border-b px-4 py-3">
-              <div className="flex items-center justify-between">
+            <div className="border-border h-12 shrink-0 border-b px-4 md:h-16">
+              <div className="flex h-full items-center justify-between">
                 <h2 className="text-foreground text-base font-bold">Studio</h2>
                 <Button
                   variant="ghost"
@@ -496,7 +495,7 @@ export default function AIInsights() {
             </div>
 
             {/* Add Note Button */}
-            <div className="border-border shrink-0 border-t p-3">
+            <div className="border-border flex h-12 shrink-0 items-center justify-center border-t px-4 md:h-16">
               <Button className="w-full">
                 <Sparkles className="h-4 w-4" />
                 Add note
@@ -522,14 +521,11 @@ export default function AIInsights() {
           side="left"
           className="w-[85vw] max-w-sm overflow-hidden p-0"
         >
-          <SheetHeader className="sr-only">
-            <SheetTitle>AI Assistant</SheetTitle>
-          </SheetHeader>
           <div className="h-full">
-            <div>
+            <div className="flex h-full flex-col">
               {/* Studio Header */}
-              <div className="border-border shrink-0 border-b px-4 py-3">
-                <div className="flex items-center justify-between">
+              <div className="border-border h-12 shrink-0 border-b px-4 md:h-16">
+                <div className="flex h-full items-center justify-between">
                   <h2 className="text-foreground text-base font-bold">
                     Studio
                   </h2>
@@ -599,7 +595,7 @@ export default function AIInsights() {
               </div>
 
               {/* Add Note Button */}
-              <div className="border-border shrink-0 border-t p-3">
+              <div className="border-border flex h-12 shrink-0 items-center justify-center border-t px-4 md:h-16">
                 <Button className="w-full">
                   <Sparkles className="h-4 w-4" />
                   Add note
