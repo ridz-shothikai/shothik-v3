@@ -1,5 +1,6 @@
 "use client";
 
+import SvgColor from "@/components/common/SvgColor";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -36,7 +37,6 @@ import {
   Trash2,
   XCircle,
 } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import UpgradePopover from "../common/UpgradePopover"; // Import UpgradePopover
@@ -258,14 +258,11 @@ export default function FileHistorySidebar({ fetchFileHistories }) {
                 variant="ghost"
                 size="icon"
                 onClick={handleBookClick}
-                className="h-8 w-8"
+                className="h-8 w-8 cursor-pointer hover:bg-transparent dark:hover:bg-transparent"
               >
-                <Image
-                  src={"/icons/file.svg"}
-                  alt="file"
-                  width={24}
-                  height={24}
-                  className="h-5 w-5 lg:h-6 lg:w-6"
+                <SvgColor
+                  src="/icons/file.svg"
+                  className="dark:text-primary text-foreground h-5 w-5 lg:h-6 lg:w-6"
                 />
                 <span className="sr-only">Saved Files</span>
               </Button>
@@ -280,9 +277,12 @@ export default function FileHistorySidebar({ fetchFileHistories }) {
                 variant="ghost"
                 size="icon"
                 onClick={handleAddClick}
-                className="hidden h-8 w-8 md:inline-flex"
+                className="hidden h-8 w-8 cursor-pointer hover:bg-transparent md:inline-flex dark:hover:bg-transparent"
               >
-                <Plus className="h-5 w-5" />
+                <SvgColor
+                  src="/icons/plus.svg"
+                  className="dark:text-primary text-foreground h-5 w-5 lg:h-6 lg:w-6"
+                />
                 <span className="sr-only">Add new document</span>
               </Button>
             </TooltipTrigger>

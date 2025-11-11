@@ -1,3 +1,4 @@
+import SvgColor from "@/components/common/SvgColor";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -13,7 +14,6 @@ import {
 import useWordLimit from "@/hooks/useWordLimit";
 import { cn } from "@/lib/utils";
 import { Gem, Trash2 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import FreezeWordsContent from "../paraphrase/FreezeWordsContent";
@@ -127,7 +127,7 @@ const Contend = ({
   return (
     <div
       className={cn(
-        "bg-background flex flex-row flex-wrap items-center justify-between gap-2 px-4 py-2 dark:bg-[var(--muted)]",
+        "bg-card flex flex-row flex-wrap items-center justify-between gap-2 px-4 py-2",
         typeof sx === "string" ? sx : "",
       )}
     >
@@ -165,7 +165,7 @@ const Contend = ({
                 size={isMobile ? "icon-sm" : "icon"}
                 disabled={isLoading}
                 onClick={handleClearInput}
-                className="p-0"
+                className="cursor-pointer bg-transparent p-0 hover:bg-transparent dark:hover:bg-transparent"
               >
                 <Trash2 className="size-[18px]" />
               </Button>
@@ -185,18 +185,15 @@ const Contend = ({
                       variant="ghost"
                       size={isMobile ? "icon-sm" : "icon"}
                       disabled={false}
-                      className="p-0"
+                      className="cursor-pointer bg-transparent p-0 hover:bg-transparent dark:hover:bg-transparent"
                     >
-                      <Image
+                      <SvgColor
                         src={
                           show_freeze
                             ? "/icons/freeze-active.svg"
                             : "/icons/freeze.svg"
                         }
-                        alt="Freeze Words"
-                        width={18}
-                        height={18}
-                        className="size-[18px]"
+                        className="text-foreground size-[18px]"
                       />
                     </Button>
                   </PopoverTrigger>
@@ -209,7 +206,7 @@ const Contend = ({
                 side="top"
                 align="start"
                 sideOffset={8}
-                className="z-[1300]"
+                className="dark:bg-card z-[1300] w-full p-0"
               >
                 <FreezeWordsContent
                   close={handleCloseFreeze}
@@ -255,7 +252,7 @@ const Contend = ({
           onClick={() => handleSubmit()}
           variant="default"
           disabled={!dontDisable ? wordCount > wordLimit : btnDisabled || false}
-          className="h-10 px-2 py-0 whitespace-nowrap md:h-10 md:px-2 md:py-0"
+          className="h-10 cursor-pointer px-2 py-0 whitespace-nowrap md:h-10 md:px-2 md:py-0"
         >
           {isLoading && <Spinner className="mr-2 size-4" />}
           {btnText}

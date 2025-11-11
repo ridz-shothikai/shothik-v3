@@ -1,4 +1,5 @@
 "use client";
+import SvgColor from "@/components/common/SvgColor";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import {
@@ -45,20 +46,14 @@ const ActionButton = memo(
             id={id}
             variant="ghost"
             size="icon"
-            className="text-foreground h-5 w-5 p-0"
+            className="text-foreground h-5 w-5 cursor-pointer p-0"
             disabled={disabled}
             onClick={(e) => {
               e.stopPropagation();
               if (!disabled) onClick();
             }}
           >
-            <Image
-              src={icon}
-              alt=""
-              width={20}
-              height={20}
-              className="h-4 w-4 md:h-5 md:w-5"
-            />
+            <SvgColor src={icon} className="text-foreground size-[20px]" />
           </Button>
           {crown && (
             <Image
