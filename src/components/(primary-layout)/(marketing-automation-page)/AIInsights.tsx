@@ -284,7 +284,7 @@ export default function AIInsights() {
                     <ArrowLeft className="size-5" />
                   </Button>
                   <div className="flex items-center gap-2">
-                    <MascotIcon className="size-9" />
+                    <MascotIcon className="size-8" />
                     <div>
                       <h1 className="text-foreground text-xl font-bold">
                         AI Insights Assistant
@@ -321,7 +321,7 @@ export default function AIInsights() {
                   }`}
                 >
                   {message.role === "assistant" && (
-                    <MascotIcon className="size-8" />
+                    <MascotIcon className="size-8 shrink-0" />
                   )}
                   <div
                     className={`max-w-2xl rounded-xl px-4 py-3 shadow-lg ${
@@ -384,14 +384,14 @@ export default function AIInsights() {
             </div>
 
             {/* Input Area */}
-            <div className="border-border bg-background/90 h-12 shrink-0 border-t px-4 md:h-16 md:px-6">
+            <div className="border-border bg-background/90 min-h-12 shrink-0 border-t px-4 py-1 md:h-16 md:px-6">
               <div className="flex h-full items-center gap-2">
                 <div className="relative flex-1">
                   <Textarea
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask me anything about your campaigns..."
+                    placeholder="Ask me anything..."
                     className="w-full resize-none pr-28"
                     rows={1}
                     style={{
@@ -399,7 +399,7 @@ export default function AIInsights() {
                       maxHeight: "96px",
                     }}
                   />
-                  <span className="border-border bg-background text-muted-foreground absolute right-2 bottom-2 rounded border px-1.5 py-0.5 text-xs uppercase">
+                  <span className="border-border bg-background text-muted-foreground absolute right-2 bottom-2 rounded border px-1.5 py-0.75 text-xs uppercase">
                     {dataSource === "meta_api"
                       ? "Meta API"
                       : dataSource === "campaign"

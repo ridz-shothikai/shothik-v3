@@ -150,7 +150,7 @@ export default function ChatBox({
       {/* Chat Header */}
       <div className="flex h-12 items-center border-b px-4 lg:h-16">
         <div className="flex w-full items-center gap-2">
-          <MascotIcon className="size-9" />
+          <MascotIcon className="size-8" />
           <div>
             <h2 className="text-foreground text-base font-semibold">
               AI Assistant

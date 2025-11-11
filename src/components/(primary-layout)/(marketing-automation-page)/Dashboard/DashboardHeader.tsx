@@ -35,7 +35,7 @@ export default function DashboardHeader({
       <Button
         onClick={onRefresh}
         disabled={isLoadingInsights}
-        className="flex items-center gap-2"
+        className="flex h-8 items-center gap-2 md:h-9"
       >
         <RefreshCw
           className={`h-4 w-4 ${isLoadingInsights ? "animate-spin" : ""}`}

@@ -425,7 +425,7 @@ export default function CanvasBody({
         </div>
 
         {/* Tabs */}
-        <div className="mb-6 flex gap-2 overflow-x-auto border-b pb-4">
+        <div className="mb-6 flex gap-1 overflow-x-auto border-b pb-4 md:gap-2">
           <Button
             variant={activeTab === "suggestions" ? "default" : "ghost"}
             onClick={() => setActiveTab("suggestions")}

@@ -84,7 +84,7 @@ export const Knowledge = () => {
                 <ArrowLeft className="size-5" />
               </Button>
               <div className="flex items-center gap-2">
-                <div className="border-border bg-primary/20 hidden size-9 items-center justify-center rounded-lg border md:flex">
+                <div className="border-border bg-primary/20 hidden size-8 items-center justify-center rounded-lg border md:flex">
                   <BookOpen className="text-primary h-5 w-5" />
                 </div>
                 <div>

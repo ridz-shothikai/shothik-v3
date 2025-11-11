@@ -73,7 +73,7 @@ export function LikeDislike({ id, api, like, dislike, size = "30px", slug }) {
       28: "size-7",
       30: "size-8",
       32: "size-8",
-      36: "size-9",
+      36: "size-8",
       40: "size-10",
       48: "size-12",
     };

@@ -80,14 +80,16 @@ export default function Header({
           {metaConnected ? (
             <>
               <div
-                className="border-border bg-card/60 hover:border-primary/50 relative flex items-center gap-2 rounded-xl border px-4 py-2.5 backdrop-blur-md transition-all"
+                className="border-border bg-card/60 hover:border-primary/50 relative flex h-9 items-center gap-2 rounded-md border px-2 backdrop-blur-md transition-all"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={() => setShowTooltip(false)}
               >
-                <Facebook className="text-primary h-4 w-4" />
-                <span className="text-foreground text-sm font-medium">
-                  Meta Connected
-                </span>
+                <div className="flex items-center gap-2">
+                  <Facebook className="text-primary h-4 w-4" />
+                  <span className="text-foreground text-sm font-medium">
+                    Meta Connected
+                  </span>
+                </div>
                 <Button
                   onClick={onMetaDisconnect}
                   disabled={metaLoading}
@@ -162,7 +164,7 @@ export default function Header({
       {/* Tooltip Portal - Rendered with fixed positioning */}
       {showTooltip && metaUserData && (
         <div
-          className="pointer-events-none fixed inset-0 z-[9998]"
+          className="pointer-events-none fixed inset-0 z-100"
           onMouseEnter={() => setShowTooltip(false)}
         >
           <Card
@@ -175,7 +177,7 @@ export default function Header({
             onMouseLeave={() => setShowTooltip(false)}
           >
             {/* Header with gradient */}
-            <CardHeader className="border-border bg-primary/10 border-b">
+            <CardHeader className="border-border border-b">
               <div className="flex items-center gap-2">
                 <div className="bg-primary/20 flex h-8 w-8 items-center justify-center rounded-lg">
                   <Facebook className="text-primary h-4 w-4" />

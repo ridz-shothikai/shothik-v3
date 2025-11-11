@@ -305,7 +305,7 @@ Would you like me to explain the personas, show you the ad concepts, or help you
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="hidden items-center gap-3 md:flex">
               <Badge className="px-4 py-2">
                 <p className="text-sm font-medium">✓ Analysis Ready</p>
               </Badge>
