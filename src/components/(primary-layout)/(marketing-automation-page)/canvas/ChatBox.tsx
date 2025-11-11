@@ -1,5 +1,6 @@
 "use client";
 
+import MascotIcon from "@/components/icons/MascotIcon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { campaignAPI } from "@/services/marketing-automation.service";
@@ -31,14 +32,18 @@ export default function ChatBox({
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [historyLoaded, setHistoryLoaded] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
+  // scroll effect
   useEffect(() => {
-    scrollToBottom();
+    const chatContainer = chatContainerRef.current;
+    if (chatContainer) {
+      chatContainer.scrollTo({
+        top: chatContainer.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [messages]);
 
   // Load chat history on mount
@@ -145,9 +150,7 @@ export default function ChatBox({
       {/* Chat Header */}
       <div className="flex h-12 items-center border-b px-4 lg:h-16">
         <div className="flex w-full items-center gap-2">
-          <div className="border-primary/30 bg-primary/20 flex h-10 w-10 items-center justify-center rounded-xl border">
-            <Sparkles className="text-primary h-5 w-5" />
-          </div>
+          <MascotIcon className="size-9" />
           <div>
             <h2 className="text-foreground text-base font-semibold">
               AI Assistant
@@ -160,7 +163,10 @@ export default function ChatBox({
       </div>
 
       {/* Messages Container */}
-      <div className="flex-1 space-y-4 overflow-y-auto p-4">
+      <div
+        ref={chatContainerRef}
+        className="flex-1 space-y-4 overflow-y-auto p-4"
+      >
         {messages.map((message, index) => (
           <div
             key={index}
@@ -168,11 +174,7 @@ export default function ChatBox({
               message.role === "user" ? "justify-end" : "justify-start"
             }`}
           >
-            {message.role === "assistant" && (
-              <div className="border-primary/30 bg-primary/20 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border">
-                <Sparkles className="text-primary h-4 w-4" />
-              </div>
-            )}
+            {message.role === "assistant" && <MascotIcon className="size-8" />}
             <div
               className={`max-w-[85%] rounded-2xl px-5 py-4 ${
                 message.role === "user"
@@ -293,8 +295,6 @@ export default function ChatBox({
             </div>
           </div>
         )}
-
-        <div ref={messagesEndRef} />
       </div>
 
       {/* Quick Actions */}

@@ -34,7 +34,7 @@ export default function AdPreviewModal({
 
   return (
     <Dialog open={!!previewAd} onOpenChange={onClose}>
-      <DialogContent className="max-h-[90vh] w-full overflow-y-auto md:max-w-6xl">
+      <DialogContent className="max-h-[90vh] w-[95vw] overflow-y-auto md:max-w-6xl md:w-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">
             Ad Preview: {previewAd.headline}

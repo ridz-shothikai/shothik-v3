@@ -10,6 +10,6 @@
     "**/*.js",
     "**/*.jsx",
     "src/app/(slide-layout)/edit-slides/layout.tsx"
-  ],
+, "src/components/icons/MascotIcon.tsx"  ],
   "exclude": ["node_modules"]
 }

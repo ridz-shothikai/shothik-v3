@@ -497,7 +497,7 @@ export default function VideoGenerationPage({
   return (
     <div className="bg-background text-foreground flex min-h-[calc(100vh-4rem)] flex-col">
       {/* Header with breadcrumb */}
-      <div className="bg-background/90 sticky top-0 h-12 w-full border-b px-6 backdrop-blur-sm md:h-16">
+      <div className="bg-background/90 sticky top-0 h-12 w-full border-b px-4 backdrop-blur-sm md:h-16 md:px-6">
         <Button
           onClick={onBack}
           variant="ghost"

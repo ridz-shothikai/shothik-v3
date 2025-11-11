@@ -1,8 +1,8 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   AlertCircle,
@@ -35,7 +35,9 @@ interface AISuggestionsProps {
 export default function AISuggestions({ suggestions }: AISuggestionsProps) {
   const [selectedLevel, setSelectedLevel] = useState<string>("all");
 
-  const getPriorityVariant = (priority: string): "default" | "secondary" | "destructive" | "outline" => {
+  const getPriorityVariant = (
+    priority: string,
+  ): "default" | "secondary" | "destructive" | "outline" => {
     switch (priority) {
       case "high":
         return "destructive";
@@ -83,13 +85,13 @@ export default function AISuggestions({ suggestions }: AISuggestionsProps) {
   return (
     <div>
       {/* Header */}
-      <header className="mb-8">
+      <header className="mb-6">
         <div className="flex items-center space-x-4">
-          <div className="rounded-full border border-border bg-muted p-3">
-            <Lightbulb className="h-8 w-8 text-primary" />
+          <div className="border-border bg-muted rounded-full border p-3">
+            <Lightbulb className="text-primary h-8 w-8" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">
+            <h1 className="text-foreground text-2xl font-bold">
               AI Optimization Suggestions
             </h1>
             <p className="text-muted-foreground">
@@ -101,13 +103,17 @@ export default function AISuggestions({ suggestions }: AISuggestionsProps) {
       </header>
 
       {/* Tabs */}
-      <div className="mb-8">
+      <div className="mb-6">
         <Tabs value={selectedLevel} onValueChange={setSelectedLevel}>
           <TabsList>
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
-                <TabsTrigger key={tab.key} value={tab.key} className="flex items-center gap-2">
+                <TabsTrigger
+                  key={tab.key}
+                  value={tab.key}
+                  className="flex items-center gap-2"
+                >
                   <Icon className="h-4 w-4" />
                   <span>{tab.label}</span>
                   <Badge variant="secondary" className="ml-1">
@@ -121,20 +127,23 @@ export default function AISuggestions({ suggestions }: AISuggestionsProps) {
       </div>
 
       {/* Suggestions Grid */}
-      <main className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+      <main className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {suggestions
           .filter((s) => selectedLevel === "all" || s.level === selectedLevel)
           .map((suggestion, index) => (
             <Card
               key={index}
-              className="flex flex-col space-y-6 p-6 transition-all hover:border-primary"
+              className="hover:border-primary flex flex-col space-y-6 p-6 transition-all"
             >
               {/* Header */}
               <div className="flex items-center justify-between">
                 <Badge variant="outline" className="text-xs uppercase">
                   {suggestion.type}
                 </Badge>
-                <Badge variant={getPriorityVariant(suggestion.priority)} className="text-xs">
+                <Badge
+                  variant={getPriorityVariant(suggestion.priority)}
+                  className="text-xs"
+                >
                   <AlertCircle className="mr-1 h-4 w-4" />
                   <span>
                     {suggestion.priority.toUpperCase()} -{" "}
@@ -147,32 +156,34 @@ export default function AISuggestions({ suggestions }: AISuggestionsProps) {
               </div>
 
               {/* Title */}
-              <h2 className="text-xl font-bold text-foreground">
+              <h2 className="text-foreground text-xl font-bold">
                 {suggestion.title}
               </h2>
 
               {/* Target */}
               {suggestion.targetName && (
                 <Card className="flex items-center space-x-3 p-4">
-                  <Target className="h-5 w-5 text-primary" />
-                  <span className="text-sm font-medium text-muted-foreground">
+                  <Target className="text-primary h-5 w-5" />
+                  <span className="text-muted-foreground text-sm font-medium">
                     {suggestion.targetName}
                   </span>
                 </Card>
               )}
 
               {/* Description */}
-              <p className="text-sm text-muted-foreground">{suggestion.description}</p>
+              <p className="text-muted-foreground text-sm">
+                {suggestion.description}
+              </p>
 
               {/* Impact */}
               <Card className="border-primary/30 bg-primary/5 p-4">
                 <div className="flex items-start space-x-3">
-                  <TrendingUp className="mt-0.5 h-5 w-5 text-primary" />
+                  <TrendingUp className="text-primary mt-0.5 h-5 w-5" />
                   <div>
-                    <h3 className="text-sm font-semibold tracking-wider text-primary uppercase">
+                    <h3 className="text-primary text-sm font-semibold tracking-wider uppercase">
                       Expected Impact
                     </h3>
-                    <p className="text-sm text-primary/80">
+                    <p className="text-primary/80 text-sm">
                       {suggestion.impact}
                     </p>
                   </div>
@@ -183,8 +194,8 @@ export default function AISuggestions({ suggestions }: AISuggestionsProps) {
               {suggestion.action && (
                 <Card className="p-4">
                   <div className="flex items-start space-x-3">
-                    <Sparkles className="mt-0.5 h-5 w-5 text-primary" />
-                    <p className="text-sm font-medium text-muted-foreground">
+                    <Sparkles className="text-primary mt-0.5 h-5 w-5" />
+                    <p className="text-muted-foreground text-sm font-medium">
                       Apply: {suggestion.action}
                     </p>
                   </div>
@@ -193,12 +204,8 @@ export default function AISuggestions({ suggestions }: AISuggestionsProps) {
 
               {/* Buttons */}
               <div className="mt-auto flex items-center space-x-4 pt-4">
-                <Button className="flex-1">
-                  Apply Suggestion
-                </Button>
-                <Button variant="outline">
-                  Dismiss
-                </Button>
+                <Button className="flex-1">Apply Suggestion</Button>
+                <Button variant="outline">Dismiss</Button>
               </div>
             </Card>
           ))}
@@ -209,7 +216,9 @@ export default function AISuggestions({ suggestions }: AISuggestionsProps) {
         (s) => selectedLevel === "all" || s.level === selectedLevel,
       ).length === 0 && (
         <div className="py-12 text-center">
-          <p className="text-muted-foreground">No suggestions for this level yet.</p>
+          <p className="text-muted-foreground">
+            No suggestions for this level yet.
+          </p>
         </div>
       )}
     </div>

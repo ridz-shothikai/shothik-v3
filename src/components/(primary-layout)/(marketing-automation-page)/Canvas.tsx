@@ -19,13 +19,7 @@ import { cn } from "@/lib/utils";
 import type { ProductAnalysis } from "@/types/analysis";
 import type { CampaignSuggestion } from "@/types/campaign";
 import { getRouteState } from "@/utils/getRouteState";
-import {
-  ArrowLeft,
-  Loader2,
-  MessageCircle,
-  Save,
-  Sparkles,
-} from "lucide-react";
+import { ArrowLeft, Loader2, MessageCircle, Save } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import CanvasBody from "./canvas/CanvasBody";
@@ -36,8 +30,6 @@ export default function Canvas() {
   const { projectId } = useParams<{ projectId: string }>();
   const searchParams = useSearchParams();
   const state = getRouteState(searchParams);
-
-  console.log("state", searchParams);
 
   const [hasShownWelcomeMessage, setHasShownWelcomeMessage] = useState(false);
 
@@ -294,8 +286,8 @@ Would you like me to explain the personas, show you the ad concepts, or help you
   return (
     <div className="bg-background flex flex-1 flex-col">
       {/* Header */}
-      <div className="border-border bg-background/90 sticky top-0 z-10 flex h-12 items-center justify-center border-b backdrop-blur-sm md:h-16">
-        <div className="w-full px-6">
+      <div className="border-border bg-background/90 sticky top-0 z-10 flex min-h-12 items-center justify-center border-b py-1 backdrop-blur-sm md:h-16">
+        <div className="w-full px-4 md:px-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Button
@@ -307,10 +299,7 @@ Would you like me to explain the personas, show you the ad concepts, or help you
                 <ArrowLeft className="size-5" />
               </Button>
               <div>
-                <h1 className="text-foreground flex items-center gap-2 text-xl font-bold">
-                  <Sparkles className="text-primary size-5" />
-                  Campaign Canvas
-                </h1>
+                <h1 className="text-xl font-bold">Campaign Canvas</h1>
                 <p className="text-muted-foreground hidden text-xs lg:block">
                   {analysis.product.title}
                 </p>

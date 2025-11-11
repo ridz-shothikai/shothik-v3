@@ -207,7 +207,7 @@ export default function MediaLibraryModal({
           </DialogHeader>
 
           {/* Tabs */}
-          <div className="border-b px-6">
+          <div className="border-b px-4 md:px-6">
             <div className="flex gap-4">
               <Button
                 variant={activeTab === "smart-assets" ? "default" : "ghost"}

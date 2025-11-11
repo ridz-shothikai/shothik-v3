@@ -108,7 +108,7 @@ export default function PublishAdsScreen() {
     <div className="bg-background min-h-[calc(100vh-4rem)]">
       {/* Header */}
       <div className="border-border bg-background/80 sticky top-0 z-10 border-b backdrop-blur-sm">
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-4 py-4 md:px-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Button
@@ -136,9 +136,9 @@ export default function PublishAdsScreen() {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-6">
+      <div className="container mx-auto px-4 py-6 md:px-6">
         {ads.length === 0 ? (
-          <Card className="p-12 text-center">
+          <Card className="text-center md:p-12">
             <CardHeader>
               <Wand2 className="text-primary mx-auto mb-4 h-16 w-16" />
               <CardTitle className="mb-2">No Ads Available</CardTitle>

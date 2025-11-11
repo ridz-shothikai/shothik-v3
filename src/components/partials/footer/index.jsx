@@ -6,7 +6,7 @@ import { Fragment } from "react";
 
 export default function Footer() {
   const simpleFooter = (
-    <footer className="bg-background flex flex-col items-center justify-around gap-4 py-5 md:flex-row">
+    <footer className="bg-background flex flex-col items-center justify-around gap-4 px-4 py-6 md:flex-row md:px-6">
       <div className="bg-background flex justify-center md:block">
         <div className="flex flex-col items-start gap-1 md:flex-row md:items-start md:gap-4">
           <Logo />

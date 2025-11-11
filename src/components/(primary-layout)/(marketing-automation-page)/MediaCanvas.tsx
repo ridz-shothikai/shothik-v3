@@ -238,7 +238,7 @@ export default function MediaCanvas() {
   return (
     <div className="bg-background min-h-[calc(100vh-4rem)]">
       <div className="border-border bg-background/90 sticky top-0 z-10 h-12 border-b backdrop-blur-lg md:h-16">
-        <div className="flex h-full items-center justify-between px-6">
+        <div className="flex h-full items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"

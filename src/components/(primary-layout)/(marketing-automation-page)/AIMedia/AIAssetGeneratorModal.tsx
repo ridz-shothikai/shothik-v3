@@ -721,7 +721,6 @@ export default function AIAssetGeneratorModal({
                 <SelectValue placeholder="No ad selected" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">No ad selected</SelectItem>
                 {projectAds.map((ad: any) => (
                   <SelectItem key={ad.id} value={ad.id}>
                     {ad.headline?.slice(0, 50)}

@@ -1,5 +1,6 @@
 "use client";
 
+import MascotIcon from "@/components/icons/MascotIcon";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,7 +11,6 @@ import {
 } from "@/components/ui/card";
 import {
   ArrowLeft,
-  Bot,
   CheckCircle2,
   Circle,
   Loader2,
@@ -361,7 +361,7 @@ export default function MindMapView() {
 
   return (
     <div className="bg-background min-h-[calc(100vh-4rem)]">
-      <div className="border-border bg-background/90 sticky top-0 z-20 h-12 border-b px-6 backdrop-blur-sm md:h-16">
+      <div className="border-border bg-background/90 sticky top-0 z-20 h-12 border-b px-4 backdrop-blur-sm md:h-16 md:px-6">
         <div className="flex h-full items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
@@ -384,11 +384,12 @@ export default function MindMapView() {
         </div>
       </div>
 
-      <div className="container mx-auto space-y-6 px-6 py-6">
+      <div className="container mx-auto space-y-6 px-4 py-6 md:px-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <Card className="lg:col-span-2">
             <CardHeader className="flex flex-row items-center gap-2">
-              <Bot className="text-primary size-5" />
+              {/* <Bot className="text-primary size-5" /> */}
+              <MascotIcon />
               <CardTitle className="text-lg font-bold">AI Analysis</CardTitle>
             </CardHeader>
             <CardContent>

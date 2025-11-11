@@ -40,7 +40,7 @@ export default function EditAdModal({
 
   return (
     <Dialog open={!!editingAd} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-[90vh] w-[95vw] max-w-3xl overflow-y-auto md:w-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">
             Edit Ad: {editingAd.headline}

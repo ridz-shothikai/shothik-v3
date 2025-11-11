@@ -44,7 +44,7 @@ export const Knowledge = () => {
   if (!metaData || !metaData.pages || metaData.pages.length === 0) {
     return (
       <div className="bg-background relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] bg-[size:4rem_4rem] opacity-20"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] bg-[size:4rem_4rem] opacity-5"></div>
         <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center p-4">
           <Card className="w-full max-w-md p-8 text-center">
             <BookOpen className="text-muted-foreground mx-auto mb-4 h-16 w-16" />
@@ -68,13 +68,13 @@ export const Knowledge = () => {
   return (
     <div className="bg-background relative overflow-hidden">
       {/* Background pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] bg-[size:4rem_4rem] opacity-20"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] bg-[size:4rem_4rem] opacity-5"></div>
 
       <div className="relative flex min-h-[calc(100vh-4rem)] flex-col">
         {/* Header */}
-        <div className="border-border bg-card/60 border-b px-6 py-4 backdrop-blur-xl">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="border-border bg-background/90 h-12 border-b px-4 backdrop-blur-sm md:h-16 md:px-6">
+          <div className="flex h-full items-center justify-between">
+            <div className="flex items-center gap-2">
               <Button
                 title="Back to Campaign"
                 onClick={() => router.push("/marketing-automation/analysis")}
@@ -83,12 +83,12 @@ export const Knowledge = () => {
               >
                 <ArrowLeft className="size-5" />
               </Button>
-              <div className="flex items-center gap-3">
-                <div className="border-border bg-primary/20 flex h-10 w-10 items-center justify-center rounded-xl border">
+              <div className="flex items-center gap-2">
+                <div className="border-border bg-primary/20 hidden size-9 items-center justify-center rounded-lg border md:flex">
                   <BookOpen className="text-primary h-5 w-5" />
                 </div>
                 <div>
-                  <h1 className="text-foreground text-xl font-bold">
+                  <h1 className="text-foreground text-base font-bold md:text-xl">
                     Knowledge Base
                   </h1>
                   <p className="text-muted-foreground hidden text-xs md:block">
@@ -104,7 +104,6 @@ export const Knowledge = () => {
                 <SelectValue placeholder="Select a page" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Select a page</SelectItem>
                 {metaData.pages.map((page) => (
                   <SelectItem key={page.id} value={page.id}>
                     {page.name}
@@ -116,22 +115,32 @@ export const Knowledge = () => {
         </div>
 
         {/* Tabs */}
-        <div className="border-border bg-muted/40 border-b px-6 backdrop-blur-md">
+        <div className="border-border bg-muted/40 border-b px-4 py-2 backdrop-blur-sm md:px-6">
           <Tabs
             value={activeTab}
             onValueChange={(v) => setActiveTab(v as TabType)}
+            className="items-center"
           >
             <TabsList>
-              <TabsTrigger value="website" className="flex items-center gap-2">
-                <Globe className="h-4 w-4" />
+              <TabsTrigger
+                value="website"
+                className="flex items-center gap-1 text-xs md:text-sm"
+              >
+                <Globe className="size-3 md:size-4" />
                 <span>Website Scraping</span>
               </TabsTrigger>
-              <TabsTrigger value="text" className="flex items-center gap-2">
-                <FileText className="h-4 w-4" />
+              <TabsTrigger
+                value="text"
+                className="flex items-center gap-1 text-xs md:text-sm"
+              >
+                <FileText className="size-3 md:size-4" />
                 <span>Text Knowledge</span>
               </TabsTrigger>
-              <TabsTrigger value="tools" className="flex items-center gap-2">
-                <Wrench className="h-4 w-4" />
+              <TabsTrigger
+                value="tools"
+                className="flex items-center gap-1 text-xs md:text-sm"
+              >
+                <Wrench className="size-3 md:size-4" />
                 <span>Custom AI Tools</span>
               </TabsTrigger>
             </TabsList>
@@ -139,8 +148,8 @@ export const Knowledge = () => {
         </div>
 
         {/* Content */}
-        <div className="flex-1 p-6">
-          <div className="mx-auto max-w-4xl">
+        <div className="flex flex-1 flex-col items-center justify-center p-6">
+          <div className="mx-auto w-full max-w-4xl">
             <Tabs
               value={activeTab}
               onValueChange={(v) => setActiveTab(v as TabType)}

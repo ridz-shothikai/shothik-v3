@@ -25,10 +25,7 @@ export default function CampaignsTab({
   return (
     <>
       {campaigns.map((campaign) => (
-        <Card
-          key={campaign.id}
-          className="transition-border hover:border-primary/50 p-6"
-        >
+        <Card key={campaign.id}>
           <CardHeader>
             <div className="mb-4 flex items-start justify-between">
               <div>
@@ -62,7 +59,7 @@ export default function CampaignsTab({
           </CardHeader>
 
           <CardContent>
-            <div className="mb-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
+            <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
               <Card className="p-4">
                 <div className="mb-2 flex items-center gap-2">
                   <DollarSign className="text-primary h-4 w-4" />

@@ -2,7 +2,7 @@ import { Knowledge } from "@/components/(primary-layout)/(marketing-automation-p
 
 const ChatKnowledgePage = () => {
   return (
-    <div>
+    <div suppressHydrationWarning>
       <Knowledge />
     </div>
   );

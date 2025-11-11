@@ -43,29 +43,56 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-            (function(){
-              try {
-                var raw = localStorage.getItem('settings');
-                var s = raw ? JSON.parse(raw) : null;
-                var theme = s && s.theme ? s.theme : 'system';
-                var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                var mode = theme === 'dark' ? 'dark' : (theme === 'light' ? 'light' : (prefersDark ? 'dark' : 'light'));
-                var root = document.documentElement;
-                if (root.classList) {
-                  root.classList.remove('light','dark');
-                  root.classList.add(mode);
-                } else {
-                  root.setAttribute('class', mode);
-                }
-                var dir = s && s.direction ? s.direction : 'ltr';
-                root.setAttribute('dir', dir);
-                var lang = s && s.language ? s.language : 'en';
-                root.setAttribute('lang', lang);
-              } catch (e) {}
-            })();
-          `,
+                (function () {
+                  try {
+                    var raw = localStorage.getItem('settings');
+                    var s = raw ? JSON.parse(raw) : null;
+                    var root = document.documentElement;
+
+                    // ---- Theme ----
+                    var theme = s && s.theme ? s.theme : 'system';
+                    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    var mode =
+                      theme === 'dark'
+                        ? 'dark'
+                        : theme === 'light'
+                        ? 'light'
+                        : prefersDark
+                        ? 'dark'
+                        : 'light';
+                    if (root.classList) {
+                      root.classList.remove('light', 'dark');
+                      root.classList.add(mode);
+                    } else {
+                      root.setAttribute('class', mode);
+                    }
+
+                    // ---- Direction ----
+                    var dir = s && s.direction ? s.direction : 'ltr';
+                    root.setAttribute('dir', dir);
+
+                    // ---- Language ----
+                    var lang = s && s.language ? s.language : 'en';
+                    root.setAttribute('lang', lang);
+
+                    // ---- Layout ----
+                    var layout = s && s.layout ? s.layout : 'vertical';
+                    root.setAttribute('data-layout', layout);
+
+                    // ---- Sidebar ----
+                    var sidebar = s && s.sidebar ? s.sidebar : 'expanded';
+                    root.setAttribute('data-sidebar', sidebar);
+
+                    // ---- Header ----
+                    var header = s && s.header ? s.header : 'expanded';
+                    root.setAttribute('data-header', header);
+
+                  } catch (e) {}
+                })();
+              `,
           }}
         />
+
         <script
           defer
           src="https://cloud.umami.is/script.js"
