@@ -72,7 +72,7 @@ export const Knowledge = () => {
 
       <div className="relative flex min-h-[calc(100vh-4rem)] flex-col">
         {/* Header */}
-        <div className="border-border bg-background/90 h-12 border-b px-6 backdrop-blur-sm md:h-16">
+        <div className="border-border bg-background/90 h-12 border-b px-4 backdrop-blur-sm md:h-16 md:px-6">
           <div className="flex h-full items-center justify-between">
             <div className="flex items-center gap-2">
               <Button
@@ -84,7 +84,7 @@ export const Knowledge = () => {
                 <ArrowLeft className="size-5" />
               </Button>
               <div className="flex items-center gap-2">
-                <div className="border-border bg-primary/20 flex size-9 items-center justify-center rounded-lg border">
+                <div className="border-border bg-primary/20 hidden size-9 items-center justify-center rounded-lg border md:flex">
                   <BookOpen className="text-primary h-5 w-5" />
                 </div>
                 <div>
@@ -115,23 +115,32 @@ export const Knowledge = () => {
         </div>
 
         {/* Tabs */}
-        <div className="border-border bg-muted/40 border-b px-6 py-2 backdrop-blur-sm">
+        <div className="border-border bg-muted/40 border-b px-4 py-2 backdrop-blur-sm md:px-6">
           <Tabs
             value={activeTab}
             onValueChange={(v) => setActiveTab(v as TabType)}
             className="items-center"
           >
             <TabsList>
-              <TabsTrigger value="website" className="flex items-center gap-2">
-                <Globe className="h-4 w-4" />
+              <TabsTrigger
+                value="website"
+                className="flex items-center gap-1 text-xs md:text-sm"
+              >
+                <Globe className="size-3 md:size-4" />
                 <span>Website Scraping</span>
               </TabsTrigger>
-              <TabsTrigger value="text" className="flex items-center gap-2">
-                <FileText className="h-4 w-4" />
+              <TabsTrigger
+                value="text"
+                className="flex items-center gap-1 text-xs md:text-sm"
+              >
+                <FileText className="size-3 md:size-4" />
                 <span>Text Knowledge</span>
               </TabsTrigger>
-              <TabsTrigger value="tools" className="flex items-center gap-2">
-                <Wrench className="h-4 w-4" />
+              <TabsTrigger
+                value="tools"
+                className="flex items-center gap-1 text-xs md:text-sm"
+              >
+                <Wrench className="size-3 md:size-4" />
                 <span>Custom AI Tools</span>
               </TabsTrigger>
             </TabsList>

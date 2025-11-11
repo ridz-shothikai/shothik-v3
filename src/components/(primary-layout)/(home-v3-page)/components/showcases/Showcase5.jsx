@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const X = () => (
   <svg
@@ -608,7 +608,7 @@ const MetaAutomationAgent = () => {
       <div className="flex h-screen items-center justify-center bg-white">
         <button
           onClick={() => setShowModal(true)}
-          className="rounded-lg bg-black px-6 py-3 text-white shadow-lg transition-all hover:bg-gray-800"
+          className="rounded-lg bg-black px-4 md:px-6 py-3 text-white shadow-lg transition-all hover:bg-gray-800"
         >
           Open Meta Automation
         </button>
@@ -712,7 +712,7 @@ const MetaAutomationAgent = () => {
         <div className="flex flex-1 flex-col">
           {/* Header */}
           <div
-            className="drag-handle flex cursor-grab items-center justify-between border-b border-gray-200 bg-white px-6 py-4 active:cursor-grabbing"
+            className="drag-handle flex cursor-grab items-center justify-between border-b border-gray-200 bg-white px-4 md:px-6 py-4 active:cursor-grabbing"
             onMouseDown={handleMouseDown}
           >
             <h2 className="text-lg font-semibold text-gray-900">

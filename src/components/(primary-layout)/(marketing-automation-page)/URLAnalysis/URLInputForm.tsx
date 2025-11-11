@@ -119,7 +119,7 @@ export default function URLInputForm({
           <Button
             type="submit"
             disabled={isAnalyzing}
-            className="group relative w-full transform overflow-hidden rounded-2xl px-6 py-5 text-base font-semibold transition-all hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
+            className="group relative w-full transform overflow-hidden rounded-2xl px-4 py-5 text-base font-semibold transition-all hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50 md:px-6"
           >
             {isAnalyzing ? (
               <span className="flex items-center justify-center gap-3">

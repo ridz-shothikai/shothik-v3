@@ -16,7 +16,7 @@ export default function AISuggestionsTab({
   return (
     <>
       {/* AI Suggestions Overview */}
-      <Card className="border-primary/30 bg-primary/10 p-6">
+      <Card>
         <CardHeader>
           <CardTitle className="mb-4 flex items-center gap-2 text-2xl font-bold">
             <Lightbulb className="text-primary h-6 w-6" />
@@ -24,7 +24,7 @@ export default function AISuggestionsTab({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="mb-6 grid grid-cols-2 gap-4">
+          <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
             <Card className="p-4">
               <p className="text-muted-foreground mb-1 text-sm">
                 Campaign Name
@@ -62,18 +62,18 @@ export default function AISuggestionsTab({
       </Card>
 
       {/* Ad Concepts Preview */}
-      <Card className="p-6">
+      <Card>
         <CardHeader>
           <CardTitle className="mb-4 text-xl font-bold">
             Ad Concepts ({initialSuggestions.ad_concepts.length})
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid max-h-[600px] grid-cols-2 gap-4 overflow-y-auto">
+          <div className="grid max-h-[600px] grid-cols-1 gap-4 overflow-y-auto sm:grid-cols-2">
             {initialSuggestions.ad_concepts.map((concept, index) => (
               <Card
                 key={index}
-                className="hover:border-primary/50 transition-border p-4"
+                className="hover:border-primary/50 transition-border px-4"
               >
                 <div className="mb-3 flex items-center gap-2">
                   <span className="bg-primary/20 text-primary border-primary/30 rounded border px-2 py-1 text-xs font-medium">
@@ -102,7 +102,7 @@ export default function AISuggestionsTab({
       </Card>
 
       {/* Strategy Notes */}
-      <Card className="p-6">
+      <Card>
         <CardHeader>
           <CardTitle className="mb-4 text-xl font-bold">
             Strategy Notes

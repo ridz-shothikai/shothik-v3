@@ -270,8 +270,8 @@ export default function AIInsights() {
           <div className="flex h-full flex-col">
             {/* Header */}
             <div className="border-border bg-background/90 sticky top-0 z-10 flex h-12 items-center justify-center border-b backdrop-blur-sm md:h-16">
-              <div className="flex h-full w-full items-center justify-between px-6">
-                <div className="flex items-center gap-3">
+              <div className="flex h-full w-full items-center justify-between px-4 md:px-6">
+                <div className="flex items-center gap-2">
                   <Button
                     onClick={() =>
                       router.push("/marketing-automation/analysis")
@@ -311,7 +311,7 @@ export default function AIInsights() {
 
             <div
               ref={chatContainerRef}
-              className="custom-scrollbar flex-1 space-y-4 overflow-y-auto px-6 py-4"
+              className="custom-scrollbar flex-1 space-y-4 overflow-y-auto px-4 py-4 md:px-6"
             >
               {messages.map((message) => (
                 <div
@@ -384,7 +384,7 @@ export default function AIInsights() {
             </div>
 
             {/* Input Area */}
-            <div className="border-border bg-background/90 h-12 shrink-0 border-t px-6 md:h-16">
+            <div className="border-border bg-background/90 h-12 shrink-0 border-t px-4 md:h-16 md:px-6">
               <div className="flex h-full items-center gap-2">
                 <div className="relative flex-1">
                   <Textarea

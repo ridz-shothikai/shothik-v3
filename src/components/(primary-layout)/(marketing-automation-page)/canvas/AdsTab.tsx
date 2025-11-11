@@ -28,7 +28,7 @@ export default function AdsTab({
 
   if (ads.length === 0) {
     return (
-      <Card className="p-12 text-center">
+      <Card className="text-center md:p-12">
         <ImageIcon className="text-primary mx-auto mb-4 h-16 w-16" />
         <h3 className="text-foreground mb-2 text-lg font-semibold">
           No Ads Created
@@ -41,14 +41,14 @@ export default function AdsTab({
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
       {ads.map((ad, index) => (
         <Card
           key={ad.id}
           className="transition-border hover:border-primary/50 relative overflow-hidden"
         >
           {/* Serial Number Badge */}
-          <div className="absolute top-4 right-4 z-10">
+          <div className="absolute top-4 right-4">
             <span className="bg-primary text-primary-foreground rounded-full px-4 py-2 text-sm font-bold shadow-lg">
               #{index + 1}
             </span>
@@ -173,7 +173,7 @@ export default function AdsTab({
             )}
 
             {/* Angle & Benefit Focus */}
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {ad.angle && (
                 <Card className="border-primary/30 bg-primary/10 p-2">
                   <p className="text-primary mb-1 text-xs font-medium">
@@ -216,7 +216,7 @@ export default function AdsTab({
             <Button className="w-full">{ad.cta || "Learn More"}</Button>
 
             {/* Action Buttons */}
-            <div className="grid grid-cols-3 gap-2 pt-2">
+            <div className="grid grid-cols-1 gap-2 pt-2 sm:grid-cols-3">
               <Button
                 variant="outline"
                 size="sm"

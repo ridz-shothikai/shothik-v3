@@ -230,14 +230,14 @@ export default function Dashboard() {
 
   return (
     <div className="bg-background relative flex min-h-[calc(100vh-4rem)] flex-col">
-      <div className="border-border bg-background/90 sticky top-0 z-10 h-12 border-b px-6 backdrop-blur-sm md:h-16">
+      <div className="border-border bg-background/90 sticky top-0 z-10 h-12 border-b px-4 backdrop-blur-sm md:h-16 md:px-6">
         <DashboardHeader
           isLoadingInsights={isLoadingInsights}
           onRefresh={fetchInsights}
         />
       </div>
 
-      <div className="mx-auto flex w-full flex-1 flex-col px-6 py-8">
+      <div className="mx-auto flex w-full flex-1 flex-col px-4 py-6 md:px-6">
         <div
           className="absolute inset-0"
           style={{

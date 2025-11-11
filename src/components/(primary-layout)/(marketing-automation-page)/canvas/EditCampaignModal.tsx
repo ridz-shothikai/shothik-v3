@@ -40,7 +40,7 @@ export default function EditCampaignModal({
 
   return (
     <Dialog open={showModal} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-[90vh] w-[95vw] max-w-2xl overflow-y-auto md:w-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">
             Edit Campaign: {editingCampaign.name}

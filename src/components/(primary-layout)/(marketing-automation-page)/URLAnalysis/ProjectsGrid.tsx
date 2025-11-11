@@ -71,7 +71,7 @@ export default function ProjectsGrid({
           <Loader2 className="text-primary h-8 w-8 animate-spin" />
         </div>
       ) : projects.length === 0 ? (
-        <Card className="p-12 text-center">
+        <Card className="text-center md:p-12">
           <Folder className="text-primary mx-auto mb-4 h-16 w-16 opacity-50" />
           <h3 className="text-foreground mb-2 text-lg font-semibold">
             No Projects Yet

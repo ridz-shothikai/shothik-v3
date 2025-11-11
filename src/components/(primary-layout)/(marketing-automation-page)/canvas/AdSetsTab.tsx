@@ -23,7 +23,7 @@ export default function AdSetsTab({
 }: AdSetsTabProps) {
   if (adSets.length === 0) {
     return (
-      <Card className="p-12 text-center">
+      <Card className="text-center md:p-12">
         <Target className="text-primary mx-auto mb-4 h-16 w-16" />
         <h3 className="text-foreground mb-2 text-lg font-semibold">
           No Ad Sets Yet
@@ -38,10 +38,7 @@ export default function AdSetsTab({
   return (
     <>
       {adSets.map((adSet) => (
-        <Card
-          key={adSet.id}
-          className="hover:border-primary/50 transition-border p-6"
-        >
+        <Card key={adSet.id}>
           <CardHeader>
             <div className="mb-4 flex items-start justify-between">
               <div>
@@ -84,7 +81,7 @@ export default function AdSetsTab({
           </CardHeader>
 
           <CardContent>
-            <div className="mb-4 grid grid-cols-2 gap-4 lg:grid-cols-3">
+            <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <Card className="p-4">
                 <div className="mb-2 flex items-center gap-2">
                   <ImageIcon className="text-primary h-4 w-4" />

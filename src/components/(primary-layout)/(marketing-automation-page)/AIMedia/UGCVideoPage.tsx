@@ -243,7 +243,7 @@ export default function UGCVideoPage() {
       {/* Hero Header */}
       <div className="border-border relative shrink-0 overflow-hidden border-b">
         <div className="bg-primary/10 absolute inset-0"></div>
-        <div className="relative mx-auto max-w-5xl px-6 py-12">
+        <div className="relative mx-auto max-w-4xl px-4 py-12 md:px-6">
           <div className="text-center">
             <div className="border-primary/20 bg-primary/10 mb-4 inline-flex items-center gap-2 rounded-full border px-4 py-2">
               <Sparkles className="text-primary h-4 w-4" />
@@ -264,7 +264,7 @@ export default function UGCVideoPage() {
 
       {/* Main Content - Single Column */}
       <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-4xl space-y-6 px-6 py-8 pl-16">
+        <div className="mx-auto max-w-4xl space-y-6 px-4 py-8 pl-16 md:px-6">
           {/* Step 1: Script */}
           <div className="relative">
             <div className="bg-primary text-primary-foreground absolute top-6 -left-12 flex h-10 w-10 items-center justify-center rounded-full text-base font-bold shadow-lg">
@@ -536,7 +536,7 @@ export default function UGCVideoPage() {
       {/* Notification Toast */}
       {showNotification && (
         <div className="animate-slide-up fixed right-6 bottom-6 z-50">
-          <Card className="bg-primary text-primary-foreground px-6 py-4 shadow-2xl">
+          <Card className="bg-primary text-primary-foreground px-4 py-4 shadow-2xl md:px-6">
             <p className="font-medium">{notificationMessage}</p>
           </Card>
         </div>
