@@ -31,9 +31,11 @@ import {
   Check,
   CheckCheck,
   Loader2,
+  Menu,
   MessageSquare,
   Send,
   User,
+  X,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -96,26 +98,26 @@ const ConversationHeader = ({
 
   return (
     <div className="flex h-full items-center justify-between">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
         <div className="relative">
-          <div className="bg-primary flex size-9 items-center justify-center rounded-full shadow-lg">
-            <User className="text-primary-foreground h-6 w-6" />
+          <div className="bg-primary flex size-8 items-center justify-center rounded-full shadow-lg sm:size-9">
+            <User className="text-primary-foreground h-5 w-5 sm:h-6 sm:w-6" />
           </div>
-          <div className="border-card bg-secondary absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2"></div>
+          <div className="border-card bg-secondary absolute right-0 bottom-0 h-3 w-3 rounded-full border-2 sm:h-3.5 sm:w-3.5"></div>
         </div>
         <div>
-          <h3 className="text-foreground text-sm font-semibold">
+          <h3 className="text-foreground text-xs font-semibold sm:text-sm">
             {displayName}
           </h3>
-          <p className="text-secondary flex items-center gap-1 text-xs">
+          <p className="text-secondary flex items-center gap-1 text-[10px] sm:text-xs">
             <span className="bg-secondary h-1.5 w-1.5 animate-pulse rounded-full"></span>
             Active now
           </p>
         </div>
       </div>
 
-      {/* AI Chat Toggle */}
-      <div className="flex items-center gap-3">
+      {/* AI Chat Toggle - Hidden on mobile */}
+      <div className="hidden items-center gap-3 sm:flex">
         <div className="flex items-center gap-2">
           <span className="text-muted-foreground text-sm">AI Chat</span>
           {/* <button
@@ -211,6 +213,7 @@ export const MessengerInbox = () => {
     string | null
   >(null);
   const [messageText, setMessageText] = useState("");
+  const [showSidebar, setShowSidebar] = useState(false);
 
   const { data: messagesData, isLoading: messagesLoading } =
     usePageMessages(selectedPage);
@@ -224,6 +227,13 @@ export const MessengerInbox = () => {
       setSelectedPage(metaData.pages[0].id);
     }
   }, [metaData, selectedPage]);
+
+  // Close sidebar on mobile when conversation is selected
+  useEffect(() => {
+    if (selectedConversation) {
+      setShowSidebar(false);
+    }
+  }, [selectedConversation]);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -304,15 +314,18 @@ export const MessengerInbox = () => {
 
   const getMessageStatus = (msg: Message) => {
     if (msg.senderId !== selectedPage) return null; // Only show status for sent messages
-    if (msg.isRead) return <CheckCheck className="text-primary h-4 w-4" />;
+    if (msg.isRead)
+      return <CheckCheck className="text-primary h-3 w-3 sm:h-4 sm:w-4" />;
     if (msg.isDelivered)
-      return <CheckCheck className="text-muted-foreground h-4 w-4" />;
-    return <Check className="text-muted-foreground h-4 w-4" />;
+      return (
+        <CheckCheck className="text-muted-foreground h-3 w-3 sm:h-4 sm:w-4" />
+      );
+    return <Check className="text-muted-foreground h-3 w-3 sm:h-4 sm:w-4" />;
   };
 
   if (metaLoading) {
     return (
-      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center">
+      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center sm:min-h-[calc(100vh-8rem)]">
         <Loader2 className="text-primary h-8 w-8 animate-spin" />
       </div>
     );
@@ -320,21 +333,21 @@ export const MessengerInbox = () => {
 
   if (!metaData || !metaData.pages || metaData.pages.length === 0) {
     return (
-      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center p-4">
+      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center p-4 sm:min-h-[calc(100vh-8rem)]">
         <Card className="w-full max-w-md text-center">
-          <CardHeader className="items-center gap-3">
-            <MessageSquare className="text-muted-foreground mx-auto h-16 w-16" />
-            <CardTitle className="text-xl font-semibold">
+          <CardHeader className="items-center gap-2 sm:gap-3">
+            <MessageSquare className="text-muted-foreground mx-auto h-12 w-12 sm:h-16 sm:w-16" />
+            <CardTitle className="text-lg font-semibold sm:text-xl">
               No Pages Connected
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm sm:text-base">
               Connect your Facebook account to start managing messages.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex justify-center">
             <Button
               onClick={() => router.push("/marketing-automation/analysis")}
-              className="rounded-xl px-6 py-3"
+              className="rounded-xl px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-base"
             >
               Connect Meta Account
             </Button>
@@ -348,59 +361,122 @@ export const MessengerInbox = () => {
 
   return (
     <div className="bg-background flex flex-col">
-      <div className="border-border bg-background/80 min-h-12 border-b px-6 py-2 backdrop-blur-xl md:min-h-16">
-        <div className="flex h-full items-center justify-between">
-          <div className="flex items-center gap-4">
+      <div className="border-border bg-background/80 min-h-12 border-b px-3 py-2 backdrop-blur-xl sm:px-6 md:min-h-16">
+        <div className="flex h-full items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-4">
             <Button
               variant="ghost"
               size="icon"
               title="Back to Campaign"
               onClick={() => router.push("/marketing-automation/analysis")}
+              className="h-8 w-8 sm:h-10 sm:w-10"
             >
-              <ArrowLeft className="size-5" />
+              <ArrowLeft className="size-4 sm:size-5" />
             </Button>
-            <div className="flex items-center gap-3">
-              <div className="border-primary/30 bg-primary/10 flex h-10 w-10 items-center justify-center rounded-xl border">
-                <MessageSquare className="text-primary h-5 w-5" />
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="border-primary/30 bg-primary/10 flex h-8 w-8 items-center justify-center rounded-xl border sm:h-10 sm:w-10">
+                <MessageSquare className="text-primary h-4 w-4 sm:h-5 sm:w-5" />
               </div>
-              <div>
-                <h1 className="text-xl font-bold">Messenger Inbox</h1>
+              <div className="hidden sm:block">
+                <h1 className="text-lg font-bold sm:text-xl">
+                  Messenger Inbox
+                </h1>
                 <p className="text-muted-foreground text-xs">
+                  {selectedPageData?.name}
+                </p>
+              </div>
+              <div className="block sm:hidden">
+                <h1 className="text-sm font-bold">Inbox</h1>
+                <p className="text-muted-foreground max-w-[120px] truncate text-[10px]">
                   {selectedPageData?.name}
                 </p>
               </div>
             </div>
           </div>
 
-          {metaData.pages.length > 1 && (
-            <Select
-              value={selectedPage ?? undefined}
-              onValueChange={(value) => {
-                setSelectedPage(value);
-                setSelectedConversation(null);
-              }}
-            >
-              <SelectTrigger title="Select a page">
-                <SelectValue placeholder="Select a page" />
-              </SelectTrigger>
-              <SelectContent>
-                {metaData.pages.map((page) => (
-                  <SelectItem key={page.id} value={page.id}>
-                    {page.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
+          <div className="flex items-center gap-2">
+            {/* Mobile menu button */}
+            {selectedConversation && (
+              <Button
+                variant="ghost"
+                size="icon"
+                title="Back to conversations"
+                onClick={() => setSelectedConversation(null)}
+                className="h-8 w-8 sm:hidden"
+              >
+                <ArrowLeft className="size-4" />
+              </Button>
+            )}
+            {!selectedConversation && (
+              <Button
+                variant="ghost"
+                size="icon"
+                title="Show conversations"
+                onClick={() => setShowSidebar(true)}
+                className="h-8 w-8 sm:hidden"
+              >
+                <Menu className="size-4" />
+              </Button>
+            )}
+
+            {metaData.pages.length > 1 && (
+              <Select
+                value={selectedPage ?? undefined}
+                onValueChange={(value) => {
+                  setSelectedPage(value);
+                  setSelectedConversation(null);
+                }}
+              >
+                <SelectTrigger
+                  title="Select a page"
+                  className="h-8 w-[120px] sm:h-10 sm:w-auto"
+                >
+                  <SelectValue placeholder="Select a page" />
+                </SelectTrigger>
+                <SelectContent>
+                  {metaData.pages.map((page) => (
+                    <SelectItem key={page.id} value={page.id}>
+                      {page.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="relative flex flex-1 overflow-hidden">
+        {/* Mobile Overlay */}
+        {showSidebar && (
+          <div
+            className="fixed inset-0 z-40 bg-black/50 sm:hidden"
+            onClick={() => setShowSidebar(false)}
+          />
+        )}
+
         {/* Conversations List */}
-        <div className="border-border bg-background/60 sticky top-12 bottom-0 h-[calc(100vh-8rem)] w-80 overflow-y-auto border-r backdrop-blur-md md:top-16">
+        <div
+          className={`border-border bg-background/60 fixed top-12 left-0 z-50 h-[calc(100vh-3rem)] w-80 transform overflow-y-auto border-r backdrop-blur-md transition-transform duration-300 ease-in-out sm:sticky sm:z-auto sm:h-[calc(100vh-8rem)] sm:transform-none md:top-16 md:h-[calc(100vh-8rem)] ${
+            showSidebar ? "translate-x-0" : "-translate-x-full sm:translate-x-0"
+          }`}
+        >
           <div className="p-4">
-            <h2 className="text-muted-foreground mb-4 px-2 text-xs font-bold tracking-wider uppercase">
+            <div className="mb-4 flex items-center justify-between sm:hidden">
+              <h2 className="text-muted-foreground px-2 text-xs font-bold tracking-wider uppercase">
+                Messages
+              </h2>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowSidebar(false)}
+                className="h-8 w-8"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            <h2 className="text-muted-foreground mb-4 hidden px-2 text-xs font-bold tracking-wider uppercase sm:block">
               Messages
             </h2>
 
@@ -433,15 +509,15 @@ export const MessengerInbox = () => {
         </div>
 
         {/* Messages Area */}
-        <div className="top-12 bottom-0 flex h-[calc(100vh-8rem)] flex-1 flex-col md:top-16">
+        <div className="top-12 bottom-0 flex h-[calc(100vh-4rem)] flex-1 flex-col sm:h-[calc(100vh-8rem)] md:top-16">
           {!selectedConversation ? (
-            <div className="flex flex-1 items-center justify-center">
+            <div className="flex flex-1 items-center justify-center p-4 py-6">
               <div className="text-center">
-                <MessageSquare className="text-muted-foreground mx-auto mb-4 h-16 w-16" />
-                <h3 className="text-foreground mb-2 text-xl font-semibold">
+                <MessageSquare className="text-muted-foreground mx-auto mb-4 h-12 w-12 sm:h-16 sm:w-16" />
+                <h3 className="text-foreground mb-2 text-lg font-semibold sm:text-xl">
                   Select a conversation
                 </h3>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-sm sm:text-base">
                   Choose a conversation from the list to view messages
                 </p>
               </div>
@@ -449,7 +525,7 @@ export const MessengerInbox = () => {
           ) : (
             <>
               {/* Conversation Header */}
-              <div className="h-12 border-b px-6 md:h-16">
+              <div className="h-12 border-b px-3 sm:px-6 md:h-16">
                 <ConversationHeader
                   pageId={selectedPage!}
                   userId={selectedConversation}
@@ -459,7 +535,7 @@ export const MessengerInbox = () => {
               {/* Messages */}
               <div
                 ref={chatContainerRef}
-                className="flex-1 space-y-4 overflow-y-auto p-6"
+                className="flex-1 space-y-3 overflow-y-auto p-3 sm:space-y-4 sm:p-6"
               >
                 {conversationLoading ? (
                   <div className="flex items-center justify-center py-8">
@@ -485,20 +561,20 @@ export const MessengerInbox = () => {
                         return (
                           <div
                             key={msg._id}
-                            className={`flex items-end gap-2 ${isFromPage ? "justify-end" : "justify-start"}`}
+                            className={`flex items-end gap-1.5 sm:gap-2 ${isFromPage ? "justify-end" : "justify-start"}`}
                           >
                             {!isFromPage && (
-                              <div className="bg-secondary text-secondary-foreground mb-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full">
-                                <User className="h-4 w-4" />
+                              <div className="bg-primary text-primary-foreground mb-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full sm:h-8 sm:w-8">
+                                <User className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                               </div>
                             )}
-                            <div className="flex max-w-md flex-col">
+                            <div className="flex max-w-[85%] flex-col sm:max-w-md">
                               <div
                                 className={`${
                                   isFromPage
-                                    ? "bg-primary text-primary-foreground rounded-[20px] rounded-br-md shadow-lg"
-                                    : "border-border/50 bg-card/80 text-foreground rounded-[20px] rounded-bl-md border shadow-md backdrop-blur-md"
-                                } px-4 py-2.5`}
+                                    ? "bg-primary text-primary-foreground rounded-[18px] rounded-br-md shadow-lg sm:rounded-[20px]"
+                                    : "border-border/50 bg-card/80 text-foreground rounded-[18px] rounded-bl-md border shadow-md backdrop-blur-md sm:rounded-[20px]"
+                                } px-3 py-2 sm:px-4 sm:py-2.5`}
                               >
                                 {/* Image Attachment */}
                                 {hasImage && imageUrl && (
@@ -506,7 +582,7 @@ export const MessengerInbox = () => {
                                     <img
                                       src={imageUrl}
                                       alt="Attachment"
-                                      className="h-auto max-h-64 max-w-full cursor-pointer rounded-xl object-cover transition-opacity hover:opacity-90"
+                                      className="h-auto max-h-48 max-w-full cursor-pointer rounded-lg object-cover transition-opacity hover:opacity-90 sm:max-h-64 sm:rounded-xl"
                                       onError={(e) => {
                                         e.currentTarget.style.display = "none";
                                       }}
@@ -517,7 +593,7 @@ export const MessengerInbox = () => {
                                 {/* Text Message */}
                                 {msg.text && (
                                   <p
-                                    className={`text-[15px] leading-relaxed break-words ${
+                                    className={`text-sm leading-relaxed break-words sm:text-[15px] ${
                                       isFromPage
                                         ? "text-primary-foreground"
                                         : "text-foreground"
@@ -529,17 +605,17 @@ export const MessengerInbox = () => {
 
                                 {/* No content fallback */}
                                 {!msg.text && !hasImage && (
-                                  <p className="text-muted-foreground text-sm italic">
+                                  <p className="text-muted-foreground text-xs italic sm:text-sm">
                                     (attachment)
                                   </p>
                                 )}
                               </div>
                               <div
-                                className={`mt-1 flex items-center gap-1.5 px-1 ${
+                                className={`mt-0.5 flex items-center gap-1 px-1 sm:mt-1 sm:gap-1.5 ${
                                   isFromPage ? "justify-end" : "justify-start"
                                 }`}
                               >
-                                <span className="text-muted-foreground text-xs">
+                                <span className="text-muted-foreground text-[10px] sm:text-xs">
                                   {formatTime(msg.timestamp)}
                                 </span>
                                 {getMessageStatus(msg)}
@@ -553,7 +629,7 @@ export const MessengerInbox = () => {
               </div>
 
               {/* Message Input */}
-              <div className="border-border/60 bg-background/80 h-12 border-t px-6 backdrop-blur-xl md:h-16">
+              <div className="border-border/60 bg-background/80 h-14 border-t px-3 backdrop-blur-xl sm:h-12 sm:px-6 md:h-16">
                 <div className="flex h-full items-center gap-2">
                   <div className="relative flex-1">
                     <Input
@@ -567,21 +643,22 @@ export const MessengerInbox = () => {
                         }
                       }}
                       placeholder="Type a message..."
-                      className="h-12 px-4 text-sm"
+                      className="h-10 px-3 text-sm sm:h-12 sm:px-4"
                       disabled={sendMessageMutation.isPending}
                     />
                   </div>
                   <Button
-                    size="icon-lg"
+                    size="icon"
                     onClick={handleSendMessage}
                     disabled={
                       !messageText.trim() || sendMessageMutation.isPending
                     }
+                    className="h-10 w-10 sm:h-12 sm:w-12"
                   >
                     {sendMessageMutation.isPending ? (
-                      <Loader2 className="h-5 w-5 animate-spin" />
+                      <Loader2 className="h-4 w-4 animate-spin sm:h-5 sm:w-5" />
                     ) : (
-                      <Send className="h-5 w-5" />
+                      <Send className="h-4 w-4 sm:h-5 sm:w-5" />
                     )}
                   </Button>
                 </div>

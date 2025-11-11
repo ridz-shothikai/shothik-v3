@@ -14,7 +14,7 @@ import {
 import { NAV_ITEMS } from "@/config/navigation";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import NavigantionIcons from "./NavigationIcons";
 import NavItem from "./NavItem";
@@ -23,17 +23,26 @@ import UserInfo from "./UserInfo";
 export default function NavigationSidebar() {
   const { accessToken, user } = useSelector((state) => state.auth);
   const { sidebar } = useSelector((state) => state.settings);
-  const isCompact = sidebar === "compact";
+  const [mounted, setMounted] = useState(false);
+  
+  // Use default value that matches server-side render to prevent hydration mismatch
+  const isCompact = mounted ? sidebar === "compact" : false;
 
   const { setOpen } = useSidebar();
 
   useEffect(() => {
-    if (sidebar === "compact") {
-      setOpen(false);
-    } else {
-      setOpen(true);
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      if (sidebar === "compact") {
+        setOpen(false);
+      } else {
+        setOpen(true);
+      }
     }
-  }, [sidebar, setOpen]);
+  }, [sidebar, setOpen, mounted]);
 
   return (
     <Sidebar collapsible="icon">

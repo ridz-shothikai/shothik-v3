@@ -26,8 +26,8 @@ const AgentListView = ({
   filterOptions = [],
   sortOptions = [],
 }) => {
-  const [filter, setFilter] = useState("");
-  const [sort, setSort] = useState("");
+  const [filter, setFilter] = useState("all");
+  const [sort, setSort] = useState("default");
   const [page, setPage] = useState(1);
 
   const filteredAgents = useMemo(() => {
@@ -35,7 +35,7 @@ const AgentListView = ({
     if (filter && filter !== "all") {
       result = result.filter((a) => a.type === filter);
     }
-    if (sort) {
+    if (sort && sort !== "default") {
       result = [...result].sort((a, b) => {
         if (sort === "name") return a.name.localeCompare(b.name);
         if (sort === "date") return (b.createdAt || 0) - (a.createdAt || 0);
@@ -144,7 +144,7 @@ const AgentListView = ({
                 <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All</SelectItem>
+                <SelectItem value="all">All</SelectItem>
                 {filterOptions.map((opt) => (
                   <SelectItem key={opt.value} value={opt.value}>
                     {opt.label}
@@ -162,7 +162,7 @@ const AgentListView = ({
                 <SelectValue placeholder="Default" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Default</SelectItem>
+                <SelectItem value="default">Default</SelectItem>
                 {sortOptions.map((opt) => (
                   <SelectItem key={opt.value} value={opt.value}>
                     {opt.label}

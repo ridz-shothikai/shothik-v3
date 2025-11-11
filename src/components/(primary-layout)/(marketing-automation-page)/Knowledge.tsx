@@ -104,7 +104,6 @@ export const Knowledge = () => {
                 <SelectValue placeholder="Select a page" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Select a page</SelectItem>
                 {metaData.pages.map((page) => (
                   <SelectItem key={page.id} value={page.id}>
                     {page.name}
