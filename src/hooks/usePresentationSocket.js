@@ -371,15 +371,21 @@ export default function usePresentationSocket(pId, token) {
       return;
     }
 
-    const base = process.env.NEXT_PUBLIC_SLIDE_API_URL;
-    if (!base) {
-      console.error("[Socket] ❌ NEXT_PUBLIC_SLIDE_API_URL not configured");
+    // Use base API URL (without prefix concatenation)
+    // The prefix is handled via the socket.io path option
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (!baseUrl) {
+      console.error("[Socket] ❌ NEXT_PUBLIC_API_URL not configured");
       return;
     }
 
-    console.log("[Socket] 🔌 Initializing NEW socket connection:", { pId });
+    console.log("[Socket] 🔌 Initializing NEW socket connection:", {
+      pId,
+      baseUrl,
+    });
 
-    const socket = io(base, {
+    const socket = io(baseUrl, {
+      path: "/slide/socket.io", // Socket.io path with prefix
       transports: ["websocket", "polling"],
       autoConnect: false,
       reconnection: true,

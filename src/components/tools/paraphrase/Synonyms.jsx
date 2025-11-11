@@ -28,7 +28,7 @@ export default function Synonyms({
         className={cn(
           "z-50 max-h-[300px] min-w-[200px] overflow-auto p-0",
           "bg-popover text-popover-foreground border-border border",
-          "shadow-lg",
+          "mr-8 shadow-lg",
         )}
       >
         <div className={cn("relative", "[&>ul]:p-0")}>

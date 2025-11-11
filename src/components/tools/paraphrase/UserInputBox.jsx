@@ -20,6 +20,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import "./editor.css";
 import { CombinedHighlighting } from "./extentions";
+// import { CombinedHighlighting } from "./extentions";
 
 const md = new MarkdownIt();
 
@@ -107,130 +108,130 @@ const InputSentenceHighlighter = Extension.create({
   name: "inputSentenceHighlighter",
 
   addProseMirrorPlugins() {
-    const { highlightSentence, language, hasOutput } = this.options;
+    const { highlightSentence, language, hasOutput, useYellowHighlight } =
+      this.options;
 
     return [
       new Plugin({
         key: new PluginKey("inputSentenceHighlighter"),
         props: {
           decorations(state) {
-            if (!hasOutput) return DecorationSet.empty;
+            if (!hasOutput || !useYellowHighlight) return DecorationSet.empty;
             const decos = [];
 
             if (highlightSentence < 0) return DecorationSet.empty;
 
-            // Build a map of text content with position tracking
-            // Track paragraph boundaries explicitly
-            const paragraphs = [];
-            let currentParagraph = null;
-
+            // Extract all text with position mapping
+            const textSegments = [];
             state.doc.descendants((node, pos) => {
-              if (node.type.name === "paragraph") {
-                // Start a new paragraph
-                if (currentParagraph) {
-                  paragraphs.push(currentParagraph);
-                }
-                currentParagraph = {
-                  segments: [],
-                  start: pos,
-                  end: pos + node.nodeSize,
-                };
-              } else if (node.isText && node.text && currentParagraph) {
-                // Add text to current paragraph
-                currentParagraph.segments.push({
+              if (node.isText && node.text) {
+                textSegments.push({
                   text: node.text,
-                  pmStart: pos,
-                  pmEnd: pos + node.text.length,
+                  start: pos,
+                  end: pos + node.text.length,
                 });
               }
             });
 
-            // Don't forget the last paragraph
-            if (currentParagraph) {
-              paragraphs.push(currentParagraph);
+            if (textSegments.length === 0) return DecorationSet.empty;
+
+            // Reconstruct full text
+            const fullText = textSegments?.map((s) => s.text).join("");
+
+            // Improved sentence detection using lookahead
+            const sentencePattern =
+              language === "Bangla"
+                ? /[^।]+।\s*/g // Match everything up to and including ।
+                : /[^.!?]+[.!?]+\s*/g; // Match everything up to and including punctuation
+
+            const sentences = [];
+            let match;
+            let lastIndex = 0;
+
+            // Use regex to find sentence boundaries
+            while ((match = sentencePattern.exec(fullText)) !== null) {
+              const sentenceText = match[0].trim();
+              if (sentenceText) {
+                sentences.push({
+                  text: sentenceText,
+                  start: match.index,
+                  end: match.index + match[0].length,
+                });
+              }
+              lastIndex = sentencePattern.lastIndex;
             }
 
-            // Now process sentences within each paragraph
-            const allSentences = [];
-
-            for (const para of paragraphs) {
-              if (para.segments.length === 0) continue;
-
-              // Reconstruct paragraph text
-              const paraText = para.segments?.map((seg) => seg.text).join("");
-
-              // Split into sentences based on language
-              const sentenceSeparator =
-                language === "Bangla"
-                  ? /(?:।\s*)/ // Simplified for Bangla
-                  : /(?:\.\s*)/; // Simplified for English
-
-              const parts = paraText.split(sentenceSeparator);
-
-              let currentPos = 0;
-              for (let i = 0; i < parts.length; i++) {
-                const part = parts[i];
-                if (!part.trim()) continue;
-
-                // Find the actual sentence text including the separator
-                let sentenceText = part;
-                // Add back the separator if not the last part
-                if (i < parts.length - 1) {
-                  sentenceText += language === "Bangla" ? "।" : ".";
-                }
-
-                // Find PM positions for this sentence within the paragraph
-                const startInPara = currentPos;
-                const endInPara = currentPos + sentenceText.length;
-
-                // Map to ProseMirror positions
-                let pmStart = null;
-                let pmEnd = null;
-                let accumPos = 0;
-
-                for (const seg of para.segments) {
-                  const segStart = accumPos;
-                  const segEnd = accumPos + seg.text.length;
-
-                  // Find start position
-                  if (
-                    pmStart === null &&
-                    startInPara >= segStart &&
-                    startInPara < segEnd
-                  ) {
-                    pmStart = seg.pmStart + (startInPara - segStart);
-                  }
-
-                  // Find end position
-                  if (
-                    pmEnd === null &&
-                    endInPara > segStart &&
-                    endInPara <= segEnd
-                  ) {
-                    pmEnd = seg.pmStart + (endInPara - segStart);
-                  }
-
-                  accumPos += seg.text.length;
-                }
-
-                if (pmStart !== null && pmEnd !== null) {
-                  allSentences.push({
-                    text: sentenceText.trim(),
-                    pmStart,
-                    pmEnd,
-                  });
-                }
-
-                currentPos += sentenceText.length;
+            // Handle remaining text after last sentence marker
+            if (lastIndex < fullText.length) {
+              const remaining = fullText.slice(lastIndex).trim();
+              if (remaining) {
+                sentences.push({
+                  text: remaining,
+                  start: lastIndex,
+                  end: fullText.length,
+                });
               }
             }
 
-            // Now highlight the target sentence
-            if (highlightSentence < allSentences.length) {
-              const target = allSentences[highlightSentence];
-              if (target && target.pmStart < target.pmEnd) {
+            // Debug logging
+            console.log(
+              `📝 Input: Found ${sentences.length} sentences, highlighting index ${highlightSentence}`,
+            );
+            if (highlightSentence >= sentences.length) {
+              console.warn(
+                `⚠️ Input: Highlight index ${highlightSentence} out of range (max: ${sentences.length - 1})`,
+              );
+            }
+
+            // Highlight target sentence
+            if (highlightSentence < sentences.length) {
+              const target = sentences[highlightSentence];
+
+              // Map text positions to ProseMirror positions
+              let pmStart = null;
+              let pmEnd = null;
+              let accumPos = 0;
+
+              for (const seg of textSegments) {
+                const segStart = accumPos;
+                const segEnd = accumPos + seg.text.length;
+
+                // Find start position
+                if (
+                  pmStart === null &&
+                  target.start >= segStart &&
+                  target.start < segEnd
+                ) {
+                  pmStart = seg.start + (target.start - segStart);
+                }
+
+                // Find end position
+                if (
+                  pmEnd === null &&
+                  target.end > segStart &&
+                  target.end <= segEnd
+                ) {
+                  pmEnd = seg.start + (target.end - segStart);
+                }
+
+                // Handle sentence spanning multiple segments
+                if (pmStart !== null && target.end > segEnd) {
+                  // Partial match, continue to next segment
+                  accumPos += seg.text.length;
+                  continue;
+                }
+
+                if (pmStart !== null && pmEnd !== null) {
+                  break;
+                }
+
+                accumPos += seg.text.length;
+              }
+
+              // Create decoration
+              if (pmStart !== null && pmEnd !== null && pmStart < pmEnd) {
                 decos.push(
-                  Decoration.inline(target.pmStart, target.pmEnd, {
+                  Decoration.inline(pmStart, pmEnd, {
                     class: "highlighted-sentence",
                   }),
                 );
@@ -249,6 +250,7 @@ const InputSentenceHighlighter = Extension.create({
       highlightSentence: 0,
       language: "English (US)",
       hasOutput: false,
+      useYellowHighlight: false,
     };
   },
 });
@@ -358,12 +360,13 @@ function UserInputBox({
           limit: wordLimit,
           frozenWords: frozenWords.set,
           frozenPhrases: frozenPhrases.set,
-          useYellowHighlight: useYellowHighlight,
+          // useYellowHighlight: useYellowHighlight,
         }),
         InputSentenceHighlighter.configure({
           highlightSentence: highlightSentence,
           language: language,
           hasOutput: hasOutput || false,
+          useYellowHighlight: useYellowHighlight,
         }),
         // HardBreak,
         Link.configure({

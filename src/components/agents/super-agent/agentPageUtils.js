@@ -414,7 +414,8 @@ async function handleFollowUpQuery(
       );
 
       // Start the presentation process (same as orchestrator does)
-      const API_URL = process.env.NEXT_PUBLIC_SLIDE_API_URL;
+      const SLIDE_PREFIX = "/slide";
+      const API_URL = process.env.NEXT_PUBLIC_API_URL + SLIDE_PREFIX;
       try {
         console.log(
           `[handleFollowUpQuery] Starting presentation: ${returnedPId}`,

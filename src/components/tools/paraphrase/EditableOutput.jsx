@@ -477,9 +477,9 @@ function getColorStyle(
 
   if (!showChangedWords) return "inherit";
 
-  const adjVerb = dark ? "#ef5c47" : "#d95645";
-  const noun = dark ? "#b6bdbd" : "#530a78";
-  const phrase = dark ? "#b6bdbd" : "#051780";
+  const adjVerb = dark ? "#D85644" : "#d95645";
+  const noun = dark ? "#685BFF" : "#530a78";
+  const phrase = dark ? "#685BFF" : "#051780";
   const freeze = "#006ACC";
 
   if (/NP/.test(type)) return `color:${noun}`;
@@ -493,7 +493,13 @@ function getColorStyle(
    formatContent: build ProseMirror doc from token data
    ============================================================ */
 
-function formatContent(data, showChangedWords, showStructural, showLongest) {
+function formatContent(
+  data,
+  showChangedWords,
+  showStructural,
+  showLongest,
+  isDarkMode = false,
+) {
   if (!data) return { type: "doc", content: [] };
 
   console.log("Formatting content with data:", {
@@ -577,7 +583,7 @@ function formatContent(data, showChangedWords, showStructural, showLongest) {
 
         const style = getColorStyle(
           wObj.type,
-          false,
+          isDarkMode,
           showChangedWords,
           !!wObj.structuralChange,
           showStructural,
@@ -634,9 +640,14 @@ export default function EditableOutput({
   highlightSentence,
   setHighlightSentence,
 }) {
-  const { showChangedWords, showStructuralChanges, showLongestUnchangedWords } =
-    useSelector((state) => state.settings.interfaceOptions);
+  const {
+    showChangedWords,
+    showStructuralChanges,
+    showLongestUnchangedWords,
+    useYellowHighlight,
+  } = useSelector((state) => state.settings.interfaceOptions);
   const paraphraseIO = useSelector((state) => state.inputOutput.paraphrase);
+  const isDarkMode = useSelector((state) => state.settings.theme === "dark");
 
   // Create a virtual anchor element for positioning
   const [virtualAnchor, setVirtualAnchor] = useState(null);
@@ -708,7 +719,29 @@ export default function EditableOutput({
               props: {
                 decorations: (state) => {
                   const decos = [];
-                  const { highlightSentence } = this.options;
+                  const { highlightSentence, useYellowHighlight } =
+                    this.options;
+
+                  if (!useYellowHighlight) return DecorationSet.empty;
+
+                  // Count total sentences for debugging
+                  let maxSentenceIndex = -1;
+                  state.doc.descendants((node) => {
+                    if (node.type.name === "sentenceNode") {
+                      const idx = parseInt(
+                        node.attrs["data-sentence-index"],
+                        10,
+                      );
+                      if (!isNaN(idx) && idx > maxSentenceIndex) {
+                        maxSentenceIndex = idx;
+                      }
+                    }
+                  });
+                  const totalSentences = maxSentenceIndex + 1;
+
+                  console.log(
+                    `📄 Output: ${totalSentences} sentences, highlighting index ${highlightSentence}`,
+                  );
 
                   state.doc.descendants((node, pos) => {
                     if (node.type.name === "sentenceNode") {
@@ -742,6 +775,7 @@ export default function EditableOutput({
         addOptions() {
           return {
             highlightSentence: 0,
+            useYellowHighlight: false,
           };
         },
       }),
@@ -769,12 +803,13 @@ export default function EditableOutput({
         EnterHandler,
         SentenceHighlighter.configure({
           highlightSentence: highlightSentence,
+          useYellowHighlight: useYellowHighlight,
         }),
       ],
       editable: true,
       immediatelyRender: false,
     },
-    [highlightSentence],
+    [highlightSentence, useYellowHighlight],
   );
 
   useEffect(() => {
@@ -785,6 +820,7 @@ export default function EditableOutput({
         showChangedWords,
         showStructuralChanges,
         showLongestUnchangedWords,
+        isDarkMode,
       ),
     );
   }, [
@@ -793,6 +829,7 @@ export default function EditableOutput({
     showChangedWords,
     showStructuralChanges,
     showLongestUnchangedWords,
+    isDarkMode,
   ]);
 
   // Enhanced click handler with virtual anchor

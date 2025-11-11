@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseQuerySlide = fetchBaseQuery({
   mode: "cors",
-  baseUrl: process.env.NEXT_PUBLIC_SLIDE_API_URL,
+  baseUrl: process.env.NEXT_PUBLIC_API_URL + "/slide",
   prepareHeaders: async (headers, { getState, endpoint }) => {
     const token =
       getState()?.auth?.accessToken || localStorage.getItem("accessToken");
@@ -57,7 +57,10 @@ export const presentationApiSlice = createApi({
 
     // Fetch all presentations
     fetchAllPresentations: builder.query({
-      query: () => "/presentations",
+      query: () => ({
+        url: "/presentations",
+        method: "GET",
+      }),
       providesTags: ["presentation"],
     }),
 

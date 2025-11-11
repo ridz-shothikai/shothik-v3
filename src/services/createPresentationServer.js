@@ -5,7 +5,9 @@ export async function createPresentationServer({
   p_id,
   userId,
 }) {
-  const api = `${process.env.NEXT_PUBLIC_SLIDE_API_URL}/create-presentation`; // TODO: This needs to be redirected.
+  const SLIDE_PREFIX = "/slide";
+  const api =
+    process.env.NEXT_PUBLIC_API_URL + SLIDE_PREFIX + "/create-presentation";
   /**
    * api return expected: 
    {

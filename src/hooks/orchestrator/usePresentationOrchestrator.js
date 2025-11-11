@@ -67,7 +67,8 @@ export default function usePresentationOrchestrator(presentationId) {
   // Get environment variables
   const token =
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-  const API_URL = process.env.NEXT_PUBLIC_SLIDE_API_URL;
+  const SLIDE_PREFIX = "/slide";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL + SLIDE_PREFIX;
 
   // Determine if socket should be connected based on Redux status or internal status
   // This allows the socket to reconnect when status changes to queued/processing

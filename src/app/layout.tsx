@@ -103,11 +103,13 @@ export default function RootLayout({
           src="https://cloud.umami.is/script.js"
           data-website-id="a19fecea-d6b0-4093-9074-26531c827bfe"
         ></script>
-        <script
-          src="https://rybbit.shothik.live/api/script.js"
-          data-site-id="7e1390f29be4"
-          defer
-        ></script>
+        {process.env.NODE_ENV === "production" && (
+          <script
+            src="https://rybbit.shothik.live/api/script.js"
+            data-site-id="7e1390f29be4"
+            defer
+          ></script>
+        )}
       </head>
       <body
         className={`${manrope.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
