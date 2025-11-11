@@ -229,29 +229,34 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="bg-background min-h-[calc(100vh-4rem)]">
-      <DashboardHeader
-        isLoadingInsights={isLoadingInsights}
-        onRefresh={fetchInsights}
-      />
+    <div className="bg-background relative flex min-h-[calc(100vh-4rem)] flex-col">
+      <div className="border-border bg-background/90 sticky top-0 z-10 h-12 border-b px-6 backdrop-blur-sm md:h-16">
+        <DashboardHeader
+          isLoadingInsights={isLoadingInsights}
+          onRefresh={fetchInsights}
+        />
+      </div>
 
-      <div
-        className="mx-auto min-h-[calc(100vh-4rem)] px-6 py-8"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
-          backgroundSize: "2rem 2rem",
-          opacity: 0.05,
-        }}
-      >
-        {campaigns.length === 0 ? (
-          <EmptyState />
-        ) : (
-          <div className="space-y-8">
-            <AISuggestions suggestions={suggestions} />
-            <CampaignsList campaigns={campaigns} />
-          </div>
-        )}
+      <div className="mx-auto flex w-full flex-1 flex-col px-6 py-8">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
+            backgroundSize: "2rem 2rem",
+            opacity: 0.05,
+          }}
+        />
+        <div className="z-5 flex w-full flex-1 flex-col">
+          {campaigns.length === 0 ? (
+            <EmptyState />
+          ) : (
+            <div className="space-y-8">
+              <AISuggestions suggestions={suggestions} />
+              <CampaignsList campaigns={campaigns} />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

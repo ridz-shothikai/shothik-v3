@@ -95,31 +95,30 @@ const ConversationHeader = ({
   // };
 
   return (
-    <div className="border-border/60 bg-card/80 border-b px-6 py-5 backdrop-blur-xl">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="relative">
-            <div className="bg-primary flex h-12 w-12 items-center justify-center rounded-full shadow-lg">
-              <User className="text-primary-foreground h-6 w-6" />
-            </div>
-            <div className="border-card bg-secondary absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2"></div>
+    <div className="flex h-full items-center justify-between">
+      <div className="flex items-center gap-4">
+        <div className="relative">
+          <div className="bg-primary flex size-9 items-center justify-center rounded-full shadow-lg">
+            <User className="text-primary-foreground h-6 w-6" />
           </div>
-          <div>
-            <h3 className="text-foreground text-lg font-semibold">
-              {displayName}
-            </h3>
-            <p className="text-secondary flex items-center gap-1 text-xs">
-              <span className="bg-secondary h-1.5 w-1.5 animate-pulse rounded-full"></span>
-              Active now
-            </p>
-          </div>
+          <div className="border-card bg-secondary absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2"></div>
         </div>
+        <div>
+          <h3 className="text-foreground text-sm font-semibold">
+            {displayName}
+          </h3>
+          <p className="text-secondary flex items-center gap-1 text-xs">
+            <span className="bg-secondary h-1.5 w-1.5 animate-pulse rounded-full"></span>
+            Active now
+          </p>
+        </div>
+      </div>
 
-        {/* AI Chat Toggle */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <span className="text-muted-foreground text-sm">AI Chat</span>
-            {/* <button
+      {/* AI Chat Toggle */}
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          <span className="text-muted-foreground text-sm">AI Chat</span>
+          {/* <button
               onClick={handleToggleAI}
               disabled={toggleAIChatMutation.isPending}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
@@ -132,12 +131,11 @@ const ConversationHeader = ({
                 }`}
               />
             </button> */}
-            {/* {aiChatEnabled && (
+          {/* {aiChatEnabled && (
               <span className="text-xs font-medium text-emerald-400">
                 Active
               </span>
             )} */}
-          </div>
         </div>
       </div>
     </div>
@@ -164,7 +162,7 @@ const ConversationItem = ({
   return (
     <button
       onClick={onClick}
-      className={`w-full rounded-xl p-4 text-left transition-all duration-200 ${
+      className={`w-full rounded-md px-2 py-2 text-left transition-all duration-200 ${
         isSelected
           ? "border-primary/40 bg-primary/15 shadow-primary/10 border shadow-lg"
           : "border-border/40 bg-card/40 hover:border-border/60 hover:bg-accent/40 border"
@@ -172,7 +170,7 @@ const ConversationItem = ({
     >
       <div className="flex items-start gap-3">
         <div className="relative shrink-0">
-          <div className="bg-primary flex h-12 w-12 items-center justify-center rounded-full shadow-md">
+          <div className="bg-primary flex size-9 items-center justify-center rounded-full shadow-md">
             <User className="text-primary-foreground h-6 w-6" />
           </div>
           {conv.unreadCount > 0 && (
@@ -182,7 +180,7 @@ const ConversationItem = ({
           )}
         </div>
         <div className="min-w-0 flex-1">
-          <div className="mb-1.5 flex items-center justify-between">
+          <div className="mb-0.5 flex items-center justify-between">
             <span className="text-foreground truncate pr-2 text-sm font-semibold">
               {displayName}
             </span>
@@ -191,7 +189,7 @@ const ConversationItem = ({
             </span>
           </div>
           <p
-            className={`truncate text-sm ${
+            className={`truncate text-xs ${
               conv.unreadCount > 0
                 ? "text-foreground font-medium"
                 : "text-muted-foreground"
@@ -213,7 +211,6 @@ export const MessengerInbox = () => {
     string | null
   >(null);
   const [messageText, setMessageText] = useState("");
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const { data: messagesData, isLoading: messagesLoading } =
     usePageMessages(selectedPage);
@@ -228,9 +225,17 @@ export const MessengerInbox = () => {
     }
   }, [metaData, selectedPage]);
 
-  // Scroll to bottom when new messages arrive
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  // scroll effect
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const chatContainer = chatContainerRef.current;
+    if (chatContainer) {
+      chatContainer.scrollTo({
+        top: chatContainer.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [conversationData]);
 
   // Group messages by sender to create conversations
@@ -342,7 +347,7 @@ export const MessengerInbox = () => {
   const selectedPageData = metaData.pages.find((p) => p.id === selectedPage);
 
   return (
-    <div className="bg-background flex min-h-[calc(100vh-4rem)] flex-col">
+    <div className="bg-background flex flex-col">
       <div className="border-border bg-background/80 min-h-12 border-b px-6 py-2 backdrop-blur-xl md:min-h-16">
         <div className="flex h-full items-center justify-between">
           <div className="flex items-center gap-4">
@@ -393,7 +398,7 @@ export const MessengerInbox = () => {
       {/* Main Content */}
       <div className="flex flex-1 overflow-hidden">
         {/* Conversations List */}
-        <div className="border-border bg-background/60 w-80 overflow-y-auto border-r backdrop-blur-md">
+        <div className="border-border bg-background/60 sticky top-12 bottom-0 h-[calc(100vh-8rem)] w-80 overflow-y-auto border-r backdrop-blur-md md:top-16">
           <div className="p-4">
             <h2 className="text-muted-foreground mb-4 px-2 text-xs font-bold tracking-wider uppercase">
               Messages
@@ -428,7 +433,7 @@ export const MessengerInbox = () => {
         </div>
 
         {/* Messages Area */}
-        <div className="flex flex-1 flex-col">
+        <div className="top-12 bottom-0 flex h-[calc(100vh-8rem)] flex-1 flex-col md:top-16">
           {!selectedConversation ? (
             <div className="flex flex-1 items-center justify-center">
               <div className="text-center">
@@ -444,13 +449,18 @@ export const MessengerInbox = () => {
           ) : (
             <>
               {/* Conversation Header */}
-              <ConversationHeader
-                pageId={selectedPage!}
-                userId={selectedConversation}
-              />
+              <div className="h-12 border-b px-6 md:h-16">
+                <ConversationHeader
+                  pageId={selectedPage!}
+                  userId={selectedConversation}
+                />
+              </div>
 
               {/* Messages */}
-              <div className="flex-1 space-y-3 overflow-y-auto p-6">
+              <div
+                ref={chatContainerRef}
+                className="flex-1 space-y-4 overflow-y-auto p-6"
+              >
                 {conversationLoading ? (
                   <div className="flex items-center justify-center py-8">
                     <Loader2 className="text-primary h-6 w-6 animate-spin" />
@@ -538,7 +548,6 @@ export const MessengerInbox = () => {
                           </div>
                         );
                       })}
-                    <div ref={messagesEndRef} />
                   </>
                 )}
               </div>
@@ -558,13 +567,12 @@ export const MessengerInbox = () => {
                         }
                       }}
                       placeholder="Type a message..."
-                      className="h-12 rounded-full px-5 pr-12 text-[15px]"
+                      className="h-12 px-4 text-sm"
                       disabled={sendMessageMutation.isPending}
                     />
                   </div>
                   <Button
                     size="icon-lg"
-                    className="rounded-full"
                     onClick={handleSendMessage}
                     disabled={
                       !messageText.trim() || sendMessageMutation.isPending

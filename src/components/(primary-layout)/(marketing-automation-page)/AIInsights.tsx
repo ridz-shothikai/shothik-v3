@@ -1,5 +1,6 @@
 "use client";
 
+import MascotIcon from "@/components/icons/MascotIcon";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
@@ -68,7 +69,6 @@ export default function AIInsights() {
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [mindMapHistory, setMindMapHistory] = useState<MindMapHistory[]>([]);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [dataSource, setDataSource] = useState<string>("project");
 
   const [isChatSheetOpen, setIsChatSheetOpen] = useState(false);
@@ -248,9 +248,17 @@ export default function AIInsights() {
     }
   };
 
-  // Auto-scroll to bottom when new messages arrive
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  // scroll effect
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const chatContainer = chatContainerRef.current;
+    if (chatContainer) {
+      chatContainer.scrollTo({
+        top: chatContainer.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [messages]);
 
   return (
@@ -276,9 +284,7 @@ export default function AIInsights() {
                     <ArrowLeft className="size-5" />
                   </Button>
                   <div className="flex items-center gap-2">
-                    <div className="bg-primary flex h-9 w-9 items-center justify-center rounded-lg shadow-lg">
-                      <Bot className="text-primary-foreground h-5 w-5" />
-                    </div>
+                    <MascotIcon className="size-9" />
                     <div>
                       <h1 className="text-foreground text-xl font-bold">
                         AI Insights Assistant
@@ -303,7 +309,10 @@ export default function AIInsights() {
               </div>
             </div>
 
-            <div className="custom-scrollbar flex-1 space-y-4 overflow-y-auto px-6 py-4">
+            <div
+              ref={chatContainerRef}
+              className="custom-scrollbar flex-1 space-y-4 overflow-y-auto px-6 py-4"
+            >
               {messages.map((message) => (
                 <div
                   key={message.id}
@@ -312,9 +321,7 @@ export default function AIInsights() {
                   }`}
                 >
                   {message.role === "assistant" && (
-                    <div className="bg-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-lg shadow-lg">
-                      <Bot className="text-primary-foreground h-5 w-5" />
-                    </div>
+                    <MascotIcon className="size-8" />
                   )}
                   <div
                     className={`max-w-2xl rounded-xl px-4 py-3 shadow-lg ${
@@ -348,13 +355,12 @@ export default function AIInsights() {
                     </span>
                   </div>
                   {message.role === "user" && (
-                    <div className="bg-secondary flex h-8 w-8 shrink-0 items-center justify-center rounded-lg shadow-lg">
-                      <Lightbulb className="text-secondary-foreground h-5 w-5" />
+                    <div className="bg-muted flex size-8 shrink-0 items-center justify-center rounded-lg">
+                      <Lightbulb className="size-4" />
                     </div>
                   )}
                 </div>
               ))}
-              <div ref={messagesEndRef} />
               {isLoading && (
                 <div className="flex justify-start gap-4">
                   <div className="bg-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-lg shadow-lg">

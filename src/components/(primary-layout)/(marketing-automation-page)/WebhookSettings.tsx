@@ -33,7 +33,7 @@ export const WebhookSettings = () => {
     return (
       <div className="bg-background relative overflow-hidden">
         {/* Background pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] bg-[size:4rem_4rem] opacity-20"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] bg-[size:4rem_4rem] opacity-5"></div>
 
         <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center p-4">
           <Card className="w-full max-w-md p-8">
@@ -67,7 +67,7 @@ export const WebhookSettings = () => {
       {/* Background pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] bg-[size:4rem_4rem] opacity-5"></div>
 
-      <div className="relative mx-auto max-w-6xl px-6 py-6">
+      <div className="relative container mx-auto px-6 py-6">
         {/* Back Button */}
         <Button
           onClick={() => router.push("/marketing-automation/analysis")}

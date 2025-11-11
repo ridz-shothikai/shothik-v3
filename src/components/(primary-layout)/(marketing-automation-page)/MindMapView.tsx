@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import MascotIcon from "@/components/icons/MascotIcon";
 import {
   Card,
   CardContent,
@@ -388,7 +389,8 @@ export default function MindMapView() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <Card className="lg:col-span-2">
             <CardHeader className="flex flex-row items-center gap-2">
-              <Bot className="text-primary size-5" />
+              {/* <Bot className="text-primary size-5" /> */}
+              <MascotIcon />
               <CardTitle className="text-lg font-bold">AI Analysis</CardTitle>
             </CardHeader>
             <CardContent>

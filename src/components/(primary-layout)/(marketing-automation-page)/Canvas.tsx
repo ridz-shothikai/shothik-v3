@@ -19,13 +19,7 @@ import { cn } from "@/lib/utils";
 import type { ProductAnalysis } from "@/types/analysis";
 import type { CampaignSuggestion } from "@/types/campaign";
 import { getRouteState } from "@/utils/getRouteState";
-import {
-  ArrowLeft,
-  Loader2,
-  MessageCircle,
-  Save,
-  Sparkles,
-} from "lucide-react";
+import { ArrowLeft, Loader2, MessageCircle, Save } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import CanvasBody from "./canvas/CanvasBody";
@@ -307,10 +301,7 @@ Would you like me to explain the personas, show you the ad concepts, or help you
                 <ArrowLeft className="size-5" />
               </Button>
               <div>
-                <h1 className="text-foreground flex items-center gap-2 text-xl font-bold">
-                  <Sparkles className="text-primary size-5" />
-                  Campaign Canvas
-                </h1>
+                <h1 className="text-xl font-bold">Campaign Canvas</h1>
                 <p className="text-muted-foreground hidden text-xs lg:block">
                   {analysis.product.title}
                 </p>
