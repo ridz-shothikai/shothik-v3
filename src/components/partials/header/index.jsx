@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { useGetUserQuery } from "@/redux/api/auth/authApi";
 import { toggleSidebar, updateTheme } from "@/redux/slices/settings-slice";
 import {
+  AlignRight,
   BarChart3,
   Beaker,
   Brain,
@@ -285,7 +286,7 @@ export default function Header({ className, layout }) {
           featuresSections={featuresSections}
           navLinks={navLinks}
           theme={theme}
-          setTheme={dispatch(updateTheme)}
+          setTheme={(value) => dispatch(updateTheme(value))}
         />
       </header>
     );
@@ -367,7 +368,7 @@ export default function Header({ className, layout }) {
           {/* Actions */}
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-2">
-              <ThemeToggle className="hidden md:inline-flex" />
+              <ThemeToggle className="hidden lg:inline-flex" />
               <div className="flex items-center gap-2 md:gap-3">
                 {isLoading ? (
                   <div className="flex items-center gap-1">
@@ -403,7 +404,7 @@ export default function Header({ className, layout }) {
               onClick={() => setMobileMenuOpen(true)}
               data-testid="button-mobile-menu"
             >
-              <Menu className="h-5 w-5" />
+              <AlignRight className="size-8" />
             </Button>
           </div>
         </div>

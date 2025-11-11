@@ -264,9 +264,9 @@ export default function AIInsights() {
   return (
     <div className="bg-background flex flex-1 flex-col">
       {/* Main Content */}
-      <div className="relative grid md:grid-cols-3">
+      <div className="relative grid md:grid-cols-3 xl:grid-cols-4">
         {/* Chat Body - Full width on mobile, 2/3 on desktop */}
-        <div className="bg-background h-[calc(100vh-4rem)] overflow-hidden md:col-span-2">
+        <div className="bg-background h-[calc(100vh-4rem)] overflow-hidden md:col-span-2 xl:col-span-3">
           <div className="flex h-full flex-col">
             {/* Header */}
             <div className="border-border bg-background/90 sticky top-0 z-10 flex h-12 items-center justify-center border-b backdrop-blur-sm md:h-16">

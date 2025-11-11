@@ -65,7 +65,7 @@ export default function AccountPopover() {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger className="size-8 md:size-9" asChild>
         <button
           onClick={() => setOpen((s) => !s)}
           className={cn(
@@ -75,14 +75,14 @@ export default function AccountPopover() {
           aria-label="Account"
         >
           {user && user?.image ? (
-            <Avatar className="h-10 w-10">
+            <Avatar className="size-8 md:size-9">
               <AvatarImage src={user.image} alt={user.name || "User"} />
               <AvatarFallback>{user?.name?.[0] ?? "U"}</AvatarFallback>
             </Avatar>
           ) : user && accessToken ? (
             <div
               className={cn(
-                "flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold",
+                "flex size-8 items-center justify-center rounded-full text-sm font-semibold md:size-9",
                 "bg-primary text-primary-foreground",
               )}
             >
@@ -91,7 +91,7 @@ export default function AccountPopover() {
                 : ""}
             </div>
           ) : (
-            <div className="flex h-10 w-10 items-center justify-center">
+            <div className="flex size-8 items-center justify-center md:size-9">
               <User className="text-muted-foreground h-6 w-6" />
             </div>
           )}
