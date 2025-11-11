@@ -38,9 +38,9 @@ export default function RephraseSentenceNav({
         side="top"
         align="start"
         className={cn(
-          "z-50 min-w-[200px] p-0",
+          "z-50 min-w-[100px] p-0",
           "bg-popover text-popover-foreground border-border border",
-          "shadow-lg",
+          "w-fit shadow-lg",
         )}
       >
         {showTooltips && (

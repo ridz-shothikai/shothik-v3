@@ -47,7 +47,7 @@ export default function RephraseSentences(props) {
           "z-50 p-0",
           "w-[360px] sm:w-[520px] lg:w-[720px]",
           "bg-popover text-popover-foreground border-border border",
-          "rounded-md shadow-lg",
+          "mr-8 rounded-md shadow-lg",
         )}
       >
         <div className={cn("flex items-center gap-2", "pt-2 pr-2 pl-2")}>
@@ -64,7 +64,7 @@ export default function RephraseSentences(props) {
                   "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
                 )}
               >
-                {modes.map((mode, index) => {
+                {modes?.slice(0, 7)?.map((mode, index) => {
                   const isDisabled = !mode.package.includes(userPackage);
                   const trigger = (
                     <TabsTrigger
