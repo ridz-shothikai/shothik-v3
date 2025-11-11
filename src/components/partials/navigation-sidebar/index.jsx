@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import DotFlashing from "@/components/common/DotFlashing";
 import NavigantionIcons from "./NavigationIcons";
 import NavItem from "./NavItem";
 import UserInfo from "./UserInfo";
@@ -92,7 +93,7 @@ export default function NavigationSidebar() {
                           <NavItem
                             key={item?.title + item?.path}
                             item={item}
-                            sidebar={sidebar}
+                            isCompact={isCompact}
                           />
                         ))}
                       </div>
@@ -106,7 +107,16 @@ export default function NavigationSidebar() {
       </SidebarContent>
       <SidebarFooter className="border-sidebar-border flex min-h-12 items-center border-t lg:min-h-16">
         <div className="w-full">
-          {!accessToken ? <UserInfo /> : <NavigantionIcons />}
+          {!mounted ? (
+            // Show loading state on server to match initial client render
+            <div className="flex h-full justify-center px-2 py-5 text-center">
+              <DotFlashing />
+            </div>
+          ) : !accessToken ? (
+            <UserInfo />
+          ) : (
+            <NavigantionIcons />
+          )}
         </div>
       </SidebarFooter>
     </Sidebar>

@@ -2,13 +2,21 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const Logo = forwardRef(({ className }, ref) => {
   const { user } = useSelector((state) => state.auth);
   const { theme } = useSelector((state) => state.settings);
-  const isDark = theme === "dark" || theme === "system";
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Use default theme on server to prevent hydration mismatch (default to light)
+  const currentTheme = mounted ? theme : "light";
+  const isDark = currentTheme === "dark" || currentTheme === "system";
 
   const logoSrc = isDark ? "/shothik_dark_logo.png" : "/shothik_light_logo.png";
 

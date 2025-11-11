@@ -37,7 +37,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AccountPopover from "./AccountPopover";
 import MenuColumn from "./MenuColumn";
@@ -126,8 +126,14 @@ const featuresMenuContent = {
 export default function Header({ className, layout }) {
   const { accessToken, user } = useSelector((state) => state.auth);
   const { theme, sidebar } = useSelector((state) => state.settings);
+  const [mounted, setMounted] = useState(false);
 
-  const isCompact = sidebar === "compact";
+  // Use default value that matches server-side render to prevent hydration mismatch
+  const isCompact = mounted ? sidebar === "compact" : false;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const { isLoading } = useGetUserQuery(undefined, {
     skip: !accessToken,
@@ -137,6 +143,10 @@ export default function Header({ className, layout }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [featuresOpen, setFeaturesOpen] = useState(false);
+
+  // Ensure consistent rendering between server and client
+  // On server, always show loading state to match initial client render
+  const showLoadingState = !mounted || isLoading;
 
   const featuresSections = [
     featuresMenuContent.writing,
@@ -240,7 +250,7 @@ export default function Header({ className, layout }) {
             <div className="flex items-center gap-2">
               <ThemeToggle className="hidden md:flex" />
               <div className="flex items-center gap-2 md:gap-3">
-                {isLoading ? (
+                {showLoadingState ? (
                   <div className="flex items-center gap-1">
                     <span className="bg-primary h-2 w-2 animate-bounce rounded-full [animation-delay:-0.3s]" />
                     <span className="bg-primary h-2 w-2 animate-bounce rounded-full [animation-delay:-0.15s]" />
@@ -261,7 +271,7 @@ export default function Header({ className, layout }) {
                   )
                 )}
 
-                {!isLoading && (
+                {!showLoadingState && (
                   <AccountPopover accessToken={accessToken} user={user} />
                 )}
               </div>
@@ -370,7 +380,7 @@ export default function Header({ className, layout }) {
             <div className="flex items-center gap-2">
               <ThemeToggle className="hidden lg:inline-flex" />
               <div className="flex items-center gap-2 md:gap-3">
-                {isLoading ? (
+                {showLoadingState ? (
                   <div className="flex items-center gap-1">
                     <span className="bg-primary h-2 w-2 animate-bounce rounded-full [animation-delay:-0.3s]" />
                     <span className="bg-primary h-2 w-2 animate-bounce rounded-full [animation-delay:-0.15s]" />
@@ -391,7 +401,7 @@ export default function Header({ className, layout }) {
                   )
                 )}
 
-                {!isLoading && (
+                {!showLoadingState && (
                   <AccountPopover accessToken={accessToken} user={user} />
                 )}
               </div>

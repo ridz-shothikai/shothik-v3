@@ -4,11 +4,10 @@ import { usePathname } from "next/navigation";
 
 // ----------------------------------------------------------------------
 
-export default function NavItem({ item, sidebar, className }) {
+export default function NavItem({ item, isCompact = false, className }) {
   const pathname = usePathname();
   const isActive = pathname === item.path;
   const { title, path, icon, iconColor } = item;
-  const isCompact = sidebar === "compact";
 
   return (
     <Link

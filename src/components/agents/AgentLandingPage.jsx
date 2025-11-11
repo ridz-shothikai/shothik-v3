@@ -199,6 +199,11 @@ export default function AgentLandingPage() {
   const dispatch = useDispatch();
   const sidebarOpen = useSelector((state) => state.tools.agentHistoryMenu);
   const { accessToken, sheetToken } = useSelector((state) => state.auth);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const {
     data: myChats,
@@ -586,7 +591,7 @@ export default function AgentLandingPage() {
     <div className="bg-background text-foreground relative flex min-h-[calc(100vh-100px)] flex-col">
       {/* ============== FOR AGENTS USAGE HISTORY STARTS ================ */}
       {/* Menu Button (Top Left) */}
-      {accessToken && (
+      {mounted && accessToken && (
         <Button
           variant="ghost"
           size="icon"
