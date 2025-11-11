@@ -61,7 +61,8 @@ export class SlideEditService {
       }
 
       const token = this.getAuthToken();
-      const apiUrl = process.env.NEXT_PUBLIC_SLIDE_API_URL;
+      const SLIDE_PREFIX = "/slide";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL + SLIDE_PREFIX;
 
       if (!apiUrl) {
         throw new Error("Slide API URL not configured");
