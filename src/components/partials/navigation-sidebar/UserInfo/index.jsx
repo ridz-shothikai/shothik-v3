@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 import DotFlashing from "@/components/common/DotFlashing";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -20,6 +21,11 @@ export default function UserInfo() {
   const { isLoading } = useGetUserQuery();
   const dispatch = useDispatch();
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -30,8 +36,8 @@ export default function UserInfo() {
     }
   };
 
-  // Show loading state
-  if (isLoading) {
+  // Show loading state only on client after mount to prevent hydration mismatch
+  if (!mounted || isLoading) {
     return (
       <div className="flex h-full justify-center px-2 py-5 text-center">
         <DotFlashing />

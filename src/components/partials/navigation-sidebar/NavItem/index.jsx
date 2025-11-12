@@ -1,18 +1,18 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// ----------------------------------------------------------------------
-
-export default function NavItem({ item, sidebar, className }) {
+export default function NavItem({ item, isCompact = false, className }) {
   const pathname = usePathname();
-  const isActive = pathname === item.path;
+  const isActive =
+    pathname === "/" ? pathname === item.path : pathname.startsWith(item.path);
   const { title, path, icon, iconColor } = item;
-  const isCompact = sidebar === "compact";
 
   return (
     <Link
-      data-umami-event={`Nav: ${title}`}
+      // data-umami-event={`Nav: ${title}`}
       data-rybbit-event="Nav Item"
       data-rybbit-prop-nav_item={`Nav: ${title}`}
       href={path}

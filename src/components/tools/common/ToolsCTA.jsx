@@ -1,6 +1,7 @@
 import { toolsCta } from "@/_mock/toolsCta";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 import * as motion from "motion/react-client";
 import CTAImages from "./CTAImages";
 
@@ -85,10 +86,17 @@ function Description({ config }) {
           asChild
           className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg"
         >
-          <a href={config.buttonLink}>
-            {config.buttonText}
-            <ChevronRight className="ml-2 h-4 w-4" />
-          </a>
+          {config.buttonLink?.startsWith("/") ? (
+            <Link href={config.buttonLink}>
+              {config.buttonText}
+              <ChevronRight className="ml-2 h-4 w-4" />
+            </Link>
+          ) : (
+            <a href={config.buttonLink}>
+              {config.buttonText}
+              <ChevronRight className="ml-2 h-4 w-4" />
+            </a>
+          )}
         </Button>
       </motion.div>
     </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import DotFlashing from "@/components/common/DotFlashing";
 import Logo from "@/components/partials/logo";
 import {
   Sidebar,
@@ -24,7 +25,7 @@ export default function NavigationSidebar() {
   const { accessToken, user } = useSelector((state) => state.auth);
   const { sidebar } = useSelector((state) => state.settings);
   const [mounted, setMounted] = useState(false);
-  
+
   // Use default value that matches server-side render to prevent hydration mismatch
   const isCompact = mounted ? sidebar === "compact" : false;
 
@@ -92,7 +93,7 @@ export default function NavigationSidebar() {
                           <NavItem
                             key={item?.title + item?.path}
                             item={item}
-                            sidebar={sidebar}
+                            isCompact={isCompact}
                           />
                         ))}
                       </div>
@@ -106,7 +107,16 @@ export default function NavigationSidebar() {
       </SidebarContent>
       <SidebarFooter className="border-sidebar-border flex min-h-12 items-center border-t lg:min-h-16">
         <div className="w-full">
-          {!accessToken ? <UserInfo /> : <NavigantionIcons />}
+          {!mounted ? (
+            // Show loading state on server to match initial client render
+            <div className="flex h-full justify-center px-2 py-5 text-center">
+              <DotFlashing />
+            </div>
+          ) : !accessToken ? (
+            <UserInfo />
+          ) : (
+            <NavigantionIcons />
+          )}
         </div>
       </SidebarFooter>
     </Sidebar>

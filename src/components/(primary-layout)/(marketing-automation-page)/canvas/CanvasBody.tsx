@@ -557,7 +557,10 @@ export default function CanvasBody({
               <label className="mb-2 block text-sm font-medium">
                 Objective
               </label>
-              <select className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-[3px] focus-visible:outline-none">
+              <select
+                title="Objective"
+                className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-[3px] focus-visible:outline-none"
+              >
                 <option value="outcome_sales">Sales (Conversions)</option>
                 <option value="outcome_leads">Leads</option>
                 <option value="outcome_traffic">Traffic</option>

@@ -2,8 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { LucideIcon, Monitor, Moon, Sun } from "lucide-react";
+import Link from "next/link";
 
 interface MenuItem {
   label: string;
@@ -42,87 +43,103 @@ export default function MobileMenu({
     <Sheet open={open} onOpenChange={onClose}>
       <SheetContent
         side="right"
-        className="w-[280px] overflow-y-auto"
+        className="flex w-60 flex-col"
         data-testid="mobile-drawer"
       >
-        <SheetHeader className="border-b">
-          <strong>Menu</strong>
-        </SheetHeader>
+        <div className="md:16 flex h-12 items-center border-b px-2">
+          <h3 className="text-base">Menu</h3>
+        </div>
+        <div className="flex-1 overflow-y-auto">
+          <div className="space-y-4 px-2 py-2">
+            <div className="space-y-4">
+              {featuresSections?.map((section) => (
+                <div key={section?.title}>
+                  <div className="text-caption text-foreground mb-2 font-semibold uppercase">
+                    {section?.title}
+                  </div>
+                  <div className="flex flex-col">
+                    {section?.items?.map((item) => {
+                      const isInternalLink = item.href.startsWith("/");
 
-        <div className="space-y-4 px-2 py-2">
-          <div className="space-y-4">
-            {featuresSections?.map((section) => (
-              <div key={section?.title}>
-                <div className="text-caption text-foreground mb-2 font-semibold uppercase">
-                  {section?.title}
+                      return isInternalLink ? (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          onClick={onClose}
+                          className="text-foreground hover:text-primary px-2 py-1 text-sm font-medium transition-colors"
+                        >
+                          {item.label}
+                        </Link>
+                      ) : (
+                        <a
+                          key={item.label}
+                          href={item.href}
+                          onClick={onClose}
+                          className="text-foreground hover:text-primary px-2 py-1 text-sm font-medium transition-colors"
+                        >
+                          {item.label}
+                        </a>
+                      );
+                    })}
+                  </div>
                 </div>
-                <div className="flex flex-col">
-                  {section?.items?.map((item) => (
-                    <a
-                      key={item.label}
-                      href={item.href}
-                      onClick={onClose}
-                      className="text-foreground hover:text-primary px-2 py-1 text-sm font-medium transition-colors"
-                    >
-                      {item.label}
-                    </a>
-                  ))}
-                </div>
-              </div>
+              ))}
+            </div>
+          </div>
+
+          <Separator />
+
+          <div className="flex flex-col">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                onClick={onClose}
+                className="text-foreground hover:bg-muted px-4 py-1 font-semibold transition-colors"
+              >
+                {link.label}
+              </Link>
             ))}
           </div>
-        </div>
 
-        <Separator />
+          <Separator />
 
-        <div className="flex flex-col">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              onClick={onClose}
-              className="text-foreground hover:bg-muted px-4 py-3 font-semibold transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-
-        <Separator />
-
-        <div className="px-2 py-2">
-          <div className="text-caption text-muted-foreground mb-2 font-semibold uppercase">
-            Theme
+          <div className="px-2 py-2">
+            <div className="text-caption text-muted-foreground mb-2 font-semibold uppercase">
+              Theme
+            </div>
+            <div className="mb-4 flex flex-col gap-1">
+              <Button
+                variant="ghost"
+                className={`justify-start ${theme === "system" ? "text-primary bg-accent font-semibold" : "text-foreground"}`}
+                onClick={() => setTheme("system")}
+                data-testid="mobile-theme-auto"
+              >
+                <Monitor className="mr-2 h-4 w-4" />
+                Auto (Time-based)
+              </Button>
+              <Button
+                variant="ghost"
+                className={`justify-start ${theme === "light" ? "text-primary bg-accent font-semibold" : "text-foreground"}`}
+                onClick={() => setTheme("light")}
+                data-testid="mobile-theme-light"
+              >
+                <Sun className="mr-2 h-4 w-4" />
+                Light Mode
+              </Button>
+              <Button
+                variant="ghost"
+                className={`justify-start ${theme === "dark" ? "text-primary bg-accent font-semibold" : "text-foreground"}`}
+                onClick={() => setTheme("dark")}
+                data-testid="mobile-theme-dark"
+              >
+                <Moon className="mr-2 h-4 w-4" />
+                Dark Mode
+              </Button>
+            </div>
           </div>
-          <div className="mb-4 flex flex-col gap-1">
-            <Button
-              variant="ghost"
-              className={`justify-start ${theme === "system" ? "text-primary bg-accent font-semibold" : "text-foreground"}`}
-              onClick={() => setTheme("system")}
-              data-testid="mobile-theme-auto"
-            >
-              <Monitor className="mr-2 h-4 w-4" />
-              Auto (Time-based)
-            </Button>
-            <Button
-              variant="ghost"
-              className={`justify-start ${theme === "light" ? "text-primary bg-accent font-semibold" : "text-foreground"}`}
-              onClick={() => setTheme("light")}
-              data-testid="mobile-theme-light"
-            >
-              <Sun className="mr-2 h-4 w-4" />
-              Light Mode
-            </Button>
-            <Button
-              variant="ghost"
-              className={`justify-start ${theme === "dark" ? "text-primary bg-accent font-semibold" : "text-foreground"}`}
-              onClick={() => setTheme("dark")}
-              data-testid="mobile-theme-dark"
-            >
-              <Moon className="mr-2 h-4 w-4" />
-              Dark Mode
-            </Button>
-          </div>
+        </div>
+        <div className="flex h-12 items-center justify-center border-t px-2 md:h-16">
           <Button
             className="bg-primary hover:bg-primary/90 text-primary-foreground w-full font-semibold"
             data-testid="mobile-join-waitlist"
