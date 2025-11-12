@@ -10,8 +10,8 @@ import TanstackQueryProvider from "./TanstackQueryProvider";
 function ConditionalGoogleProvider({ children }) {
   const hasGoogleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
-  // Don't load Google OAuth if no client ID
-  if (!hasGoogleClientId) {
+  // Don't load Google OAuth if no client ID or if it's an empty string
+  if (!hasGoogleClientId || hasGoogleClientId.trim() === "") {
     return <>{children}</>;
   }
 
