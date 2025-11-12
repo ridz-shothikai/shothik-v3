@@ -83,7 +83,7 @@ export default function WaitlistForm({ userType }) {
             className="mb-2 w-full"
           />
           <Button
-            data-umami-event="Form: Join the waitlist"
+            // data-umami-event="Form: Join the waitlist"
             data-rybbit-event="Form: Join the waitlist"
             variant="default"
             size="lg"

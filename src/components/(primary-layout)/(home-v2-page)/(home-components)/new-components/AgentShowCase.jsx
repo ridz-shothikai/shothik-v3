@@ -286,7 +286,7 @@ export default function AgentShowcase() {
                       </div>
                     </div>
                     <Button
-                      data-umami-event={`Watch Agent Work: ${currentAgent.name}`}
+                      // data-umami-event={`Watch Agent Work: ${currentAgent.name}`}
                       data-rybbit-event={`Watch Agent Work: ${currentAgent.name}`}
                       onClick={() => handlePlayDemo(currentAgent.id)}
                       className="border border-white/30 bg-white/20 px-6 py-3 text-white hover:bg-white/30"
@@ -399,7 +399,7 @@ export default function AgentShowcase() {
                   {/* CTA */}
                   <div className="mt-8 border-t pt-6">
                     <Button
-                      data-umami-event={`Try Now Agent: ${currentAgent.name}`}
+                      // data-umami-event={`Try Now Agent: ${currentAgent.name}`}
                       data-rybbit-event={`Try Now Agent: ${currentAgent.name}`}
                       className={cn(
                         "w-full py-6 text-base text-white hover:opacity-90",
@@ -434,7 +434,7 @@ export default function AgentShowcase() {
               you.
             </p>
             <Button
-              data-umami-event="Command Your AI Writing Team"
+              // data-umami-event="Command Your AI Writing Team"
               data-rybbit-event="Command Your AI Writing Team"
               className={cn(
                 "px-8 py-6 text-base text-white hover:opacity-90",

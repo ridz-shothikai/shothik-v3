@@ -145,12 +145,12 @@ export function MessageTemplate({
         {/* upgrade button */}
         <Link href={"/pricing"}>
           <Button
-            data-umami-event="Nav: Upgrade To Premium"
+            // data-umami-event="Nav: Upgrade To Premium"
+            data-rybbit-event="clicked_upgrade_plan"
             size={isMd ? "default" : "sm"}
             variant="default"
             rel="noopener"
             className="max-w-fit"
-            data-rybbit-event="clicked_upgrade_plan"
           >
             <Gem className="h-5 w-5 md:h-6 md:w-6" />
             Upgrade Plan

@@ -123,7 +123,7 @@ export default function EmailModal({ open, onClose, onSubmit }) {
 
               <div className="space-y-2">
                 <Button
-                  data-umami-event="Form: Join the waitlist"
+                  // data-umami-event="Form: Join the waitlist"
                   data-rybbit-event="Form: Join the waitlist"
                   type="submit"
                   disabled={isSubmitting || !isValid}

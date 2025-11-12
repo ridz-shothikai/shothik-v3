@@ -146,7 +146,7 @@ export default function ExitModal({ setOpen }) {
 
             <div className="mt-2 space-y-2">
               <Button
-                data-umami-event="Claim Free Paper Review"
+                // data-umami-event="Claim Free Paper Review"
                 data-rybbit-event="Claim Free Paper Review"
                 className="h-11 w-full text-base font-semibold"
                 onClick={handleClaimFree}

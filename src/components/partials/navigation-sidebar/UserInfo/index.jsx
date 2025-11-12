@@ -101,7 +101,7 @@ export default function UserInfo() {
             </div> */}
             <div className="flex w-full flex-col gap-1.5">
               <Button
-                data-umami-event="Nav: Sign In"
+                // data-umami-event="Nav: Sign In"
                 data-rybbit-event="Nav: Sign In"
                 onClick={() => {
                   dispatch(setShowRegisterModal(false));

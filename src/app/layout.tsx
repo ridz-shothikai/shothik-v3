@@ -93,16 +93,6 @@ export default function RootLayout({
           }}
         />
 
-        <script
-          defer
-          src="https://cloud.umami.is/script.js"
-          data-website-id="503cfbe2-6b94-4fa0-8259-3353fa792769"
-        ></script>
-        <script
-          defer
-          src="https://cloud.umami.is/script.js"
-          data-website-id="a19fecea-d6b0-4093-9074-26531c827bfe"
-        ></script>
         {process.env.NODE_ENV === "production" && (
           <script
             src="https://rybbit.shothik.live/api/script.js"

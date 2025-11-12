@@ -68,7 +68,7 @@ export default function NavigationSidebar() {
           />
         </div>
       </SidebarHeader>
-      <SidebarContent className="overflow-y-auto!">
+      <SidebarContent className="overflow-x-hidden! overflow-y-auto!">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>

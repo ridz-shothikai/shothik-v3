@@ -95,7 +95,7 @@ const TopNavigation = ({
             Unlock advanced features and enhance your humanize experience.
           </p>
           <Button
-            data-umami-event="Nav: Upgrade To Premium"
+            // data-umami-event="Nav: Upgrade To Premium"
             data-rybbit-event="Nav: Upgrade To Premium"
             variant="default"
             size="sm"

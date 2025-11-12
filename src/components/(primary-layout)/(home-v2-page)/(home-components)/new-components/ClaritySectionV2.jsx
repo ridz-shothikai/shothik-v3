@@ -117,7 +117,7 @@ export default function ClaritSectionV2({ onCTAClick = () => {} }) {
 
           <div className="mt-6 flex flex-row justify-center gap-2">
             <Button
-              data-umami-event="Get early access"
+              // data-umami-event="Get early access"
               data-rybbit-event="Get early access"
               variant="default"
               onClick={() => onCTAClick("get-started")}
@@ -126,7 +126,7 @@ export default function ClaritSectionV2({ onCTAClick = () => {} }) {
               Get early access
             </Button>
             <Button
-              data-umami-event="View features"
+              // data-umami-event="View features"
               data-rybbit-event="View features"
               variant="outline"
               onClick={() => onCTAClick("features")}

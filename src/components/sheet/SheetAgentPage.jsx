@@ -131,7 +131,7 @@ export const FooterCta = ({ isMobile, showModal, setShowModal }) => {
               className={`flex shrink-0 gap-3 ${isMobile ? "w-full" : "w-auto"}`}
             >
               <Button
-                data-umami-event="Modal: Join the waitlist"
+                // data-umami-event="Modal: Join the waitlist"
                 data-rybbit-event="Modal: Join the waitlist"
                 onClick={() => {
                   setShowModal(true);

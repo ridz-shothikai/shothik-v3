@@ -260,7 +260,7 @@ export default function Header({ className, layout }) {
                   user?.package !== "unlimited" && (
                     <Link href={"/pricing?redirect=" + pathname}>
                       <Button
-                        data-umami-event="Nav: Upgrade To Premium"
+                        // data-umami-event="Nav: Upgrade To Premium"
                         className={cn("h-9 px-1 text-xs md:text-sm")}
                         data-rybbit-event="clicked_upgrade_plan"
                       >
@@ -390,9 +390,9 @@ export default function Header({ className, layout }) {
                   user?.package !== "unlimited" && (
                     <Link href={"/pricing?redirect=" + pathname}>
                       <Button
-                        data-umami-event="Nav: Upgrade To Premium"
-                        className={cn("h-9 px-1 text-xs md:text-sm")}
+                        // data-umami-event="Nav: Upgrade To Premium"
                         data-rybbit-event="clicked_upgrade_plan"
+                        className={cn("h-9 px-1 text-xs md:text-sm")}
                       >
                         <Gem className="h-5 w-5" />
                         {user?.email ? "Upgrade" : "Upgrade Plan"}

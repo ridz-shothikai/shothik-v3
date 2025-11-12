@@ -124,7 +124,7 @@ export default function AccountPopover() {
 
           {!user?.email && (
             <button
-              data-umami-event="Nav: Login / Sign up"
+              // data-umami-event="Nav: Login / Sign up"
               data-rybbit-event="Nav: Login / Sign up"
               onClick={() => {
                 setOpen(false);

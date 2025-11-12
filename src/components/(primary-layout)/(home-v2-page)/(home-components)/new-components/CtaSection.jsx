@@ -73,7 +73,7 @@ export default function CTASection() {
                 <div className="relative mb-12">
                   {/* Enhanced CTA Button */}
                   <Button
-                    data-umami-event="Start Writing Better Papers Now"
+                    // data-umami-event="Start Writing Better Papers Now"
                     data-rybbit-event="Start Writing Better Papers Now"
                     onClick={() => {
                       setShowModal(true);
