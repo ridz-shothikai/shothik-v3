@@ -28,6 +28,8 @@ const ParaphraseOutput = ({
   setEventId,
   setHighlightSentence,
   paraphraseRequestCounter,
+  eventIdRef,
+  socketIdRef,
 }) => {
   const [paraphraseForTagging] = useParaphraseForTaggingMutation();
   const [reportForSentence] = useReportForSentenceMutation();
@@ -158,8 +160,14 @@ const ParaphraseOutput = ({
       `🔄 Replacing sentence at index ${synonymsOptions.sentenceIndex}`,
     );
 
+    // Parse and remove {} markers from freeze words
+    const parsedSentenceData = sentenceData.map((wordObj) => ({
+      ...wordObj,
+      word: wordObj.word.replace(/[{}]/g, ""),
+    }));
+
     let newData = [...data];
-    newData[synonymsOptions.sentenceIndex] = sentenceData;
+    newData[synonymsOptions.sentenceIndex] = parsedSentenceData;
     setData(newData);
     setOutputHistory((prevHistory) => {
       const arr = [];
@@ -187,8 +195,10 @@ const ParaphraseOutput = ({
       }
 
       const randomNumber = Math.floor(Math.random() * 10000000000);
-      const newEventId = `${socketId}-${randomNumber}`;
+      const currentSocketId = socketIdRef.current || socketId;
+      const newEventId = `${currentSocketId}-${randomNumber}`;
       setEventId(newEventId);
+      eventIdRef.current = newEventId;
 
       const payload = {
         sentence,
@@ -263,7 +273,10 @@ const ParaphraseOutput = ({
       const url =
         process.env.NEXT_PUBLIC_API_URL +
         "/p-v2/api" +
-        "/paraphrase-with-variantV2";
+        "/paraphrase-with-variantV2"; // prod
+      // const url =
+      //   process.env.NEXT_PUBLIC_PARAPHRASE_API_URL +
+      //   "/api/paraphrase-with-variantV2"; //local
 
       const token = localStorage.getItem("accessToken");
       const payload = {

@@ -1,6 +1,11 @@
 // src/components/tools/paraphrase/CustomModePopover.jsx
-import { Popover, PopoverContent } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverAnchor,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { useMemo } from "react";
 import CustomModeContent from "./CustomModeContent";
 
 /**
@@ -24,9 +29,22 @@ const CustomModePopover = ({
   };
 
   const handleDelete = () => {
+    // Don't call onClose here - let the parent handle it
+    // This prevents the popover from snapping to top-left during deletion
     onDelete();
-    onClose();
   };
+
+  // Create virtual ref for PopoverAnchor to position relative to anchorEl
+  // Handle both DOM element and virtual object with getBoundingClientRect
+  const virtualRef = useMemo(() => {
+    if (!anchorEl) return null;
+    // If anchorEl is a DOM element, use it directly
+    if (anchorEl.getBoundingClientRect) {
+      return { current: anchorEl };
+    }
+    // If anchorEl is a virtual object with getBoundingClientRect method, create a wrapper
+    return { current: anchorEl };
+  }, [anchorEl]);
 
   return (
     <Popover
@@ -35,10 +53,13 @@ const CustomModePopover = ({
         if (!isOpen) onClose();
       }}
     >
+      {/* Use PopoverAnchor with virtualRef to position the popover relative to the clicked tab */}
+      {/* Show anchor if we have either a DOM element or a virtual object with getBoundingClientRect */}
+      {virtualRef && <PopoverAnchor virtualRef={virtualRef} />}
       <PopoverContent
         side="bottom"
         align="center"
-        className={cn("max-w-[500px] rounded-2xl p-0 shadow-md")}
+        className={cn("w-full max-w-[500px] rounded-2xl p-0 shadow-md")}
       >
         <div className="p-2.5">
           <CustomModeContent

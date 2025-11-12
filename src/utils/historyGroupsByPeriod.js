@@ -25,7 +25,8 @@ export const historyGroupsByPeriod = (apiResponse) => {
     if (!acc[key]) acc[key] = [];
     acc[key].push({
       _id: entry._id,
-      text: entry.input, // Use 'input' field from new format
+      // Handle both 'text' (API response) and 'input' (legacy format) fields
+      text: entry.text || entry.input || "",
       time: timestamp,
       model: entry.model, // Include additional fields if needed
       level: entry.level,

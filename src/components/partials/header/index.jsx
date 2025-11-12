@@ -53,7 +53,7 @@ const featuresMenuContent = {
   writing: {
     title: "Writing",
     items: [
-      { label: "Paraphraser", icon: Edit, href: "/paraphraser" },
+      { label: "Paraphrase", icon: Edit, href: "/paraphrase" },
       { label: "AI Detector", icon: Brain, href: "/ai-detector" },
       { label: "Humanizer", icon: Sparkles, href: "/humanize-gpt" },
       { label: "Grammar Checker", icon: CheckCheck, href: "/grammar-checker" },

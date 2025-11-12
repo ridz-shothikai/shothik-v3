@@ -15,8 +15,8 @@ import ToneTab from "./actions/ToneTab"; // to come
 import UpgradePrompt from "./UpgradePrompt";
 
 const tabs = [
-  { id: "plagiarism", iconSrc: history, component: PlagiarismTab },
-  { id: "history", iconSrc: plagiarism, component: HistoryTab },
+  { id: "plagiarism", iconSrc: plagiarism, component: PlagiarismTab },
+  { id: "history", iconSrc: history, component: HistoryTab },
   { id: "compare", iconSrc: compare, component: CompareTab },
   { id: "tone", iconSrc: tone, component: ToneTab },
 ];
@@ -79,6 +79,7 @@ const PlagiarismSidebar = ({
                   active === t.id ? "text-primary" : "text-muted-foreground",
                 )}
               >
+                {/* <SvgColor src={t.iconSrc} className="h-6 w-6 bg-transparent" /> */}
                 <Image
                   src={t.iconSrc}
                   priority={true}

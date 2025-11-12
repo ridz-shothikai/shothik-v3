@@ -1,5 +1,6 @@
 // HistoryTab.jsx
 import { Button } from "@/components/ui/button";
+import useSnackbar from "@/hooks/useSnackbar";
 import {
   setActiveHistory,
   setHistories,
@@ -9,6 +10,7 @@ import { historyGroupsByPeriod } from "@/utils/historyGroupsByPeriod";
 import {
   ChevronDown,
   ChevronUp,
+  Loader2,
   RefreshCcw,
   Trash2 as Trash,
 } from "lucide-react";
@@ -17,9 +19,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 const HistoryTab = ({ onClose }) => {
   const dispatch = useDispatch();
+  const enqueueSnackbar = useSnackbar();
 
   const [expandedEntries, setExpandedEntries] = useState({});
   const [expandedGroups, setExpandedGroups] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
   const { accessToken } = useSelector((state) => state.auth);
 
   const { activeHistory, histories, historyGroups } = useSelector(
@@ -76,6 +82,9 @@ const HistoryTab = ({ onClose }) => {
   // };
 
   const fetchHistory = useCallback(async () => {
+    if (!accessToken) return;
+
+    setIsLoading(true);
     try {
       const res = await fetch(`${API_BASE}/history`, {
         method: "GET",
@@ -84,20 +93,31 @@ const HistoryTab = ({ onClose }) => {
           ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
         },
       });
-      if (!res.ok) console.error("Failed to fetch history");
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch history");
+      }
+
       const data = await res.json();
       const groups = historyGroupsByPeriod(data || []);
 
       dispatch(setHistories(data));
-      // const groups = historyGroupsByPeriod(data); // Use the utility function
       dispatch(setHistoryGroups(groups));
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching history:", err);
+      enqueueSnackbar(
+        err.message || "Failed to fetch history. Please try again.",
+        { variant: "error" },
+      );
+    } finally {
+      setIsLoading(false);
     }
-  }, [accessToken, dispatch, API_BASE]);
+  }, [accessToken, dispatch, API_BASE, enqueueSnackbar]);
 
   const handleDeleteAll = async () => {
     if (!window.confirm("Are you sure you want to clear all history?")) return;
+
+    setIsDeleting(true);
     try {
       const res = await fetch(`${API_BASE}/history`, {
         method: "DELETE",
@@ -106,12 +126,25 @@ const HistoryTab = ({ onClose }) => {
           ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
         },
       });
-      if (!res.ok) throw new Error("Failed to delete history");
+
+      if (!res.ok) {
+        throw new Error("Failed to delete history");
+      }
+
       dispatch(setHistories([]));
       dispatch(setHistoryGroups([]));
       dispatch(setActiveHistory(null));
+      enqueueSnackbar("All history cleared successfully", {
+        variant: "success",
+      });
     } catch (err) {
-      console.error(err);
+      console.error("Error deleting all history:", err);
+      enqueueSnackbar(
+        err.message || "Failed to delete history. Please try again.",
+        { variant: "error" },
+      );
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -148,6 +181,7 @@ const HistoryTab = ({ onClose }) => {
       if (!window.confirm("Are you sure you want to delete this entry?"))
         return;
 
+      setDeletingId(entryId);
       try {
         const res = await fetch(`${API_BASE}/history/${entryId}`, {
           method: "DELETE",
@@ -156,23 +190,41 @@ const HistoryTab = ({ onClose }) => {
             ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
           },
         });
-        if (!res.ok) throw new Error("Failed to delete history entry");
 
-        const updatedHistories = histories.filter(
-          (history) => history._id !== entryId,
-        );
-        dispatch(setHistories(updatedHistories));
-        const groups = historyGroupsByPeriod(updatedHistories);
-        dispatch(setHistoryGroups(groups));
+        if (!res.ok) {
+          throw new Error("Failed to delete history entry");
+        }
 
+        // Clear active history if the deleted entry was active
         if (activeHistory && activeHistory._id === entryId) {
           dispatch(setActiveHistory(null));
         }
+
+        // Refetch history from API to ensure data consistency
+        // This prevents data structure mismatches that cause empty history
+        await fetchHistory();
+
+        enqueueSnackbar("History entry deleted successfully", {
+          variant: "success",
+        });
       } catch (err) {
-        console.error(err);
+        console.error("Error deleting history entry:", err);
+        enqueueSnackbar(
+          err.message || "Failed to delete entry. Please try again.",
+          { variant: "error" },
+        );
+      } finally {
+        setDeletingId(null);
       }
     },
-    [accessToken, histories, activeHistory, dispatch, API_BASE],
+    [
+      accessToken,
+      activeHistory,
+      dispatch,
+      API_BASE,
+      fetchHistory,
+      enqueueSnackbar,
+    ],
   );
 
   const handleSetActiveHistory = (entry) => {
@@ -180,10 +232,15 @@ const HistoryTab = ({ onClose }) => {
     onClose();
   };
 
-  // useEffect(() => {
-  //   if (!accessToken) return;
-  //   fetchHistory();
-  // }, [accessToken]);
+  // Auto-fetch history on mount if accessToken is available
+  useEffect(() => {
+    if (!accessToken) return;
+    // Only fetch if we don't have history data yet
+    if (!histories || histories.length === 0) {
+      fetchHistory();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessToken]); // Only depend on accessToken to avoid infinite loops
 
   useEffect(() => {
     if (!(historyGroups?.length > 0)) return;
@@ -219,26 +276,43 @@ const HistoryTab = ({ onClose }) => {
               variant="ghost"
               size="icon-sm"
               onClick={fetchHistory}
+              disabled={isLoading}
               className="min-w-0 p-1"
               aria-label="Refresh history"
             >
-              <RefreshCcw className="size-4" />
+              {isLoading ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <RefreshCcw className="size-4" />
+              )}
             </Button>
             <Button
               variant="ghost"
               size="icon-sm"
               onClick={handleDeleteAll}
+              disabled={isDeleting || isLoading}
               className="min-w-0 p-1"
               aria-label="Clear history"
             >
-              <Trash className="size-4" />
+              {isDeleting ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Trash className="size-4" />
+              )}
             </Button>
           </div>
         )}
       </div>
 
       {/* Period groups */}
-      {historyGroups?.length === 0 ? (
+      {isLoading ? (
+        <div className="flex items-center justify-center py-8">
+          <Loader2 className="text-muted-foreground size-6 animate-spin" />
+          <span className="text-muted-foreground ml-2 text-sm">
+            Loading history...
+          </span>
+        </div>
+      ) : historyGroups?.length === 0 ? (
         <p className="text-muted-foreground px-2 text-sm">
           No history entries.
         </p>
@@ -294,10 +368,15 @@ const HistoryTab = ({ onClose }) => {
                         e.stopPropagation();
                         handleDeleteEntry(entry._id);
                       }}
+                      disabled={deletingId === entry._id || isDeleting}
                       className="text-destructive min-w-0 p-1"
                       aria-label="Delete entry"
                     >
-                      <Trash className="size-4" />
+                      {deletingId === entry._id ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <Trash className="size-4" />
+                      )}
                     </Button>
                   </div>
                   <p className="text-sm">

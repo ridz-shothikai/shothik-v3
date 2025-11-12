@@ -450,7 +450,7 @@ function UserInputBox({
         setUserInput(plainText);
       },
     },
-    [editorKey, highlightSentence, language, hasOutput],
+    [editorKey, highlightSentence, language, hasOutput, wordLimit],
   ); // Recreate editor when key changes
 
   const clearSelection = () => {

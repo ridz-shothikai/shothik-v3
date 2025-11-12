@@ -67,6 +67,8 @@ const ModeNavigation = ({
   const [popoverAnchor, setPopoverAnchor] = React.useState(null);
   const [editingCustomMode, setEditingCustomMode] = React.useState(null);
   const [popoverAnchorRect, setPopoverAnchorRect] = React.useState(null);
+  // Track if we're in deletion flow to prevent onClose from interfering
+  const isDeletingRef = React.useRef(false);
 
   // Tooltip text for tabs
   const freezeTooltip =
@@ -121,7 +123,12 @@ const ModeNavigation = ({
   const [moreOpen, setMoreOpen] = React.useState(false);
 
   // Unified mode-change logic
-  const changeMode = (value, isCustomMode = false, customModeId = null) => {
+  const changeMode = (
+    value,
+    isCustomMode = false,
+    customModeId = null,
+    event = null,
+  ) => {
     if (isLoading) {
       enqueueSnackbar("Wait until the current process is complete", {
         variant: "info",
@@ -132,6 +139,34 @@ const ModeNavigation = ({
     if (isCustomMode && value === selectedMode) {
       const customMode = customModes.find((cm) => cm._id === customModeId);
       if (customMode) {
+        // Set anchor if event is provided
+        if (event?.currentTarget) {
+          setPopoverAnchor(event.currentTarget);
+          try {
+            const rect = event.currentTarget.getBoundingClientRect();
+            setPopoverAnchorRect(rect);
+          } catch (_) {
+            // ignore
+          }
+        } else {
+          // Try to find the tab element by querying the DOM
+          // This is a fallback if event is not provided
+          setTimeout(() => {
+            const tabElement =
+              document.querySelector(
+                `button[role="tab"][data-state="active"][value="${value}"], [data-state="active"][value="${value}"]`,
+              ) || document.querySelector(`[value="${value}"]`);
+            if (tabElement) {
+              setPopoverAnchor(tabElement);
+              try {
+                const rect = tabElement.getBoundingClientRect();
+                setPopoverAnchorRect(rect);
+              } catch (_) {
+                // ignore
+              }
+            }
+          }, 0);
+        }
         setEditingCustomMode(customMode);
       }
       return;
@@ -257,10 +292,20 @@ const ModeNavigation = ({
   const handleDeleteCustomMode = async () => {
     if (!editingCustomMode) return;
 
-    try {
-      const modeId = editingCustomMode._id || editingCustomMode.id;
-      const modeName = editingCustomMode.name;
+    // CRITICAL FIX: Close popover BEFORE deletion
+    // This prevents the "jump to top-left" visual glitch
+    const modeId = editingCustomMode._id || editingCustomMode.id;
+    const modeName = editingCustomMode.name;
 
+    // Mark that we're in deletion flow
+    isDeletingRef.current = true;
+
+    // Clear popover state immediately but keep anchorRect for positioning
+    setPopoverAnchor(null);
+    setEditingCustomMode(null);
+    // Keep popoverAnchorRect temporarily so popover can position during close animation
+
+    try {
       const success = await deleteCustomMode(modeId);
       if (success) {
         enqueueSnackbar(`Mode "${modeName}" deleted`, {
@@ -272,13 +317,23 @@ const ModeNavigation = ({
           setSelectedMode("Standard");
         }
 
-        // Don't clear state here - let onClose handler do it with delay
-        // This prevents popover from snapping to top-left during exit animation
+        // Clear anchorRect after a short delay to allow close animation
+        setTimeout(() => {
+          setPopoverAnchorRect(null);
+          isDeletingRef.current = false;
+        }, 200);
+      } else {
+        // If deletion failed, restore the popover state
+        isDeletingRef.current = false;
+        setEditingCustomMode(customModes.find((cm) => cm._id === modeId));
       }
     } catch (err) {
       enqueueSnackbar("Failed to delete mode", {
         variant: "error",
       });
+      // If deletion failed, restore the popover state
+      isDeletingRef.current = false;
+      setEditingCustomMode(customModes.find((cm) => cm._id === modeId));
     }
   };
 
@@ -321,7 +376,15 @@ const ModeNavigation = ({
             onValueChange={(v) => {
               const mode = displayedModes.find((m) => m?.value === v);
               if (mode) {
-                changeMode(v, mode?.isCustom, mode?.id);
+                // Find the tab element to pass as event - use more specific selector
+                const tabElement =
+                  document.querySelector(
+                    `button[role="tab"][data-state="active"][value="${v}"], [data-state="active"][value="${v}"]`,
+                  ) || document.querySelector(`[value="${v}"]`);
+                const syntheticEvent = tabElement
+                  ? { currentTarget: tabElement }
+                  : null;
+                changeMode(v, mode?.isCustom, mode?.id, syntheticEvent);
               }
             }}
           >
@@ -332,7 +395,14 @@ const ModeNavigation = ({
                     <TooltipTrigger asChild>
                       <TabsTrigger
                         value={mode.value}
-                        onClick={(e) => handleTabClick(e, mode)}
+                        onClick={(e) => {
+                          handleTabClick(e, mode);
+                          // Also pass event to changeMode if it's a custom mode click
+                          if (mode.isCustom && mode.value === selectedMode) {
+                            // handleTabClick already handles this case
+                            return;
+                          }
+                        }}
                         className={cn(
                           "group relative px-3 text-sm md:px-4 xl:px-5",
                           "font-normal text-[#637381]",
@@ -481,6 +551,11 @@ const ModeNavigation = ({
         onClose={() => {
           // Delay clearing anchor to avoid popover snapping to top-left before unmount
           setTimeout(() => {
+            // Don't interfere if we're in deletion flow (deletion handler manages cleanup)
+            if (isDeletingRef.current) {
+              return;
+            }
+            // Normal close - clear everything
             setPopoverAnchor(null);
             setEditingCustomMode(null);
             setPopoverAnchorRect(null);

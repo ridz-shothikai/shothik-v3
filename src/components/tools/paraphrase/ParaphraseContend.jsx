@@ -210,6 +210,10 @@ const ParaphraseContend = () => {
   const [socketId, setSocketId] = useState(null);
   const [paraphrased] = useParaphrasedMutation();
   const [eventId, setEventId] = useState(null);
+  // Use refs to avoid closure issues in socket listeners
+  const eventIdRef = useRef(null);
+  const socketIdRef = useRef(null);
+  const socketRef = useRef(null);
   const isMobile = useResponsive("down", "md");
   const [result, setResult] = useState([]);
   const [historyResult, setHistoryResult] = useState([]);
@@ -598,14 +602,26 @@ const ParaphraseContend = () => {
     //   reconnectionDelay: 2000,
     // }); // local
 
+    // Store socket instance in ref for direct access
+    socketRef.current = socket;
+
     socket.on("connect", () => {
       console.log("Socket connected:", socket.id);
+      // Update both state and ref synchronously
       setSocketId(socket.id);
+      socketIdRef.current = socket.id;
+      // Clear eventIdRef on reconnect to prevent processing old events
+      eventIdRef.current = null;
+      setEventId(null);
     });
 
     socket.on("disconnect", () => {
       console.warn("Socket disconnected");
       setSocketId("");
+      socketIdRef.current = null;
+      // Clear eventIdRef on disconnect
+      eventIdRef.current = null;
+      setEventId(null);
     });
 
     let accumulatedText = "";
@@ -703,12 +719,13 @@ const ParaphraseContend = () => {
         eid = payload.eventId;
         parsed = payload.data;
 
-        if (eid !== eventId) {
+        // Use ref to get current eventId value (avoids closure issues)
+        if (eid !== eventIdRef.current) {
           console.warn(
             "⚠️ EventId mismatch in tagging:",
             eid,
             "expected:",
-            eventId,
+            eventIdRef.current,
           );
           return;
         }
@@ -782,12 +799,13 @@ const ParaphraseContend = () => {
         eid = payload.eventId;
         analysis = payload.data;
 
-        if (eid !== eventId) {
+        // Use ref to get current eventId value (avoids closure issues)
+        if (eid !== eventIdRef.current) {
           console.warn(
             "⚠️ EventId mismatch in synonyms:",
             eid,
             "expected:",
-            eventId,
+            eventIdRef.current,
           );
           return;
         }
@@ -844,14 +862,21 @@ const ParaphraseContend = () => {
       });
     });
 
-    // return () => {
-    //   console.log("🔌 Disconnecting socket");
-    //   socket.off("paraphrase-plain");
-    //   socket.off("paraphrase-tagging");
-    //   socket.off("paraphrase-synonyms");
-    //   socket.disconnect();
-    // };
-  }, [language, eventId, accessToken]);
+    // Cleanup: Remove all listeners before component unmount or effect re-run
+    return () => {
+      console.log("🔌 Cleaning up socket listeners");
+      socket.off("connect");
+      socket.off("disconnect");
+      socket.off("paraphrase-plain");
+      socket.off("paraphrase-tagging");
+      socket.off("paraphrase-synonyms");
+      // Clear refs on cleanup
+      socketRef.current = null;
+      socketIdRef.current = null;
+      // Note: We don't disconnect the socket here to allow reconnection
+      // The socket will be reused if accessToken/language don't change
+    };
+  }, [language, accessToken]); // Removed eventId from dependencies to keep socket stable
 
   // useEffect(() => {
   //   console.log("completedEvents:", completedEvents);
@@ -1261,7 +1286,12 @@ const ParaphraseContend = () => {
         trackEvent("click", "paraphrase", "paraphrase_click", 1);
       }
 
-      if (!socketId) return;
+      // Get socketId from ref (always current) or socket instance directly
+      const currentSocketId = socketIdRef.current || socketRef.current?.id;
+      if (!currentSocketId) {
+        console.warn("⚠️ No socket connection available");
+        return;
+      }
 
       // if (!!activeHistory?._id) return;
 
@@ -1296,10 +1326,13 @@ const ParaphraseContend = () => {
       }
 
       // now build your payload using the untouched Markdown
+      // Use currentSocketId from ref (always up-to-date) instead of state
       const randomNumber = Math.floor(Math.random() * 1e10);
-      const newEventId = `${socketId}-${randomNumber}`;
+      const newEventId = `${currentSocketId}-${randomNumber}`;
+      // Update both state and ref synchronously
       setEventId(newEventId);
-      console.log("EventId:", eventId, socketId);
+      eventIdRef.current = newEventId;
+      console.log("EventId:", newEventId, "SocketId:", currentSocketId);
 
       // if (!eventId) return;
 
@@ -1315,8 +1348,8 @@ const ParaphraseContend = () => {
         language: language,
         mode: selectedMode ? selectedMode.toLowerCase() : "standard",
         synonym: selectedSynonyms ? selectedSynonyms.toLowerCase() : "basic",
-        socketId,
-        eventId: eventId || newEventId,
+        socketId: currentSocketId, // Use ref value, not state
+        eventId: newEventId, // Always use the newly generated eventId
       };
 
       await paraphrased(payload).unwrap();
@@ -1885,6 +1918,8 @@ const ParaphraseContend = () => {
                   eventId={eventId}
                   setEventId={setEventId}
                   paraphraseRequestCounter={paraphraseRequestCounter}
+                  eventIdRef={eventIdRef}
+                  socketIdRef={socketIdRef}
                 />
 
                 {result?.length ? (
