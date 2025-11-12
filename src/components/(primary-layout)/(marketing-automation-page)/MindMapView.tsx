@@ -17,35 +17,24 @@ import {
   Sparkles,
 } from "lucide-react";
 import "mind-elixir/style.css";
-import dynamic from "next/dynamic";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-// Dynamically import MindElixir to avoid SSR issues
-const MindElixir = dynamic(() => import("mind-elixir"), {
-  ssr: false,
-});
-
-interface MindMapNode {
+interface MindElixirNode {
   id: string;
-  label: string;
-  type:
-    | "root"
-    | "project"
-    | "campaign"
-    | "adset"
-    | "ad"
-    | "persona"
-    | "competitor"
-    | "competitors-group"
-    | "personas-group";
-  data: Record<string, unknown>;
-  children?: MindMapNode[];
+  topic: string;
+  style?: Record<string, any>;
+  children?: MindElixirNode[];
+}
+
+interface MindElixirData {
+  nodeData: MindElixirNode;
+  linkData: Record<string, any>;
 }
 
 interface MindMapData {
   overview: string;
-  structure: MindMapNode;
+  structure: MindElixirData;
   insights: {
     totalCampaigns: number;
     totalAdSets: number;
@@ -58,51 +47,6 @@ interface MindMapData {
     description: string;
     status: "completed" | "pending" | "in_progress";
   }[];
-}
-
-interface MindElixirNode {
-  id: string;
-  topic: string;
-  style?: Record<string, any>;
-  children?: MindElixirNode[];
-  note?: string;
-}
-
-interface MindElixirData {
-  nodeData: MindElixirNode;
-  linkData?: Record<string, any>;
-}
-
-function convertToMindElixirFormat(node: MindMapNode): MindElixirNode {
-  const typeStyles = {
-    root: { background: "#000000", color: "#ffffff" },
-    project: { background: "#2563eb", color: "#ffffff" },
-    campaign: { background: "#16a34a", color: "#ffffff" },
-    adset: { background: "#f59e0b", color: "#000000" },
-    ad: { background: "#ef4444", color: "#ffffff" },
-    persona: { background: "#9333ea", color: "#ffffff" },
-    competitor: { background: "#64748b", color: "#ffffff" },
-    "competitors-group": { background: "#94a3b8", color: "#000000" },
-    "personas-group": { background: "#a855f7", color: "#ffffff" },
-  };
-
-  const converted: MindElixirNode = {
-    id: node?.id,
-    topic: node?.label,
-    style: typeStyles?.[node?.type] || {},
-    children: node?.children?.map(convertToMindElixirFormat) || [],
-  };
-
-  converted.note = JSON.stringify(
-    {
-      type: node.type,
-      data: node.data,
-    },
-    null,
-    2,
-  );
-
-  return converted;
 }
 
 export default function MindMapView() {
@@ -174,16 +118,8 @@ export default function MindMapView() {
         editable: true,
       };
 
-      const nodeData = convertToMindElixirFormat(mindMapData.structure);
-
-      // Wrap in proper MindElixirData format
-      const data: MindElixirData = {
-        nodeData: nodeData,
-        linkData: {},
-      };
-
       const mind = new MindElixirClass(options);
-      mind.init(data);
+      mind.init(mindMapData?.structure);
     });
 
     return () => {
@@ -370,7 +306,7 @@ export default function MindMapView() {
           </Card>
         )}
 
-        <div className="w-full max-w-full">
+        <div className="max-w-full overflow-hidden">
           <div
             ref={containerRef}
             key={rerenderKey}
