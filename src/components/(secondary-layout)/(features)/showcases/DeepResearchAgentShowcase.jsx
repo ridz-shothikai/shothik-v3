@@ -1109,7 +1109,7 @@ This demonstrates the power of AI-driven multi-step investigation.`;
                 gaps
               </p>
 
-              <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6 md:grid-cols-2">
+              <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6 m-cols-2"></div>
                 <div className="rounded-lg border border-green-200 bg-green-50 p-6">
                   <div className="mb-4 flex items-center space-x-3">
                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500">
@@ -1157,7 +1157,6 @@ This demonstrates the power of AI-driven multi-step investigation.`;
                 </div>
               </div>
             </div>
-          </div>
         );
 
       case "decision":

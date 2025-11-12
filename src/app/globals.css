@@ -150,3 +150,7 @@
   @import "../assets/styles/utilities/intersection-observer.css";
   @import "../assets/styles/utilities/shine.css";
 }
+
+body {
+  font-family: var(--font-manrope)!important;
+}

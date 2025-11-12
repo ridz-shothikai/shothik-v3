@@ -103,6 +103,7 @@
     "react-pdf": "^10.2.0",
     "react-redux": "^9.2.0",
     "react-resizable-panels": "^3.0.6",
+    "react-router-dom": "^7.9.5",
     "react-share": "^5.2.2",
     "react-syntax-highlighter": "^16.1.0",
     "react-toastify": "^11.0.5",

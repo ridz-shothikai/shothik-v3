@@ -66,8 +66,11 @@ export default function Footer() {
       <div className="mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-4">
           {LINKS.map((list) => (
-            <div key={list.headline} className="flex w-full flex-col gap-2">
-              <span className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+            <div
+              key={list.headline}
+              className="my-2 flex w-full flex-col gap-1"
+            >
+              <span className="text-muted-foreground my-2 text-xs font-semibold tracking-wide uppercase">
                 {list.headline}
               </span>
               {list.children.map((link) => (

@@ -14,18 +14,16 @@ export const LINKS = [
     ],
   },
   {
-    headline: "AI Agents",
-    children: [
-      { name: "Slide Generation", href: PATH_TOOLS.slide_generator },
-      { name: "Deep Research", href: PATH_TOOLS.deep_research },
-      { name: "Data Analysis", href: PATH_TOOLS.data_analysis },
-    ],
-  },
-  {
     headline: "Vibe Meta Automation",
     children: [
-      { name: "Product / Service Analysis", href: PATH_TOOLS.product_service_analysis },
-      { name: "AI Strategy Generation", href: PATH_TOOLS.ai_strategy_generation },
+      {
+        name: "Product / Service Analysis",
+        href: PATH_TOOLS.product_service_analysis,
+      },
+      {
+        name: "AI Strategy Generation",
+        href: PATH_TOOLS.ai_strategy_generation,
+      },
       { name: "AI Ad Sets", href: PATH_TOOLS.ai_ad_sets },
       { name: "AI Ad Creatives", href: PATH_TOOLS.ai_ad_creatives },
       { name: "AI Ad Copies & Ads", href: PATH_TOOLS.ai_ad_copies_ads },
@@ -34,6 +32,14 @@ export const LINKS = [
       { name: "Ad Launch & Campaigns", href: PATH_TOOLS.ad_launch_campaigns },
       { name: "Mindmap & Reports", href: PATH_TOOLS.mindmap_reports },
       { name: "AI Optimization", href: PATH_TOOLS.ai_optimization },
+    ],
+  },
+  {
+    headline: "AI Agents",
+    children: [
+      { name: "Slide Generation", href: PATH_TOOLS.slide_generator },
+      { name: "Deep Research", href: PATH_TOOLS.deep_research },
+      { name: "Data Analysis", href: PATH_TOOLS.data_analysis },
     ],
   },
   {

@@ -1,3 +1,4 @@
+"use client"
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

@@ -47,6 +47,7 @@ const navLinks = [
   { label: "About", href: "/about-us" },
   { label: "Contact", href: "/contact-us" },
   { label: "Pricing", href: "/pricing" },
+  { label: "Blogs", href: "/blogs" },
 ];
 
 const featuresMenuContent = {
@@ -200,7 +201,7 @@ export default function Header({ className, layout }) {
               />
             </div>
 
-            <div className="hidden items-center gap-1 lg:flex">
+            <div className="hidden items-center gap-1 ml-4 lg:flex">
               {/* Features Popover */}
               {/* <Popover open={featuresOpen} onOpenChange={setFeaturesOpen}>
                 <PopoverTrigger asChild>
@@ -239,7 +240,7 @@ export default function Header({ className, layout }) {
               </Popover> */}
 
               {/* Other Links */}
-              {/* {navLinks.map((link) => (
+              {navLinks.map((link) => (
                 <Button
                   key={link.label}
                   variant="ghost"
@@ -251,7 +252,7 @@ export default function Header({ className, layout }) {
                 >
                   <a href={link.href}>{link.label}</a>
                 </Button>
-              ))} */}
+              ))}
             </div>
           </div>
 

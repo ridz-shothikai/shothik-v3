@@ -330,7 +330,7 @@ const MetaAutomationAgent = () => {
             <h4 className="text-sm font-semibold text-gray-900">
               Generated Personas
             </h4>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {personas.map((p, i) => (
                 <div
                   key={i}
@@ -407,7 +407,7 @@ const MetaAutomationAgent = () => {
               <p className="mb-3 text-xs text-gray-600">
                 24 ad creative variations ready
               </p>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {[1, 2, 3, 4].map((i) => (
                   <div
                     key={i}
@@ -558,7 +558,7 @@ const MetaAutomationAgent = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="rounded border border-gray-200 bg-gray-50 p-3 text-center">
                 <p className="text-2xl font-bold text-gray-900">2.4K</p>
                 <p className="mt-1 text-xs text-gray-600">Impressions</p>
@@ -612,10 +612,10 @@ const MetaAutomationAgent = () => {
 
   if (!showModal) {
     return (
-      <div className="h-80vw flex items-center justify-center bg-white">
+      <div className="relative w-full h-[60vh] min-h-[400px] flex items-center justify-center bg-white">
         <button
           onClick={() => setShowModal(true)}
-          className="rounded-lg bg-black px-6 py-3 text-white shadow-lg transition-all hover:bg-gray-800"
+          className="rounded-lg bg-black px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base text-white shadow-lg transition-all hover:bg-gray-800"
         >
           Open Meta Automation
         </button>
@@ -627,16 +627,18 @@ const MetaAutomationAgent = () => {
     <div className="relative w-full" id="marketing-automation1">
       <div
         ref={windowRef}
-        className="z-10 flex rounded-xl border border-gray-200 bg-white shadow-2xl"
+        className="z-10 flex flex-col sm:flex-row rounded-xl border border-gray-200 bg-white shadow-2xl"
         style={{
           left: `${position.x}px`,
           top: `${position.y}px`,
-          width: "1000px",
-          maxWidth: "calc(100vw - 40px)",
+          width: "100%",
+          maxWidth: "100%",
+          height: "auto",
+          maxHeight: "90vh",
         }}
       >
         {/* Left sidebar - Process overview */}
-        <div className="w-80 rounded-xl border-r border-gray-200 bg-white">
+        <div className="w-full sm:w-80 rounded-xl sm:border-r sm:border-gray-200 bg-white border-b sm:border-b-0 border-gray-200">
           <div className="drag-handle rounded-xl border-b border-gray-200 bg-white px-4 py-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
@@ -651,7 +653,7 @@ const MetaAutomationAgent = () => {
             </div>
           </div>
 
-          <div className="h-[600px] overflow-y-auto p-4">
+          <div className="h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-y-auto p-3 sm:p-4">
             <div className="mb-6">
               <div className="mb-3 flex items-center justify-between">
                 <h3 className="text-xs font-semibold tracking-wider text-gray-500 uppercase">

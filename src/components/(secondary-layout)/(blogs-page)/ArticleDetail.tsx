@@ -1,14 +1,14 @@
-import Link from "next/link";
+import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { NewsCard } from "@/components/(secondary-layout)/(blogs-page)/NewsCard";
-import gradientBluePurple from "./../assets/blog.png";
-import gradientTeal from "./../assets/blog1.png";
-import gradientGreen from "./../assets/blog2.png";
-import gradientDark from "./../assets/blog3.png";
-import gradientPink from "./../assets/blog4.png";
-import gradientOrange from "./../assets/blog5.png";
+import gradientBluePurple from "../assets/blog.png";
+import gradientTeal from "../assets/blog1.png";
+import gradientGreen from "../assets/blog2.png";
+import gradientDark from "../assets/blog3.png";
+import gradientPink from "../assets/blog4.png";
+import gradientOrange from "../assets/blog5.png";
 
 const articles = [
   {
@@ -103,29 +103,16 @@ const articles = [
   },
 ];
 
-export default function ArticleDetail({ params }) {
-  const { slug } = params || {};
-  const id = Number(slug);
-
-  // helper to create a simple slug from title (used for friendly URLs)
-  const makeSlug = (s) =>
-    String(s) 
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-
-  // try numeric id lookup first, then fall back to matching a slugified title
-  let article = articles.find((a) => a.id === id);
-  if (!article) {
-    article = articles.find((a) => makeSlug(a.title) === String(slug));
-  }
+const ArticleDetail = () => {
+  const { id } = useParams();
+  const article = articles.find((a) => a.id === Number(id));
 
   if (!article) {
     return (
       <div className="bg-background min-h-screen">
         <div className="container max-w-4xl px-6 py-16">
           <h1 className="text-4xl font-bold">Article not found</h1>
-          <Link href="/blogs">
+          <Link to="/">
             <Button className="mt-8">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to News
@@ -149,13 +136,10 @@ export default function ArticleDetail({ params }) {
     }
   };
 
-  // resolve image import objects to a string src when necessary
-  const imgSrc = typeof article.image === 'string' ? article.image : article.image && (article.image.src || article.image.default || article.image);
-
   return (
     <div className="bg-background min-h-screen">
       <div className="container max-w-4xl px-6 py-8">
-        <Link href="/blogs">
+        <Link to="/">
           <Button variant="ghost" className="mb-8">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to News
@@ -176,7 +160,7 @@ export default function ArticleDetail({ params }) {
 
           <div className="relative mb-12 aspect-video overflow-hidden rounded-2xl">
             <img
-              src={imgSrc}
+              src={article.image.src}
               alt={article.title}
               className="h-full w-full object-cover"
             />
@@ -220,3 +204,4 @@ export default function ArticleDetail({ params }) {
   );
 };
 
+export default ArticleDetail;
