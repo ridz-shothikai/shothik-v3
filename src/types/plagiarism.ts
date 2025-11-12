@@ -39,4 +39,5 @@ export interface PlagiarismReport {
   sections: PlagiarismSection[];
   summary: PlagiarismSummary;
   flags: PlagiarismFlags;
+  analysisId?: string;
 }

@@ -35,6 +35,7 @@ export const usePlagiarismReport = (text: string) => {
   const accessToken = useSelector((state: any) => state?.auth?.accessToken);
   const cacheRef = useRef<Map<string, CacheEntry>>(new Map());
   const abortControllerRef = useRef<AbortController | null>(null);
+  const isRequestInProgressRef = useRef<boolean>(false);
 
   const [state, setState] = useState<PlagiarismState>({
     loading: false,
@@ -59,6 +60,7 @@ export const usePlagiarismReport = (text: string) => {
       abortControllerRef.current.abort();
       abortControllerRef.current = null;
     }
+    isRequestInProgressRef.current = false;
   }, []);
 
   const getCachedReport = useCallback(
@@ -118,10 +120,8 @@ export const usePlagiarismReport = (text: string) => {
         return;
       }
 
-      if (!accessToken) {
-        handleError(new UnauthorizedError("Please sign in to continue."));
-        return;
-      }
+      // Token is optional - backend supports anonymous users
+      // Only show login modal if explicitly required by backend
 
       if (!options?.forceRefresh) {
         const cachedReport = getCachedReport(trimmedText);
@@ -132,11 +132,30 @@ export const usePlagiarismReport = (text: string) => {
             error: null,
             fromCache: true,
           });
+          // Reset request in progress flag for cached results
+          isRequestInProgressRef.current = false;
           return;
         }
       }
 
-      stopActiveRequest();
+      // Prevent duplicate requests (unless force refresh)
+      // Use ref for synchronous check to avoid race conditions
+      if (isRequestInProgressRef.current && !options?.forceRefresh) {
+        console.log("[Plagiarism] Request already in progress, skipping duplicate");
+        // If already loading, don't start a new request
+        return;
+      }
+
+      // Abort any previous request before starting a new one
+      // Only abort if there's actually a previous request
+      if (abortControllerRef.current && !abortControllerRef.current.signal.aborted) {
+        console.log("[Plagiarism] Aborting previous request");
+        stopActiveRequest();
+      }
+      
+      // Mark that a request is in progress
+      isRequestInProgressRef.current = true;
+
       const abortController = new AbortController();
       abortControllerRef.current = abortController;
 
@@ -148,12 +167,21 @@ export const usePlagiarismReport = (text: string) => {
       }));
 
       try {
+        console.log("[Plagiarism] Starting scan request...", { textLength: text.length });
         const report = await analyzePlagiarism({
           text,
-          token: accessToken,
+          token: accessToken || undefined, // Pass undefined if no token (optional auth)
           signal: abortController.signal,
         });
 
+        // Check if request was aborted before updating state
+        if (abortController.signal.aborted) {
+          console.warn("[Plagiarism] Request was aborted after completion");
+          isRequestInProgressRef.current = false;
+          return;
+        }
+
+        console.log("[Plagiarism] Scan completed successfully", { report });
         upsertCache(trimmedText, report);
 
         setState({
@@ -162,13 +190,33 @@ export const usePlagiarismReport = (text: string) => {
           error: null,
           fromCache: false,
         });
+        isRequestInProgressRef.current = false;
       } catch (error) {
+        // Check if this is the current request (not a stale one)
+        if (abortControllerRef.current !== abortController) {
+          console.log("[Plagiarism] Ignoring stale request error");
+          return; // This was a stale request, ignore
+        }
+
         if ((error as Error)?.name === "AbortError") {
+          console.warn("[Plagiarism] Request was aborted");
+          // Reset state when request is aborted
+          setState((prev) => ({
+            ...prev,
+            loading: false,
+          }));
+          isRequestInProgressRef.current = false;
           return;
         }
+        
+        console.error("[Plagiarism] Scan error:", error);
+        isRequestInProgressRef.current = false;
         handleError(error);
       } finally {
-        abortControllerRef.current = null;
+        // Only clear if this is still the current request
+        if (abortControllerRef.current === abortController) {
+          abortControllerRef.current = null;
+        }
       }
     },
     [
@@ -177,17 +225,22 @@ export const usePlagiarismReport = (text: string) => {
       handleError,
       normalizedText,
       resetState,
+      state.loading,
       stopActiveRequest,
       text,
       upsertCache,
     ],
   );
 
+  // Only cleanup on unmount, not on every render
   useEffect(() => {
     return () => {
-      stopActiveRequest();
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+        abortControllerRef.current = null;
+      }
     };
-  }, [stopActiveRequest]);
+  }, []); // Empty deps - only run on mount/unmount
 
   return {
     loading: state.loading,

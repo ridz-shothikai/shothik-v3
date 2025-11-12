@@ -6,8 +6,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { PlagiarismSection } from "@/types/plagiarism";
-import { getSimilarityTone } from "@/utils/plagiarism/riskHelpers";
-import { ExternalLink, LinkIcon } from "lucide-react";
+import { getSimilarityTone, getSimilarityColor } from "@/utils/plagiarism/riskHelpers";
+import { ExternalLink, LinkIcon, AlertCircle, CheckCircle2 } from "lucide-react";
 
 interface ReportSectionItemProps {
   section: PlagiarismSection;
@@ -18,97 +18,261 @@ const ReportSectionItem = ({ section, index }: ReportSectionItemProps) => {
   const sources = section.sources ?? [];
   const primarySource = sources[0];
   const similarityTone = getSimilarityTone(section.similarity);
+  const similarityColor = getSimilarityColor(section.similarity);
+  const isHighRisk = section.similarity >= 75;
+  const isMediumRisk = section.similarity >= 50 && section.similarity < 75;
 
   return (
     <AccordionItem
       value={`section-${index}`}
-      className="bg-card/40 overflow-hidden rounded-xl border backdrop-blur"
+      className={cn(
+        "overflow-hidden rounded-xl border border-b last:!border-b backdrop-blur transition-all",
+        isHighRisk
+          ? "bg-rose-50/50 dark:bg-rose-950/20 border-rose-200 dark:border-rose-800"
+          : isMediumRisk
+            ? "bg-amber-50/50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800"
+            : "bg-card/40 border-border"
+      )}
     >
-      <AccordionTrigger className="hover:bg-muted/50 px-4 py-3">
-        <div className="flex w-full items-center gap-3 text-left">
-          <span className={cn("text-sm font-semibold", similarityTone)}>
-            {section.similarity}%
-          </span>
-          <div className="flex-1 space-y-1">
-            <p className="text-foreground text-sm font-semibold">
-              {primarySource?.title || "Possible paraphrased section"}
-            </p>
-            <p className="text-muted-foreground line-clamp-1 text-xs">
-              {primarySource?.url || "Source details unavailable"}
-            </p>
-          </div>
-          <Badge variant="secondary" className="hidden text-xs sm:inline-flex">
-            {sources.length} {sources.length === 1 ? "source" : "sources"}
-          </Badge>
-        </div>
-      </AccordionTrigger>
-      <AccordionContent className="px-4 pb-4">
-        <div className="space-y-4 text-sm">
-          <div className="bg-muted/40 text-foreground rounded-lg border p-3">
-            <p className="text-muted-foreground mb-1 font-medium">
-              Detected excerpt
-            </p>
-            <p className="leading-relaxed">
-              {section.excerpt || "Excerpt unavailable."}
-            </p>
+      <AccordionTrigger className="hover:bg-muted/50 px-4 py-4">
+        <div className="flex w-full items-start gap-4 text-left">
+          {/* Similarity Percentage Badge */}
+          <div className="flex flex-col items-center gap-1 min-w-[70px]">
+            <div
+              className={cn(
+                "flex h-14 w-14 items-center justify-center rounded-full border-2 font-bold text-lg",
+                similarityColor.bg,
+                similarityColor.text,
+                similarityColor.border
+              )}
+            >
+              {section.similarity}%
+            </div>
+            <span className={cn("text-xs font-medium", similarityTone)}>
+              Similarity
+            </span>
           </div>
 
+          {/* Content Preview */}
+          <div className="flex-1 space-y-2 min-w-0">
+            <div className="flex items-start gap-2">
+              {isHighRisk ? (
+                <AlertCircle className="text-rose-600 dark:text-rose-400 mt-0.5 size-4 flex-shrink-0" />
+              ) : (
+                <CheckCircle2 className="text-emerald-600 dark:text-emerald-400 mt-0.5 size-4 flex-shrink-0" />
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="text-foreground text-sm font-semibold line-clamp-2">
+                  {primarySource?.title || "Possible paraphrased section"}
+                </p>
+                {section.excerpt && (
+                  <p className="text-muted-foreground mt-1 line-clamp-2 text-xs leading-relaxed">
+                    {section.excerpt}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <Badge
+                variant="secondary"
+                className={cn(
+                  "text-xs",
+                  isHighRisk && "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300",
+                  isMediumRisk && "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
+                )}
+              >
+                {sources.length} {sources.length === 1 ? "source" : "sources"}
+              </Badge>
+              {primarySource?.url && (
+                <a
+                  href={primarySource.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary inline-flex items-center gap-1 text-xs hover:underline"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <LinkIcon className="size-3" />
+                  View source
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </AccordionTrigger>
+      <AccordionContent className="px-4 pb-4 pt-2">
+        <div className="space-y-4 text-sm">
+          {/* Matched Content Section - Highlighted in Red */}
+          <div className={cn(
+            "rounded-lg border-2 p-4",
+            isHighRisk 
+              ? "bg-rose-50/80 dark:bg-rose-950/30 border-rose-300 dark:border-rose-800"
+              : isMediumRisk
+                ? "bg-amber-50/80 dark:bg-amber-950/30 border-amber-300 dark:border-amber-800"
+                : "bg-muted/60 dark:bg-muted/40 border-border"
+          )}>
+            <div className="mb-3 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className={cn(
+                  "h-2 w-2 rounded-full",
+                  isHighRisk ? "bg-rose-600 dark:bg-rose-400"
+                  : isMediumRisk ? "bg-amber-600 dark:bg-amber-400"
+                  : "bg-emerald-600 dark:bg-emerald-400"
+                )} />
+                <p className="text-foreground font-semibold">Matched Content</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className={cn(
+                  "h-2.5 w-28 rounded-full overflow-hidden",
+                  isHighRisk ? "bg-rose-200 dark:bg-rose-900/50" : isMediumRisk ? "bg-amber-200 dark:bg-amber-900/50" : "bg-muted"
+                )}>
+                  <div 
+                    className={cn(
+                      "h-full transition-all rounded-full",
+                      isHighRisk ? "bg-rose-600 dark:bg-rose-500" : isMediumRisk ? "bg-amber-600 dark:bg-amber-500" : "bg-primary"
+                    )}
+                    style={{ width: `${section.similarity}%` }}
+                  />
+                </div>
+                <span className={cn("text-sm font-bold", similarityTone)}>
+                  {section.similarity}% match
+                </span>
+              </div>
+            </div>
+            <div className={cn(
+              "rounded-md border p-3.5",
+              isHighRisk 
+                ? "bg-rose-100/50 dark:bg-rose-900/20 border-rose-200 dark:border-rose-800"
+                : isMediumRisk
+                  ? "bg-amber-100/50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800"
+                  : "bg-background/60 border-border"
+            )}>
+              <p className={cn(
+                "leading-relaxed whitespace-pre-wrap",
+                isHighRisk && "text-rose-950 dark:text-rose-50",
+                isMediumRisk && "text-amber-950 dark:text-amber-50",
+                !isHighRisk && !isMediumRisk && "text-foreground"
+              )}>
+                {section.excerpt || "Excerpt unavailable."}
+              </p>
+            </div>
+          </div>
+
+          {/* Sources Section */}
           <div className="space-y-3">
-            <p className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
-              Matched sources
-            </p>
+            <div className="flex items-center justify-between">
+              <p className="text-foreground font-semibold">
+                Matched Sources ({sources.length})
+              </p>
+              <p className="text-muted-foreground text-xs">
+                Click to visit source
+              </p>
+            </div>
             {sources.length === 0 ? (
-              <div className="text-muted-foreground rounded-md border border-dashed p-3 text-xs">
+              <div className="text-muted-foreground rounded-md border border-dashed p-4 text-center text-xs">
                 No source metadata provided.
               </div>
             ) : (
-              <ul className="space-y-3">
-                {sources.map((source, sourceIndex) => (
-                  <li
-                    key={`${source.url}-${sourceIndex}`}
-                    className="bg-background/60 rounded-lg border p-3 shadow-sm transition hover:shadow-md"
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div>
-                        <p className="text-foreground text-sm font-medium">
-                          {source.title || "Unknown source"}
-                        </p>
-                        <a
-                          href={source.url || undefined}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary mt-1 inline-flex items-center gap-1 text-xs hover:underline"
-                        >
-                          {source.url ? (
-                            <>
-                              <LinkIcon className="size-3" />
-                              Visit source
+              <div className="space-y-3">
+                {sources.map((source, sourceIndex) => {
+                  const sourceSimilarity = source.similarity ?? 0;
+                  const sourceTone = getSimilarityTone(sourceSimilarity);
+                  const sourceColor = getSimilarityColor(sourceSimilarity);
+                  
+                  return (
+                    <div
+                      key={`${source.url}-${sourceIndex}`}
+                      className="bg-background/80 dark:bg-background/60 rounded-lg border p-4 shadow-sm transition-all hover:shadow-md hover:border-primary/30"
+                    >
+                      {/* Source Header */}
+                      <div className="mb-3 flex items-start justify-between gap-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="mb-2 flex items-center gap-2">
+                            <div
+                              className={cn(
+                                "flex h-8 w-8 items-center justify-center rounded-full border font-semibold text-xs",
+                                sourceColor.bg,
+                                sourceColor.text,
+                                sourceColor.border
+                              )}
+                            >
+                              {sourceSimilarity}%
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-foreground font-semibold line-clamp-2">
+                                {source.title || "Unknown source"}
+                              </p>
+                            </div>
+                          </div>
+                          {source.url && (
+                            <a
+                              href={source.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-primary inline-flex items-center gap-1.5 text-xs font-medium hover:underline"
+                            >
+                              <LinkIcon className="size-3.5" />
+                              <span className="line-clamp-1">{source.url}</span>
                               <ExternalLink className="size-3" />
-                            </>
-                          ) : (
-                            "Source link unavailable"
+                            </a>
                           )}
-                        </a>
+                        </div>
                       </div>
-                      <span
-                        className={cn(
-                          "text-xs font-semibold",
-                          getSimilarityTone(source.similarity ?? 0),
+
+                      {/* Source Snippet */}
+                      {source.snippet && (
+                        <div className="bg-muted/40 rounded-md border-l-2 border-l-primary/30 p-3">
+                          <p className="text-muted-foreground text-xs leading-relaxed line-clamp-3">
+                            {source.snippet}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Source Details */}
+                      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+                        {source.matchType && (
+                          <Badge variant="outline" className="text-xs">
+                            {source.matchType}
+                          </Badge>
                         )}
-                      >
-                        {source.similarity != null
-                          ? `${source.similarity}%`
-                          : "—"}
-                      </span>
+                        {source.confidence && (
+                          <Badge
+                            variant="outline"
+                            className={cn(
+                              "text-xs",
+                              source.confidence === "high" &&
+                                "border-rose-200 text-rose-700 dark:border-rose-800 dark:text-rose-300",
+                              source.confidence === "medium" &&
+                                "border-amber-200 text-amber-700 dark:border-amber-800 dark:text-amber-300"
+                            )}
+                          >
+                            {source.confidence} confidence
+                          </Badge>
+                        )}
+                        {source.isPlagiarism && (
+                          <Badge
+                            variant="destructive"
+                            className="text-xs"
+                          >
+                            Plagiarism detected
+                          </Badge>
+                        )}
+                      </div>
+
+                      {/* Reason (if available) */}
+                      {source.reason && (
+                        <details className="mt-3">
+                          <summary className="text-muted-foreground cursor-pointer text-xs font-medium hover:text-foreground">
+                            View analysis reason
+                          </summary>
+                          <p className="text-muted-foreground mt-2 rounded-md bg-muted/40 p-2 text-xs leading-relaxed">
+                            {source.reason}
+                          </p>
+                        </details>
+                      )}
                     </div>
-                    {source.snippet ? (
-                      <p className="text-muted-foreground mt-2 text-xs leading-relaxed">
-                        {source.snippet}
-                      </p>
-                    ) : null}
-                  </li>
-                ))}
-              </ul>
+                  );
+                })}
+              </div>
             )}
           </div>
         </div>

@@ -33,8 +33,14 @@ const buildDecorationSet = (
     )
     .map((range) => {
       const level = similarityLevel(range.similarity ?? 0);
+      // Use Tailwind classes for highlighting - Red for high similarity (most prominent)
+      const highlightClasses = {
+        high: "plagiarism-highlight bg-rose-500/50 dark:bg-rose-500/40 text-rose-950 dark:text-rose-50 border-b-2 border-rose-700 dark:border-rose-500 rounded-sm px-1 py-0.5 font-semibold shadow-sm",
+        medium: "plagiarism-highlight bg-amber-500/45 dark:bg-amber-500/35 text-amber-950 dark:text-amber-50 border-b-2 border-amber-600 dark:border-amber-400 rounded-sm px-1 py-0.5 font-medium",
+        low: "plagiarism-highlight bg-emerald-500/35 dark:bg-emerald-500/25 text-emerald-950 dark:text-emerald-50 border-b border-emerald-600 dark:border-emerald-400 rounded-sm px-1 py-0.5",
+      };
       return Decoration.inline(range.from, range.to, {
-        class: `plagiarism-highlight plagiarism-highlight--${level}`,
+        class: highlightClasses[level],
         "data-similarity": range.similarity?.toString() ?? "0",
         "data-highlight-level": level,
       });
