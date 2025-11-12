@@ -42,7 +42,7 @@ import {
   Send,
   User,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface Attachment {
   type: string;
@@ -211,7 +211,6 @@ const ConversationItem = ({
 };
 
 export const MessengerInbox = () => {
-  const router = useRouter();
   const { data: metaData, isLoading: metaLoading } = useMetaData();
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
   const [selectedConversation, setSelectedConversation] = useState<
@@ -350,12 +349,11 @@ export const MessengerInbox = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="flex justify-center">
-            <Button
-              onClick={() => router.push("/marketing-automation/analysis")}
-              className="rounded-xl px-4 py-2 text-sm md:px-6 md:py-3 md:text-base"
-            >
-              Connect Meta Account
-            </Button>
+            <Link href="/marketing-automation/analysis">
+              <Button className="rounded-xl px-4 py-2 text-sm md:px-6 md:py-3 md:text-base">
+                Connect Meta Account
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
@@ -369,15 +367,16 @@ export const MessengerInbox = () => {
       <div className="border-border bg-background/80 h-12 border-b px-3 backdrop-blur-xl md:h-16 md:px-6">
         <div className="flex h-full items-center justify-between gap-2">
           <div className="flex items-center gap-2 md:gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              title="Back to Campaign"
-              onClick={() => router.push("/marketing-automation/analysis")}
-              className="h-8 w-8 md:h-10 md:w-10"
-            >
-              <ArrowLeft className="size-4 md:size-5" />
-            </Button>
+            <Link href="/marketing-automation/analysis">
+              <Button
+                variant="ghost"
+                size="icon"
+                title="Back to Campaign"
+                className="h-8 w-8 md:h-10 md:w-10"
+              >
+                <ArrowLeft className="size-4 md:size-5" />
+              </Button>
+            </Link>
             <div className="flex items-center gap-2 md:gap-3">
               <div className="border-primary/30 bg-primary/10 flex h-8 w-8 items-center justify-center rounded-xl border md:h-10 md:w-10">
                 <MessageSquare className="text-primary h-4 w-4 md:h-5 md:w-5" />

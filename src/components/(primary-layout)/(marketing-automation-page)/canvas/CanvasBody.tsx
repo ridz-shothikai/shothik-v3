@@ -27,7 +27,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import AdPreviewModal from "./AdPreviewModal";
 import AdSetsTab from "./AdSetsTab";
 import AdsTab from "./AdsTab";
@@ -54,7 +55,6 @@ export default function CanvasBody({
   loadingSuggestions = false,
 }: CanvasBodyProps) {
   const { projectId } = useParams<{ projectId: string }>();
-  const router = useRouter();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [adSets, setAdSets] = useState<AdSet[]>([]);
   const [ads, setAds] = useState<Ad[]>([]);
@@ -468,15 +468,12 @@ export default function CanvasBody({
         {/* Publish Ads Button - Only show when ads tab is active and there are ads */}
         {activeTab === "ads" && ads.length > 0 && (
           <div className="mb-6 flex justify-end">
-            <Button
-              onClick={() =>
-                router.push(`/marketing-automation/canvas/${projectId}/publish`)
-              }
-              className="flex items-center gap-2"
-            >
-              <Wand2 className="h-4 w-4" />
-              Publish Ads
-            </Button>
+            <Link href={`/marketing-automation/canvas/${projectId}/publish`}>
+              <Button className="flex items-center gap-2">
+                <Wand2 className="h-4 w-4" />
+                Publish Ads
+              </Button>
+            </Link>
           </div>
         )}
 

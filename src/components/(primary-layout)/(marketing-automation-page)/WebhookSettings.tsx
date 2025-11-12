@@ -11,11 +11,9 @@ import {
   MessageSquare,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { WebhookManager } from "./WebhookManager";
 
 export const WebhookSettings = () => {
-  const router = useRouter();
   const { data: metaData, isLoading } = useMetaData();
 
   if (isLoading) {
@@ -49,11 +47,9 @@ export const WebhookSettings = () => {
               You need to connect your Meta (Facebook) account before managing
               Messenger webhooks.
             </p>
-            <Button asChild className="w-full">
-              <Link href="/marketing-automation/analysis">
-                Connect Meta Account
-              </Link>
-            </Button>
+            <Link href="/marketing-automation/analysis" className="w-full">
+              <Button className="w-full">Connect Meta Account</Button>
+            </Link>
           </Card>
         </div>
       </div>
@@ -69,14 +65,15 @@ export const WebhookSettings = () => {
 
       <div className="relative container mx-auto px-4 py-6 md:px-6">
         {/* Back Button */}
-        <Button
-          onClick={() => router.push("/marketing-automation/analysis")}
-          variant="ghost"
-          className="mb-6"
-        >
-          <ArrowLeft className="size-5" />
-          <span className="text-sm">Back to Analysis</span>
-        </Button>
+        <Link href="/marketing-automation/analysis">
+          <Button
+            variant="ghost"
+            className="mb-6"
+          >
+            <ArrowLeft className="size-5" />
+            <span className="text-sm">Back to Analysis</span>
+          </Button>
+        </Link>
 
         {/* Header */}
         <div className="mb-6 h-12 md:h-16">

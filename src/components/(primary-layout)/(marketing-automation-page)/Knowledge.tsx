@@ -19,7 +19,7 @@ import {
   Loader2,
   Wrench,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useState } from "react";
 import { CustomToolsTab } from "./Knowledge/CustomToolsTab";
 import { TextKnowledgeTab } from "./Knowledge/TextKnowledgeTab";
@@ -28,7 +28,6 @@ import { WebsiteKnowledgeTab } from "./Knowledge/WebsiteKnowledgeTab";
 type TabType = "website" | "text" | "tools";
 
 export const Knowledge = () => {
-  const router = useRouter();
   const { data: metaData, isLoading: metaLoading } = useMetaData();
   const [activeTab, setActiveTab] = useState<TabType>("website");
   const [selectedPage, setSelectedPage] = useState<string>("");
@@ -54,11 +53,9 @@ export const Knowledge = () => {
             <p className="text-muted-foreground mb-6">
               Connect your Facebook account to start building knowledge base.
             </p>
-            <Button
-              onClick={() => router.push("/marketing-automation/analysis")}
-            >
-              Connect Meta Account
-            </Button>
+            <Link href="/marketing-automation/analysis">
+              <Button>Connect Meta Account</Button>
+            </Link>
           </Card>
         </div>
       </div>
@@ -75,14 +72,15 @@ export const Knowledge = () => {
         <div className="border-border bg-background/90 h-12 border-b px-4 backdrop-blur-sm md:h-16 md:px-6">
           <div className="flex h-full items-center justify-between">
             <div className="flex items-center gap-2">
-              <Button
-                title="Back to Campaign"
-                onClick={() => router.push("/marketing-automation/analysis")}
-                variant="ghost"
-                size="icon"
-              >
-                <ArrowLeft className="size-5" />
-              </Button>
+              <Link href="/marketing-automation/analysis">
+                <Button
+                  title="Back to Campaign"
+                  variant="ghost"
+                  size="icon"
+                >
+                  <ArrowLeft className="size-5" />
+                </Button>
+              </Link>
               <div className="flex items-center gap-2">
                 <div className="border-border bg-primary/20 hidden size-8 items-center justify-center rounded-lg border md:flex">
                   <BookOpen className="text-primary h-5 w-5" />

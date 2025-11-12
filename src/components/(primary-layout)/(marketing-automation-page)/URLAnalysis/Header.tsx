@@ -12,7 +12,7 @@ import {
   MessageSquare,
   User as UserIcon,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useState } from "react";
 
 interface MetaUserData {
@@ -59,7 +59,6 @@ export default function Header({
   onMetaConnect,
   onMetaDisconnect,
 }: HeaderProps) {
-  const router = useRouter();
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, right: 0 });
 
@@ -105,39 +104,40 @@ export default function Header({
                   )}
                 </Button>
               </div>
-              <Button
-                onClick={() => router.push(`/marketing-automation/webhooks`)}
-                variant="outline"
-                className="flex items-center gap-2"
-                title="Open Messenger Inbox"
-              >
-                <MessageSquare className="h-4 w-4" />
-                <span className="hidden text-sm sm:inline">
-                  Messenger Connect
-                </span>
-              </Button>
-              <Button
-                onClick={() => router.push(`/marketing-automation/messenger`)}
-                variant="outline"
-                className="flex items-center gap-2"
-                title="Open Messenger Inbox"
-              >
-                <MessageSquare className="h-4 w-4" />
-                <span className="hidden text-sm sm:inline">Messenger</span>
-              </Button>
+              <Link href="/marketing-automation/webhooks">
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2"
+                  title="Open Messenger Inbox"
+                >
+                  <MessageSquare className="h-4 w-4" />
+                  <span className="hidden text-sm sm:inline">
+                    Messenger Connect
+                  </span>
+                </Button>
+              </Link>
+              <Link href="/marketing-automation/messenger">
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2"
+                  title="Open Messenger Inbox"
+                >
+                  <MessageSquare className="h-4 w-4" />
+                  <span className="hidden text-sm sm:inline">Messenger</span>
+                </Button>
+              </Link>
 
               {/* Knowledge Button */}
-              <Button
-                onClick={() =>
-                  router.push(`/marketing-automation/chat-knowledge`)
-                }
-                variant="outline"
-                className="flex items-center gap-2"
-                title="Knowledge Base"
-              >
-                <BookOpen className="h-4 w-4" />
-                <span className="hidden text-sm sm:inline">Knowledge</span>
-              </Button>
+              <Link href="/marketing-automation/chat-knowledge">
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2"
+                  title="Knowledge Base"
+                >
+                  <BookOpen className="h-4 w-4" />
+                  <span className="hidden text-sm sm:inline">Knowledge</span>
+                </Button>
+              </Link>
             </>
           ) : (
             <Button

@@ -19,6 +19,7 @@ import {
   Send,
   Sparkles,
 } from "lucide-react";
+import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -272,17 +273,16 @@ export default function AIInsights() {
             <div className="border-border bg-background/90 sticky top-0 z-10 flex h-12 items-center justify-center border-b backdrop-blur-sm md:h-16">
               <div className="flex h-full w-full items-center justify-between px-4 md:px-6">
                 <div className="flex items-center gap-2">
-                  <Button
-                    onClick={() =>
-                      router.push("/marketing-automation/analysis")
-                    }
-                    variant="ghost"
-                    size="icon"
-                    aria-label="Go back to analysis"
-                    title="Go back to analysis"
-                  >
-                    <ArrowLeft className="size-5" />
-                  </Button>
+                  <Link href="/marketing-automation/analysis">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label="Go back to analysis"
+                      title="Go back to analysis"
+                    >
+                      <ArrowLeft className="size-5" />
+                    </Button>
+                  </Link>
                   <div className="flex items-center gap-2">
                     <MascotIcon className="size-8" />
                     <div>

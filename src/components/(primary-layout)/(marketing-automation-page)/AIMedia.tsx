@@ -17,6 +17,7 @@ import {
   useRouter,
   useSearchParams,
 } from "next/navigation";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import AIShortsSection from "./AIMedia/AIShortsSection";
@@ -131,12 +132,14 @@ export default function AIMedia() {
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-3">
               <Button
-                onClick={() => router.push("/marketing-automation/analysis")}
+                asChild
                 variant="ghost"
                 size="icon"
                 aria-label="Back to analysis"
               >
-                <ArrowLeft className="size-5" />
+                <Link href="/marketing-automation/analysis">
+                  <ArrowLeft className="size-5" />
+                </Link>
               </Button>
               <h1 className="text-foreground text-xl font-semibold">
                 AI Media Studio

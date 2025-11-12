@@ -17,7 +17,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import "mind-elixir/style.css";
-import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 interface MindElixirNode {
@@ -54,8 +55,6 @@ export default function MindMapView() {
     analysisId: string;
     mindMapId?: string;
   }>();
-
-  const router = useRouter();
 
   const [mindMapData, setMindMapData] = useState<MindMapData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -171,9 +170,9 @@ export default function MindMapView() {
           <p className="text-destructive mb-4">
             {error || "Failed to load mind map"}
           </p>
-          <Button onClick={() => router.push("/marketing-automation/analysis")}>
-            Back to Projects
-          </Button>
+          <Link href="/marketing-automation/analysis">
+            <Button>Back to Projects</Button>
+          </Link>
         </div>
       </div>
     );
@@ -184,16 +183,11 @@ export default function MindMapView() {
       <div className="border-border bg-background/90 sticky top-0 z-20 h-12 border-b px-4 backdrop-blur-sm md:h-16 md:px-6">
         <div className="flex h-full items-center justify-between">
           <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              title="Back to Campaign"
-              onClick={() =>
-                router.push(`/marketing-automation/insights/${analysisId}`)
-              }
-            >
-              <ArrowLeft className="size-5" />
-            </Button>
+            <Link href={`/marketing-automation/insights/${analysisId}`}>
+              <Button variant="ghost" size="icon" title="Back to Campaign">
+                <ArrowLeft className="size-5" />
+              </Button>
+            </Link>
             <div>
               <h1 className="text-xl font-bold">Campaign Mind Map</h1>
               <p className="text-muted-foreground hidden text-xs md:block">

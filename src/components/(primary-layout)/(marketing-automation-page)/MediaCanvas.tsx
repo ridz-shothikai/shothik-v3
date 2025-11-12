@@ -20,6 +20,7 @@ import {
   Wand2,
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import ImageCanvas from "./canvas/ImageCanvas";
 import VideoCanvas from "./canvas/VideoCanvas";
@@ -223,13 +224,9 @@ export default function MediaCanvas() {
       <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <div className="text-center">
           <p className="text-foreground mb-4 text-lg">Ad not found</p>
-          <Button
-            onClick={() =>
-              router.push(`/marketing-automation/canvas/${projectId}`)
-            }
-          >
-            Back to Canvas
-          </Button>
+          <Link href={`/marketing-automation/canvas/${projectId}`}>
+            <Button>Back to Canvas</Button>
+          </Link>
         </div>
       </div>
     );
@@ -240,16 +237,15 @@ export default function MediaCanvas() {
       <div className="border-border bg-background/90 sticky top-0 z-10 h-12 border-b backdrop-blur-lg md:h-16">
         <div className="flex h-full items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              title="Back to Campaign"
-              onClick={() =>
-                router.push(`/marketing-automation/canvas/${projectId}`)
-              }
-            >
-              <ArrowLeft className="size-5" />
-            </Button>
+            <Link href={`/marketing-automation/canvas/${projectId}`}>
+              <Button
+                variant="ghost"
+                size="icon"
+                title="Back to Campaign"
+              >
+                <ArrowLeft className="size-5" />
+              </Button>
+            </Link>
             <div className="flex items-center gap-3">
               <div className="bg-primary rounded-lg p-2">
                 <Wand2 className="text-primary-foreground h-6 w-6" />

@@ -13,6 +13,7 @@ import {
   Palette,
   Trash2,
 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 interface Project {
@@ -33,7 +34,6 @@ interface ProjectsGridProps {
   loadingProjects: boolean;
   deletingProject: string | null;
   onDeleteProject: (projectId: string, e: React.MouseEvent) => void;
-  onProjectClick: (project: Project) => void;
 }
 
 export default function ProjectsGrid({
@@ -41,7 +41,6 @@ export default function ProjectsGrid({
   loadingProjects,
   deletingProject,
   onDeleteProject,
-  onProjectClick,
 }: ProjectsGridProps) {
   const router = useRouter();
 
@@ -134,64 +133,56 @@ export default function ProjectsGrid({
                   </div>
 
                   <div className="mt-4 flex flex-wrap items-center justify-center gap-2 transition-all group-hover:opacity-100">
-                    <Button
-                      onClick={() => onProjectClick(project)}
-                      variant="outline"
-                      size="sm"
-                      className="flex items-center gap-1.5"
-                      title="Open in Canvas"
+                    <Link href={`/marketing-automation/canvas/${project._id}`}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex items-center gap-1.5"
+                        title="Open in Canvas"
+                      >
+                        <Palette className="h-3.5 w-3.5" />
+                        Canvas
+                      </Button>
+                    </Link>
+                    <Link
+                      href={`/marketing-automation/dashboard/${project._id}`}
                     >
-                      <Palette className="h-3.5 w-3.5" />
-                      Canvas
-                    </Button>
-                    <Button
-                      onClick={() =>
-                        router.push(
-                          `/marketing-automation/dashboard/${project._id}`,
-                        )
-                      }
-                      variant="outline"
-                      size="sm"
-                      className="flex items-center gap-1.5"
-                      title="View Dashboard"
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex items-center gap-1.5"
+                        title="View Dashboard"
+                      >
+                        <LayoutDashboard className="h-3.5 w-3.5" />
+                        Dashboard
+                      </Button>
+                    </Link>
+                    <Link
+                      href={`/marketing-automation/insights/${project.analysis_id}?state=${encodeURIComponent(
+                        JSON.stringify({ projectId: project._id }),
+                      )}`}
                     >
-                      <LayoutDashboard className="h-3.5 w-3.5" />
-                      Dashboard
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        const state = {
-                          projectId: project._id,
-                        };
-                        const encodedState = encodeURIComponent(
-                          JSON.stringify(state),
-                        );
-                        router.push(
-                          `/marketing-automation/insights/${project.analysis_id}?state=${encodedState}`,
-                        );
-                      }}
-                      variant="outline"
-                      size="sm"
-                      className="flex items-center gap-1.5"
-                      title="AI Insights"
-                    >
-                      <Lightbulb className="h-3.5 w-3.5" />
-                      Insights
-                    </Button>
-                    <Button
-                      onClick={() =>
-                        router.push(
-                          `/marketing-automation/media/${project._id}`,
-                        )
-                      }
-                      variant="outline"
-                      size="sm"
-                      className="flex items-center gap-1.5"
-                      title="AI Media"
-                    >
-                      <Image className="h-3.5 w-3.5" />
-                      Media
-                    </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex items-center gap-1.5"
+                        title="AI Insights"
+                      >
+                        <Lightbulb className="h-3.5 w-3.5" />
+                        Insights
+                      </Button>
+                    </Link>
+                    <Link href={`/marketing-automation/media/${project._id}`}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex items-center gap-1.5"
+                        title="AI Media"
+                      >
+                        <Image className="h-3.5 w-3.5" />
+                        Media
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>

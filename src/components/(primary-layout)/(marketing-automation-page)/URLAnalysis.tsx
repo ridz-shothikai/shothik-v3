@@ -120,11 +120,6 @@ export default function URLAnalysis() {
     deleteProjectMutation.mutate(projectId);
   };
 
-  const handleProjectClick = async (project: Project) => {
-    // Navigate with project ID in URL
-    router.push(`/marketing-automation/canvas/${project._id}`);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsAnalyzing(true);
@@ -262,7 +257,7 @@ export default function URLAnalysis() {
       <div className="border-border/50 absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,black_70%,transparent_110%)] bg-size-[4rem_4rem] opacity-5"></div>
 
       {/* Main Content */}
-      <div className="relative mx-auto container px-4 py-6">
+      <div className="relative container mx-auto px-4 py-6">
         {/* Header */}
         <Header
           metaConnected={!!metaUserData}
@@ -315,7 +310,6 @@ export default function URLAnalysis() {
               : null
           }
           onDeleteProject={handleDeleteProject}
-          onProjectClick={handleProjectClick}
         />
       </div>
     </div>

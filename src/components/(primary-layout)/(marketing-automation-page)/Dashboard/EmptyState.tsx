@@ -3,10 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Target } from "lucide-react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function EmptyState() {
-  const router = useRouter();
 
   return (
     <Card className="container mx-auto my-auto p-12 text-center">
@@ -20,9 +19,9 @@ export default function EmptyState() {
         Publish your first campaign to Meta to see performance insights and
         AI-powered optimization suggestions.
       </p>
-      <Button onClick={() => router.push("/marketing-automation/analysis")}>
-        Go to Projects
-      </Button>
+      <Link href="/marketing-automation/analysis">
+        <Button>Go to Projects</Button>
+      </Link>
     </Card>
   );
 }

@@ -29,6 +29,7 @@ import {
   Users,
 } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface FacebookUser {
@@ -87,7 +88,6 @@ interface FacebookData {
 export default function FacebookAccountSelectionScreen() {
   const { projectId } = useParams<{ projectId: string }>();
   const router = useRouter();
-
   const searchParams = useSearchParams();
   const state = getRouteState(searchParams);
 
@@ -458,14 +458,12 @@ export default function FacebookAccountSelectionScreen() {
           <p className="text-muted-foreground mb-6 text-sm">
             Please connect your Facebook account first
           </p>
-          <Button
-            onClick={() =>
-              router.push(`/marketing-automation/canvas/${projectId}`)
-            }
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Campaign
-          </Button>
+            <Link href={`/marketing-automation/canvas/${projectId}`}>
+              <Button>
+                <ArrowLeft className="h-4 w-4" />
+                Back to Campaign
+              </Button>
+            </Link>
         </div>
       </div>
     );
@@ -476,16 +474,15 @@ export default function FacebookAccountSelectionScreen() {
       <div className="border-border bg-background/90 sticky top-0 z-10 h-12 border-b backdrop-blur-sm md:h-16">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              title="Back to Campaign"
-              onClick={() =>
-                router.push(`/marketing-automation/canvas/${projectId}/publish`)
-              }
-            >
-              <ArrowLeft className="size-5" />
-            </Button>
+            <Link href={`/marketing-automation/canvas/${projectId}/publish`}>
+              <Button
+                variant="ghost"
+                size="icon"
+                title="Back to Campaign"
+              >
+                <ArrowLeft className="size-5" />
+              </Button>
+            </Link>
             <div>
               <h1 className="text-foreground flex items-center gap-2 text-xl font-bold">
                 <Globe className="text-primary size-5" />

@@ -28,6 +28,7 @@ import {
   Wand2,
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function PublishAdsScreen() {
@@ -111,16 +112,15 @@ export default function PublishAdsScreen() {
         <div className="container mx-auto px-4 py-4 md:px-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                title="Back to Campaign"
-                onClick={() =>
-                  router.push(`/marketing-automation/canvas/${projectId}`)
-                }
-              >
-                <ArrowLeft className="size-5" />
-              </Button>
+              <Link href={`/marketing-automation/canvas/${projectId}`}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  title="Back to Campaign"
+                >
+                  <ArrowLeft className="size-5" />
+                </Button>
+              </Link>
               <div>
                 <h1 className="flex items-center gap-2 text-xl font-bold">
                   <Send className="text-primary h-5 w-5" />
@@ -147,15 +147,12 @@ export default function PublishAdsScreen() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button
-                onClick={() =>
-                  router.push(`/marketing-automation/canvas/${projectId}`)
-                }
-                className="mx-auto"
-              >
-                <ArrowLeft className="size-5" />
-                Back to Campaign
-              </Button>
+              <Link href={`/marketing-automation/canvas/${projectId}`} className="mx-auto">
+                <Button className="mx-auto">
+                  <ArrowLeft className="size-5" />
+                  Back to Campaign
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         ) : (
