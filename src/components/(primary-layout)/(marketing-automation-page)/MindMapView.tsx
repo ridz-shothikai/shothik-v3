@@ -306,12 +306,12 @@ export default function MindMapView() {
           </Card>
         )}
 
-        <div className="max-w-full overflow-hidden">
+        <div className="h-[calc(100vh-10rem)] max-w-full overflow-hidden rounded-xl">
           <div
             ref={containerRef}
             key={rerenderKey}
             style={{
-              height: "600px",
+              height: "100%",
               width: "100%",
               overflow: "hidden",
               position: "relative",
