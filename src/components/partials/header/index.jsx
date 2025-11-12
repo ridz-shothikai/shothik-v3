@@ -239,7 +239,7 @@ export default function Header({ className, layout }) {
                   data-rybbit-event="Top Navbar"
                   data-rybbit-prop-top_navbar={link.label}
                 >
-                  <a href={link.href}>{link.label}</a>
+                  <Link href={link.href}>{link.label}</Link>
                 </Button>
               ))}
             </div>
@@ -369,7 +369,7 @@ export default function Header({ className, layout }) {
                   className="text-muted-foreground hover:text-primary hover:bg-muted/50 px-2 text-sm font-semibold transition-colors"
                   data-testid={`nav-${link.label.toLowerCase()}`}
                 >
-                  <a href={link.href}>{link.label}</a>
+                  <Link href={link.href}>{link.label}</Link>
                 </Button>
               ))}
             </div>

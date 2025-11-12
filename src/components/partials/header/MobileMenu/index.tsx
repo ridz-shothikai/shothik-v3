@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { LucideIcon, Monitor, Moon, Sun } from "lucide-react";
+import Link from "next/link";
 
 interface MenuItem {
   label: string;
@@ -57,16 +58,29 @@ export default function MobileMenu({
                     {section?.title}
                   </div>
                   <div className="flex flex-col">
-                    {section?.items?.map((item) => (
-                      <a
-                        key={item.label}
-                        href={item.href}
-                        onClick={onClose}
-                        className="text-foreground hover:text-primary px-2 py-1 text-sm font-medium transition-colors"
-                      >
-                        {item.label}
-                      </a>
-                    ))}
+                    {section?.items?.map((item) => {
+                      const isInternalLink = item.href.startsWith("/");
+
+                      return isInternalLink ? (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          onClick={onClose}
+                          className="text-foreground hover:text-primary px-2 py-1 text-sm font-medium transition-colors"
+                        >
+                          {item.label}
+                        </Link>
+                      ) : (
+                        <a
+                          key={item.label}
+                          href={item.href}
+                          onClick={onClose}
+                          className="text-foreground hover:text-primary px-2 py-1 text-sm font-medium transition-colors"
+                        >
+                          {item.label}
+                        </a>
+                      );
+                    })}
                   </div>
                 </div>
               ))}
@@ -77,14 +91,14 @@ export default function MobileMenu({
 
           <div className="flex flex-col">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.label}
                 href={link.href}
                 onClick={onClose}
                 className="text-foreground hover:bg-muted px-4 py-1 font-semibold transition-colors"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
 

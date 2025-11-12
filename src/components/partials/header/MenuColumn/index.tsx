@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { LucideIcon } from "lucide-react";
+import Link from "next/link";
 
 interface MenuItem {
   label: string;
@@ -30,6 +31,14 @@ export default function MenuColumn({
       <div className="flex flex-col gap-1">
         {items.map((item) => {
           const Icon = item.icon;
+          const isInternalLink = item.href.startsWith("/");
+          const content = (
+            <>
+              <Icon className="mr-2 h-[18px] w-[18px]" />
+              {item.label}
+            </>
+          );
+          
           return (
             <Button
               key={item.label}
@@ -41,10 +50,11 @@ export default function MenuColumn({
               data-testid={`menu-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
               onClick={onItemClick}
             >
-              <a href={item.href}>
-                <Icon className="mr-2 h-[18px] w-[18px]" />
-                {item.label}
-              </a>
+              {isInternalLink ? (
+                <Link href={item.href}>{content}</Link>
+              ) : (
+                <a href={item.href}>{content}</a>
+              )}
             </Button>
           );
         })}
