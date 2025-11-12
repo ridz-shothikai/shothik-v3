@@ -1,5 +1,6 @@
 "use client";
 
+import DotFlashing from "@/components/common/DotFlashing";
 import Logo from "@/components/partials/logo";
 import {
   Sidebar,
@@ -16,7 +17,6 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import DotFlashing from "@/components/common/DotFlashing";
 import NavigantionIcons from "./NavigationIcons";
 import NavItem from "./NavItem";
 import UserInfo from "./UserInfo";
@@ -25,7 +25,7 @@ export default function NavigationSidebar() {
   const { accessToken, user } = useSelector((state) => state.auth);
   const { sidebar } = useSelector((state) => state.settings);
   const [mounted, setMounted] = useState(false);
-  
+
   // Use default value that matches server-side render to prevent hydration mismatch
   const isCompact = mounted ? sidebar === "compact" : false;
 

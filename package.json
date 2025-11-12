@@ -86,6 +86,7 @@
     "markdown-it": "^14.1.0",
     "marked": "^16.4.1",
     "marked-react": "^3.0.2",
+    "mind-elixir": "^5.3.5",
     "motion": "^12.23.24",
     "next": "16.0.0",
     "pdfmake": "^0.2.20",

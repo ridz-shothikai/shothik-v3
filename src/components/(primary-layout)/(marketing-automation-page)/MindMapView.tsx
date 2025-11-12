@@ -14,14 +14,17 @@ import {
   CheckCircle2,
   Circle,
   Loader2,
-  Maximize2,
-  Minimize2,
   Sparkles,
-  ZoomIn,
-  ZoomOut,
 } from "lucide-react";
+import "mind-elixir/style.css";
+import dynamic from "next/dynamic";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+
+// Dynamically import MindElixir to avoid SSR issues
+const MindElixir = dynamic(() => import("mind-elixir"), {
+  ssr: false,
+});
 
 interface MindMapNode {
   id: string;
@@ -57,6 +60,51 @@ interface MindMapData {
   }[];
 }
 
+interface MindElixirNode {
+  id: string;
+  topic: string;
+  style?: Record<string, any>;
+  children?: MindElixirNode[];
+  note?: string;
+}
+
+interface MindElixirData {
+  nodeData: MindElixirNode;
+  linkData?: Record<string, any>;
+}
+
+function convertToMindElixirFormat(node: MindMapNode): MindElixirNode {
+  const typeStyles = {
+    root: { background: "#000000", color: "#ffffff" },
+    project: { background: "#2563eb", color: "#ffffff" },
+    campaign: { background: "#16a34a", color: "#ffffff" },
+    adset: { background: "#f59e0b", color: "#000000" },
+    ad: { background: "#ef4444", color: "#ffffff" },
+    persona: { background: "#9333ea", color: "#ffffff" },
+    competitor: { background: "#64748b", color: "#ffffff" },
+    "competitors-group": { background: "#94a3b8", color: "#000000" },
+    "personas-group": { background: "#a855f7", color: "#ffffff" },
+  };
+
+  const converted: MindElixirNode = {
+    id: node?.id,
+    topic: node?.label,
+    style: typeStyles?.[node?.type] || {},
+    children: node?.children?.map(convertToMindElixirFormat) || [],
+  };
+
+  converted.note = JSON.stringify(
+    {
+      type: node.type,
+      data: node.data,
+    },
+    null,
+    2,
+  );
+
+  return converted;
+}
+
 export default function MindMapView() {
   const { analysisId, mindMapId } = useParams<{
     analysisId: string;
@@ -68,6 +116,11 @@ export default function MindMapView() {
   const [mindMapData, setMindMapData] = useState<MindMapData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     fetchMindMap();
@@ -80,7 +133,6 @@ export default function MindMapView() {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       const token = localStorage.getItem("accessToken");
 
-      // If mindMapId is provided, fetch specific mind map, otherwise generate new one
       const url = mindMapId
         ? `${apiUrl}/marketing/projects/mindmap/${mindMapId}`
         : `${apiUrl}/marketing/projects/${analysisId}/mindmap`;
@@ -104,232 +156,64 @@ export default function MindMapView() {
     }
   };
 
-  const [zoom, setZoom] = useState(0.5);
-  const [pan, setPan] = useState({ x: 50, y: -400 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const [collapsedNodes, setCollapsedNodes] = useState<Set<string>>(new Set());
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [rerenderKey, setRerenderKey] = useState(0);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const toggleNodeCollapse = (nodeId: string) => {
-    console.log("Toggle node:", nodeId);
-    setCollapsedNodes((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(nodeId)) {
-        console.log("Expanding node:", nodeId);
-        newSet.delete(nodeId);
-      } else {
-        console.log("Collapsing node:", nodeId);
-        newSet.add(nodeId);
-      }
-      console.log("Collapsed nodes:", Array.from(newSet));
-      return newSet;
+  // Initialize MindElixir
+  useEffect(() => {
+    if (!isMounted || !containerRef.current || !mindMapData?.structure) return;
+
+    // Dynamically import and initialize
+    import("mind-elixir").then((MindElixirModule) => {
+      const MindElixirClass = MindElixirModule.default;
+
+      const options = {
+        el: containerRef.current!,
+        direction: MindElixirClass.SIDE,
+        draggable: true,
+        editable: true,
+      };
+
+      const nodeData = convertToMindElixirFormat(mindMapData.structure);
+
+      // Wrap in proper MindElixirData format
+      const data: MindElixirData = {
+        nodeData: nodeData,
+        linkData: {},
+      };
+
+      const mind = new MindElixirClass(options);
+      mind.init(data);
     });
-  };
 
-  const handleZoomIn = () => setZoom((z) => Math.min(z + 0.2, 3));
-  const handleZoomOut = () => setZoom((z) => Math.max(z - 0.2, 0.3));
-  const handleResetZoom = () => {
-    setZoom(0.5);
-    setPan({ x: 50, y: -400 });
-  };
+    return () => {
+      if (containerRef.current) {
+        containerRef.current.innerHTML = "";
+      }
+    };
+  }, [rerenderKey, isMounted, mindMapData]);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    // Only start dragging if not clicking on a button or interactive element
-    const target = e.target as HTMLElement;
-    if (target.tagName === "BUTTON" || target.closest("button")) {
-      return;
+  useEffect(() => {
+    if (mindMapData?.structure) {
+      const timer = setTimeout(() => {
+        setRerenderKey((prev) => prev + 1);
+      }, 2000);
+
+      return () => clearTimeout(timer);
     }
-    setIsDragging(true);
-    setDragStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
-  };
+  }, [mindMapData?.structure]);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (isDragging) {
-      setPan({
-        x: e.clientX - dragStart.x,
-        y: e.clientY - dragStart.y,
-      });
-    }
-  };
-
-  const handleMouseUp = () => setIsDragging(false);
-
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      containerRef.current?.requestFullscreen();
-      setIsFullscreen(true);
-    } else {
-      document.exitFullscreen();
-      setIsFullscreen(false);
-    }
-  };
-
-  const getNodeColor = (type: string) => {
-    switch (type) {
-      case "root":
-        return "bg-primary text-primary-foreground border-primary/70 shadow-lg shadow-primary/20";
-      case "competitors-group":
-        return "bg-secondary text-secondary-foreground border-secondary/70 shadow-lg shadow-secondary/20";
-      case "personas-group":
-        return "bg-accent text-accent-foreground border-accent/70 shadow-lg shadow-accent/20";
-      case "project":
-        return "bg-primary/80 text-primary-foreground border-primary/50 shadow";
-      case "competitor":
-        return "bg-secondary/80 text-secondary-foreground border-secondary/50 shadow";
-      case "persona":
-        return "bg-accent/80 text-accent-foreground border-accent/50 shadow";
-      case "campaign":
-        return "bg-primary/70 text-primary-foreground border-primary/40 shadow";
-      case "adset":
-        return "bg-secondary/70 text-secondary-foreground border-secondary/40 shadow";
-      case "ad":
-        return "bg-accent/70 text-accent-foreground border-accent/40 shadow";
-      default:
-        return "bg-card text-card-foreground border-border shadow";
-    }
-  };
-
-  // Build tree layout with positions
-  interface LayoutNode {
-    node: MindMapNode;
-    x: number;
-    y: number;
-    children: LayoutNode[];
-  }
-
-  const buildLayout = (
-    node: MindMapNode,
-    x: number = 0,
-    y: number = 0,
-    level: number = 0,
-  ): LayoutNode => {
-    const children: LayoutNode[] = [];
-    const verticalSpacing = 140;
-    const horizontalSpacing = 320;
-
-    // Only build children if node is not collapsed
-    if (node.children && !collapsedNodes.has(node.id)) {
-      let currentY = y - ((node.children.length - 1) * verticalSpacing) / 2;
-      node.children.forEach((child) => {
-        children.push(
-          buildLayout(child, x + horizontalSpacing, currentY, level + 1),
-        );
-        currentY += verticalSpacing;
-      });
-    }
-
-    return { node, x, y, children };
-  };
-
-  const renderTree = (
-    layoutNode: LayoutNode,
-    parentPos?: { x: number; y: number; width: number },
-  ) => {
-    const nodeWidth = 250;
-    const nodeHeight = 100;
-    const hasChildren =
-      layoutNode.node.children && layoutNode.node.children.length > 0;
-    const isCollapsed = collapsedNodes.has(layoutNode.node.id);
-    const buttonWidth = 40;
-    const totalWidth = hasChildren ? nodeWidth + buttonWidth : nodeWidth;
-
+  // Don't render mind map container until client-side
+  if (!isMounted) {
     return (
-      <g key={layoutNode.node.id}>
-        {/* Connection line from parent */}
-        {parentPos && (
-          <path
-            d={`M ${parentPos.x + parentPos.width} ${
-              parentPos.y + nodeHeight / 2
-            }
-                C ${parentPos.x + parentPos.width + 50} ${
-                  parentPos.y + nodeHeight / 2
-                },
-                  ${layoutNode.x - 50} ${layoutNode.y + nodeHeight / 2},
-                  ${layoutNode.x} ${layoutNode.y + nodeHeight / 2}`}
-            stroke="var(--muted)"
-            strokeWidth="2"
-            fill="none"
-            markerEnd="url(#arrowhead)"
-          />
-        )}
-
-        {/* Node */}
-        <foreignObject
-          x={layoutNode.x}
-          y={layoutNode.y}
-          width={nodeWidth}
-          height={nodeHeight}
-          style={{ pointerEvents: "all" }}
-        >
-          <div
-            className={`${getNodeColor(
-              layoutNode.node.type,
-            )} flex h-full flex-col justify-center rounded-lg border px-4 py-3 shadow-md`}
-          >
-            <div className="text-sm leading-tight font-semibold break-words">
-              {layoutNode.node.label}
-            </div>
-            {layoutNode.node.data && (
-              <div className="text-primary-foreground/80 mt-1 text-xs">
-                {layoutNode.node.data.count && (
-                  <div>Count: {String(layoutNode.node.data.count)}</div>
-                )}
-                {layoutNode.node.data.budget && (
-                  <div>Budget: ${String(layoutNode.node.data.budget)}</div>
-                )}
-                {layoutNode.node.data.price && (
-                  <div>Price: ${String(layoutNode.node.data.price)}</div>
-                )}
-                {layoutNode.node.data.description && (
-                  <div className="truncate">
-                    {String(layoutNode.node.data.description)}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </foreignObject>
-
-        {/* Expand/Collapse Button - Separate foreignObject */}
-        {hasChildren && (
-          <foreignObject
-            x={layoutNode.x + nodeWidth + 5}
-            y={layoutNode.y + nodeHeight / 2 - 15}
-            width={30}
-            height={30}
-            style={{ pointerEvents: "all" }}
-          >
-            <Button
-              variant="secondary"
-              size="icon-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log("Button clicked for node:", layoutNode.node.id);
-                toggleNodeCollapse(layoutNode.node.id);
-              }}
-              className="h-7 w-7 rounded-full text-xs font-bold shadow"
-              type="button"
-              title={isCollapsed ? "Expand" : "Collapse"}
-            >
-              {isCollapsed ? "+" : "−"}
-            </Button>
-          </foreignObject>
-        )}
-
-        {/* Render children */}
-        {layoutNode.children.map((child) =>
-          renderTree(child, {
-            x: layoutNode.x,
-            y: layoutNode.y,
-            width: totalWidth,
-          }),
-        )}
-      </g>
+      <div className="bg-background flex min-h-[calc(100vh-4rem)] items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="text-primary mx-auto mb-4 h-12 w-12 animate-spin" />
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
     );
-  };
+  }
 
   if (loading) {
     return (
@@ -388,7 +272,6 @@ export default function MindMapView() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <Card className="lg:col-span-2">
             <CardHeader className="flex flex-row items-center gap-2">
-              {/* <Bot className="text-primary size-5" /> */}
               <MascotIcon />
               <CardTitle className="text-lg font-bold">AI Analysis</CardTitle>
             </CardHeader>
@@ -487,91 +370,17 @@ export default function MindMapView() {
           </Card>
         )}
 
-        <div
-          ref={containerRef}
-          className="border-border bg-card relative overflow-hidden rounded-xl border shadow-lg"
-        >
-          <div className="absolute top-4 right-4 z-10 flex gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={handleZoomIn}
-              title="Zoom In"
-            >
-              <ZoomIn className="size-5" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={handleZoomOut}
-              title="Zoom Out"
-            >
-              <ZoomOut className="size-5" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleResetZoom}
-              title="Reset View"
-            >
-              Reset
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={toggleFullscreen}
-              title="Fullscreen"
-            >
-              {isFullscreen ? (
-                <Minimize2 className="size-5" />
-              ) : (
-                <Maximize2 className="size-5" />
-              )}
-            </Button>
-          </div>
-
+        <div className="w-full max-w-full">
           <div
-            className="h-[700px] w-full cursor-grab overflow-hidden active:cursor-grabbing"
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseUp}
-          >
-            <svg
-              width="4000"
-              height="4000"
-              viewBox="0 0 4000 4000"
-              style={{
-                transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
-                transformOrigin: "0 0",
-                transition: isDragging ? "none" : "transform 0.1s ease-out",
-              }}
-            >
-              <defs>
-                <marker
-                  id="arrowhead"
-                  markerWidth="10"
-                  markerHeight="10"
-                  refX="9"
-                  refY="3"
-                  orient="auto"
-                >
-                  <polygon
-                    points="0 0, 10 3, 0 6"
-                    fill="var(--muted-foreground)"
-                  />
-                </marker>
-              </defs>
-
-              <g transform="translate(50, 2000)">
-                {renderTree(buildLayout(mindMapData.structure, 0, 0, 0))}
-              </g>
-            </svg>
-          </div>
-
-          <div className="border-border/60 bg-card/80 text-muted-foreground absolute bottom-4 left-4 rounded-lg border px-2 py-2 text-sm backdrop-blur-sm">
-            <p>💡 Drag to pan • Scroll or use buttons to zoom</p>
-          </div>
+            ref={containerRef}
+            key={rerenderKey}
+            style={{
+              height: "600px",
+              width: "100%",
+              overflow: "hidden",
+              position: "relative",
+            }}
+          />
         </div>
       </div>
     </div>
