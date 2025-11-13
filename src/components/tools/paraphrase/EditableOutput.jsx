@@ -4,6 +4,7 @@
 import { useTheme } from "@/hooks/useTheme";
 import { Extension, Node } from "@tiptap/core";
 import HardBreak from "@tiptap/extension-hard-break";
+import { Placeholder } from "@tiptap/extensions";
 import { defaultMarkdownParser } from "@tiptap/pm/markdown";
 import { Decoration, DecorationSet } from "@tiptap/pm/view";
 import { EditorContent, useEditor } from "@tiptap/react";
@@ -271,6 +272,8 @@ function markLongestUnchangedUsingDiff({
       for (let ti = startTokenIdx; ti <= endTokenIdx; ti++) {
         const token = outSentence[ti];
         if (token) token.unchangedLongest = true;
+
+        // console.log("Marking unchanged:", token.word, token.type);
       }
     }
   }
@@ -467,6 +470,10 @@ function getColorStyle(
   showLongest,
 ) {
   let style = "";
+  // DEBUG: Check why type is 'none'
+  // if (unchangedLongest && showLongest && showChangedWords) {
+  //   console.log("Word type:", type, "Should have a color but type is:", type);
+  // }
 
   // Base color from type (if showChangedWords is enabled)
   if (showChangedWords) {
@@ -488,7 +495,7 @@ function getColorStyle(
 
   // Alongest-unchanged highlight (preserves color)
   if (unchangedLongest && showLongest) {
-    style += `color: #006ACC; background-color: rgba(40, 137, 167, 0.12); border-radius: 3px;`;
+    style += `background-color: #0069cc3d; border-radius: 3px;`;
   }
 
   return style || "inherit";
@@ -801,6 +808,7 @@ export default function EditableOutput({
             HTMLAttributes: { class: "heading-node" },
           },
         }),
+        Placeholder.configure({ placeholder: "Paraphrased Text..." }),
         HardBreak,
         SentenceNode,
         WordNode,
