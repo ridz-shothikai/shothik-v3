@@ -11,6 +11,7 @@ import { diffWordsWithSpace } from "diff";
 import { Plugin, PluginKey, TextSelection } from "prosemirror-state";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import { useTheme } from "@/hooks/useTheme";
 
 /* ============================================================
    Utilities: sentence splitting, token normalization,
@@ -647,7 +648,7 @@ export default function EditableOutput({
     useYellowHighlight,
   } = useSelector((state) => state.settings.interfaceOptions);
   const paraphraseIO = useSelector((state) => state.inputOutput.paraphrase);
-  const isDarkMode = useSelector((state) => state.settings.theme === "dark");
+  const isDarkMode = useTheme();
 
   // Create a virtual anchor element for positioning
   const [virtualAnchor, setVirtualAnchor] = useState(null);

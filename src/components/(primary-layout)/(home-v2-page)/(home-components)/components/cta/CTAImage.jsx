@@ -1,28 +1,12 @@
 "use client";
 import { cn } from "@/lib/utils";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useTheme } from "@/hooks/useTheme";
 
 const CTAImage = () => {
-  const theme = useSelector((state) => state.settings.theme);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    if (theme === "system") {
-      const media = window.matchMedia("(prefers-color-scheme: dark)");
-      setIsDarkMode(media.matches);
-
-      const listener = (e) => {
-        setIsDarkMode(e.matches);
-      };
-
-      media.addEventListener("change", listener);
-      return () => media.removeEventListener("change", listener);
-    } else {
-      setIsDarkMode(theme === "dark");
-    }
-  }, [theme]);
+  const isDarkMode = useTheme();
 
   return (
     <div className={cn("relative overflow-hidden rounded-[10px]")}>
