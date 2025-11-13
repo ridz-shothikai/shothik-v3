@@ -1,6 +1,7 @@
 // src/components/tools/paraphrase/EditableOutputWithStructural.jsx
 "use client";
 
+import { useTheme } from "@/hooks/useTheme";
 import { Extension, Node } from "@tiptap/core";
 import HardBreak from "@tiptap/extension-hard-break";
 import { defaultMarkdownParser } from "@tiptap/pm/markdown";
@@ -11,7 +12,6 @@ import { diffWordsWithSpace } from "diff";
 import { Plugin, PluginKey, TextSelection } from "prosemirror-state";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { useTheme } from "@/hooks/useTheme";
 
 /* ============================================================
    Utilities: sentence splitting, token normalization,
@@ -459,35 +459,39 @@ function isNewlineSentence(sentence) {
 
 function getColorStyle(
   type,
-  dark = false,
+  dark,
   showChangedWords,
   structuralChange,
   showStructural,
   unchangedLongest,
   showLongest,
 ) {
-  // priority: unchangedLongest (subtle highlight) > structural underline > type coloring
-  if (unchangedLongest && showLongest) {
-    return `background-color: rgba(40,167,69,0.12); border-radius: 3px; font-weight: 600;`;
+  let style = "";
+
+  // Base color from type (if showChangedWords is enabled)
+  if (showChangedWords) {
+    const adjVerb = dark ? "#D85644" : "#d95645";
+    const noun = dark ? "#685BFF" : "#530a78";
+    const phrase = dark ? "#685BFF" : "#051780";
+    const freeze = "#006ACC";
+
+    if (/NP/.test(type)) style += `color:${noun};`;
+    else if (/VP/.test(type)) style += `color:${adjVerb};`;
+    else if (/PP|CP|AdvP|AdjP/.test(type)) style += `color:${phrase};`;
+    else if (/freeze/.test(type)) style += `color:${freeze};`;
   }
 
+  // structural underline (preserves color)
   if (structuralChange && showStructural) {
-    // green underline for structural changes
-    return `text-decoration: underline; text-decoration-color: #28a745; text-decoration-thickness: 2px; color: inherit;`;
+    style += `text-decoration: underline; text-decoration-color: #28a745; text-decoration-thickness: 2px;`;
   }
 
-  if (!showChangedWords) return "inherit";
+  // Alongest-unchanged highlight (preserves color)
+  if (unchangedLongest && showLongest) {
+    style += `color: #006ACC; background-color: rgba(40, 137, 167, 0.12); border-radius: 3px;`;
+  }
 
-  const adjVerb = dark ? "#D85644" : "#d95645";
-  const noun = dark ? "#685BFF" : "#530a78";
-  const phrase = dark ? "#685BFF" : "#051780";
-  const freeze = "#006ACC";
-
-  if (/NP/.test(type)) return `color:${noun}`;
-  if (/VP/.test(type)) return `color:${adjVerb}`;
-  if (/PP|CP|AdvP|AdjP/.test(type)) return `color:${phrase}`;
-  if (/freeze/.test(type)) return `color:${freeze}`;
-  return "inherit";
+  return style || "inherit";
 }
 
 /* ============================================================
