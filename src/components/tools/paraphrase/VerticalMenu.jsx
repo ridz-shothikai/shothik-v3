@@ -203,7 +203,11 @@ const VerticalMenu = ({
               crown={true}
               mobile={mobile}
               showTooltip={true}
-              tooltipText={"Paraphrase text to see plagiarism."}
+              tooltipText={
+                disableActions
+                  ? "Paraphrase text to see plagiarism."
+                  : "Plagiarism"
+              }
               data-rybbit-event="clicked_upgrade_plan"
             />
           </div>
@@ -216,6 +220,8 @@ const VerticalMenu = ({
               disabled={false}
               crown={true}
               mobile={mobile}
+              showTooltip={true}
+              tooltipText={"History"}
             />
           </div>
           <div id="paraphrase_compare" className="w-full">
@@ -228,7 +234,11 @@ const VerticalMenu = ({
               crown={true}
               mobile={mobile}
               showTooltip={true}
-              tooltipText="Paraphrase text to see compare mode."
+              tooltipText={
+                disableActions
+                  ? "Paraphrase text to see compare mode."
+                  : "Compare modes"
+              }
             />
           </div>
           <div id="paraphrase_tone" className="w-full">
@@ -241,7 +251,9 @@ const VerticalMenu = ({
               crown={true}
               mobile={mobile}
               showTooltip={true}
-              tooltipText="Paraphrase text to see tone."
+              tooltipText={
+                disableActions ? "Paraphrase text to see tone." : "Tone"
+              }
             />
           </div>
         </div>
