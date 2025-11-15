@@ -280,39 +280,6 @@ function markLongestUnchangedUsingDiff({
   return cloned;
 }
 
-/* ============================================================
-   TipTap nodes & CursorWatcher
-   ============================================================ */
-
-const CursorWatcher = Extension.create({
-  name: "cursorWatcher",
-  addProseMirrorPlugins() {
-    return [
-      new Plugin({
-        props: {
-          decorations(state) {
-            const { from, empty } = state.selection;
-            if (!empty) return null;
-            const decos = [];
-            state.doc.descendants((node, pos) => {
-              if (node.type.name === "sentenceNode") {
-                const start = pos;
-                const end = pos + node.nodeSize;
-                if (from >= start && from <= end) {
-                  decos.push(
-                    Decoration.node(start, end, { class: "active-sentence" }),
-                  );
-                }
-              }
-            });
-            return DecorationSet.create(state.doc, decos);
-          },
-        },
-      }),
-    ];
-  },
-});
-
 const WordNode = Node.create({
   name: "wordNode",
   group: "inline",
@@ -630,9 +597,9 @@ function formatContent(
     docContent.push({ type: "paragraph", content: currentParagraphSentences });
   }
 
-  console.log(
-    `✅ Formatted ${actualSentenceIndex} actual sentences from ${sentences.length} array items`,
-  );
+  // console.log(
+  //   `✅ Formatted ${actualSentenceIndex} actual sentences from ${sentences.length} array items`,
+  // );
 
   return { type: "doc", content: docContent };
 }
@@ -660,8 +627,7 @@ export default function EditableOutput({
   const paraphraseIO = useSelector((state) => state.inputOutput.paraphrase);
 
   const theme = useSelector((state) => state.settings.theme);
-  const isDarkMode = theme === "dark";
-
+  const isDarkMode = theme === "dark" || theme === "system";
   // Create a virtual anchor element for positioning
   const [virtualAnchor, setVirtualAnchor] = useState(null);
 
@@ -752,9 +718,9 @@ export default function EditableOutput({
                   });
                   const totalSentences = maxSentenceIndex + 1;
 
-                  console.log(
-                    `📄 Output: ${totalSentences} sentences, highlighting index ${highlightSentence}`,
-                  );
+                  // console.log(
+                  //   `📄 Output: ${totalSentences} sentences, highlighting index ${highlightSentence}`,
+                  // );
 
                   state.doc.descendants((node, pos) => {
                     if (node.type.name === "sentenceNode") {
@@ -813,7 +779,6 @@ export default function EditableOutput({
         HardBreak,
         SentenceNode,
         WordNode,
-        CursorWatcher,
         EnterHandler,
         SentenceHighlighter.configure({
           highlightSentence: highlightSentence,
@@ -858,7 +823,7 @@ export default function EditableOutput({
       const sI = Number(el.getAttribute("data-sentence-index"));
       const wI = Number(el.getAttribute("data-word-index"));
 
-      console.log(`🖱️  Clicked: sentenceIndex=${sI}, wordIndex=${wI}`);
+      // console.log(`🖱️  Clicked: sentenceIndex=${sI}, wordIndex=${wI}`);
 
       // CRITICAL FIX: Map display index back to data array index
       // Count non-newline sentences to find the correct data index
@@ -883,7 +848,7 @@ export default function EditableOutput({
         return;
       }
 
-      console.log(`📍 Mapped display index ${sI} → data index ${dataIndex}`);
+      // console.log(`📍 Mapped display index ${sI} → data index ${dataIndex}`);
 
       // Get word object from the correct data index
       const wObj = data[dataIndex]?.[wI];
@@ -893,11 +858,11 @@ export default function EditableOutput({
         return;
       }
 
-      console.log(
-        `✅ Found word:`,
-        wObj.word,
-        `with ${wObj.synonyms?.length || 0} synonyms`,
-      );
+      // console.log(
+      //   `✅ Found word:`,
+      //   wObj.word,
+      //   `with ${wObj.synonyms?.length || 0} synonyms`,
+      // );
 
       // Create a virtual anchor that tracks the mouse position
       const rect = el.getBoundingClientRect();
