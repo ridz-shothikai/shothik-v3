@@ -10,14 +10,14 @@ import { useGoogleOneTapLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 
-const AuthApplier = () => {
+// Component that uses Google One Tap Login hook
+// Only rendered when GoogleOAuthProvider is available
+const GoogleOneTapLogin = () => {
   const dispatch = useDispatch();
   const { user, accessToken } = useSelector((state) => state.auth);
   const { isLoading } = useGetUserQuery(undefined, {
     skip: !accessToken,
   });
-  useGetUserLimitQuery();
-
   const [login] = useLoginMutation();
 
   useGoogleOneTapLogin({
@@ -52,6 +52,25 @@ const AuthApplier = () => {
   });
 
   return null;
+};
+
+const AuthApplier = () => {
+  const { accessToken } = useSelector((state) => state.auth);
+  useGetUserQuery(undefined, {
+    skip: !accessToken,
+  });
+  useGetUserLimitQuery();
+
+  // Only render Google One Tap Login if Google Client ID is configured
+  // This ensures the hook is only called when GoogleOAuthProvider is available
+  const hasGoogleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+
+  // Check if client ID exists and is not empty (matching ConditionalGoogleProvider logic)
+  if (!hasGoogleClientId || hasGoogleClientId.trim() === "") {
+    return null;
+  }
+
+  return <GoogleOneTapLogin />;
 };
 
 export default AuthApplier;

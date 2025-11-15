@@ -107,7 +107,7 @@ const ModeNavigation = ({
   }, [customModes]);
 
   // Determine how many tabs to show before collapsing
-  const visibleCount = isXs ? 2 : isSm ? 3 : 5;
+  const visibleCount = isXs ? 1 : isSm ? 3 : 5;
 
   const initialModes = allModes.slice(0, visibleCount);
   const extraModes = allModes.slice(visibleCount);
@@ -446,7 +446,7 @@ const ModeNavigation = ({
                   <ChevronDown className="ml-1 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="min-w-[220px]">
+              <DropdownMenuContent align="start" className="min-w-[220px]">
                 {extraModes.map((mode) => (
                   <DropdownMenuItem
                     key={mode.id || mode.value}

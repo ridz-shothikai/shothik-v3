@@ -54,7 +54,7 @@ const UserActionInput = ({
         className={cn(
           "flex flex-row flex-wrap items-center justify-center",
           "gap-x-2 gap-y-1.5",
-          "mx-auto w-[80%]",
+          "mx-auto w-full sm:w-[80%]",
         )}
       >
         <div
@@ -63,7 +63,6 @@ const UserActionInput = ({
             "flex flex-wrap items-center justify-center",
             "gap-x-2 gap-y-1.5",
             "mx-auto w-full",
-            isSmallDevice ? "flex-col" : "flex-row",
           )}
         >
           {!disableTrySample ? (
@@ -77,26 +76,8 @@ const UserActionInput = ({
               Try sample
             </Button>
           ) : null}
-
-          {/* <Button
-            size={isMobile ? "small" : "large"}
-            variant="soft"
-            color="secondary"
-            onClick={handlePaste}
-            sx={{
-              border: { sm: "none", xs: "2px solid" },
-              borderColor: "primary.secondary",
-              borderRadius: "5px",
-              "&:hover": {
-                borderColor: "primary.dark",
-              },
-            }}
-            startIcon={<ContentPaste />}
-          >
-            {!isMobile ? "Paste Text" : "Paste"}
-          </Button> */}
           {!disableTrySample ? (
-            <span className="text-muted-foreground hidden text-sm font-bold lowercase sm:block lg:text-base">
+            <span className="text-muted-foreground text-sm font-bold lowercase lg:text-base">
               OR
             </span>
           ) : null}

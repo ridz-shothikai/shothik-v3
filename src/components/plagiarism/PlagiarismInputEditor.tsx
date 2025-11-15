@@ -142,7 +142,7 @@ const PlagiarismInputEditor = ({
       editorProps: {
         attributes: {
           class:
-            "tiptap w-full h-full focus:outline-none whitespace-pre-wrap text-sm leading-6",
+            "tiptap w-full h-full focus:outline-none whitespace-pre-wrap text-sm leading-6 p-0",
         },
       },
       content: value,
@@ -183,7 +183,7 @@ const PlagiarismInputEditor = ({
   }, [editor, value, highlightsSignature]);
 
   return (
-    <div className={`plagiarism-editor ${disabled ? "is-disabled" : ""}`}>
+    <div className={`plagiarism-editor relative h-full ${disabled ? "opacity-70 pointer-events-none" : ""}`}>
       <EditorContent editor={editor} />
     </div>
   );

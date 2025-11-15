@@ -355,7 +355,7 @@ const ParaphraseOutput = ({
   }, [sentence, rephraseMode]);
 
   return (
-    <div className={cn("flex-1 overflow-y-auto p-2")}>
+    <div className={cn("flex-1 overflow-y-auto p-4")}>
       <EditableOutput
         data={data}
         dark={isDark}

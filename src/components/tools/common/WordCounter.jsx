@@ -206,7 +206,7 @@ const Contend = ({
                 side="top"
                 align="start"
                 sideOffset={8}
-                className="dark:bg-card z-[1300] w-full p-0"
+                className="dark:bg-card z-40 w-full p-0"
               >
                 <FreezeWordsContent
                   close={handleCloseFreeze}

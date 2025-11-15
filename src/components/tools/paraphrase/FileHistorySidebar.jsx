@@ -16,7 +16,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -99,10 +98,10 @@ export default function FileHistorySidebar({ fetchFileHistories }) {
   };
 
   // Menu handlers
-  const handleMenuOpen = (event, item) => {
-    setMenuAnchorEl(event.currentTarget);
-    setSelectedItem(item);
-  };
+  // const handleMenuOpen = (event, item) => {
+  //   setMenuAnchorEl(event.currentTarget);
+  //   setSelectedItem(item);
+  // };
 
   const handleMenuClose = () => {
     setMenuAnchorEl(null);
@@ -329,7 +328,7 @@ export default function FileHistorySidebar({ fetchFileHistories }) {
               ) : null}
             </div>
 
-            <ScrollArea className="flex-1">
+            <div className="flex-1">
               {isLoading || searchLoading ? (
                 <div className="space-y-2 p-2">
                   {[...Array(5)]?.map((_, i) => (
@@ -359,16 +358,19 @@ export default function FileHistorySidebar({ fetchFileHistories }) {
                             {formatTime(item.timestamp)}
                           </div>
                         </div>
-                        <div className="ml-2 flex items-center">
+                        <div className="ml-2 flex h-5 w-5 items-center">
                           {item.is_download && downloadingId === item._id ? (
                             <Loader2 className="h-5 w-5 animate-spin" />
                           ) : null}
-                          <DropdownMenu>
+                          <DropdownMenu
+                            onOpenChange={(open) =>
+                              open && setSelectedItem(item)
+                            }
+                          >
                             <DropdownMenuTrigger asChild>
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                onClick={(e) => handleMenuOpen(e, item)}
                                 className="ml-1"
                               >
                                 <MoreVertical className="h-4 w-4" />
@@ -441,7 +443,7 @@ export default function FileHistorySidebar({ fetchFileHistories }) {
                   )}
                 </div>
               )}
-            </ScrollArea>
+            </div>
 
             <Button onClick={handleNewClick} className="mt-2">
               <Plus className="mr-2 h-4 w-4" /> New

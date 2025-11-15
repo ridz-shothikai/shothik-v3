@@ -1704,7 +1704,7 @@ const ParaphraseContend = () => {
       )}
 
       <div className="flex min-w-0 flex-1 flex-col gap-0">
-        {showDemo ? <Onboarding /> : null}
+        {showDemo && !isMobile ? <Onboarding /> : null}
 
         <div className="hidden w-full flex-none items-center md:flex">
           <LanguageMenu

@@ -46,14 +46,17 @@ const ReportSummary = ({ report, loading, fromCache }: ReportSummaryProps) => {
     {
       label: "Paraphrased sections",
       value: report.summary.paraphrasedCount,
+      description: "Sections with similar content",
     },
     {
       label: "Paraphrased similarity",
       value: `${report.summary.paraphrasedPercentage}%`,
+      description: "Overall paraphrased content",
     },
     {
       label: "Exact matches",
       value: report.summary.exactMatchCount,
+      description: "Direct copy matches",
     },
   ];
 
@@ -105,14 +108,19 @@ const ReportSummary = ({ report, loading, fromCache }: ReportSummaryProps) => {
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="bg-background/40 rounded-lg border p-4 text-sm shadow-sm"
+              className="bg-background/40 rounded-lg border p-4 text-sm shadow-sm transition hover:shadow-md"
             >
               <p className="text-muted-foreground text-xs tracking-wide uppercase">
                 {stat.label}
               </p>
-              <p className="text-foreground mt-2 text-lg font-semibold">
+              <p className="text-foreground mt-2 text-2xl font-bold">
                 {stat.value}
               </p>
+              {stat.description && (
+                <p className="text-muted-foreground mt-1 text-xs">
+                  {stat.description}
+                </p>
+              )}
             </div>
           ))}
         </div>

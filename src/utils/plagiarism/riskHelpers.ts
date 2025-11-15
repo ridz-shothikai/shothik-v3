@@ -27,9 +27,35 @@ export const getRiskBadgeClasses = (risk: RiskLevel): string =>
   RISK_BADGE_CLASSES[risk];
 
 export const getSimilarityTone = (similarity: number): string => {
-  if (similarity >= 80) return "text-rose-600";
-  if (similarity >= 50) return "text-amber-600";
-  return "text-emerald-600";
+  if (similarity >= 80) return "text-rose-600 dark:text-rose-400";
+  if (similarity >= 50) return "text-amber-600 dark:text-amber-400";
+  return "text-emerald-600 dark:text-emerald-400";
+};
+
+export const getSimilarityColor = (similarity: number): {
+  bg: string;
+  text: string;
+  border: string;
+} => {
+  if (similarity >= 80) {
+    return {
+      bg: "bg-rose-100 dark:bg-rose-900/40",
+      text: "text-rose-700 dark:text-rose-300",
+      border: "border-rose-300 dark:border-rose-700",
+    };
+  }
+  if (similarity >= 50) {
+    return {
+      bg: "bg-amber-100 dark:bg-amber-900/40",
+      text: "text-amber-700 dark:text-amber-300",
+      border: "border-amber-300 dark:border-amber-700",
+    };
+  }
+  return {
+    bg: "bg-emerald-100 dark:bg-emerald-900/40",
+    text: "text-emerald-700 dark:text-emerald-300",
+    border: "border-emerald-300 dark:border-emerald-700",
+  };
 };
 
 export const formatAnalyzedTimestamp = (timestamp?: string | null): string => {

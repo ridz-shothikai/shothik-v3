@@ -1,43 +1,58 @@
+/* Minimal CSS - Most styling moved to Tailwind classes */
 .plagiarism-editor {
-  position: relative;
   height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
+}
+
+.plagiarism-editor::-webkit-scrollbar {
+  width: 6px;
+}
+
+.plagiarism-editor::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.plagiarism-editor::-webkit-scrollbar-thumb {
+  background-color: rgba(155, 155, 155, 0.5);
+  border-radius: 3px;
+}
+
+.plagiarism-editor::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(155, 155, 155, 0.7);
 }
 
 .plagiarism-editor .tiptap.ProseMirror {
   outline: none;
-  padding: 0;
-  height: 100%;
-  white-space: pre-wrap;
-}
-
-.plagiarism-editor .tiptap.ProseMirror p {
-  margin: 0;
+  min-height: 100%;
 }
 
 .plagiarism-editor .plagiarism-highlight {
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
-  border-radius: 0.25rem;
-  padding: 0 0.05em;
 }
 
-.plagiarism-editor .plagiarism-highlight--high {
-  background-color: rgba(244, 63, 94, 0.3);
+/* Results scroll area styling */
+.results-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
 }
 
-.plagiarism-editor .plagiarism-highlight--medium {
-  background-color: rgba(245, 158, 11, 0.3);
+.results-scroll::-webkit-scrollbar {
+  width: 6px;
 }
 
-.plagiarism-editor .plagiarism-highlight--low {
-  background-color: rgba(34, 197, 94, 0.3);
+.results-scroll::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.plagiarism-editor .plagiarism-highlight[data-selected="true"] {
-  background-color: rgba(59, 130, 246, 0.35);
+.results-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(155, 155, 155, 0.5);
+  border-radius: 3px;
 }
 
-.plagiarism-editor.is-disabled .tiptap.ProseMirror {
-  opacity: 0.7;
-  pointer-events: none;
+.results-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(155, 155, 155, 0.7);
 }
