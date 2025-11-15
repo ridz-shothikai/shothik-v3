@@ -131,11 +131,13 @@ const isModeLockedForUser = (modeValue, userPackage) => {
 };
 
 const ParaphraseContend = () => {
-  const {
-    paraphraseQuotations,
-    automaticStartParaphrasing,
-    useYellowHighlight,
-  } = useSelector((state) => state.settings.paraphraseOptions);
+  const { paraphraseQuotations, automaticStartParaphrasing } = useSelector(
+    (state) => state.settings.paraphraseOptions,
+  );
+
+  const { useYellowHighlight } = useSelector(
+    (state) => state.settings.interfaceOptions,
+  );
 
   const [showDemo, setShowDemo] = useState(false);
   useEffect(() => {
@@ -1931,7 +1933,7 @@ const ParaphraseContend = () => {
                     outputHistoryIndex={outputHistoryIndex}
                     outputWordCount={outputWordCount}
                     proccessing={processing}
-                    sentenceCount={result.length - 1}
+                    sentenceCount={result.length}
                     setHighlightSentence={setHighlightSentence}
                     setOutputHistoryIndex={setOutputHistoryIndex}
                   />
