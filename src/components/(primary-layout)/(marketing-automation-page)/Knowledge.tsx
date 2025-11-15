@@ -142,7 +142,7 @@ export const Knowledge = () => {
         </div>
 
         {/* Content */}
-        <div className="flex flex-1 flex-col items-center justify-center p-6">
+        <div className="flex flex-1 flex-col items-center p-6">
           <div className="mx-auto w-full max-w-4xl">
             <Tabs
               value={activeTab}

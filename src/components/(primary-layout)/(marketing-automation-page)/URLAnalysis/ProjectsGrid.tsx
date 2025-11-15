@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
+  ChevronRight,
   Clock,
   Folder,
   Image,
@@ -10,7 +11,7 @@ import {
   Lightbulb,
   Link2,
   Loader2,
-  Palette,
+  Megaphone,
   Trash2,
 } from "lucide-react";
 import Link from "next/link";
@@ -35,6 +36,118 @@ interface ProjectsGridProps {
   deletingProject: string | null;
   onDeleteProject: (projectId: string, e: React.MouseEvent) => void;
 }
+
+const ProjectCard = ({ project, deletingProject, onDeleteProject }) => {
+  const navigationSteps = [
+    {
+      label: "Ad Canvas",
+      icon: Megaphone,
+      href: `/marketing-automation/canvas/${project._id}`,
+      description: "Create & design ads",
+    },
+    {
+      label: "Dashboard",
+      icon: LayoutDashboard,
+      href: `/marketing-automation/dashboard/${project._id}`,
+      description: "Monitor performance",
+    },
+    {
+      label: "Insights",
+      icon: Lightbulb,
+      href: `/marketing-automation/insights/${project.analysis_id}?state=${encodeURIComponent(
+        JSON.stringify({ projectId: project._id }),
+      )}`,
+      description: "AI-powered analysis",
+    },
+    {
+      label: "Media",
+      icon: Image,
+      href: `/marketing-automation/media/${project._id}`,
+      description: "Manage assets",
+    },
+  ];
+
+  return (
+    <Card className="group hover:border-primary/50 relative h-full transition-all duration-300 hover:translate-y-[-4px] hover:shadow-lg">
+      <CardContent className="flex h-full flex-col px-4 md:px-6">
+        {/* Header Section */}
+        <div className="mb-4 flex items-start justify-between gap-4">
+          <div className="flex-1">
+            <div className="flex w-full items-center justify-between gap-2">
+              <span className="border-primary/30 bg-primary/10 text-primary inline-block rounded-lg border px-2.5 py-1 text-xs font-medium capitalize">
+                {project.product.category}
+              </span>
+              <Button
+                onClick={(e) => onDeleteProject(project._id, e)}
+                disabled={deletingProject === project._id}
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 shrink-0"
+              >
+                {deletingProject === project._id ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Trash2 className="text-destructive h-4 w-4" />
+                )}
+              </Button>
+            </div>
+            <h3 className="text-foreground group-hover:text-primary mt-3 text-lg font-bold transition-colors">
+              {project.product.title}
+            </h3>
+            <p className="text-muted-foreground mt-1 text-xs">
+              by {project.product.brand}
+            </p>
+          </div>
+        </div>
+
+        {/* Meta Info */}
+        <div className="mb-6 space-y-2">
+          <div className="text-muted-foreground flex items-center gap-2 text-xs">
+            <Link2 className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate">{project.url}</span>
+          </div>
+          <div className="text-muted-foreground flex items-center gap-2 text-xs">
+            <Clock className="h-3.5 w-3.5 shrink-0" />
+            <span>
+              {new Date(project.createdAt).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </span>
+          </div>
+        </div>
+
+        {/* Navigation Steps */}
+        <div className="border-border mt-auto space-y-1.5 border-t pt-4">
+          {navigationSteps?.map((step, index) => {
+            const Icon = step.icon;
+            return (
+              <Link key={step.label} href={step.href}>
+                <div className="group/item hover:border-primary/20 hover:bg-primary/5 flex items-center gap-3 rounded-lg border border-transparent p-2.5 transition-all">
+                  <div className="bg-primary/10 group-hover/item:bg-primary/20 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors">
+                    <Icon className="text-primary h-4 w-4" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <p className="text-foreground group-hover/item:text-primary truncate text-sm font-medium transition-colors">
+                        {step.label}
+                      </p>
+                    </div>
+                    <p className="text-muted-foreground mt-0.5 truncate text-xs">
+                      {step.description}
+                    </p>
+                  </div>
+                  <ChevronRight className="text-muted-foreground h-4 w-4 shrink-0 opacity-100 transition-all group-hover/item:translate-x-1" />
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
 
 export default function ProjectsGrid({
   projects,
@@ -80,112 +193,17 @@ export default function ProjectsGrid({
           </p>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6 2xl:grid-cols-3">
           {projects.map((project) => (
             <div key={project._id} className="group relative">
               {/* Glow effect */}
               <div className="bg-primary/20 absolute -inset-0.5 rounded-2xl opacity-0 blur-lg transition-opacity duration-500 group-hover:opacity-100"></div>
 
-              <Card className="hover:border-primary/50 relative h-full transition-all duration-300 hover:translate-y-[-4px]">
-                <CardContent className="px-4">
-                  <div className="mb-4 flex items-center justify-between gap-4">
-                    <div>
-                      <span className="border-primary/30 bg-primary/10 text-primary rounded-lg border px-2 py-1 text-xs font-medium capitalize">
-                        {project.product.category}
-                      </span>
-                    </div>
-                    <Button
-                      onClick={(e) => onDeleteProject(project._id, e)}
-                      disabled={deletingProject === project._id}
-                      variant="ghost"
-                      size="icon-sm"
-                    >
-                      {deletingProject === project._id ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <Trash2 className="text-destructive h-4 w-4" />
-                      )}
-                    </Button>
-                  </div>
-
-                  <h3 className="text-foreground group-hover:text-primary mb-2 text-lg font-bold transition-colors">
-                    {project.product.title}
-                  </h3>
-
-                  <p className="text-muted-foreground mb-3 text-sm">
-                    by {project.product.brand}
-                  </p>
-
-                  <div className="text-muted-foreground mb-4 flex items-center gap-2 text-xs">
-                    <Link2 className="h-3 w-3" />
-                    <span className="truncate">{project.url}</span>
-                  </div>
-
-                  <div className="border-border text-muted-foreground flex items-center gap-2 border-t pt-4 text-xs">
-                    <Clock className="h-3 w-3" />
-                    <span>
-                      {new Date(project.createdAt).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </span>
-                  </div>
-
-                  <div className="mt-4 flex flex-wrap items-center justify-center gap-2 transition-all group-hover:opacity-100">
-                    <Link href={`/marketing-automation/canvas/${project._id}`}>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex items-center gap-1.5"
-                        title="Open in Canvas"
-                      >
-                        <Palette className="h-3.5 w-3.5" />
-                        Canvas
-                      </Button>
-                    </Link>
-                    <Link
-                      href={`/marketing-automation/dashboard/${project._id}`}
-                    >
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex items-center gap-1.5"
-                        title="View Dashboard"
-                      >
-                        <LayoutDashboard className="h-3.5 w-3.5" />
-                        Dashboard
-                      </Button>
-                    </Link>
-                    <Link
-                      href={`/marketing-automation/insights/${project.analysis_id}?state=${encodeURIComponent(
-                        JSON.stringify({ projectId: project._id }),
-                      )}`}
-                    >
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex items-center gap-1.5"
-                        title="AI Insights"
-                      >
-                        <Lightbulb className="h-3.5 w-3.5" />
-                        Insights
-                      </Button>
-                    </Link>
-                    <Link href={`/marketing-automation/media/${project._id}`}>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex items-center gap-1.5"
-                        title="AI Media"
-                      >
-                        <Image className="h-3.5 w-3.5" />
-                        Media
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
+              <ProjectCard
+                project={project}
+                deletingProject={deletingProject}
+                onDeleteProject={onDeleteProject}
+              />
             </div>
           ))}
         </div>

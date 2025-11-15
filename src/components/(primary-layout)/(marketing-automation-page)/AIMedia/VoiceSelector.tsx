@@ -104,7 +104,7 @@ export default function VoiceSelector({
 
       {/* Voice Selection Modal */}
       <Dialog open={showVoiceSelection} onOpenChange={setShowVoiceSelection}>
-        <DialogContent className="flex max-h-[80vh] max-w-4xl flex-col overflow-hidden">
+        <DialogContent className="flex max-h-[80vh]! w-full! max-w-4xl! flex-col overflow-hidden">
           <DialogHeader>
             <div className="mb-4 flex items-center justify-between">
               <DialogTitle>Select Voice</DialogTitle>

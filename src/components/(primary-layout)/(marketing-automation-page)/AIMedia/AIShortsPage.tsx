@@ -206,10 +206,10 @@ export default function AIShortsPage() {
       <div className="border-border border-b pb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-foreground text-2xl font-bold">
+            <h2 className="text-foreground text-2xl font-bold">
               AI Shorts Generator
-            </h1>
-            <p className="text-muted-foreground mt-1 text-sm">
+            </h2>
+            <p className="text-muted-foreground mt-1 text-xs">
               Create engaging short-form videos for TikTok, Instagram Reels &
               YouTube Shorts
             </p>

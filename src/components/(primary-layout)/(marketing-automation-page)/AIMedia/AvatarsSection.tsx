@@ -73,7 +73,7 @@ function CreatorCard({
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
     >
-      <Card className="relative mb-3 aspect-[3/4] overflow-hidden shadow-lg">
+      <Card className="relative mb-2 aspect-[3/4] overflow-hidden shadow-lg">
         <img
           src={creator.preview_image}
           alt={creator.creator_name}
@@ -98,7 +98,7 @@ function CreatorCard({
 
         {/* Style count badge */}
         <div className="bg-primary text-primary-foreground absolute top-3 right-3 rounded-full px-2 py-1 text-xs font-bold">
-          {creator.style_count} {creator.style_count === 1 ? "style" : "styles"}
+          {creator.style_count} {creator.style_count === 1 ? "Style" : "Styles"}
         </div>
       </Card>
       <div className="flex items-center justify-between">
@@ -212,55 +212,44 @@ export default function AvatarsSection({ onToolClick }: AvatarsSectionProps) {
 
   return (
     <div className="flex flex-1 flex-col p-6">
-      <h2 className="text-foreground mb-6 text-3xl font-bold">Avatars</h2>
-
-      {/* Custom Avatar */}
-      <div className="mb-6">
-        <h3 className="text-foreground mb-4 text-lg font-semibold">
-          Custom Avatar
-        </h3>
-        <Card
-          onClick={() => onToolClick("create-avatar")}
-          className="group hover:border-primary flex w-full max-w-xs cursor-pointer flex-col items-center justify-center border-2 border-dashed p-12 transition-all"
-        >
-          <div className="bg-muted group-hover:bg-muted/80 mb-4 flex h-16 w-16 items-center justify-center rounded-full transition-colors">
-            <span className="text-muted-foreground group-hover:text-foreground text-3xl">
-              +
-            </span>
-          </div>
-          <p className="text-muted-foreground group-hover:text-foreground font-medium">
-            Create avatar
+      <div>
+        <div className="mb-4">
+          <h2 className="text-foreground text-xl font-bold md:text-2xl">
+            Avatars
+          </h2>
+          <p className="text-muted-foreground mt-1 text-xs">
+            Generate realistic avatars for your campaigns
           </p>
-        </Card>
-      </div>
+        </div>
 
-      {/* Avatar Tabs */}
-      <div className="mb-6">
-        <div className="border-border flex items-center gap-4 border-b">
-          <Button
-            onClick={() => setActiveTab("realistic")}
-            variant="ghost"
-            className={cn(
-              "rounded-b-none px-4 py-3 font-medium transition-colors",
-              activeTab === "realistic"
-                ? "border-primary text-foreground border-b-2"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            Realistic Avatars
-          </Button>
-          <Button
-            onClick={() => setActiveTab("styled")}
-            variant="ghost"
-            className={cn(
-              "rounded-b-none px-4 py-3 font-medium transition-colors",
-              activeTab === "styled"
-                ? "border-primary text-foreground border-b-2"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            Styled Avatar
-          </Button>
+        {/* Avatar Tabs */}
+        <div className="mb-6">
+          <div className="border-border flex items-center gap-4 border-b">
+            <Button
+              onClick={() => setActiveTab("realistic")}
+              variant="ghost"
+              className={cn(
+                "rounded-b-none px-4 py-3 font-medium transition-colors",
+                activeTab === "realistic"
+                  ? "border-primary text-foreground border-b-2"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              Realistic Avatars
+            </Button>
+            <Button
+              onClick={() => setActiveTab("styled")}
+              variant="ghost"
+              className={cn(
+                "rounded-b-none px-4 py-3 font-medium transition-colors",
+                activeTab === "styled"
+                  ? "border-primary text-foreground border-b-2"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              Styled Avatar
+            </Button>
+          </div>
         </div>
       </div>
 

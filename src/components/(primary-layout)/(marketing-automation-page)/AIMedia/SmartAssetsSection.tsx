@@ -259,13 +259,13 @@ export default function SmartAssetsSection({
     <div className="bg-background flex h-full flex-col">
       <div className="flex flex-1 flex-col p-6">
         {/* Header */}
-        <div className="border-border border-b pb-6">
+        <div>
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <h2 className="from-primary to-primary bg-gradient-to-r bg-clip-text text-2xl font-bold text-transparent">
+              <h2 className="text-foreground text-xl font-bold md:text-2xl">
                 Smart Assets
               </h2>
-              <p className="text-muted-foreground mt-1 text-sm">
+              <p className="text-muted-foreground mt-1 text-xs">
                 {projectTitle} - Manage images, videos, and logos
               </p>
             </div>
@@ -291,21 +291,24 @@ export default function SmartAssetsSection({
           </div>
 
           {/* Type Filter */}
-          <div>
-            <div className="flex gap-2">
-              {["all", "image", "video", "logo"].map((type) => (
-                <Button
-                  key={type}
-                  onClick={() =>
-                    setSelectedType(type as "all" | "image" | "video" | "logo")
-                  }
-                  variant={selectedType === type ? "default" : "outline"}
-                  className="flex-1"
-                >
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
-                </Button>
-              ))}
-            </div>
+          <div className="border-border flex items-center gap-4 border-b">
+            {["all", "image", "video", "logo"].map((type) => (
+              <Button
+                key={type}
+                onClick={() =>
+                  setSelectedType(type as "all" | "image" | "video" | "logo")
+                }
+                variant="ghost"
+                className={cn(
+                  "rounded-b-none px-4 py-3 font-medium transition-colors",
+                  selectedType === type
+                    ? "border-primary text-foreground border-b-2"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {type.charAt(0).toUpperCase() + type.slice(1)}
+              </Button>
+            ))}
           </div>
         </div>
         {/* Assets Grid */}

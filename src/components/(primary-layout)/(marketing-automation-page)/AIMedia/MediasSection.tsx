@@ -68,10 +68,10 @@ export default function MediasSection({ userId }: MediasSectionProps) {
         <div className="border-border border-b pb-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-foreground mb-2 text-2xl font-bold">
+              <h2 className="text-foreground text-xl font-bold md:text-2xl">
                 AI Generated Medias
-              </h1>
-              <p className="text-muted-foreground text-sm">
+              </h2>
+              <p className="text-muted-foreground mt-1 text-xs">
                 View all AI-generated videos for this project
               </p>
             </div>

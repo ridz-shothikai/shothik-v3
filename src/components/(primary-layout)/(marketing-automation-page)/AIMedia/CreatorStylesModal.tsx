@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import api from "@/lib/api";
 import { Loader2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -67,12 +68,12 @@ function StyleCard({
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
     >
-      <Card className="relative mb-3 aspect-[3/4] overflow-hidden shadow-lg">
+      <Card className="relative mb-3 aspect-[3/4] overflow-hidden shadow-lg transition-transform hover:scale-105">
         <img
           src={style.preview_image_9_16}
           alt={`${style.creator_name} - ${style.video_scene}`}
           className={`h-full w-full object-cover transition-all duration-300 ${
-            isHovered ? "opacity-0" : "opacity-100 group-hover:scale-105"
+            isHovered ? "opacity-0" : "opacity-100"
           }`}
         />
         <video
@@ -137,16 +138,15 @@ export default function CreatorStylesModal({
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="relative max-h-[90vh] max-w-6xl overflow-hidden">
-        <DialogHeader>
-          <DialogTitle>{creatorName}'s Styles</DialogTitle>
+      <DialogContent className="max-h-[80vh]! max-w-4xl! p-0">
+        <DialogHeader className="px-6 pt-6">
+          <DialogTitle className="text-2xl">{creatorName}'s Styles</DialogTitle>
           <DialogDescription>
             {styles.length} style{styles.length !== 1 ? "s" : ""} available
           </DialogDescription>
         </DialogHeader>
 
-        {/* Content */}
-        <div className="max-h-[calc(90vh-100px)] overflow-y-auto p-6">
+        <ScrollArea className="h-[calc(90vh-120px)] px-6 pb-6">
           {loading && (
             <div className="flex items-center justify-center py-20">
               <Loader2 className="text-primary h-8 w-8 animate-spin" />
@@ -173,7 +173,13 @@ export default function CreatorStylesModal({
               ))}
             </div>
           )}
-        </div>
+
+          {!loading && !error && styles.length === 0 && (
+            <div className="py-12 text-center">
+              <p className="text-muted-foreground">No styles found</p>
+            </div>
+          )}
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

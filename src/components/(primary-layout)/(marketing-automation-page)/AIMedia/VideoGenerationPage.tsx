@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -495,21 +495,20 @@ export default function VideoGenerationPage({
   };
 
   return (
-    <div className="bg-background text-foreground flex min-h-[calc(100vh-4rem)] flex-col">
+    <div className="bg-background text-foreground flex min-h-[calc(100vh-4rem)] flex-col p-6">
       {/* Header with breadcrumb */}
-      <div className="bg-background/90 sticky top-0 h-12 w-full border-b px-4 backdrop-blur-sm md:h-16 md:px-6">
+      <div className="bg-background/90 mb-6 flex w-full items-center gap-1 border-b pb-6">
         <Button
           onClick={onBack}
           variant="ghost"
           className="group flex items-center gap-2"
         >
           <ArrowLeft className="size-5" />
-          <span className="font-medium">Back to Avatars</span>
         </Button>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold">Create Your Video</h1>
-            <p className="text-muted-foreground mt-1 hidden text-xs md:block">
+            <h1 className="text-xl font-bold md:text-2xl">Create Your Video</h1>
+            <p className="text-muted-foreground hidden text-xs md:block">
               Customize your AI-powered video with script, voice, and advanced
               settings
             </p>
@@ -517,12 +516,12 @@ export default function VideoGenerationPage({
         </div>
       </div>
 
-      <div className="container mx-auto flex-1 p-6">
+      <div className="w-full flex-1">
         {/* Main Content Card */}
-        <Card className="overflow-hidden shadow-2xl">
+        <Card className="overflow-hidden pt-0 shadow-2xl">
           {/* Progress Steps Indicator */}
-          <CardHeader className="border-border bg-muted/50 border-b px-8 py-4">
-            <div className="mx-auto flex max-w-2xl items-center justify-between">
+          <div className="bg-muted/50 border-b">
+            <div className="mx-auto flex w-full max-w-2xl items-center justify-between px-6 py-6">
               <div className="flex items-center gap-2">
                 <div className="bg-primary text-primary-foreground flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold">
                   1
@@ -557,7 +556,7 @@ export default function VideoGenerationPage({
                 </span>
               </div>
             </div>
-          </CardHeader>
+          </div>
 
           <CardContent className="p-8">
             {/* Script Section */}

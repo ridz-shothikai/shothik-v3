@@ -157,7 +157,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Style</Label>
+                <Label className="mb-2">Style</Label>
                 <Select
                   value={props.avatarStyle}
                   onValueChange={(value) =>
@@ -174,7 +174,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 </Select>
               </div>
               <div>
-                <Label>Scale</Label>
+                <Label className="mb-2">Scale</Label>
                 <Input
                   type="number"
                   value={props.avatarScale}
@@ -187,7 +187,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div>
-                <Label>Offset X</Label>
+                <Label className="mb-2">Offset X</Label>
                 <Input
                   type="number"
                   value={props.avatarOffsetX}
@@ -197,7 +197,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div>
-                <Label>Offset Y</Label>
+                <Label className="mb-2">Offset Y</Label>
                 <Input
                   type="number"
                   value={props.avatarOffsetY}
@@ -224,7 +224,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
               Voice Settings
             </CardTitle>
             <div>
-              <Label>Volume (0-1)</Label>
+              <Label className="mb-2">Volume (0-1)</Label>
               <Input
                 type="number"
                 value={props.voiceVolume}
@@ -245,7 +245,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Caption Style</Label>
+                <Label className="mb-2">Caption Style</Label>
                 <Input
                   type="text"
                   value={props.captionStyle}
@@ -254,7 +254,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div>
-                <Label>Font Family</Label>
+                <Label className="mb-2">Font Family</Label>
                 <Input
                   type="text"
                   value={props.fontFamily}
@@ -263,7 +263,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div>
-                <Label>Font Size</Label>
+                <Label className="mb-2">Font Size</Label>
                 <Input
                   type="number"
                   value={props.fontSize}
@@ -271,7 +271,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div>
-                <Label>Font Style</Label>
+                <Label className="mb-2">Font Style</Label>
                 <Input
                   type="text"
                   value={props.fontStyle}
@@ -280,7 +280,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div>
-                <Label>Caption Offset X</Label>
+                <Label className="mb-2">Caption Offset X</Label>
                 <Input
                   type="number"
                   value={props.captionOffsetX}
@@ -291,7 +291,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div>
-                <Label>Caption Offset Y</Label>
+                <Label className="mb-2">Caption Offset Y</Label>
                 <Input
                   type="number"
                   value={props.captionOffsetY}
@@ -302,7 +302,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div>
-                <Label>Background Color</Label>
+                <Label className="mb-2">Background Color</Label>
                 <Input
                   type="color"
                   value={props.captionBgColor}
@@ -311,7 +311,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div>
-                <Label>Text Color</Label>
+                <Label className="mb-2">Text Color</Label>
                 <Input
                   type="color"
                   value={props.captionTextColor}
@@ -320,7 +320,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div>
-                <Label>Highlight Color</Label>
+                <Label className="mb-2">Highlight Color</Label>
                 <Input
                   type="color"
                   value={props.captionHighlightColor}
@@ -351,7 +351,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Type</Label>
+                <Label className="mb-2">Type</Label>
                 <Select
                   value={props.backgroundType}
                   onValueChange={(value) =>
@@ -368,7 +368,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 </Select>
               </div>
               <div>
-                <Label>Fit</Label>
+                <Label className="mb-2">Fit</Label>
                 <Select
                   value={props.backgroundFit}
                   onValueChange={(value) =>
@@ -388,7 +388,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 </Select>
               </div>
               <div className="col-span-2">
-                <Label>Background URL</Label>
+                <Label className="mb-2">Background URL</Label>
                 <div className="flex gap-2">
                   <Input
                     type="url"
@@ -408,7 +408,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 </div>
               </div>
               <div className="col-span-2">
-                <Label>Background Effect</Label>
+                <Label className="mb-2">Background Effect</Label>
                 <Input
                   type="text"
                   value={props.backgroundEffect}
@@ -426,7 +426,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Transition In</Label>
+                <Label className="mb-2">Transition In</Label>
                 <Input
                   type="text"
                   value={props.transitionIn}
@@ -435,7 +435,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div>
-                <Label>Transition Out</Label>
+                <Label className="mb-2">Transition Out</Label>
                 <Input
                   type="text"
                   value={props.transitionOut}
@@ -452,7 +452,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
               Visual Style
             </CardTitle>
             <div>
-              <Label>Style Preset</Label>
+              <Label className="mb-2">Style Preset</Label>
               <Input
                 type="text"
                 value={props.visualStyle}
@@ -469,7 +469,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
-                <Label>Product Image URL</Label>
+                <Label className="mb-2">Product Image URL</Label>
                 <div className="flex gap-2">
                   <Input
                     type="url"
@@ -489,7 +489,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 </div>
               </div>
               <div>
-                <Label>Logo Scale</Label>
+                <Label className="mb-2">Logo Scale</Label>
                 <Input
                   type="number"
                   value={props.ctaLogoScale}
@@ -502,7 +502,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div>
-                <Label>Logo Offset X</Label>
+                <Label className="mb-2">Logo Offset X</Label>
                 <Input
                   type="number"
                   value={props.ctaLogoOffsetX}
@@ -512,7 +512,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div>
-                <Label>Logo Offset Y</Label>
+                <Label className="mb-2">Logo Offset Y</Label>
                 <Input
                   type="number"
                   value={props.ctaLogoOffsetY}
@@ -522,7 +522,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div className="col-span-2">
-                <Label>CTA Caption</Label>
+                <Label className="mb-2">CTA Caption</Label>
                 <Input
                   type="text"
                   value={props.ctaCaption}
@@ -551,7 +551,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
-                <Label>End Logo URL</Label>
+                <Label className="mb-2">End Logo URL</Label>
                 <div className="flex gap-2">
                   <Input
                     type="url"
@@ -573,7 +573,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 </div>
               </div>
               <div className="col-span-2">
-                <Label>End Caption</Label>
+                <Label className="mb-2">End Caption</Label>
                 <Input
                   type="text"
                   value={props.endCtaCaption}
@@ -582,7 +582,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div>
-                <Label>Duration (seconds)</Label>
+                <Label className="mb-2">Duration (seconds)</Label>
                 <Input
                   type="number"
                   value={props.endCtaDuration}
@@ -594,7 +594,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div className="col-span-2">
-                <Label>End Background URL</Label>
+                <Label className="mb-2">End Background URL</Label>
                 <div className="flex gap-2">
                   <Input
                     type="url"
@@ -627,7 +627,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
-                <Label>Music URL</Label>
+                <Label className="mb-2">Music URL</Label>
                 <Input
                   type="url"
                   value={props.musicUrl}
@@ -636,7 +636,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div>
-                <Label>Volume (0-1)</Label>
+                <Label className="mb-2">Volume (0-1)</Label>
                 <Input
                   type="number"
                   value={props.musicVolume}
@@ -658,7 +658,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
-                <Label>Video Name</Label>
+                <Label className="mb-2">Video Name</Label>
                 <Input
                   type="text"
                   value={props.videoName}
@@ -667,7 +667,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 />
               </div>
               <div>
-                <Label>Model Version</Label>
+                <Label className="mb-2">Model Version</Label>
                 <Select
                   value={props.modelVersion}
                   onValueChange={(value) =>
@@ -689,7 +689,7 @@ export default function AdvancedSettings(props: AdvancedSettingsProps) {
                 </Select>
               </div>
               <div className="col-span-2">
-                <Label>Webhook URL (Optional)</Label>
+                <Label className="mb-2">Webhook URL (Optional)</Label>
                 <Input
                   type="url"
                   value={props.webhookUrl}
