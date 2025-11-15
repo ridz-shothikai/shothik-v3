@@ -16,6 +16,7 @@ import {
   Loader2,
   LogOut,
   MessageSquare,
+  MessageSquarePlus,
   User as UserIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -120,7 +121,7 @@ export default function Header({
                           <Loader2 className="text-destructive h-4 w-4 animate-spin" />
                         ) : (
                           <>
-                            <LogOut className="text-destructive mr-2 h-4 w-4" />
+                            <LogOut className="text-destructive h-4 w-4" />
                             <span className="text-destructive text-xs">
                               Disconnect
                             </span>
@@ -329,7 +330,7 @@ export default function Header({
                 className="flex items-center gap-2"
                 title="Open Messenger Inbox"
               >
-                <MessageSquare className="h-4 w-4" />
+                <MessageSquarePlus className="h-4 w-4" />
                 <span className="hidden text-sm sm:inline">
                   Messenger Connect
                 </span>
@@ -345,8 +346,6 @@ export default function Header({
                 <span className="hidden text-sm sm:inline">Messenger</span>
               </Button>
             </Link>
-
-            {/* Knowledge Button */}
             <Link href="/marketing-automation/chat-knowledge">
               <Button
                 variant="outline"

@@ -22,13 +22,18 @@ import {
   ArrowLeft,
   Check,
   Eye,
+  Globe,
+  Images,
   Loader2,
+  Play,
   Send,
   Settings,
+  Smartphone,
+  Target,
   Wand2,
 } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function PublishAdsScreen() {
@@ -39,11 +44,9 @@ export default function PublishAdsScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [previewAd, setPreviewAd] = useState<Ad | null>(null);
 
-  // Load ads data
   useEffect(() => {
     const loadAds = async () => {
       if (!projectId) return;
-
       try {
         setIsLoading(true);
         const response = await campaignAPI.getCampaignData(projectId);
@@ -54,41 +57,28 @@ export default function PublishAdsScreen() {
         setIsLoading(false);
       }
     };
-
     loadAds();
   }, [projectId]);
 
   const handleSelectAd = (adId: string) => {
     setSelectedAds((prev) => {
       const newSet = new Set(prev);
-      if (newSet.has(adId)) {
-        newSet.delete(adId);
-      } else {
-        newSet.add(adId);
-      }
+      if (newSet.has(adId)) newSet.delete(adId);
+      else newSet.add(adId);
       return newSet;
     });
   };
 
   const handleSelectAll = () => {
     const unpublishedAds = ads.filter((ad) => ad.status !== "published");
-    if (selectedAds.size === unpublishedAds.length) {
-      setSelectedAds(new Set());
-    } else {
-      setSelectedAds(new Set(unpublishedAds.map((ad) => ad.id)));
-    }
+    if (selectedAds.size === unpublishedAds.length) setSelectedAds(new Set());
+    else setSelectedAds(new Set(unpublishedAds.map((ad) => ad.id)));
   };
 
   const handlePublishAds = () => {
     if (selectedAds.size === 0) return;
-
-    const state = {
-      selectedAdIds: Array.from(selectedAds),
-      projectId: projectId,
-    };
+    const state = { selectedAdIds: Array.from(selectedAds), projectId };
     const encodedState = encodeURIComponent(JSON.stringify(state));
-
-    // Navigate to Facebook account selection screen
     router.push(
       `/marketing-automation/canvas/${projectId}/publish/select-accounts?state=${encodedState}`,
     );
@@ -113,11 +103,7 @@ export default function PublishAdsScreen() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link href={`/marketing-automation/canvas/${projectId}`}>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  title="Back to Campaign"
-                >
+                <Button variant="ghost" size="icon" title="Back to Campaign">
                   <ArrowLeft className="size-5" />
                 </Button>
               </Link>
@@ -147,7 +133,10 @@ export default function PublishAdsScreen() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Link href={`/marketing-automation/canvas/${projectId}`} className="mx-auto">
+              <Link
+                href={`/marketing-automation/canvas/${projectId}`}
+                className="mx-auto"
+              >
                 <Button className="mx-auto">
                   <ArrowLeft className="size-5" />
                   Back to Campaign
@@ -194,11 +183,11 @@ export default function PublishAdsScreen() {
 
             {/* Ads Grid */}
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
-              {ads.map((ad, index) => (
+              {ads.map((ad) => (
                 <Card
                   key={ad.id}
                   className={cn(
-                    "cursor-pointer overflow-hidden transition-all",
+                    "flex cursor-pointer flex-col overflow-hidden pt-0 transition-all",
                     ad.status === "published"
                       ? "cursor-not-allowed opacity-75"
                       : selectedAds.has(ad.id)
@@ -210,71 +199,62 @@ export default function PublishAdsScreen() {
                   }
                 >
                   {/* Media Preview */}
-                  {ad.imageUrl ? (
-                    <img
-                      src={ad.imageUrl}
-                      alt={ad.headline}
-                      className="h-48 w-full object-cover"
-                    />
-                  ) : ad.videoUrl ? (
-                    <div className="from-primary/50 to-secondary/50 text-foreground relative flex h-48 w-full items-center justify-center bg-gradient-to-br text-lg font-bold">
-                      <video
-                        src={ad.videoUrl}
-                        className="h-full w-full object-cover"
-                        muted
-                        autoPlay
-                        loop
-                      />
-                    </div>
-                  ) : ad.imageUrls && ad.imageUrls.length > 0 ? (
-                    <div className="from-primary/40 to-accent/40 text-foreground relative flex h-48 w-full items-center justify-center bg-gradient-to-br text-lg font-bold">
+                  <div>
+                    {ad.imageUrl ? (
                       <img
-                        src={ad.imageUrls[0]}
+                        src={ad.imageUrl}
                         alt={ad.headline}
-                        className="h-full w-full object-cover"
+                        className="h-60 w-full object-cover"
                       />
-                      <Badge
-                        variant="secondary"
-                        className="absolute top-2 right-2"
-                      >
-                        {ad.imageUrls.length} images
-                      </Badge>
-                      <Badge
-                        variant="secondary"
-                        className="absolute bottom-2 left-2"
-                      >
-                        📸 CAROUSEL
-                      </Badge>
-                    </div>
-                  ) : (
-                    <div className="from-muted to-accent text-foreground flex h-48 w-full items-center justify-center bg-gradient-to-br text-lg font-bold">
-                      {ad.format === "SHORT_VIDEO" ||
-                      ad.format === "VIDEO" ||
-                      ad.format === "LONG_VIDEO" ? (
-                        <div className="text-center">
-                          <div className="mb-2 text-4xl">▶</div>
-                          <div>{ad.format?.replace("_", " ")}</div>
-                        </div>
-                      ) : ad.format === "CAROUSEL" ? (
-                        <div className="text-center">
-                          <div className="mb-2 text-4xl">📸</div>
-                          <div>CAROUSEL</div>
-                        </div>
-                      ) : ad.format === "STORY" ? (
-                        <div className="text-center">
-                          <div className="mb-2 text-4xl">📱</div>
-                          <div>STORY</div>
-                        </div>
-                      ) : (
-                        <div className="text-center">
-                          <div className="mb-2 text-4xl">🖼️</div>
-                          <div>SINGLE IMAGE</div>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                    ) : ad.videoUrl ? (
+                      <div className="bg-background text-foreground relative flex h-60 w-full items-center justify-center border-b text-lg font-bold">
+                        <Play className="text-primary absolute h-12 w-12" />
+                        <video
+                          src={ad.videoUrl}
+                          className="h-full w-full object-cover"
+                          muted
+                          autoPlay
+                          loop
+                        />
+                      </div>
+                    ) : ad.imageUrls && ad.imageUrls.length > 0 ? (
+                      <div className="bg-background text-foreground relative flex h-60 w-full items-center justify-center border-b text-lg font-bold">
+                        <img
+                          src={ad.imageUrls[0]}
+                          alt={ad.headline}
+                          className="h-full w-full object-cover"
+                        />
+                        <Badge
+                          variant="secondary"
+                          className="absolute top-2 right-2 flex items-center gap-1"
+                        >
+                          <Images className="h-3 w-3" /> {ad.imageUrls.length}
+                        </Badge>
+                        <Badge
+                          variant="secondary"
+                          className="absolute bottom-2 left-2 flex items-center gap-1"
+                        >
+                          <Images className="h-3 w-3" /> CAROUSEL
+                        </Badge>
+                      </div>
+                    ) : (
+                      <div className="bg-background text-foreground relative flex h-60 w-full items-center justify-center border-b text-lg font-bold">
+                        {ad.format === "SHORT_VIDEO" ||
+                        ad.format === "VIDEO" ||
+                        ad.format === "LONG_VIDEO" ? (
+                          <Play className="text-primary h-12 w-12" />
+                        ) : ad.format === "CAROUSEL" ? (
+                          <Images className="text-primary h-12 w-12" />
+                        ) : ad.format === "STORY" ? (
+                          <Smartphone className="text-primary h-12 w-12" />
+                        ) : (
+                          <Images className="text-primary h-12 w-12" />
+                        )}
+                      </div>
+                    )}
+                  </div>
 
-                  <CardContent className="space-y-4">
+                  <CardContent className="flex flex-1 flex-col gap-4">
                     {/* Tags and Metadata */}
                     <div className="flex flex-wrap items-center gap-2">
                       <Badge variant="outline">
@@ -289,10 +269,14 @@ export default function PublishAdsScreen() {
                         <Badge variant="outline">{ad.persona}</Badge>
                       )}
                       {ad.language && ad.language !== "english" && (
-                        <Badge variant="outline">🌐 {ad.language}</Badge>
+                        <Badge variant="outline">
+                          <Globe className="h-3 w-3" /> {ad.language}
+                        </Badge>
                       )}
                       {ad.status === "published" && (
-                        <Badge variant="default">✅ Published</Badge>
+                        <Badge variant="default">
+                          <Check className="h-3 w-3" /> Published
+                        </Badge>
                       )}
                     </div>
 
@@ -301,12 +285,10 @@ export default function PublishAdsScreen() {
                       {ad.headline}
                     </h4>
 
-                    {/* Hook (if available) */}
+                    {/* Hook */}
                     {ad.hook && (
-                      <div className="border-border bg-accent/50 rounded-lg border p-3">
-                        <p className="text-muted-foreground mb-1 text-xs font-medium">
-                          🎯 Hook:
-                        </p>
+                      <div className="border-border bg-accent/50 flex items-center gap-2 rounded-lg border p-3">
+                        <Target className="text-primary h-4 w-4" />
                         <p className="text-foreground text-sm italic">
                           {ad.hook}
                         </p>
@@ -325,37 +307,39 @@ export default function PublishAdsScreen() {
                       {ad.description}
                     </p>
 
-                    {/* CTA Button */}
-                    <Button className="w-full" variant="default">
-                      {ad.cta || "Learn More"}
-                    </Button>
+                    <div className="mt-auto">
+                      {/* CTA Button */}
+                      <Button className="w-full" variant="default">
+                        {ad.cta || "Learn More"}
+                      </Button>
 
-                    {/* Action Buttons */}
-                    <div className="grid grid-cols-2 gap-2 pt-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setPreviewAd(ad);
-                        }}
-                      >
-                        <Eye className="h-4 w-4" />
-                        Preview
-                      </Button>
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          router.push(
-                            `/marketing-automation/canvas/${projectId}/media/${ad.id}`,
-                          );
-                        }}
-                      >
-                        <Settings className="h-4 w-4" />
-                        Edit
-                      </Button>
+                      {/* Action Buttons */}
+                      <div className="grid grid-cols-2 gap-2 pt-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setPreviewAd(ad);
+                          }}
+                        >
+                          <Eye className="h-4 w-4" />
+                          Preview
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            router.push(
+                              `/marketing-automation/canvas/${projectId}/media/${ad.id}`,
+                            );
+                          }}
+                        >
+                          <Settings className="h-4 w-4" />
+                          Edit
+                        </Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -382,7 +366,6 @@ export default function PublishAdsScreen() {
                 className="h-64 w-full rounded-lg object-cover"
               />
             )}
-
             {previewAd && (
               <>
                 <h4 className="text-foreground text-xl font-bold">
@@ -390,10 +373,8 @@ export default function PublishAdsScreen() {
                 </h4>
 
                 {previewAd.hook && (
-                  <div className="border-border bg-accent/50 rounded-lg border p-3">
-                    <p className="text-muted-foreground mb-1 text-sm font-medium">
-                      🎯 Hook:
-                    </p>
+                  <div className="border-border bg-accent/50 flex items-center gap-2 rounded-lg border p-3">
+                    <Target className="text-primary h-4 w-4" />
                     <p className="text-foreground text-sm italic">
                       {previewAd.hook}
                     </p>

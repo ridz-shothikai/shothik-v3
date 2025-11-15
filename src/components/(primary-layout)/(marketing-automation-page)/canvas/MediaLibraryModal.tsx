@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import api from "@/lib/api";
+import { cn } from "@/lib/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Check, FileVideo, Image, Loader2, Video } from "lucide-react";
 import { useParams } from "next/navigation";
@@ -192,7 +193,7 @@ export default function MediaLibraryModal({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="flex max-h-[90vh] max-w-6xl flex-col">
+        <DialogContent className="flex max-h-[90vh] max-w-6xl! flex-col">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold">
               Select Media
@@ -207,23 +208,31 @@ export default function MediaLibraryModal({
           </DialogHeader>
 
           {/* Tabs */}
-          <div className="border-b px-4 md:px-6">
-            <div className="flex gap-4">
-              <Button
-                variant={activeTab === "smart-assets" ? "default" : "ghost"}
-                onClick={() => setActiveTab("smart-assets")}
-                className="data-[state=active]:border-primary border-b-2 border-transparent"
-              >
-                Smart Assets ({smartAssets.length})
-              </Button>
-              <Button
-                variant={activeTab === "ai-media" ? "default" : "ghost"}
-                onClick={() => setActiveTab("ai-media")}
-                className="data-[state=active]:border-primary border-b-2 border-transparent"
-              >
-                AI Media ({aiMedia.length})
-              </Button>
-            </div>
+          <div className="flex w-full gap-4 border-b">
+            <Button
+              variant={"ghost"}
+              onClick={() => setActiveTab("smart-assets")}
+              className={cn(
+                "rounded-b-none px-4 py-3 font-medium transition-colors",
+                activeTab === "smart-assets"
+                  ? "border-primary text-foreground border-b-2"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              Smart Assets ({smartAssets.length})
+            </Button>
+            <Button
+              variant={"ghost"}
+              onClick={() => setActiveTab("ai-media")}
+              className={cn(
+                "rounded-b-none px-4 py-3 font-medium transition-colors",
+                activeTab === "ai-media"
+                  ? "border-primary text-foreground border-b-2"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              AI Media ({aiMedia.length})
+            </Button>
           </div>
 
           {/* Content */}

@@ -102,23 +102,25 @@ export default function AISuggestionsTab({
       </Card>
 
       {/* Strategy Notes */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="mb-4 text-xl font-bold">
-            Strategy Notes
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ul className="space-y-2">
-            {initialSuggestions.strategy_notes.map((note, index) => (
-              <li key={index} className="flex items-start gap-3">
-                <span className="text-primary mt-1">✓</span>
-                <span className="text-foreground">{note}</span>
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
+      {initialSuggestions?.strategy_notes?.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="mb-4 text-xl font-bold">
+              Strategy Notes
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2">
+              {initialSuggestions.strategy_notes.map((note, index) => (
+                <li key={index} className="flex items-start gap-3">
+                  <span className="text-primary mt-1">✓</span>
+                  <span className="text-foreground">{note}</span>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      )}
     </>
   );
 }

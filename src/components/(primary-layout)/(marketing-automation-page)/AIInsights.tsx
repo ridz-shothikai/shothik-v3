@@ -14,7 +14,6 @@ import {
   ArrowLeft,
   Bot,
   Brain,
-  FileText,
   Lightbulb,
   Send,
   Sparkles,
@@ -151,13 +150,6 @@ export default function AIInsights() {
       id: "mindmap",
       title: "Mind Map",
       icon: <Brain className="h-5 w-5" />,
-      color: "",
-      bgColor: "",
-    },
-    {
-      id: "reports",
-      title: "Reports",
-      icon: <FileText className="h-5 w-5" />,
       color: "",
       bgColor: "",
     },
@@ -447,7 +439,7 @@ export default function AIInsights() {
 
             {/* Studio Cards */}
             <div className="custom-scrollbar flex-1 overflow-y-auto p-4">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid gap-3">
                 {studioCards.map((card) => (
                   <Button
                     key={card.id}

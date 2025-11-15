@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Info, Loader2, Sparkles } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
 
 interface Ad {
   id: string;
@@ -44,41 +44,12 @@ export default function ScriptEditor({
   maxChars = 7000,
 }: ScriptEditorProps) {
   return (
-    <div className="mb-8">
+    <div className="mb-6">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <h2 className="text-foreground text-xl font-semibold">Script</h2>
-          <Info className="text-muted-foreground h-4 w-4" />
         </div>
         <div className="flex items-center gap-3">
-          <Button
-            onClick={onTrySample}
-            variant="outline"
-            size="sm"
-            className="flex items-center gap-2"
-          >
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            Try a sample
-          </Button>
-
           <Select
             value={selectedAd}
             onValueChange={onAdSelect}

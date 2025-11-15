@@ -1,16 +1,24 @@
 "use client";
 
-import type { Ad } from "@/types/campaign";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Save, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import type { Ad } from "@/types/campaign";
+import {
+  AlignLeft,
+  Clapperboard,
+  FileText,
+  Heading1,
+  MousePointerClick,
+  Save,
+  Target,
+} from "lucide-react";
 
 interface EditAdModalProps {
   editingAd: Ad | null;
@@ -40,9 +48,10 @@ export default function EditAdModal({
 
   return (
     <Dialog open={!!editingAd} onOpenChange={onClose}>
-      <DialogContent className="max-h-[90vh] w-[95vw] max-w-3xl overflow-y-auto md:w-auto">
+      <DialogContent className="max-h-[90vh] !max-w-4xl overflow-y-auto md:w-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">
+          <DialogTitle className="flex items-center gap-2 text-2xl font-bold">
+            <Heading1 className="text-primary h-5 w-5" />
             Edit Ad: {editingAd.headline}
           </DialogTitle>
         </DialogHeader>
@@ -50,8 +59,8 @@ export default function EditAdModal({
         <div className="space-y-4">
           {/* Headline */}
           <div>
-            <label className="mb-2 block text-sm font-semibold">
-              📝 Headline
+            <label className="mb-2 flex items-center gap-2 text-sm font-semibold">
+              <Heading1 className="text-primary h-4 w-4" /> Headline
             </label>
             <Input
               type="text"
@@ -63,8 +72,8 @@ export default function EditAdModal({
 
           {/* Hook */}
           <div>
-            <label className="mb-2 block text-sm font-semibold">
-              🎯 Hook
+            <label className="mb-2 flex items-center gap-2 text-sm font-semibold">
+              <Target className="text-primary h-4 w-4" /> Hook
             </label>
             <Textarea
               value={editFormData.hook}
@@ -76,8 +85,8 @@ export default function EditAdModal({
 
           {/* Primary Text */}
           <div>
-            <label className="mb-2 block text-sm font-semibold">
-              📄 Primary Text
+            <label className="mb-2 flex items-center gap-2 text-sm font-semibold">
+              <FileText className="text-primary h-4 w-4" /> Primary Text
             </label>
             <Textarea
               value={editFormData.primary_text}
@@ -89,8 +98,8 @@ export default function EditAdModal({
 
           {/* Description */}
           <div>
-            <label className="mb-2 block text-sm font-semibold">
-              📋 Description
+            <label className="mb-2 flex items-center gap-2 text-sm font-semibold">
+              <AlignLeft className="text-primary h-4 w-4" /> Description
             </label>
             <Textarea
               value={editFormData.description}
@@ -102,8 +111,9 @@ export default function EditAdModal({
 
           {/* Creative Direction */}
           <div>
-            <label className="mb-2 block text-sm font-semibold">
-              🎬 Creative Direction
+            <label className="mb-2 flex items-center gap-2 text-sm font-semibold">
+              <Clapperboard className="text-primary h-4 w-4" /> Creative
+              Direction
             </label>
             <Textarea
               value={editFormData.creative_direction}
@@ -117,13 +127,14 @@ export default function EditAdModal({
 
           {/* CTA */}
           <div>
-            <label className="mb-2 block text-sm font-semibold">
-              🔘 Call to Action (CTA)
+            <label className="mb-2 flex items-center gap-2 text-sm font-semibold">
+              <MousePointerClick className="text-primary h-4 w-4" /> Call to
+              Action (CTA)
             </label>
             <select
               value={editFormData.cta}
               onChange={(e) => onFieldChange("cta", e.target.value)}
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none"
+              className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-[3px] focus-visible:outline-none"
             >
               <option value="">Select CTA</option>
               <option value="LEARN_MORE">Learn More</option>
@@ -149,14 +160,10 @@ export default function EditAdModal({
           >
             Cancel
           </Button>
-          <Button
-            onClick={onSave}
-            disabled={saving}
-            className="flex-1"
-          >
+          <Button onClick={onSave} disabled={saving} className="flex-1">
             {saving ? (
               <>
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground/30 border-t-primary-foreground"></div>
+                <div className="border-primary-foreground/30 border-t-primary-foreground h-4 w-4 animate-spin rounded-full border-2"></div>
                 Saving...
               </>
             ) : (

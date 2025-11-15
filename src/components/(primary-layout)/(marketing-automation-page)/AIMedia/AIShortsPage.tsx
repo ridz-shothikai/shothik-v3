@@ -218,8 +218,8 @@ export default function AIShortsPage() {
       </div>
 
       {/* Main Content */}
-      <div className="mx-auto pt-6">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div className="w-full pt-6">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
           {/* Left Column - Settings */}
           <div className="space-y-6">
             {/* Aspect Ratio Selection */}
@@ -232,7 +232,7 @@ export default function AIShortsPage() {
               <CardContent>
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { id: "9x16", label: "9:16", desc: "TikTok/Reels" },
+                    { id: "9x16", label: "9:16", desc: "Reels" },
                     { id: "16x9", label: "16:9", desc: "YouTube" },
                     { id: "1x1", label: "1:1", desc: "Square" },
                   ].map((p) => (
@@ -240,7 +240,7 @@ export default function AIShortsPage() {
                       key={p.id}
                       onClick={() => setAspectRatio(p.id as any)}
                       variant={aspectRatio === p.id ? "default" : "outline"}
-                      className="flex h-auto flex-col gap-0.5 self-stretch py-1"
+                      className="flex h-auto flex-col gap-0.5 self-stretch px-1 py-1"
                     >
                       <div>{p.label}</div>
                       <div className="text-xs opacity-75">{p.desc}</div>
@@ -338,7 +338,7 @@ export default function AIShortsPage() {
           </div>
 
           {/* Middle Column - Script & Voice */}
-          <div className="space-y-6 lg:col-span-2">
+          <div className="space-y-6 xl:col-span-2">
             {/* Script Editor */}
             <ScriptEditor
               script={script}

@@ -1,5 +1,15 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import type { AdSet, Campaign } from "@/types/campaign";
 import type { BidStrategy, OptimizationGoal } from "@/types/metaCampaign";
 import {
@@ -11,17 +21,7 @@ import {
   getRecommendedOptimizationGoalForObjective,
   getValidOptimizationGoalsForObjective,
 } from "@/utils/objectiveMapping";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Save, X } from "lucide-react";
+import { Save } from "lucide-react";
 import TargetingConfig from "../TargetingConfig";
 
 interface EditAdSetModalProps {
@@ -63,11 +63,9 @@ export default function EditAdSetModal({
 
   return (
     <Dialog open={showModal} onOpenChange={onClose}>
-      <DialogContent className="max-h-[90vh] w-[95vw] max-w-3xl overflow-y-auto md:w-auto">
+      <DialogContent className="max-h-[90vh] max-w-4xl! overflow-y-auto md:w-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">
-            Edit Ad Set
-          </DialogTitle>
+          <DialogTitle className="text-2xl font-bold">Edit Ad Set</DialogTitle>
           <DialogDescription>{editingAdSet.name}</DialogDescription>
         </DialogHeader>
 
@@ -75,7 +73,7 @@ export default function EditAdSetModal({
           {/* Basic Information */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg font-semibold border-b pb-2">
+              <CardTitle className="border-b pb-2 text-lg font-semibold">
                 Basic Information
               </CardTitle>
             </CardHeader>
@@ -100,7 +98,7 @@ export default function EditAdSetModal({
                 </label>
                 <div className="relative">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <span className="text-sm text-muted-foreground">$</span>
+                    <span className="text-muted-foreground text-sm">$</span>
                   </div>
                   <Input
                     type="number"
@@ -126,7 +124,7 @@ export default function EditAdSetModal({
                     placeholder="Enter daily budget..."
                   />
                 </div>
-                <p className="mt-1 text-xs text-muted-foreground">
+                <p className="text-muted-foreground mt-1 text-xs">
                   Minimum $1 per day. Higher budgets allow for better
                   optimization.
                 </p>
@@ -142,7 +140,7 @@ export default function EditAdSetModal({
                   onChange={(e) =>
                     onFieldChange("bid_strategy", e.target.value)
                   }
-                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none"
+                  className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-[3px] focus-visible:outline-none"
                 >
                   <option value="LOWEST_COST_WITHOUT_CAP">
                     {BidStrategyLabels.LOWEST_COST_WITHOUT_CAP}
@@ -161,7 +159,7 @@ export default function EditAdSetModal({
               <div>
                 <label className="mb-2 block text-sm font-medium">
                   Optimization Goal
-                  <span className="ml-2 text-xs font-normal text-muted-foreground">
+                  <span className="text-muted-foreground ml-2 text-xs font-normal">
                     (Based on Campaign Objective)
                   </span>
                 </label>
@@ -170,7 +168,7 @@ export default function EditAdSetModal({
                   onChange={(e) =>
                     onFieldChange("optimization_goal", e.target.value)
                   }
-                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none"
+                  className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-[3px] focus-visible:outline-none"
                 >
                   {(() => {
                     // Get the campaign objective from the first campaign
@@ -202,7 +200,7 @@ export default function EditAdSetModal({
 
                   return (
                     <Card className="mt-2 p-3">
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-muted-foreground text-xs">
                         💡 {getOptimizationGoalDescription(campaignObjective)}
                       </p>
                     </Card>
@@ -215,7 +213,7 @@ export default function EditAdSetModal({
           {/* Targeting Configuration */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg font-semibold border-b pb-2">
+              <CardTitle className="border-b pb-2 text-lg font-semibold">
                 Targeting Configuration
               </CardTitle>
             </CardHeader>
@@ -232,21 +230,13 @@ export default function EditAdSetModal({
 
         {/* Footer */}
         <div className="flex gap-4 border-t pt-6">
-          <Button
-            variant="outline"
-            onClick={onClose}
-            className="flex-1"
-          >
+          <Button variant="outline" onClick={onClose} className="flex-1">
             Cancel
           </Button>
-          <Button
-            onClick={onSave}
-            disabled={saving}
-            className="flex-1"
-          >
+          <Button onClick={onSave} disabled={saving} className="flex-1">
             {saving ? (
               <>
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground/30 border-t-primary-foreground"></div>
+                <div className="border-primary-foreground/30 border-t-primary-foreground h-4 w-4 animate-spin rounded-full border-2"></div>
                 Saving...
               </>
             ) : (

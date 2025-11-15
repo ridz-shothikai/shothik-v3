@@ -9,6 +9,7 @@ import {
   Users as UsersIcon,
   Video,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 export const mediaSidebarSections = [
@@ -57,6 +58,12 @@ export default function Sidebar({
   setActiveSidebar,
 }: SidebarProps) {
   const { accessToken, user } = useSelector((state: any) => state.auth);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   return (
     <div className="border-border bg-card/50 flex h-full w-full flex-col border-r">
       {/* User Info */}
@@ -69,7 +76,11 @@ export default function Sidebar({
             )}
             aria-label="Account"
           >
-            {user && user?.image ? (
+            {!isMounted ? (
+              <div className="flex h-10 w-10 items-center justify-center">
+                <User className="text-muted-foreground h-6 w-6" />
+              </div>
+            ) : user && user?.image ? (
               <Avatar className="h-10 w-10">
                 <AvatarImage src={user.image} alt={user.name || "User"} />
                 <AvatarFallback>{user?.name?.[0] ?? "U"}</AvatarFallback>

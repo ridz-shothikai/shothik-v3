@@ -3,7 +3,21 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Ad } from "@/types/campaign";
-import { Eye, Image as ImageIcon, Settings, Wand2 } from "lucide-react";
+import {
+  Clapperboard,
+  Crosshair,
+  Eye,
+  Image,
+  Image as ImageIcon,
+  Images,
+  Lightbulb,
+  MapPin,
+  Play,
+  Settings,
+  Smartphone,
+  Target,
+  Wand2,
+} from "lucide-react";
 import { useState } from "react";
 import MediaLibraryModal from "./MediaLibraryModal";
 
@@ -45,92 +59,90 @@ export default function AdsTab({
       {ads.map((ad, index) => (
         <Card
           key={ad.id}
-          className="transition-border hover:border-primary/50 relative overflow-hidden"
+          className="transition-border hover:border-primary/50 relative flex flex-col overflow-hidden pt-0"
         >
-          {/* Serial Number Badge */}
-          <div className="absolute top-4 right-4">
-            <span className="bg-primary text-primary-foreground rounded-full px-4 py-2 text-sm font-bold shadow-lg">
-              #{index + 1}
-            </span>
+          <div>
+            {/* Serial Number Badge */}
+            <div className="absolute top-4 right-4">
+              <span className="bg-primary text-primary-foreground rounded-full px-4 py-2 text-sm font-bold shadow-lg">
+                #{index + 1}
+              </span>
+            </div>
+
+            {/* Media Preview */}
+            {ad.imageUrl ? (
+              <img
+                src={ad.imageUrl}
+                alt={ad.headline}
+                className="h-60 w-full object-cover"
+              />
+            ) : ad.videoUrl ? (
+              <div className="bg-background relative flex h-60 w-full items-center justify-center border-b text-lg font-bold">
+                <video
+                  src={ad.videoUrl}
+                  className="h-full w-full object-cover"
+                  muted
+                  autoPlay
+                  loop
+                />
+              </div>
+            ) : ad.imageUrls && ad.imageUrls.length > 0 ? (
+              <div className="bg-background relative flex h-60 w-full items-center justify-center border-b text-lg font-bold">
+                <img
+                  src={ad.imageUrls[0]}
+                  alt={ad.headline}
+                  className="h-full w-full object-cover"
+                />
+                <div className="bg-background/90 text-foreground absolute top-2 right-2 rounded px-2 py-1 text-xs">
+                  {ad.imageUrls.length} images
+                </div>
+                <div className="bg-background/90 text-foreground absolute bottom-2 left-2 flex items-center gap-1 rounded px-2 py-1 text-xs">
+                  <Images className="h-3 w-3" /> CAROUSEL
+                </div>
+              </div>
+            ) : (
+              <div className="bg-background text-foreground flex h-60 w-full items-center justify-center border-b text-lg font-bold">
+                {ad.format?.includes("VIDEO") ? (
+                  <div className="flex flex-col items-center gap-1 text-center">
+                    <Play className="h-8 w-8" />
+                    <div>{ad.format?.replace("_", " ")}</div>
+                  </div>
+                ) : ad.format === "CAROUSEL" ? (
+                  <div className="flex flex-col items-center gap-1 text-center">
+                    <Images className="h-8 w-8" />
+                    <div>CAROUSEL</div>
+                  </div>
+                ) : ad.format === "STORY" ? (
+                  <div className="flex flex-col items-center gap-1 text-center">
+                    <Smartphone className="h-8 w-8" />
+                    <div>STORY</div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center gap-1 text-center">
+                    <Image className="h-8 w-8" />
+                    <div>SINGLE IMAGE</div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
-          {/* Media Preview */}
-          {ad.imageUrl ? (
-            <img
-              src={ad.imageUrl}
-              alt={ad.headline}
-              className="h-48 w-full object-cover"
-            />
-          ) : ad.videoUrl ? (
-            <div className="bg-primary text-primary-foreground relative flex h-48 w-full items-center justify-center text-lg font-bold">
-              <video
-                src={ad.videoUrl}
-                className="h-full w-full object-cover"
-                muted
-                autoPlay
-                loop
-              />
-            </div>
-          ) : ad.imageUrls && ad.imageUrls.length > 0 ? (
-            <div className="bg-primary text-primary-foreground relative flex h-48 w-full items-center justify-center text-lg font-bold">
-              <img
-                src={ad.imageUrls[0]}
-                alt={ad.headline}
-                className="h-full w-full object-cover"
-              />
-              <div className="bg-background/90 text-foreground absolute top-2 right-2 rounded px-2 py-1 text-xs">
-                {ad.imageUrls.length} images
-              </div>
-              <div className="bg-background/90 text-foreground absolute bottom-2 left-2 rounded px-2 py-1 text-xs">
-                📸 CAROUSEL
-              </div>
-            </div>
-          ) : (
-            <div className="bg-muted text-foreground flex h-48 w-full items-center justify-center text-lg font-bold">
-              {ad.format === "SHORT_VIDEO" ||
-              ad.format === "VIDEO" ||
-              ad.format === "LONG_VIDEO" ? (
-                <div className="text-center">
-                  <div className="mb-2 text-4xl">▶</div>
-                  <div>{ad.format?.replace("_", " ")}</div>
-                </div>
-              ) : ad.format === "CAROUSEL" ? (
-                <div className="text-center">
-                  <div className="mb-2 text-4xl">📸</div>
-                  <div>CAROUSEL</div>
-                </div>
-              ) : ad.format === "STORY" ? (
-                <div className="text-center">
-                  <div className="mb-2 text-4xl">📱</div>
-                  <div>STORY</div>
-                </div>
-              ) : (
-                <div className="text-center">
-                  <div className="mb-2 text-4xl">🖼️</div>
-                  <div>SINGLE IMAGE</div>
-                </div>
-              )}
-            </div>
-          )}
-          <CardContent className="space-y-4 p-6">
+          <CardContent className="flex flex-1 flex-col gap-4 p-6">
             {/* Tags and Metadata */}
             <div className="flex flex-wrap items-center gap-2">
               <span className="border-primary/30 bg-primary/20 text-primary rounded-lg border px-3 py-1 text-xs font-medium">
                 {ad.format?.replace("_", " ")}
               </span>
+
               {ad.awareness_stage && (
                 <span className="border-primary/30 bg-primary/20 text-primary rounded-lg border px-3 py-1 text-xs font-medium">
                   {ad.awareness_stage.replace("_", " ")}
                 </span>
               )}
+
               {ad.persona && (
                 <span className="border-primary/30 bg-primary/20 text-primary rounded-lg border px-3 py-1 text-xs font-medium">
                   {ad.persona}
-                </span>
-              )}
-              {ad.language && ad.language !== "english" && (
-                <span className="border-primary/30 bg-primary/20 text-primary rounded-lg border px-3 py-1 text-xs font-medium">
-                  🌐 {ad.language}
                 </span>
               )}
             </div>
@@ -140,11 +152,11 @@ export default function AdsTab({
               {ad.headline}
             </h4>
 
-            {/* Hook (if available) */}
+            {/* Hook */}
             {ad.hook && (
-              <Card className="border-primary/30 bg-primary/10 p-3">
-                <p className="text-primary mb-1 text-xs font-medium">
-                  🎯 Hook:
+              <Card className="border-primary/30 gap-3 p-3">
+                <p className="text-primary flex items-center gap-1 text-xs font-medium">
+                  <Target className="h-3 w-3" /> Hook
                 </p>
                 <p className="text-foreground text-sm italic">{ad.hook}</p>
               </Card>
@@ -162,9 +174,9 @@ export default function AdsTab({
 
             {/* Creative Direction */}
             {ad.creative_direction && (
-              <Card className="p-3">
-                <p className="text-foreground mb-1 text-xs font-medium">
-                  📹 Creative Direction:
+              <Card className="gap-3 p-4">
+                <p className="text-foreground flex items-center gap-1 text-xs font-medium">
+                  <Clapperboard className="h-3 w-3" /> Creative Direction
                 </p>
                 <p className="text-muted-foreground text-xs">
                   {ad.creative_direction}
@@ -172,20 +184,20 @@ export default function AdsTab({
               </Card>
             )}
 
-            {/* Angle & Benefit Focus */}
+            {/* Angle & Benefit */}
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {ad.angle && (
-                <Card className="border-primary/30 bg-primary/10 p-2">
-                  <p className="text-primary mb-1 text-xs font-medium">
-                    🎯 Angle:
+                <Card className="border-primary/30 gap-3 p-2">
+                  <p className="text-primary flex items-center gap-1 text-xs font-medium">
+                    <Crosshair className="h-3 w-3" /> Angle
                   </p>
                   <p className="text-foreground text-xs">{ad.angle}</p>
                 </Card>
               )}
               {ad.benefit_focus && (
-                <Card className="border-primary/30 bg-primary/10 p-2">
-                  <p className="text-primary mb-1 text-xs font-medium">
-                    💡 Benefit:
+                <Card className="border-primary/30 gap-3 p-2">
+                  <p className="text-primary flex items-center gap-1 text-xs font-medium">
+                    <Lightbulb className="h-3 w-3" /> Benefit
                   </p>
                   <p className="text-foreground text-xs">{ad.benefit_focus}</p>
                 </Card>
@@ -195,9 +207,9 @@ export default function AdsTab({
             {/* Recommended Placements */}
             {ad.recommended_placements &&
               ad.recommended_placements.length > 0 && (
-                <Card className="border-primary/30 bg-primary/10 p-3">
-                  <p className="text-primary mb-2 text-xs font-medium">
-                    📍 Recommended Placements:
+                <Card className="border-primary/30 gap-3 p-3">
+                  <p className="text-primary flex items-center gap-1 text-xs font-medium">
+                    <MapPin className="h-3 w-3" /> Recommended Placements
                   </p>
                   <div className="flex flex-wrap gap-1">
                     {ad.recommended_placements.map((placement, i) => (
@@ -212,41 +224,48 @@ export default function AdsTab({
                 </Card>
               )}
 
-            {/* CTA Button */}
-            <Button className="w-full">{ad.cta || "Learn More"}</Button>
+            <div className="mt-auto">
+              {/* CTA Button */}
+              <Button className="w-full">{ad.cta || "Learn More"}</Button>
 
-            {/* Action Buttons */}
-            <div className="grid grid-cols-1 gap-2 pt-2 sm:grid-cols-3">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onPreviewAd(ad)}
-              >
-                <Eye className="h-4 w-4" />
-                Preview
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setSelectedAdId(ad.id);
-                  setSelectedAdFormat(ad.format);
-                  setShowMediaModal(true);
-                }}
-              >
-                <Wand2 className="h-4 w-4" />
-                Media
-              </Button>
-              <Button variant="outline" size="sm" onClick={() => onEditAd(ad)}>
-                <Settings className="h-4 w-4" />
-                Edit
-              </Button>
+              {/* Action Buttons */}
+              <div className="grid grid-cols-1 gap-2 pt-2 sm:grid-cols-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onPreviewAd(ad)}
+                >
+                  <Eye className="h-4 w-4" />
+                  Preview
+                </Button>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setSelectedAdId(ad.id);
+                    setSelectedAdFormat(ad.format);
+                    setShowMediaModal(true);
+                  }}
+                >
+                  <Wand2 className="h-4 w-4" />
+                  Media
+                </Button>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onEditAd(ad)}
+                >
+                  <Settings className="h-4 w-4" />
+                  Edit
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>
       ))}
 
-      {/* Media Library Modal */}
       <MediaLibraryModal
         isOpen={showMediaModal}
         onClose={() => {

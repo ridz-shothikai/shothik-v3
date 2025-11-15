@@ -1,16 +1,15 @@
 "use client";
 
-import type { Campaign } from "@/types/campaign";
-import type { CampaignObjective } from "@/types/metaCampaign";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import type { Campaign } from "@/types/campaign";
+import type { CampaignObjective } from "@/types/metaCampaign";
 
 interface EditCampaignModalProps {
   showModal: boolean;
@@ -40,7 +39,7 @@ export default function EditCampaignModal({
 
   return (
     <Dialog open={showModal} onOpenChange={onClose}>
-      <DialogContent className="max-h-[90vh] w-[95vw] max-w-2xl overflow-y-auto md:w-auto">
+      <DialogContent className="max-h-[90vh] max-w-4xl! overflow-y-auto md:w-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">
             Edit Campaign: {editingCampaign.name}
@@ -69,7 +68,7 @@ export default function EditCampaignModal({
             <select
               value={campaignEditFormData.objective}
               onChange={(e) => onFieldChange("objective", e.target.value)}
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none"
+              className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-[3px] focus-visible:outline-none"
             >
               <option value="outcome_sales">Sales</option>
               <option value="outcome_leads">Lead Generation</option>
@@ -110,13 +109,11 @@ export default function EditCampaignModal({
 
           {/* Status */}
           <div>
-            <label className="mb-2 block text-sm font-semibold">
-              Status
-            </label>
+            <label className="mb-2 block text-sm font-semibold">Status</label>
             <select
               value={campaignEditFormData.status}
               onChange={(e) => onFieldChange("status", e.target.value)}
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none"
+              className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-[3px] focus-visible:outline-none"
             >
               <option value="draft">Draft</option>
               <option value="active">Active</option>
@@ -127,18 +124,10 @@ export default function EditCampaignModal({
 
         {/* Action Buttons */}
         <div className="flex gap-4">
-          <Button
-            variant="outline"
-            onClick={onClose}
-            className="flex-1"
-          >
+          <Button variant="outline" onClick={onClose} className="flex-1">
             Cancel
           </Button>
-          <Button
-            onClick={onSave}
-            disabled={saving}
-            className="flex-1"
-          >
+          <Button onClick={onSave} disabled={saving} className="flex-1">
             {saving ? "Saving..." : "Save Changes"}
           </Button>
         </div>

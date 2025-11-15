@@ -85,7 +85,9 @@ export default function AdSetsTab({
               <Card className="p-4">
                 <div className="mb-2 flex items-center gap-2">
                   <ImageIcon className="text-primary h-4 w-4" />
-                  <span className="text-muted-foreground text-xs">Ads</span>
+                  <span className="text-muted-foreground mb-2 inline-block text-xs">
+                    Ads
+                  </span>
                 </div>
                 <p className="text-foreground text-lg font-bold">
                   {ads.filter((ad) => ad.adSetId === adSet.id).length}
@@ -96,7 +98,7 @@ export default function AdSetsTab({
                 <Card className="p-4">
                   <div className="mb-2 flex items-center gap-2">
                     <DollarSign className="text-primary h-4 w-4" />
-                    <span className="text-muted-foreground text-xs">
+                    <span className="text-muted-foreground mb-2 inline-block text-xs">
                       Daily Budget
                     </span>
                   </div>
@@ -118,7 +120,7 @@ export default function AdSetsTab({
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {adSet.bid_strategy && (
                     <div>
-                      <span className="text-muted-foreground text-xs">
+                      <span className="text-muted-foreground mb-2 inline-block text-xs">
                         Bid Strategy
                       </span>
                       <p className="text-foreground text-sm font-medium">
@@ -128,7 +130,7 @@ export default function AdSetsTab({
                   )}
                   {adSet.optimization_goal && (
                     <div>
-                      <span className="text-muted-foreground text-xs">
+                      <span className="text-muted-foreground mb-2 inline-block text-xs">
                         Optimization Goal
                       </span>
                       <p className="text-foreground text-sm font-medium">
@@ -152,7 +154,7 @@ export default function AdSetsTab({
                       {/* Age Range */}
                       {(adSet.targeting.age_min || adSet.targeting.age_max) && (
                         <div>
-                          <span className="text-muted-foreground text-xs">
+                          <span className="text-muted-foreground mb-2 inline-block text-xs">
                             Age Range
                           </span>
                           <p className="text-foreground text-sm font-medium">
@@ -165,7 +167,7 @@ export default function AdSetsTab({
                       {/* Geographic Location */}
                       {adSet.targeting.geo_locations && (
                         <div>
-                          <span className="text-muted-foreground text-xs">
+                          <span className="text-muted-foreground mb-2 inline-block text-xs">
                             Location
                           </span>
                           <div className="text-foreground text-sm font-medium">
@@ -189,10 +191,10 @@ export default function AdSetsTab({
                               adSet.targeting.geo_locations.cities.length >
                                 0 && (
                                 <div className="mt-1">
-                                  <span className="text-muted-foreground text-xs">
+                                  <span className="text-muted-foreground mb-2 inline-block text-xs">
                                     Cities:{" "}
                                   </span>
-                                  <span className="text-muted-foreground text-xs">
+                                  <span className="text-muted-foreground mb-2 inline-block text-xs">
                                     {adSet.targeting.geo_locations.cities
                                       .map((city) => city.name || city.key)
                                       .join(", ")}
@@ -206,7 +208,7 @@ export default function AdSetsTab({
                       {/* Advantage Audience */}
                       {adSet.targeting.advantage_audience !== undefined && (
                         <div>
-                          <span className="text-muted-foreground text-xs">
+                          <span className="text-muted-foreground mb-2 inline-block text-xs">
                             Advantage Audience
                           </span>
                           <p className="text-foreground text-sm font-medium">

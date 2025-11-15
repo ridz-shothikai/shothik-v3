@@ -15,7 +15,15 @@ import type {
   OptimizationGoal,
 } from "@/types/metaCampaign";
 import { getRecommendedOptimizationGoalForObjective } from "@/utils/objectiveMapping";
-import { Lightbulb, Save, Users, Wand2 } from "lucide-react";
+import {
+  Flag,
+  Layers,
+  Megaphone,
+  Save,
+  Sparkles,
+  Users,
+  Wand2,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 
 // Import extracted components
@@ -27,6 +35,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import AdPreviewModal from "./AdPreviewModal";
@@ -425,42 +434,74 @@ export default function CanvasBody({
         </div>
 
         {/* Tabs */}
-        <div className="mb-6 flex gap-1 overflow-x-auto border-b pb-4 md:gap-2">
+        <div className="mb-6 flex overflow-x-auto border-b">
           <Button
-            variant={activeTab === "suggestions" ? "default" : "ghost"}
+            variant="ghost"
             onClick={() => setActiveTab("suggestions")}
-            className="whitespace-nowrap"
+            className={cn(
+              "flex items-center rounded-b-none px-4 py-3 font-medium whitespace-nowrap transition-colors",
+              activeTab === "suggestions"
+                ? "border-primary text-foreground border-b-2"
+                : "text-muted-foreground hover:text-foreground",
+            )}
           >
-            <Lightbulb className="mr-2 inline-block h-4 w-4" />
+            <Sparkles className="h-4 w-4" />
             AI Suggestions
           </Button>
+
           <Button
-            variant={activeTab === "personas" ? "default" : "ghost"}
+            variant="ghost"
             onClick={() => setActiveTab("personas")}
-            className="whitespace-nowrap"
+            className={cn(
+              "flex items-center rounded-b-none px-4 py-3 font-medium whitespace-nowrap transition-colors",
+              activeTab === "personas"
+                ? "border-primary text-foreground border-b-2"
+                : "text-muted-foreground hover:text-foreground",
+            )}
           >
-            <Users className="mr-2 inline-block h-4 w-4" />
+            <Users className="h-4 w-4" />
             Personas ({personas.length})
           </Button>
+
           <Button
-            variant={activeTab === "campaigns" ? "default" : "ghost"}
+            variant="ghost"
             onClick={() => setActiveTab("campaigns")}
-            className="whitespace-nowrap"
+            className={cn(
+              "flex items-center rounded-b-none px-4 py-3 font-medium whitespace-nowrap transition-colors",
+              activeTab === "campaigns"
+                ? "border-primary text-foreground border-b-2"
+                : "text-muted-foreground hover:text-foreground",
+            )}
           >
+            <Flag className="h-4 w-4" />
             Campaigns ({campaigns.length})
           </Button>
+
           <Button
-            variant={activeTab === "adsets" ? "default" : "ghost"}
+            variant="ghost"
             onClick={() => setActiveTab("adsets")}
-            className="whitespace-nowrap"
+            className={cn(
+              "flex items-center rounded-b-none px-4 py-3 font-medium whitespace-nowrap transition-colors",
+              activeTab === "adsets"
+                ? "border-primary text-foreground border-b-2"
+                : "text-muted-foreground hover:text-foreground",
+            )}
           >
+            <Layers className="h-4 w-4" />
             Ad Sets ({adSets.length})
           </Button>
+
           <Button
-            variant={activeTab === "ads" ? "default" : "ghost"}
+            variant="ghost"
             onClick={() => setActiveTab("ads")}
-            className="whitespace-nowrap"
+            className={cn(
+              "flex items-center rounded-b-none px-4 py-3 font-medium whitespace-nowrap transition-colors",
+              activeTab === "ads"
+                ? "border-primary text-foreground border-b-2"
+                : "text-muted-foreground hover:text-foreground",
+            )}
           >
+            <Megaphone className="h-4 w-4" />
             Ads ({ads.length})
           </Button>
         </div>
