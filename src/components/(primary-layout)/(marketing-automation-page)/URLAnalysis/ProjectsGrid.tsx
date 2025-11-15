@@ -52,16 +52,16 @@ export default function ProjectsGrid({
             <Folder className="text-primary-foreground h-6 w-6" />
           </div>
           <div>
-            <h2 className="text-foreground text-3xl font-bold tracking-tight">
+            <h2 className="text-foreground text-xl font-bold tracking-tight md:text-3xl">
               Your Projects
             </h2>
-            <p className="text-muted-foreground mt-0.5 text-sm">
+            <p className="text-muted-foreground mt-0.5 text-xs md:text-sm">
               Manage and track your campaigns
             </p>
           </div>
         </div>
-        <span className="border-border bg-card/60 text-foreground rounded-full border px-5 py-2.5 text-sm font-medium backdrop-blur-md">
-          {projects.length} {projects.length !== 1 ? "projects" : "project"}
+        <span className="border-border bg-card/60 text-foreground shrink-0 rounded-full border px-4 py-2 text-sm font-medium backdrop-blur-md">
+          {projects.length} {projects.length !== 1 ? "Projects" : "Project"}
         </span>
       </div>
 

@@ -28,8 +28,8 @@ import {
   Send,
   Users,
 } from "lucide-react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface FacebookUser {
@@ -458,12 +458,12 @@ export default function FacebookAccountSelectionScreen() {
           <p className="text-muted-foreground mb-6 text-sm">
             Please connect your Facebook account first
           </p>
-            <Link href={`/marketing-automation/canvas/${projectId}`}>
-              <Button>
-                <ArrowLeft className="h-4 w-4" />
-                Back to Campaign
-              </Button>
-            </Link>
+          <Link href={`/marketing-automation/canvas/${projectId}`}>
+            <Button>
+              <ArrowLeft className="h-4 w-4" />
+              Back to Campaign
+            </Button>
+          </Link>
         </div>
       </div>
     );
@@ -472,14 +472,10 @@ export default function FacebookAccountSelectionScreen() {
   return (
     <div className="bg-background min-h-[calc(100vh-4rem)]">
       <div className="border-border bg-background/90 sticky top-0 z-10 h-12 border-b backdrop-blur-sm md:h-16">
-        <div className="flex items-center justify-between">
+        <div className="flex h-full items-center justify-between">
           <div className="flex items-center gap-4">
             <Link href={`/marketing-automation/canvas/${projectId}/publish`}>
-              <Button
-                variant="ghost"
-                size="icon"
-                title="Back to Campaign"
-              >
+              <Button variant="ghost" size="icon" title="Back to Campaign">
                 <ArrowLeft className="size-5" />
               </Button>
             </Link>

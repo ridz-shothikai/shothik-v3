@@ -32,7 +32,7 @@ export default function URLInputForm({
       {/* Glow effect */}
       <div className="bg-primary/20 absolute -inset-1 rounded-3xl opacity-50 blur-xl"></div>
 
-      <Card className="bg-card/80 border-border relative p-8 shadow-2xl backdrop-blur-2xl sm:p-10">
+      <Card className="bg-card/80 border-border relative px-4 shadow-2xl backdrop-blur-2xl md:p-8">
         <form onSubmit={onSubmit} className="space-y-6">
           {/* URL Input */}
           <div>

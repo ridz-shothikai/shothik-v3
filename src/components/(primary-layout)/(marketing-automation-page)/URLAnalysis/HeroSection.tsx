@@ -1,6 +1,6 @@
 export default function HeroSection() {
   return (
-    <div className="relative mb-6 py-6 text-center">
+    <div className="relative py-6 text-center">
       {/* Animated background gradient */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="bg-primary/20 animate-blob absolute top-1/2 left-1/4 h-[500px] w-[500px] rounded-full opacity-40 blur-3xl filter"></div>
@@ -18,13 +18,13 @@ export default function HeroSection() {
         </span>
       </div>
 
-      <h1 className="text-foreground mb-6 text-3xl leading-tight font-bold tracking-tight sm:text-5xl">
+      <h1 className="text-foreground mb-2 text-3xl leading-tight font-bold tracking-tight sm:text-5xl">
         Meta Ads Automation
         <span className="from-primary via-primary to-primary block bg-gradient-to-r bg-clip-text text-transparent">
           Suite
         </span>
       </h1>
-      <p className="text-muted-foreground mx-auto max-w-2xl text-sm leading-relaxed font-light sm:text-base">
+      <p className="text-muted-foreground mx-auto max-w-2xl text-sm font-light sm:text-base">
         From AI analysis to campaign launch—everything you need to create,
         optimize, and scale Meta ads with intelligent automation
       </p>
