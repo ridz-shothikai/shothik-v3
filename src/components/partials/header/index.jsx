@@ -314,12 +314,7 @@ export default function Header({ className, layout }) {
           {/* Logo + Desktop Nav */}
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-2">
-              <Logo
-                className={cn("", {
-                  "lg:hidden": !isCompact,
-                  "lg:inline-block": isCompact,
-                })}
-              />
+              <Logo />
             </div>
 
             <div className="hidden items-center gap-1 lg:flex">
