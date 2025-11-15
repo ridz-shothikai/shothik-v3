@@ -1,12 +1,12 @@
 "use client";
+
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useTheme } from "@/hooks/useTheme";
 
 const CTAImage = () => {
-  const isDarkMode = useTheme();
+  const theme = useSelector((state) => state.settings.theme);
+  const isDarkMode = theme === "dark";
 
   return (
     <div className={cn("relative overflow-hidden rounded-[10px]")}>

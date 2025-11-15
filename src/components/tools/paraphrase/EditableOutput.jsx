@@ -1,7 +1,6 @@
 // src/components/tools/paraphrase/EditableOutputWithStructural.jsx
 "use client";
 
-import { useTheme } from "@/hooks/useTheme";
 import { Extension, Node } from "@tiptap/core";
 import HardBreak from "@tiptap/extension-hard-break";
 import { Placeholder } from "@tiptap/extensions";
@@ -659,7 +658,9 @@ export default function EditableOutput({
     useYellowHighlight,
   } = useSelector((state) => state.settings.interfaceOptions);
   const paraphraseIO = useSelector((state) => state.inputOutput.paraphrase);
-  const isDarkMode = useTheme();
+
+  const theme = useSelector((state) => state.settings.theme);
+  const isDarkMode = theme === "dark";
 
   // Create a virtual anchor element for positioning
   const [virtualAnchor, setVirtualAnchor] = useState(null);
