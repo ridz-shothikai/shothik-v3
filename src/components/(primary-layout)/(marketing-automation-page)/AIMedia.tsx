@@ -11,13 +11,13 @@ import useResponsive from "@/hooks/ui/useResponsive";
 import { cn } from "@/lib/utils";
 import type { RootState } from "@/redux/store";
 import { AlignCenter, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import {
   useParams,
   usePathname,
   useRouter,
   useSearchParams,
 } from "next/navigation";
-import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import AIShortsSection from "./AIMedia/AIShortsSection";
@@ -137,7 +137,7 @@ export default function AIMedia() {
                 size="icon"
                 aria-label="Back to analysis"
               >
-                <Link href="/marketing-automation/analysis">
+                <Link href="/marketing-automation">
                   <ArrowLeft className="size-5" />
                 </Link>
               </Button>

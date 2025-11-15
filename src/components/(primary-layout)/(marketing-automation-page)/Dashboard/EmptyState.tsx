@@ -6,7 +6,6 @@ import { Target } from "lucide-react";
 import Link from "next/link";
 
 export default function EmptyState() {
-
   return (
     <Card className="container mx-auto my-auto p-12 text-center">
       <div className="bg-muted mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full">
@@ -19,7 +18,7 @@ export default function EmptyState() {
         Publish your first campaign to Meta to see performance insights and
         AI-powered optimization suggestions.
       </p>
-      <Link href="/marketing-automation/analysis">
+      <Link href="/marketing-automation">
         <Button>Go to Projects</Button>
       </Link>
     </Card>

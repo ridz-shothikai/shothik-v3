@@ -20,8 +20,8 @@ import type { ProductAnalysis } from "@/types/analysis";
 import type { CampaignSuggestion } from "@/types/campaign";
 import { getRouteState } from "@/utils/getRouteState";
 import { ArrowLeft, Loader2, MessageCircle, Save } from "lucide-react";
-import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useParams, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import CanvasBody from "./canvas/CanvasBody";
 import ChatBox from "./canvas/ChatBox";
@@ -271,7 +271,7 @@ Would you like me to explain the personas, show you the ad concepts, or help you
           <p className="text-muted-foreground mb-6">
             Please complete a URL analysis first.
           </p>
-          <Link href="/marketing-automation/analysis">
+          <Link href="/marketing-automation">
             <Button className="inline-flex items-center gap-2">
               <ArrowLeft className="size-5" />
               Back to Analysis
@@ -289,7 +289,7 @@ Would you like me to explain the personas, show you the ad concepts, or help you
         <div className="w-full px-4 md:px-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/marketing-automation/analysis">
+              <Link href="/marketing-automation">
                 <Button
                   variant="ghost"
                   size="icon"

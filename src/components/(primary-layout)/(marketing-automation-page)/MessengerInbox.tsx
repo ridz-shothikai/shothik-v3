@@ -349,7 +349,7 @@ export const MessengerInbox = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="flex justify-center">
-            <Link href="/marketing-automation/analysis">
+            <Link href="/marketing-automation">
               <Button className="rounded-xl px-4 py-2 text-sm md:px-6 md:py-3 md:text-base">
                 Connect Meta Account
               </Button>
@@ -367,7 +367,7 @@ export const MessengerInbox = () => {
       <div className="border-border bg-background/80 h-12 border-b px-3 backdrop-blur-xl md:h-16 md:px-6">
         <div className="flex h-full items-center justify-between gap-2">
           <div className="flex items-center gap-2 md:gap-4">
-            <Link href="/marketing-automation/analysis">
+            <Link href="/marketing-automation">
               <Button
                 variant="ghost"
                 size="icon"

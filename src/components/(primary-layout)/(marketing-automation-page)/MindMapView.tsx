@@ -170,7 +170,7 @@ export default function MindMapView() {
           <p className="text-destructive mb-4">
             {error || "Failed to load mind map"}
           </p>
-          <Link href="/marketing-automation/analysis">
+          <Link href="/marketing-automation">
             <Button>Back to Projects</Button>
           </Link>
         </div>

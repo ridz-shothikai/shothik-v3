@@ -1,5 +1,11 @@
-import { redirect } from "next/navigation";
+import URLAnalysis from "@/components/(primary-layout)/(marketing-automation-page)/URLAnalysis";
 
-export default function RootPage() {
-  redirect("/marketing-automation/analysis");
-}
+const AnalysisPage = () => {
+  return (
+    <div>
+      <URLAnalysis />
+    </div>
+  );
+};
+
+export default AnalysisPage;

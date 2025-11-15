@@ -53,7 +53,7 @@ export const Knowledge = () => {
             <p className="text-muted-foreground mb-6">
               Connect your Facebook account to start building knowledge base.
             </p>
-            <Link href="/marketing-automation/analysis">
+            <Link href="/marketing-automation">
               <Button>Connect Meta Account</Button>
             </Link>
           </Card>
@@ -72,12 +72,8 @@ export const Knowledge = () => {
         <div className="border-border bg-background/90 h-12 border-b px-4 backdrop-blur-sm md:h-16 md:px-6">
           <div className="flex h-full items-center justify-between">
             <div className="flex items-center gap-2">
-              <Link href="/marketing-automation/analysis">
-                <Button
-                  title="Back to Campaign"
-                  variant="ghost"
-                  size="icon"
-                >
+              <Link href="/marketing-automation">
+                <Button title="Back to Campaign" variant="ghost" size="icon">
                   <ArrowLeft className="size-5" />
                 </Button>
               </Link>

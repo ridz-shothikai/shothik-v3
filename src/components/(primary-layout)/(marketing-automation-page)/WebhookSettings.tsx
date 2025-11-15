@@ -47,7 +47,7 @@ export const WebhookSettings = () => {
               You need to connect your Meta (Facebook) account before managing
               Messenger webhooks.
             </p>
-            <Link href="/marketing-automation/analysis" className="w-full">
+            <Link href="/marketing-automation" className="w-full">
               <Button className="w-full">Connect Meta Account</Button>
             </Link>
           </Card>
@@ -65,11 +65,8 @@ export const WebhookSettings = () => {
 
       <div className="relative container mx-auto px-4 py-6 md:px-6">
         {/* Back Button */}
-        <Link href="/marketing-automation/analysis">
-          <Button
-            variant="ghost"
-            className="mb-6"
-          >
+        <Link href="/marketing-automation">
+          <Button variant="ghost" className="mb-6">
             <ArrowLeft className="size-5" />
             <span className="text-sm">Back to Analysis</span>
           </Button>

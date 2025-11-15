@@ -273,7 +273,7 @@ export default function AIInsights() {
             <div className="border-border bg-background/90 sticky top-0 z-10 flex h-12 items-center justify-center border-b backdrop-blur-sm md:h-16">
               <div className="flex h-full w-full items-center justify-between px-4 md:px-6">
                 <div className="flex items-center gap-2">
-                  <Link href="/marketing-automation/analysis">
+                  <Link href="/marketing-automation">
                     <Button
                       variant="ghost"
                       size="icon"
